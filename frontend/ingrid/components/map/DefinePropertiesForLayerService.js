@@ -158,6 +158,15 @@ goog.provide('ga_definepropertiesforlayer_service');
               this.set('auth', val);
             }
           },
+          // INGRID: Add isSecure functions
+          isSecure: {
+            get: function() {
+              return this.get('isSecure');
+            },
+            set: function(val) {
+              this.set('isSecure', val);
+            }
+          },
           // INGRID: Add featureCount functions
           featureCount: {
             get: function() {

@@ -288,12 +288,17 @@ goog.require('ga_wmts_service');
         return gaWms.getOlLayerFromGetCapLayer(layer);
       } else if (layer.capabilitiesUrl) {
         return gaWmts.getOlLayerFromGetCap($scope.map, $scope.wmtsGetCap,
-            layer.Identifier, {
-              capabilitiesUrl: layer.capabilitiesUrl
-            });
+            layer.Identifier, layer);
       }
     };
     $scope.options.addPreviewLayer = function(map, getCapLayer) {
+
+      if ($scope.options.login) {
+        getCapLayer.secureAuthLogin = $scope.options.login;
+      }
+      if ($scope.options.password) {
+        getCapLayer.secureAuthPassword = $scope.options.password;
+      }
 
       gaPreviewLayers.addGetCapLayer(map, $scope.wmtsGetCap ||
           $scope.wmsGetCap, getCapLayer);

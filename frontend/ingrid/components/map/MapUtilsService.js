@@ -369,7 +369,7 @@ goog.require('ga_urlutils_service');
           }
           if (angular.isString(olLayerOrId)) {
             return /^WMTS\|\|/.test(olLayerOrId) &&
-                olLayerOrId.split('||').length === 3;
+                olLayerOrId.split('||').length >= 3;
           }
           return false;
         },

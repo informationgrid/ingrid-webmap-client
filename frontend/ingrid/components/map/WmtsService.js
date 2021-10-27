@@ -105,72 +105,66 @@ goog.require('ga_urlutils_service');
       var createWmtsLayer = function(options) {
         options.sourceConfig.transition = 0;
         
-        var tileLoadFunction = function(baseUrl) {
+        var tileLoadFunction = function(id) {
           return function(imageTile, src) {
-            var onSuccess = function(content, url) {
-              if ($window.sessionStorage.getItem(baseUrl)) {
-                var sessionAuthService = JSON.parse($window.sessionStorage.
-                    getItem(baseUrl));
-                var xhr = new XMLHttpRequest();
-                xhr.responseType = 'blob';
-                xhr.open('GET', src);
-                xhr.setRequestHeader("Authorization", "Basic " + window.btoa(sessionAuthService.login + ":" + sessionAuthService.password));
-                xhr.onload = function() {
+            var onSuccess = function(content, id) {
+              var baseUrl = id.split('||')[2];
+              var isSecure = id.split('||')[5];
+              if (isSecure) {
+                if ($window.sessionStorage.getItem(baseUrl)) {
+                  var sessionAuthService = JSON.parse($window.sessionStorage.
+                      getItem(baseUrl));
+                  var xhr = new XMLHttpRequest();
+                  xhr.responseType = 'blob';
+                  xhr.open('GET', src);
+                  xhr.setRequestHeader('Authorization', 'Basic ' + window.btoa(
+                    sessionAuthService.login + ':' +
+                    sessionAuthService.password)
+                  );
+                  xhr.onload = function() {
                     if (this.response) {
-                        var objectUrl = URL.createObjectURL(xhr.response);
-                        imageTile.getImage().onload = function() {
-                            URL.revokeObjectURL(objectUrl);
-                        };
-                        imageTile.getImage().src = objectUrl;
+                      var objectUrl = URL.createObjectURL(xhr.response);
+                      imageTile.getImage().onload = function() {
+                        URL.revokeObjectURL(objectUrl);
+                      };
+                      imageTile.getImage().src = objectUrl;
                     } else {
                       imageTile.setState(3);
                     }
-                };
-                xhr.onerror = function() {
-                  imageTile.setState(3);
-                };
-                xhr.send();
-                /* INGRID: REST CALL
-                var sessionAuthService = JSON.parse($window.sessionStorage.
-                    getItem(baseUrl));
-                var params = '{';
-                if (sessionAuthService) {
-                  params += 'login: \'' + sessionAuthService.login + '\',';
-                  params += 'password: \''+ sessionAuthService.password + '\'';
-                }
-                params += '}';
-                src = gaGlobalOptions.imgproxyUrl +
-                '' + encodeURIComponent(src);
-                var xhr = new XMLHttpRequest();
-                xhr.responseType = 'blob';
-                xhr.open('POST', src);
-                xhr.onload = function() {
-                    if (this.response) {
-                        var objectUrl = URL.createObjectURL(xhr.response);
-                        imageTile.getImage().onload = function() {
-                            URL.revokeObjectURL(objectUrl);
-                        };
-                        imageTile.getImage().src = objectUrl;
-                    } else {
-                      imageTile.setState(3);
-                    }
-                };
-                xhr.onerror = function() {
+                  };
+                  xhr.onerror = function() {
                     imageTile.setState(3);
-                };
-                xhr.send(params);
-                */
+                  };
+                  xhr.send();
+                } else {
+                  imageTile.getImage().src = (content) || src;
+                }
               } else {
                 imageTile.getImage().src = (content) || src;
               }
             };
-            onSuccess(null, baseUrl);
+            onSuccess(null, id);
           };
         };
-        
-        
+
+        var id = 'WMTS||' + options.layer + '||' + options.capabilitiesUrl;
+        if(options.attribution) {
+          id += '||' + options.attribution;
+        } else {
+          id += '||';
+        }
+        if(options.attributionUrl) {
+          id += '||' + options.attributionUrl;
+        } else {
+          id += '||';
+        }
+        if ((options.secureAuthLogin && options.secureAuthPassword) ||
+            options.isSecure) {
+          id += '||true';
+        }
+
         var source = new ol.source.WMTS(options.sourceConfig);
-        source.tileLoadFunction = tileLoadFunction(options.capabilitiesUrl);
+        source.tileLoadFunction = tileLoadFunction(id);
 
         // INGRID: Set featureInfoTpl
         if (options.sourceConfig.featureInfoTpl) {
@@ -178,7 +172,7 @@ goog.require('ga_urlutils_service');
         }
 
         var layer = new ol.layer.Tile({
-          id: 'WMTS||' + options.layer + '||' + options.capabilitiesUrl,
+          id: id,
           source: source,
           extent: gaMapUtils.intersectWithDefaultExtent(options.extent),
           preload: gaMapUtils.preload,
@@ -186,7 +180,9 @@ goog.require('ga_urlutils_service');
           visible: options.visible,
           attribution: options.attribution,
           // INGRID: Add attributionUrl
-          attributionUrl: options.attributionUrl
+          attributionUrl: options.attributionUrl,
+          // INGRID: Add isSecure
+          isSecure: options.isSecure
         });
 
         gaDefinePropertiesForLayer(layer);
@@ -317,6 +313,16 @@ goog.require('ga_urlutils_service');
               layerOptions.attribution = getCapService['ProviderName'];
               layerOptions.attributionUrl = getCapService['ProviderSite'];
             }
+            // INGRID: Add secure
+            if (options.isSecure) {
+              layerOptions.isSecure = options.isSecure;
+            }
+            if (options.secureAuthLogin) {
+              layerOptions.secureAuthLogin = options.secureAuthLogin;
+            }
+            if (options.secureAuthPassword) {
+              layerOptions.secureAuthPassword = options.secureAuthPassword;
+            }
             return createWmtsLayer(layerOptions);
           }
         };
@@ -343,9 +349,24 @@ goog.require('ga_urlutils_service');
             layerIdentifier, layerOptions) {
           var that = this;
           var url = gaUrlUtils.buildProxyUrl(getCapUrl);
+          var id = 'WMTS||' + layerIdentifier + '||' + getCapUrl;
+          if(layerOptions.attribution) {
+            id += '||' + layerOptions.attribution;
+          } else {
+            id += '||';
+          }
+          if(layerOptions.attributionUrl) {
+            id += '||' + layerOptions.attributionUrl;
+          } else {
+            id += '||';
+          }
+          if ((layerOptions.secureAuthLogin && layerOptions.secureAuthPassword)
+            || layerOptions.isSecure) {
+            id += '||true';
+          }
           if ($window.sessionStorage.getItem(getCapUrl)) {
             var sessionAuthService = JSON.parse($window.sessionStorage.
-              getItem(getCapUrl));
+                getItem(getCapUrl));
             var params = {};
             if (sessionAuthService) {
               params['login'] = sessionAuthService.login;
