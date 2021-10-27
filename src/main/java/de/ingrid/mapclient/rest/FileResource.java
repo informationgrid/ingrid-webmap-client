@@ -620,20 +620,30 @@ public class FileResource {
             return Response.ok(imageFile).build();
         }else{
             if(icon != null){
-                String url = apiGeo + "/images/" + category + "/" + icon;
-                if (!url.isEmpty()) {
-                    URL tmpUrl;
-                    try {
-                        tmpUrl = new URL(url);
-                        BufferedImage image = ImageIO.read(tmpUrl);
-                        ImageIO.write(image, "png", imageFile);
-                        return Response.ok(imageFile).build();
-                    } catch (MalformedURLException e) {
-                        log.error( e );
-                        return Response.status(Response.Status.NOT_FOUND ).build();
-                    } catch (IOException e) {
-                        log.error( e );
-                        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+                if(icon.indexOf('.') == -1 && (category.equals("category") || category.equals("background"))) {
+                    File imageSubDir = new File(path);
+                    File[] files = imageSubDir.listFiles();
+                    for(File file:files) {
+                        if(file.getName().startsWith(icon +".")){
+                            return Response.ok(file).build();
+                        }
+                    }
+                } else {
+                    String url = apiGeo + "/images/" + category + "/" + icon;
+                    if (!url.isEmpty()) {
+                        URL tmpUrl;
+                        try {
+                            tmpUrl = new URL(url);
+                            BufferedImage image = ImageIO.read(tmpUrl);
+                            ImageIO.write(image, "png", imageFile);
+                            return Response.ok(imageFile).build();
+                        } catch (MalformedURLException e) {
+                            log.error( e );
+                            return Response.status(Response.Status.NOT_FOUND ).build();
+                        } catch (IOException e) {
+                            log.error( e );
+                            return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+                        }
                     }
                 }
             }
