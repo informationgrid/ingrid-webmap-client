@@ -792,7 +792,7 @@ public class AdministrationResource {
                     String css = Utils.getFileContent(configDir, "app.profile", ".css", "css/");
                     if(css.indexOf(".ga-topics-sprite-" + name) == -1) {
                         css = css + "\n[ga-topic] .ga-topics-sprite-" + name + " {\n" + 
-                                "  background: url(\""+ urlPathPrefix + "/ingrid-webmap-client/rest/admin/image/" + path + "/" + name + "\");\n" + 
+                                "  background: url(\""+ urlPathPrefix + "/ingrid-webmap-client/rest/data/images/" + path + "/" + name + "\");\n" + 
                                 "  width: 140px;\n" + 
                                 "}";
                         this.updateCss(css);
@@ -802,13 +802,13 @@ public class AdministrationResource {
                     if(css.indexOf("[ga-background-selector] .ga-" + name) == -1) {
                         css = css + "\n@media (max-width: 768px) {\n" + 
                                 "[ga-background-selector] .ga-" + name + " {\n" + 
-                                "  background: url(\""+ urlPathPrefix + "/ingrid-webmap-client/rest/admin/image/" + path + "/" + name + "\");\n" + 
+                                "  background: url(\""+ urlPathPrefix + "/ingrid-webmap-client/rest/data/images/" + path + "/" + name + "\");\n" + 
                                 "  background-size: 38px 38px;\n" + 
                                 "}\n" +
                                 "}";
                         css = css + "\n@media (min-width: 769px) {\n" + 
                                 "[ga-background-selector] .ga-" + name + " {\n" + 
-                                "  background: url(\""+ urlPathPrefix + "/ingrid-webmap-client/rest/admin/image/" + path + "/" + name + "\");\n" + 
+                                "  background: url(\""+ urlPathPrefix + "/ingrid-webmap-client/rest/data/images/" + path + "/" + name + "\");\n" + 
                                 "  background-size: 90px 58px;\n" + 
                                 "}\n" +
                                 "}";
