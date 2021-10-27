@@ -53,7 +53,7 @@ goog.require('ga_window_service');
     }
   });
 
-  // INGRID: Add 'gaGlobalOptions'
+  // INGRID: Add 'gaGlobalOptions', 'gaLayerLoginPopup'
   module.directive('gaLayermanager', function($compile, $timeout,
       $translate, $window, gaBrowserSniffer, gaLayerFilters,
       gaLayerMetadataPopup, gaLayers, gaUrlUtils,
@@ -76,8 +76,18 @@ goog.require('ga_window_service');
         '</div>' +
       '</div>';
 
+    // INGRID: Add 'role="button"'
+    var tplLogin =
+      '<div class="ga-layer-login">' +
+        '<input type="text" class="form-control" ng-model="tmpLogin" placeholder="{{\'service_auth_data_username\' | translate}}"/>' +
+        '<input type="password" class="form-control" ng-model="tmpPassword" placeholder="{{\'service_auth_data_password\' | translate}}"/>' +
+        '<input type="button" class="btn btn-default form-control" ng-click="setLayerLogin(tmpLayer, tmpLogin, tmpPassword)" value="{{\'service_auth_data_login\' | translate}}"/>' +
+      '</div>';
+
     // Create the popover
     var popover, content, container, callback;
+    // Create the popoverLogin
+    var popoverLogin, contentLogin, containerLogin, callbackLogin;
     var win = $($window);
     var createPopover = function(bt, element) {
 
@@ -105,6 +115,31 @@ goog.require('ga_window_service');
       win.on('resize', callback);
     };
 
+    var createPopoverLogin = function(bt, element) {
+
+      // Lazy load
+      if (!containerLogin) {
+        containerLogin = element.parent();
+        callbackLogin = function(evt) {
+          destroyPopoverLogin(element);
+        };
+      }
+      popoverLogin = bt.popover({
+        container: containerLogin,
+        content: contentLogin,
+        html: true,
+        placement: 'auto right',
+        title: $translate.instant('service_auth_data') +
+            '<button class="ga-icon ga-btn fa fa-remove"></button>',
+        trigger: 'manual'
+      }).one('shown.bs.popover', function(evt) {
+        containerLogin.find('.fa-remove').one('click', function() {
+          destroyPopoverLogin(element);
+        });
+      }).popover('show');
+      element.on('scroll', callbackLogin);
+      win.on('resize', callbackLogin);
+    };
     // Remove the popover
     var destroyPopover = function(element) {
       if (popover) {
@@ -112,6 +147,16 @@ goog.require('ga_window_service');
         popover = undefined;
         element.off('scroll', callback);
         win.off('resize', callback);
+      }
+    };
+
+    // Remove the popover
+    var destroyPopoverLogin = function(element, layer) {
+      if (popoverLogin) {
+        popoverLogin.popover('destroy');
+        popoverLogin = undefined;
+        element.off('scroll', callbackLogin);
+        win.off('resize', callbackLogin);
       }
     };
 
@@ -126,6 +171,8 @@ goog.require('ga_window_service');
 
         // Compile the time popover template
         content = $compile(tpl)(scope);
+        // INGRID: Compile the login popover template
+        contentLogin = $compile(tplLogin)(scope);
 
         // The ngRepeat collection is the map's array of layers. ngRepeat
         // uses $watchCollection internally. $watchCollection watches the
@@ -221,6 +268,23 @@ goog.require('ga_window_service');
             // We use timeout otherwise the popover is bad centered.
             $timeout(function() {
               createPopover(bt, element, scope);
+            }, 100, false);
+          }
+          evt.preventDefault();
+          evt.stopPropagation();
+        };
+
+        // INGRID: Add popup
+        scope.authLayer = function(evt, layer) {
+          destroyPopoverLogin(element, layer);
+          var bt = $(evt.target);
+          if (!bt.data('bs.popover')) {
+            scope.tmpLayer = layer;
+            scope.tmpLogin = '';
+            scope.tmpPassword = '';
+            // We use timeout otherwise the popover is bad centered.
+            $timeout(function() {
+              createPopoverLogin(bt, element, scope);
             }, 100, false);
           }
           evt.preventDefault();
@@ -335,6 +399,29 @@ goog.require('ga_window_service');
         scope.setLayerTime = function(layer, time) {
           layer.time = time;
           destroyPopover(element);
+        };
+
+        scope.setLayerLogin = function(layer, login, password) {
+          var id = layer.id;
+          if(id) {
+            var baseUrl = id.split('||')[2];
+            var auth = '{"login":"' + login +
+            '","password":"' + password + '"}';
+            $window.sessionStorage.setItem(baseUrl, auth);
+            var layers = scope.map.getLayers().getArray();
+            layers.forEach(function(tmpLayer) {
+              if(tmpLayer.id) {
+                var tmpBaseUrl = tmpLayer.id.split('||')[2];
+                if(baseUrl === tmpBaseUrl) {
+                  var source = tmpLayer.getSource();
+                  source.tileCache.expireCache({});
+                  source.tileCache.clear();
+                  source.refresh();
+                }
+              }
+            });
+          }
+          destroyPopoverLogin(element);
         };
 
         scope.useRange = function() {

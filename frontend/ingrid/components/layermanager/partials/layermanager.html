@@ -40,6 +40,11 @@
         </select>
       </label>
       <div class="ga-layer-ordering">
+<!-- INGRID: Add button for auth -->
+<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_maki_entrance' | translate }}"' -->
+        <button ng-if="layer.isSecure" class="ga-icon ga-btn fa fa-maki-entrance"
+                ng-attr-aria-label="{{ 'fa_icon_layer_maki_entrance' | translate }}"
+                ng-click="authLayer($event, layer)"></button>
 <!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_duplicate' | translate }}"' -->
         <button ng-if="layer.timeEnabled" class="ga-icon ga-btn fa fa-copy"
                 ng-attr-aria-label="{{ 'fa_icon_layer_duplicate' | translate }}"

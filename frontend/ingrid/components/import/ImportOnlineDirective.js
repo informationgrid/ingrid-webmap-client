@@ -137,22 +137,17 @@ goog.require('ga_file_service');
               params['password'] = scope.auth.filePassword;
             }
             // Angularjs doesn't handle onprogress event
-            return gaFile.loadPost(url, params, scope.canceler).then(function(fileContent) {
-              scope.canceler = null;
-              // INGRID: Use auth
-              return scope.handleFileContent(fileContent, {
-                url: scope.fileUrl,
-                login: scope.auth.fileLogin,
-                password: scope.auth.filePassword
-              });
+            return gaFile.loadPost(url, params, scope.canceler).then(
+              function(fileContent) {
+                scope.canceler = null;
+                // INGRID: Use auth
+                return scope.handleFileContent(fileContent, {
+                  url: scope.fileUrl,
+                  login: scope.auth.fileLogin,
+                  password: scope.auth.filePassword
+                });
             }).then(function(result) {
               scope.userMessage = result.message;
-              // INGRID: Reset auth
-              scope.needAuth = false;
-              scope.auth = {
-                fileLogin: '',
-                filePassword: ''
-              };
             }, function(err) {
               scope.userMessage = err.message;
             }).finally(function() {

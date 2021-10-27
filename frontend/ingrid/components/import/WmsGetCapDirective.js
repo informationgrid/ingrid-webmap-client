@@ -82,7 +82,7 @@ goog.require('ga_urlutils_service');
     // or no intersection between map extent and layer extent)
     // INGRID: Add login, password, parentLayer param
     var getChildLayers = function(getCap, layer, proj, login,
-      password, parentLayer) {
+        password, parentLayer) {
 
       // If the WMS layer has no name, it can't be displayed
       if (!layer.Name) {
@@ -210,7 +210,7 @@ goog.require('ga_urlutils_service');
           // INGRID: Add login, password, parent param
           var parent = layer || parentLayer;
           var l = getChildLayers(getCap, layer.Layer[i], proj,
-            login, password, parent);
+              login, password, parent);
           if (!l) {
             layer.Layer.splice(i, 1);
             i--;
