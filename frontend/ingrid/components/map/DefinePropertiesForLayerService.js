@@ -167,6 +167,15 @@ goog.provide('ga_definepropertiesforlayer_service');
               this.set('isSecure', val);
             }
           },
+          // INGRID: Add hasLoggedIn functions
+          hasLoggedIn: {
+            get: function() {
+              return this.get('hasLoggedIn');
+            },
+            set: function(val) {
+              this.set('hasLoggedIn', val);
+            }
+          },
           // INGRID: Add featureCount functions
           featureCount: {
             get: function() {
