@@ -79,9 +79,15 @@ goog.require('ga_window_service');
     // INGRID: Add 'role="button"'
     var tplLogin =
       '<form class="ga-layer-login">' +
-        '<input type="text" class="form-control" ng-model="tmpLogin" placeholder="{{\'service_auth_data_username\' | translate}}" required/>' +
-        '<input type="password" class="form-control" ng-model="tmpPassword" placeholder="{{\'service_auth_data_password\' | translate}}" required/>' +
-        '<input type="submit" class="btn btn-default form-control" ng-click="setLayerLogin(tmpLayer, tmpLogin, tmpPassword)" value="{{\'service_auth_data_login\' | translate}}"/>' +
+        '<input type="text" class="form-control" ng-model="tmpLogin" ' +
+        'placeholder="{{\'service_auth_data_username\' | translate}}" ' +
+        'required/>' +
+        '<input type="password" class="form-control" ng-model="tmpPassword"' +
+        'placeholder="{{\'service_auth_data_password\' | translate}}" ' +
+        'required/>' +
+        '<input type="submit" class="btn btn-default form-control" ' +
+        'ng-click="setLayerLogin(tmpLayer, tmpLogin, tmpPassword)" ' +
+        'value="{{\'service_auth_data_login\' | translate}}"/>' +
       '</form>';
 
     // Create the popover
@@ -401,7 +407,8 @@ goog.require('ga_window_service');
           destroyPopover(element);
         };
 
-        var setAuthAndReloadLayers = function(layer, element, baseUrl, login, password) {
+        var setAuthReload = function(layer, element, baseUrl, login,
+            password) {
           var auth = '{"login":"' + login +
           '","password":"' + password + '"}';
           $window.sessionStorage.setItem(baseUrl, auth);
@@ -427,7 +434,6 @@ goog.require('ga_window_service');
           var id = layer.id;
           if (layer instanceof ol.layer.Layer) {
             if (id && login && password) {
-              var type = id.split('||')[0];
               var baseUrl = id.split('||')[2];
               var xhr = new XMLHttpRequest();
               var url = baseUrl;
@@ -450,7 +456,7 @@ goog.require('ga_window_service');
                   login + ':' + password ));
               xhr.onload = function() {
                 if (this.response && this.status !== 200) {
-                  setAuthAndReloadLayers(layer, element, baseUrl, login, password);
+                  setAuthReload(layer, element, baseUrl, login, password);
                 }
               };
               xhr.onerror = function() {

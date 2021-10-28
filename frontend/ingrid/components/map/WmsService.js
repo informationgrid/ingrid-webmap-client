@@ -166,9 +166,11 @@ goog.require('ga_urlutils_service');
                     var xhr = new XMLHttpRequest();
                     xhr.responseType = 'blob';
                     xhr.open('GET', src);
-                    xhr.setRequestHeader('Authorization', 'Basic ' + window.btoa(
+                    xhr.setRequestHeader('Authorization', 'Basic ' +
+                      window.btoa(
                         sessionAuthService.login + ':' +
-                        sessionAuthService.password)
+                        sessionAuthService.password
+                      )
                     );
                     xhr.onload = function() {
                       if (this.response) {
