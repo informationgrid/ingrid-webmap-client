@@ -363,7 +363,8 @@ goog.require('ga_urlutils_service');
           } else {
             id += '||';
           }
-          if ((layerOptions.secureAuthLogin && layerOptions.secureAuthPassword) ||
+          if ((layerOptions.secureAuthLogin &&
+              layerOptions.secureAuthPassword) ||
             layerOptions.isSecure) {
             id += '||true';
           }
