@@ -177,6 +177,9 @@ goog.require('ga_urlutils_service');
                           URL.revokeObjectURL(objectUrl);
                         };
                         image.getImage().src = objectUrl;
+                        if(!layer.hasLoggedIn) {
+                          layer.hasLoggedIn = true;
+                        }
                       } else {
                         image.setState(3);
                       }

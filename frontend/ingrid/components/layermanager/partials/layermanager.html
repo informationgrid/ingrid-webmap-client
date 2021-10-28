@@ -28,8 +28,13 @@
       </div>
       <button class="ga-icon ga-btn fa fa-user"
               ng-click="showWarning(layer)"></button>
+      <!-- INGRID: Add button for auth -->
+      <!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_maki_entrance' | translate }}"' -->
+      <button ng-if="layer.isSecure && !layer.hasLoggedIn" class="ga-icon ga-btn fa fa-maki-entrance"
+              ng-attr-aria-label="{{ 'fa_icon_layer_maki_entrance' | translate }}"
+              ng-click="authLayer($event, layer)"></button>
       <!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_more' | translate }}" aria-pressed="false" aria-expanded="false"' -->
-      <button class="ga-icon fa fa-gear" ng-attr-aria-label="{{ 'fa_icon_layer_more' | translate }}" aria-pressed="false" aria-expanded="false"></button>
+      <button ng-if="(layer.isSecure && layer.hasLoggedIn) || !layer.isSecure" class="ga-icon fa fa-gear" ng-attr-aria-label="{{ 'fa_icon_layer_more' | translate }}" aria-pressed="false" aria-expanded="false"></button>
     </div><!--ga-layer-infos-->
     <div class="ga-layer-tools">
       <label ng-mouseenter="disableDragAndDrop()" ng-mouseleave="enableDragAndDrop()">
@@ -40,11 +45,6 @@
         </select>
       </label>
       <div class="ga-layer-ordering">
-<!-- INGRID: Add button for auth -->
-<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_maki_entrance' | translate }}"' -->
-        <button ng-if="layer.isSecure" class="ga-icon ga-btn fa fa-maki-entrance"
-                ng-attr-aria-label="{{ 'fa_icon_layer_maki_entrance' | translate }}"
-                ng-click="authLayer($event, layer)"></button>
 <!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_duplicate' | translate }}"' -->
         <button ng-if="layer.timeEnabled" class="ga-icon ga-btn fa fa-copy"
                 ng-attr-aria-label="{{ 'fa_icon_layer_duplicate' | translate }}"

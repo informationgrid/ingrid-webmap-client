@@ -78,11 +78,11 @@ goog.require('ga_window_service');
 
     // INGRID: Add 'role="button"'
     var tplLogin =
-      '<div class="ga-layer-login">' +
-        '<input type="text" class="form-control" ng-model="tmpLogin" placeholder="{{\'service_auth_data_username\' | translate}}"/>' +
-        '<input type="password" class="form-control" ng-model="tmpPassword" placeholder="{{\'service_auth_data_password\' | translate}}"/>' +
-        '<input type="button" class="btn btn-default form-control" ng-click="setLayerLogin(tmpLayer, tmpLogin, tmpPassword)" value="{{\'service_auth_data_login\' | translate}}"/>' +
-      '</div>';
+      '<form class="ga-layer-login">' +
+        '<input type="text" class="form-control" ng-model="tmpLogin" placeholder="{{\'service_auth_data_username\' | translate}}" required/>' +
+        '<input type="password" class="form-control" ng-model="tmpPassword" placeholder="{{\'service_auth_data_password\' | translate}}" required/>' +
+        '<input type="submit" class="btn btn-default form-control" ng-click="setLayerLogin(tmpLayer, tmpLogin, tmpPassword)" value="{{\'service_auth_data_login\' | translate}}"/>' +
+      '</form>';
 
     // Create the popover
     var popover, content, container, callback;
@@ -401,27 +401,64 @@ goog.require('ga_window_service');
           destroyPopover(element);
         };
 
+        var setAuthAndReloadLayers = function(layer, element, baseUrl, login, password) {
+          var auth = '{"login":"' + login +
+          '","password":"' + password + '"}';
+          $window.sessionStorage.setItem(baseUrl, auth);
+          var layers = scope.map.getLayers().getArray();
+          layers.forEach(function(tmpLayer) {
+            if (tmpLayer.id) {
+              var tmpBaseUrl = tmpLayer.id.split('||')[2];
+              if (baseUrl === tmpBaseUrl) {
+                tmpLayer.hasLoggedIn = true;
+                var source = tmpLayer.getSource();
+                source.tileCache.expireCache({});
+                source.tileCache.clear();
+                source.refresh();
+              }
+            }
+          });
+          destroyPopoverLogin(element);
+          layer.hasLoggedIn = true;
+          scope.$apply();
+        };
+
         scope.setLayerLogin = function(layer, login, password) {
           var id = layer.id;
-          if(id) {
-            var baseUrl = id.split('||')[2];
-            var auth = '{"login":"' + login +
-            '","password":"' + password + '"}';
-            $window.sessionStorage.setItem(baseUrl, auth);
-            var layers = scope.map.getLayers().getArray();
-            layers.forEach(function(tmpLayer) {
-              if(tmpLayer.id) {
-                var tmpBaseUrl = tmpLayer.id.split('||')[2];
-                if(baseUrl === tmpBaseUrl) {
-                  var source = tmpLayer.getSource();
-                  source.tileCache.expireCache({});
-                  source.tileCache.clear();
-                  source.refresh();
+          if (layer instanceof ol.layer.Layer) {
+            if (id && login && password) {
+              var type = id.split('||')[0];
+              var baseUrl = id.split('||')[2];
+              var xhr = new XMLHttpRequest();
+              var url = baseUrl;
+              if(layer.getSource() instanceof ol.source.ImageWMS ||
+                  layer.getSource() instanceof ol.source.TileWMS) {
+                if (!/service=/i.test(url)) {
+                  url = gaUrlUtils.append(url, 'SERVICE=WMS');
                 }
+                if (!/request=/i.test(url)) {
+                  url = gaUrlUtils.append(url, 'REQUEST=GetCapabilities');
+                }
+                if (!/version=/i.test(url)) {
+                  url = gaUrlUtils.append(url);
+                }
+              } else if (layer.getSource() instanceof ol.source.WMTS) {
+                
               }
-            });
+              xhr.open('GET', url);
+              xhr.setRequestHeader('Authorization', 'Basic ' + window.btoa(
+                  login + ':' + password ));
+              xhr.onload = function() {
+                if (this.response && this.status !== 200) {
+                  setAuthAndReloadLayers(layer, element, baseUrl, login, password);
+                }
+              };
+              xhr.onerror = function() {
+                console.log("Error load: " + url);
+              };
+              xhr.send();
+            }
           }
-          destroyPopoverLogin(element);
         };
 
         scope.useRange = function() {

@@ -104,7 +104,7 @@ goog.require('ga_urlutils_service');
       // Create an WMTS layer
       var createWmtsLayer = function(options) {
         options.sourceConfig.transition = 0;
-        
+
         var tileLoadFunction = function(id) {
           return function(imageTile, src) {
             var onSuccess = function(content, id) {
@@ -118,7 +118,7 @@ goog.require('ga_urlutils_service');
                   xhr.responseType = 'blob';
                   xhr.open('GET', src);
                   xhr.setRequestHeader('Authorization', 'Basic ' + window.btoa(
-                    sessionAuthService.login + ':' +
+                      sessionAuthService.login + ':' +
                     sessionAuthService.password)
                   );
                   xhr.onload = function() {
@@ -128,6 +128,9 @@ goog.require('ga_urlutils_service');
                         URL.revokeObjectURL(objectUrl);
                       };
                       imageTile.getImage().src = objectUrl;
+                      if(!layer.hasLoggedIn) {
+                        layer.hasLoggedIn = true;
+                      }
                     } else {
                       imageTile.setState(3);
                     }
@@ -148,12 +151,12 @@ goog.require('ga_urlutils_service');
         };
 
         var id = 'WMTS||' + options.layer + '||' + options.capabilitiesUrl;
-        if(options.attribution) {
+        if (options.attribution) {
           id += '||' + options.attribution;
         } else {
           id += '||';
         }
-        if(options.attributionUrl) {
+        if (options.attributionUrl) {
           id += '||' + options.attributionUrl;
         } else {
           id += '||';
@@ -350,18 +353,18 @@ goog.require('ga_urlutils_service');
           var that = this;
           var url = gaUrlUtils.buildProxyUrl(getCapUrl);
           var id = 'WMTS||' + layerIdentifier + '||' + getCapUrl;
-          if(layerOptions.attribution) {
+          if (layerOptions.attribution) {
             id += '||' + layerOptions.attribution;
           } else {
             id += '||';
           }
-          if(layerOptions.attributionUrl) {
+          if (layerOptions.attributionUrl) {
             id += '||' + layerOptions.attributionUrl;
           } else {
             id += '||';
           }
-          if ((layerOptions.secureAuthLogin && layerOptions.secureAuthPassword)
-            || layerOptions.isSecure) {
+          if ((layerOptions.secureAuthLogin && layerOptions.secureAuthPassword) ||
+            layerOptions.isSecure) {
             id += '||true';
           }
           if ($window.sessionStorage.getItem(getCapUrl)) {
