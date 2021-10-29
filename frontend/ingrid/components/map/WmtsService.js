@@ -103,6 +103,23 @@ goog.require('ga_urlutils_service');
 
       // Create an WMTS layer
       var createWmtsLayer = function(options) {
+        // INGRID: Add dummy layer
+        if(!options.sourceConfig) {
+          var layer = new ol.layer.Vector({
+            source: new ol.source.Vector({
+              attributions: '© No data'
+            })
+          });
+          gaDefinePropertiesForLayer(layer);
+          layer.label = options.label;
+          layer.useThirdPartyData = true;
+          layer.opacity = options.opacity || 1;
+          layer.visible = options.visible;
+          layer.id = options.id;
+          layer.isSecure = options.isSecure;
+          return layer;
+        }
+
         options.sourceConfig.transition = 0;
 
         var tileLoadFunction = function(id) {
@@ -128,7 +145,7 @@ goog.require('ga_urlutils_service');
                         URL.revokeObjectURL(objectUrl);
                       };
                       imageTile.getImage().src = objectUrl;
-                      if(!layer.hasLoggedIn) {
+                      if (!layer.hasLoggedIn) {
                         layer.hasLoggedIn = true;
                       }
                     } else {
@@ -137,6 +154,9 @@ goog.require('ga_urlutils_service');
                   };
                   xhr.onerror = function() {
                     imageTile.setState(3);
+                    if (!layer.hasLoggedIn) {
+                      layer.hasLoggedIn = true;
+                    }
                   };
                   xhr.send();
                 } else {
@@ -158,6 +178,12 @@ goog.require('ga_urlutils_service');
         }
         if (options.attributionUrl) {
           id += '||' + options.attributionUrl;
+        } else {
+          id += '||';
+        }
+        // INGRID: Add label
+        if (options.label) {
+          id += '||' + encodeURIComponent(options.label);
         } else {
           id += '||';
         }
@@ -303,7 +329,12 @@ goog.require('ga_urlutils_service');
             options) {
 
           if (angular.isString(getCap)) {
-            getCap = new ol.format.WMTSCapabilities().read(getCap);
+            // INGRID: Check empty dummy layer
+            if (getCap !== "") {
+              getCap = new ol.format.WMTSCapabilities().read(getCap);
+            } else {
+              return createWmtsLayer(options);
+            }
           }
           var layerOptions = getLayerOptionsFromIdentifier(map, getCap,
               layerIdentifier, options.capabilitiesUrl);
@@ -363,15 +394,22 @@ goog.require('ga_urlutils_service');
           } else {
             id += '||';
           }
+          // INGRID: Add label
+          if (layerOptions.label) {
+            id += '||' + encodeURIComponent(layerOptions.label);
+          } else {
+            id += '||';
+          }
           if ((layerOptions.secureAuthLogin &&
               layerOptions.secureAuthPassword) ||
             layerOptions.isSecure) {
             id += '||true';
           }
+          // INGRID: Get session auth
+          var params = {};
           if ($window.sessionStorage.getItem(getCapUrl)) {
             var sessionAuthService = JSON.parse($window.sessionStorage.
                 getItem(getCapUrl));
-            var params = {};
             if (sessionAuthService) {
               params['login'] = sessionAuthService.login;
               params['password'] = sessionAuthService.password;
@@ -390,6 +428,12 @@ goog.require('ga_urlutils_service');
                 layerIdentifier +
                 ' failed. Failed to get capabilities from server.' +
                 'Reason : ' + reason);
+            // INGRID: Create dummy layer
+            if(reason.status === 401) {
+              layerOptions.id = id;
+              return that.addWmtsToMapFromGetCap(map, "", layerIdentifier,
+                  layerOptions);
+            }
           });
         };
       };
