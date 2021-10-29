@@ -455,7 +455,7 @@ goog.require('ga_window_service');
               xhr.setRequestHeader('Authorization', 'Basic ' + window.btoa(
                   login + ':' + password ));
               xhr.onload = function() {
-                if (this.response && this.status !== 200) {
+                if (this.response && this.status === 200) {
                   setAuthReload(layer, element, baseUrl, login, password);
                 }
               };

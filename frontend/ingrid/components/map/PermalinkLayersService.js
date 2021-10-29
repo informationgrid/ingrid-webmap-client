@@ -535,8 +535,10 @@ goog.require('ga_wmts_service');
                     // INGRID: Add attributions
                     attribution: decodeURIComponent(infos[3]),
                     attributionUrl: infos[4],
+                    // INGRID: Add label
+                    label: decodeURIComponent(infos[5]),
                     // INGRID: Add isSecure
-                    isSecure: infos[5]
+                    isSecure: infos[6]
                   });
                 }
               });

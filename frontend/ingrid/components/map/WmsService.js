@@ -179,7 +179,7 @@ goog.require('ga_urlutils_service');
                           URL.revokeObjectURL(objectUrl);
                         };
                         image.getImage().src = objectUrl;
-                        if(!layer.hasLoggedIn) {
+                        if (!layer.hasLoggedIn) {
                           layer.hasLoggedIn = true;
                         }
                       } else {
@@ -188,6 +188,9 @@ goog.require('ga_urlutils_service');
                     };
                     xhr.onerror = function() {
                       image.setState(3);
+                      if (!layer.hasLoggedIn) {
+                        layer.hasLoggedIn = true;
+                      }
                     };
                     xhr.send();
                   } else {
