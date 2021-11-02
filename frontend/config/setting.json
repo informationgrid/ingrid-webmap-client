@@ -25,6 +25,7 @@
         "http://atlas.wsv.bund.de/bwastr/wmts/1.0.0/WMTSCapabilities.xml",
         "http://atlas.wsv.bund.de/ienc/wmts/1.0.0/WMTSCapabilities.xml"
     ],
+    "settingImportWMSSingleTile": false,
     "settingShareFacebook": true,
     "settingShareMail": true,
     "settingShareTwitter": true,

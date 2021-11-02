@@ -531,7 +531,8 @@ goog.require('ga_window_service');
                 if (!is3dActive() && url) {
                   gaUrlUtils.proxifyUrl(url).then(function(proxyUrl) {
                     if (layerToQuery.get('auth')) {
-                      proxyUrl += '&login=' + layerToQuery.get('auth');
+                      proxyUrl += '&login=' +
+                      encodeURIComponent(layerToQuery.get('auth'));
                     }
                     all.push($http.get(proxyUrl, {
                       timeout: canceler.promise,

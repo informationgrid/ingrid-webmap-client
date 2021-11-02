@@ -30,6 +30,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -208,7 +209,24 @@ public class WmsResource {
     @POST
     @Path("proxy")
     @Produces(MediaType.TEXT_PLAIN)
-    public String doServiceTransformationRequest(String data, String content, @QueryParam("toJson") boolean toJson) {
+    public String doServiceTransformationRequest(String data, String content, @QueryParam("url") String url, @QueryParam("toJson") boolean toJson) {
+        if(url != null) {
+            JSONObject json;
+            try {
+                json = new JSONObject(data);
+                String login = null;
+                String password = null;
+                if(json.has("login")) {
+                    login = json.getString("login");
+                }
+                if(json.has("password")) {
+                    password = json.getString("password");
+                }
+                return doWmsRequest(url, toJson, login, password);
+            } catch (JSONException e) {
+                log.error("No data defined.", e);
+            }
+        }
         try {
             String response = data;
             if(toJson){
@@ -226,7 +244,7 @@ public class WmsResource {
     @GET
     @Path("metadata")
     @Produces(MediaType.TEXT_HTML)
-    public Response metadataRequest(@QueryParam("layer") String layer, @QueryParam("url") String url, @QueryParam("lang") String lang, @QueryParam("legend") String legend, @QueryParam("login") String login) {
+    public Response metadataRequest(@QueryParam("layer") String layer, @QueryParam("url") String url, @QueryParam("lang") String lang, @QueryParam("legend") String legend, @QueryParam("login") String login, @QueryParam("password") String password) {
         String html = "";
         boolean hasError = false;
         String serviceCapabilitiesURL = null;
@@ -299,7 +317,7 @@ public class WmsResource {
                 }
                 
                 if(serviceCapabilitiesURL != null && layerName != null){
-                    GetCapabilitiesDocument getCapabilities = HttpProxy.doCapabilitiesRequest( serviceCapabilitiesURL, login);
+                    GetCapabilitiesDocument getCapabilities = HttpProxy.doCapabilitiesRequest( serviceCapabilitiesURL, login, password);
                     if(getCapabilities != null) {
                         Document doc = getCapabilities.getDoc();
                         XPath xpath = XPathFactory.newInstance().newXPath();
@@ -325,6 +343,28 @@ public class WmsResource {
             html +="</div>";
         }
         return Response.ok(html).build();
+    }
+
+    
+    @POST
+    @Path("metadata")
+    @Produces(MediaType.TEXT_HTML)
+    public Response metadataPostRequest(String data, String content, @QueryParam("layer") String layer, @QueryParam("url") String url, @QueryParam("lang") String lang, @QueryParam("legend") String legend) {
+        JSONObject json;
+        String login = null;
+        String password = null;
+        try {
+            json = new JSONObject(data);
+            if(json.has("login")) {
+                login = json.getString("login");
+            }
+            if(json.has("password")) {
+                password = json.getString("password");
+            }
+        } catch (JSONException e) {
+            log.error("No data defined.", e);
+        }
+        return metadataRequest(layer, url, lang, legend, login, password);
     }
 
     private String getWmsInfo(XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerLegend) throws XPathExpressionException {
@@ -406,14 +446,6 @@ public class WmsResource {
                     }
                 }
             }
-            if(layerLegend != null && !layerLegend.equals( "undefined" )){
-                String[] tmpLegends = layerLegend.split("\\|");
-                layerLegends = new ArrayList<>();
-                for (String tmpLegend : tmpLegends) {
-                    layerLegends.add(tmpLegend);
-                }
-            }
-            
             html.append("<table>");
             html.append("<tbody>");
             if(layerTitle != null){
@@ -487,6 +519,10 @@ public class WmsResource {
                         html.append("<hr>");
                     }
                 }
+            } else if(layerLegend != null && !layerLegend.equals( "undefined" )){
+                html.append("<img alt=\"{{'no_legend_available' | translate}}\" src=\"");
+                html.append(layerLegend);
+                html.append("\">");
             } else {
                 html.append("<img alt=\"{{'no_legend_available' | translate}}\">");
             }

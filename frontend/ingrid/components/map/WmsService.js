@@ -23,10 +23,10 @@ goog.require('ga_urlutils_service');
    * Manage external WMS layers
    */
   module.provider('gaWms', function() {
-    // INGRID: Add parameter '$http', '$translate', 'gaPopup'
+    // INGRID: Add parameter '$http', '$translate', 'gaPopup', '$window'
     this.$get = function(gaDefinePropertiesForLayer, gaMapUtils, gaUrlUtils,
         gaGlobalOptions, $q, gaLang, gaLayers, gaTileGrid, $http, $translate,
-        gaPopup) {
+        gaPopup, $window) {
 
       // Default subdomains for external WMS
       var DFLT_SUBDOMAINS = ['', '0', '1', '2', '3', '4'];
@@ -126,6 +126,13 @@ goog.require('ga_urlutils_service');
 
             if (options.attributionUrl) {
               options.id += '||' + options.attributionUrl;
+            } else {
+              options.id += '||';
+            }
+
+            if ((options.secureAuthLogin && options.secureAuthPassword) ||
+              options.isSecure) {
+              options.id += '||true';
             }
           } else {
             // Set the default wms version
@@ -140,11 +147,62 @@ goog.require('ga_urlutils_service');
           var LayerClass = ol.layer.Image;
           var tileGrid;
 
-          if (urls.length > 1) {
+          if (urls.length > 1 || !gaGlobalOptions.settingImportWMSSingleTile) {
             SourceClass = ol.source.TileWMS;
             LayerClass = ol.layer.Tile;
             tileGrid = gaTileGrid.get(tileGridMinRes, 'wms');
           }
+
+          // INGRID: Add imageLoadFunction
+          var imageLoadFunction = function(id) {
+            return function(image, src) {
+              var onSuccess = function(content, id) {
+                var baseUrl = id.split('||')[2];
+                var isSecure = id.split('||')[9];
+                if (isSecure) {
+                  if ($window.sessionStorage.getItem(baseUrl)) {
+                    var sessionAuthService = JSON.parse($window.sessionStorage.
+                        getItem(baseUrl));
+                    var xhr = new XMLHttpRequest();
+                    xhr.responseType = 'blob';
+                    xhr.open('GET', src);
+                    xhr.setRequestHeader('Authorization', 'Basic ' +
+                      window.btoa(
+                        sessionAuthService.login + ':' +
+                        sessionAuthService.password
+                      )
+                    );
+                    xhr.onload = function() {
+                      if (this.response) {
+                        var objectUrl = URL.createObjectURL(xhr.response);
+                        image.getImage().onload = function() {
+                          URL.revokeObjectURL(objectUrl);
+                        };
+                        image.getImage().src = objectUrl;
+                        if (!layer.hasLoggedIn) {
+                          layer.hasLoggedIn = true;
+                        }
+                      } else {
+                        image.setState(3);
+                      }
+                    };
+                    xhr.onerror = function() {
+                      image.setState(3);
+                      if (!layer.hasLoggedIn) {
+                        layer.hasLoggedIn = true;
+                      }
+                    };
+                    xhr.send();
+                  } else {
+                    image.setState(3);
+                  }
+                } else {
+                  image.getImage().src = src;
+                }
+              };
+              onSuccess(null, id);
+            };
+          };
 
           var source = new SourceClass({
             params: params,
@@ -153,7 +211,10 @@ goog.require('ga_urlutils_service');
             gutter: options.gutter || 0,
             ratio: options.ratio || 1,
             projection: options.projection,
-            tileGrid: tileGrid
+            tileGrid: tileGrid,
+            // INGRID: Use imageLoadFunction to read images per rest
+            imageLoadFunction: imageLoadFunction(options.id),
+            tileLoadFunction: imageLoadFunction(options.id)
           });
 
           var layer = new LayerClass({
@@ -173,6 +234,8 @@ goog.require('ga_urlutils_service');
             minScale: options.minScale,
             // INGRID: Add maxScale
             maxScale: options.maxScale,
+            // INGRID: Add isSecure
+            isSecure: options.isSecure,
             source: source,
             transition: 0
           });
@@ -304,6 +367,10 @@ goog.require('ga_urlutils_service');
             // INGRID: Add attributions
             attribution: getCapLayer.attribution,
             attributionUrl: getCapLayer.attributionUrl,
+            // INGRID: Add secureAuthLogin
+            secureAuthLogin: getCapLayer.secureAuthLogin,
+            // INGRID: Add secureAuthPassword
+            secureAuthPassword: getCapLayer.secureAuthPassword,
             useReprojection: getCapLayer.useReprojection
           };
           return createWmsLayer(wmsParams, wmsOptions);
