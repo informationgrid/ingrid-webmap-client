@@ -437,8 +437,7 @@ goog.require('ga_window_service');
               var baseUrl = id.split('||')[2];
               var xhr = new XMLHttpRequest();
               var url = baseUrl;
-              if(layer.getSource() instanceof ol.source.ImageWMS ||
-                  layer.getSource() instanceof ol.source.TileWMS) {
+              if(id.startsWith('WMS')) {
                 if (!/service=/i.test(url)) {
                   url = gaUrlUtils.append(url, 'SERVICE=WMS');
                 }
@@ -448,7 +447,7 @@ goog.require('ga_window_service');
                 if (!/version=/i.test(url)) {
                   url = gaUrlUtils.append(url);
                 }
-              } else if (layer.getSource() instanceof ol.source.WMTS) {
+              } else if (id.startsWith('WMTS')) {
                 
               }
               xhr.open('GET', url);

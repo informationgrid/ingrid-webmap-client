@@ -105,19 +105,18 @@ goog.require('ga_urlutils_service');
       var createWmtsLayer = function(options) {
         // INGRID: Add dummy layer
         if(!options.sourceConfig) {
-          var layer = new ol.layer.Vector({
+          var dummyLayer = new ol.layer.Vector({
             source: new ol.source.Vector({
-              attributions: '© No data'
             })
           });
-          gaDefinePropertiesForLayer(layer);
-          layer.label = options.label;
-          layer.useThirdPartyData = true;
-          layer.opacity = options.opacity || 1;
-          layer.visible = options.visible;
-          layer.id = options.id;
-          layer.isSecure = options.isSecure;
-          return layer;
+          gaDefinePropertiesForLayer(dummyLayer);
+          dummyLayer.label = options.label;
+          dummyLayer.useThirdPartyData = true;
+          dummyLayer.opacity = options.opacity || 1;
+          dummyLayer.visible = options.visible;
+          dummyLayer.id = options.id;
+          dummyLayer.isSecure = options.isSecure;
+          return dummyLayer;
         }
 
         options.sourceConfig.transition = 0;
@@ -330,7 +329,7 @@ goog.require('ga_urlutils_service');
 
           if (angular.isString(getCap)) {
             // INGRID: Check empty dummy layer
-            if (getCap !== "") {
+            if (getCap !== '') {
               getCap = new ol.format.WMTSCapabilities().read(getCap);
             } else {
               return createWmtsLayer(options);
@@ -431,7 +430,7 @@ goog.require('ga_urlutils_service');
             // INGRID: Create dummy layer
             if(reason.status === 401) {
               layerOptions.id = id;
-              return that.addWmtsToMapFromGetCap(map, "", layerIdentifier,
+              return that.addWmtsToMapFromGetCap(map, '', layerIdentifier,
                   layerOptions);
             }
           });
