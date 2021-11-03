@@ -681,8 +681,9 @@ goog.require('ga_urlutils_service');
                   url: config.wmsUrl,
                   params: wmsParams,
                   crossOrigin: crossOrigin,
-                  ratio: 1,
-                  imageLoadFunction: imageLoadFunction(config)
+                  // INGRID: Add imageLoadFunction
+                  imageLoadFunction: imageLoadFunction(config),
+                  ratio: 1
                 });
               }
               olLayer = new ol.layer.Image({
@@ -723,6 +724,7 @@ goog.require('ga_urlutils_service');
                   gutter: config.gutter || 0,
                   crossOrigin: crossOrigin,
                   tileGrid: gaTileGrid.get(tileGridMinRes, config.type),
+                  // INGRID: Add config
                   tileLoadFunction: tileLoadFunction(config),
                   wrapX: false,
                   transition: 0
