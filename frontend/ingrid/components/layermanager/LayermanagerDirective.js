@@ -57,7 +57,7 @@ goog.require('ga_window_service');
   module.directive('gaLayermanager', function($compile, $timeout,
       $translate, $window, gaBrowserSniffer, gaLayerFilters,
       gaLayerMetadataPopup, gaLayers, gaUrlUtils,
-      gaMapUtils, gaEvent, gaWindow, gaGlobalOptions) {
+      gaMapUtils, gaEvent, gaWindow, gaGlobalOptions, gaWmts, $http, gaPermalink) {
 
     // Timestamps list template
     // INGRID: Add 'role="button"'
@@ -413,20 +413,45 @@ goog.require('ga_window_service');
           '","password":"' + password + '"}';
           $window.sessionStorage.setItem(baseUrl, auth);
           var layers = scope.map.getLayers().getArray();
-          layers.forEach(function(tmpLayer) {
+          var layersToRemove = [];
+
+          layers.forEach(function(tmpLayer, index) {
             if (tmpLayer.id) {
-              var tmpBaseUrl = tmpLayer.id.split('||')[2];
+              var infos = tmpLayer.id.split('||');
+              var tmpBaseUrl = infos[2];
               if (baseUrl === tmpBaseUrl) {
-                tmpLayer.hasLoggedIn = true;
-                var source = tmpLayer.getSource();
-                source.tileCache.expireCache({});
-                source.tileCache.clear();
-                source.refresh();
+                if (gaMapUtils.isExternalWmsLayer(tmpLayer)) {
+                  tmpLayer.hasLoggedIn = true;
+                  var source = tmpLayer.getSource();
+                  source.tileCache.expireCache({});
+                  source.tileCache.clear();
+                  source.refresh();
+                } else if (gaMapUtils.isExternalWmtsLayer(tmpLayer)) {
+                  gaWmts.addWmtsToMapFromGetCapUrl(map, infos[2], infos[1], {
+                    index: index + 1,
+                    opacity: tmpLayer.opacity,
+                    visible: tmpLayer.visible,
+                    time: tmpLayer.time,
+                    // INGRID: Add attributions
+                    attribution: decodeURIComponent(infos[3]),
+                    attributionUrl: infos[4],
+                    // INGRID: Add label
+                    label: decodeURIComponent(infos[5]),
+                    // INGRID: Add isSecure
+                    isSecure: infos[6],
+                    hasLoggedIn: true
+                  });
+                  layersToRemove.push(tmpLayer);
+                }
               }
             }
           });
-          destroyPopoverLogin(element);
+          var len = layersToRemove.length;
+          for(var i = 0; i < len; i++) {
+              map.removeLayer(layersToRemove[i]);
+          }
           layer.hasLoggedIn = true;
+          destroyPopoverLogin(element);
           scope.$apply();
         };
 
@@ -437,7 +462,7 @@ goog.require('ga_window_service');
               var baseUrl = id.split('||')[2];
               var xhr = new XMLHttpRequest();
               var url = baseUrl;
-              if(id.startsWith('WMS')) {
+              if (gaMapUtils.isExternalWmsLayer(layer)) {
                 if (!/service=/i.test(url)) {
                   url = gaUrlUtils.append(url, 'SERVICE=WMS');
                 }
@@ -447,19 +472,19 @@ goog.require('ga_window_service');
                 if (!/version=/i.test(url)) {
                   url = gaUrlUtils.append(url);
                 }
-              } else if (id.startsWith('WMTS')) {
-                
+              } else if (gaMapUtils.isExternalWmtsLayer(layer)) {
+
               }
               xhr.open('GET', url);
               xhr.setRequestHeader('Authorization', 'Basic ' + window.btoa(
-                  login + ':' + password ));
+                  login + ':' + password));
               xhr.onload = function() {
                 if (this.response && this.status === 200) {
                   setAuthReload(layer, element, baseUrl, login, password);
                 }
               };
               xhr.onerror = function() {
-                console.log("Error load: " + url);
+                console.log('Error load: ' + url);
               };
               xhr.send();
             }
