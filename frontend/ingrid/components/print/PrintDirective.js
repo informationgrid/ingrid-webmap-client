@@ -358,7 +358,7 @@ goog.require('ga_urlutils_service');
           var session = $window.sessionStorage;
           if (session) {
           var sessionAuthService = JSON.parse(session.
-            getItem(enc.layer.baseURL));
+            getItem(layer.url));
             if (sessionAuthService) {
               if (enc.layer) {
                 angular.extend(enc.layer, {
