@@ -200,3 +200,7 @@ button.ga-btn:not([disabled]):focus-visible {
 .ga-open .ga-bg-layer, .ga-pulldown-shown #pulldown-content .panel {
   display: block;
 }
+
+.ga-layer-login {
+  min-width: 150px;
+}

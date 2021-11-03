@@ -104,7 +104,7 @@ goog.require('ga_urlutils_service');
       // Create an WMTS layer
       var createWmtsLayer = function(options) {
         // INGRID: Add dummy layer
-        if(!options.sourceConfig) {
+        if (!options.sourceConfig) {
           var dummyLayer = new ol.layer.Vector({
             source: new ol.source.Vector({
             })
@@ -367,6 +367,10 @@ goog.require('ga_urlutils_service');
             options) {
           var olLayer = this.getOlLayerFromGetCap(map, getCap, layerIdentifier,
               options);
+          // INGRID: Add hasLoggedIn
+          if (options.hasLoggedIn) {
+            olLayer.hasLoggedIn = options.hasLoggedIn;
+          }
           if (options.index) {
             map.getLayers().insertAt(options.index, olLayer);
           } else {
@@ -428,7 +432,7 @@ goog.require('ga_urlutils_service');
                 ' failed. Failed to get capabilities from server.' +
                 'Reason : ' + reason);
             // INGRID: Create dummy layer
-            if(reason.status === 401) {
+            if (reason.status === 401) {
               layerOptions.id = id;
               return that.addWmtsToMapFromGetCap(map, '', layerIdentifier,
                   layerOptions);
