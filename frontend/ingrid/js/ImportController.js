@@ -21,7 +21,7 @@ goog.require('ga_wmts_service');
     'ga_vector_service'
   ]);
 
-  // INGRID: Add 'gaGlobalOptions' and '$http'
+  // INGRID: Add 'gaGlobalOptions', '$http'
   module.controller('GaImportController', function($scope, $q,
       $window, gaFile, gaBrowserSniffer, gaWms, gaUrlUtils,
       gaLang, gaPreviewLayers, gaMapUtils, gaWmts, gaVector,
@@ -287,12 +287,14 @@ goog.require('ga_wmts_service');
       if (layer.wmsUrl) {
         return gaWms.getOlLayerFromGetCapLayer(layer);
       } else if (layer.capabilitiesUrl) {
+        // INGRID: Use layer
         return gaWmts.getOlLayerFromGetCap($scope.map, $scope.wmtsGetCap,
             layer.Identifier, layer);
       }
     };
     $scope.options.addPreviewLayer = function(map, getCapLayer) {
 
+      // INGRID: Add login and password
       if ($scope.options.login) {
         getCapLayer.secureAuthLogin = $scope.options.login;
       }

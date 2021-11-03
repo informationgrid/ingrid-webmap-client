@@ -128,15 +128,17 @@ goog.require('ga_file_service');
             // INGRID: Get WMS as JSON
             url += '&toJson=true';
 
-            var params = {};
             // INGRID: Use auth
+            var params = {};
             if (scope.auth.fileLogin) {
               params['login'] = scope.auth.fileLogin;
             }
             if (scope.auth.filePassword) {
               params['password'] = scope.auth.filePassword;
             }
+
             // Angularjs doesn't handle onprogress event
+            // INGRID: Change to POST
             return gaFile.loadPost(url, params, scope.canceler).then(
               function(fileContent) {
                 scope.canceler = null;
@@ -159,6 +161,7 @@ goog.require('ga_file_service');
             });
           });
         };
+
         // INGRID: Add external service
         if (options.importExtService) {
           scope.fileUrl = options.importExtService;

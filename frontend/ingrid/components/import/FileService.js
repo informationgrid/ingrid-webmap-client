@@ -108,6 +108,7 @@ goog.provide('ga_file_service');
           return defer.promise;
         };
 
+        // INGRID: Add load POST
         this.loadPost = function(url, params, cancelP) {
 
           if (canceler) {
@@ -123,7 +124,6 @@ goog.provide('ga_file_service');
             defer.resolve(response.data);
           }, function(reason) {
             $window.console.error('Uploading file failed: ', reason);
-            // INGRID: Check reason.status
             var rejectMsg = '';
             switch (reason.status) {
               case 401:

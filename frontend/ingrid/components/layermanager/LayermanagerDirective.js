@@ -53,11 +53,13 @@ goog.require('ga_window_service');
     }
   });
 
-  // INGRID: Add 'gaGlobalOptions', 'gaLayerLoginPopup'
+  // INGRID: Add 'gaGlobalOptions', 'gaLayerLoginPopup', 'gaWmts',
+  // '$http', 'gaPermalink'
   module.directive('gaLayermanager', function($compile, $timeout,
       $translate, $window, gaBrowserSniffer, gaLayerFilters,
       gaLayerMetadataPopup, gaLayers, gaUrlUtils,
-      gaMapUtils, gaEvent, gaWindow, gaGlobalOptions, gaWmts, $http, gaPermalink) {
+      gaMapUtils, gaEvent, gaWindow, gaGlobalOptions, gaWmts,
+      $http, gaPermalink) {
 
     // Timestamps list template
     // INGRID: Add 'role="button"'
@@ -121,6 +123,7 @@ goog.require('ga_window_service');
       win.on('resize', callback);
     };
 
+    // INGRID: Add login popover
     var createPopoverLogin = function(bt, element) {
 
       // Lazy load
@@ -156,7 +159,7 @@ goog.require('ga_window_service');
       }
     };
 
-    // Remove the popover
+    // INGRID: Remove the login popover
     var destroyPopoverLogin = function(element, layer) {
       if (popoverLogin) {
         popoverLogin.popover('destroy');
@@ -407,6 +410,7 @@ goog.require('ga_window_service');
           destroyPopover(element);
         };
 
+        // INGRID: Add auth
         var setAuthReload = function(layer, element, baseUrl, login,
             password) {
           var auth = '{"login":"' + login +
@@ -455,6 +459,7 @@ goog.require('ga_window_service');
           scope.$apply();
         };
 
+        // INGRID: Add layer login
         scope.setLayerLogin = function(layer, login, password) {
           var id = layer.id;
           if (layer instanceof ol.layer.Layer) {

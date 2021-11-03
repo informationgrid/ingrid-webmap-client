@@ -5,6 +5,7 @@ goog.require('ga_browsersniffer_service');
 goog.require('ga_layers_service');
 goog.require('ga_maputils_service');
 goog.require('ga_printlayer_service');
+goog.require('ga_translation_service');
 goog.require('ga_urlutils_service');
 
 (function() {

@@ -368,6 +368,7 @@ goog.require('ga_urlutils_service');
             olLayerOrId = olLayerOrId.id;
           }
           if (angular.isString(olLayerOrId)) {
+            // INGRID: Change to >= 3
             return /^WMTS\|\|/.test(olLayerOrId) &&
                 olLayerOrId.split('||').length >= 3;
           }

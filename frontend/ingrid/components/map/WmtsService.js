@@ -206,13 +206,12 @@ goog.require('ga_urlutils_service');
           preload: gaMapUtils.preload,
           opacity: options.opacity,
           visible: options.visible,
-          attribution: options.attribution,
           // INGRID: Add attributionUrl
           attributionUrl: options.attributionUrl,
           // INGRID: Add isSecure
-          isSecure: options.isSecure
+          isSecure: options.isSecure,
+          attribution: options.attribution
         });
-
         gaDefinePropertiesForLayer(layer);
         layer.useThirdPartyData =
             gaUrlUtils.isThirdPartyValid(options.sourceConfig.urls[0]);
@@ -414,6 +413,7 @@ goog.require('ga_urlutils_service');
               params['password'] = sessionAuthService.password;
             }
           }
+          // INGRID: Load with POST
           return $http.post(url, params, {
             cache: true
           }).then(function(response) {
