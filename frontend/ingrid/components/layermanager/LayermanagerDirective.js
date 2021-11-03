@@ -454,7 +454,6 @@ goog.require('ga_window_service');
           for(var i = 0; i < len; i++) {
               map.removeLayer(layersToRemove[i]);
           }
-          layer.hasLoggedIn = true;
           destroyPopoverLogin(element);
           scope.$apply();
         };
