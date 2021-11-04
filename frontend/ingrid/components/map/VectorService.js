@@ -144,7 +144,7 @@ goog.require('ga_file_service');
                   opacity: options.opacity,
                   visible: options.visible,
                   source: source,
-                  //INGRID: Add isSecure
+                  // INGRID: Add isSecure
                   isSecure: options.isSecure || false,
                   attribution: options.attribution
                 };
@@ -156,7 +156,7 @@ goog.require('ga_file_service');
                 // INGRID: Add label
                 if (layerOptions.label) {
                   layerOptions.id += '||' + encodeURIComponent(layerOptions.
-                    label);
+                      label);
                 } else {
                   layerOptions.id += '||';
                 }
@@ -191,6 +191,10 @@ goog.require('ga_file_service');
           // INGRID: Add isSecure
           return createLayer(data, options, isSecure).then(function(olLayer) {
             if (olLayer) {
+              // INGRID: Add hasLoggedIn
+              if (options.secureAuthLogin && options.secureAuthPassword) {
+                olLayer.hasLoggedIn = true;
+              }
               if (index) {
                 olMap.getLayers().insertAt(index, olLayer);
               } else {
@@ -242,7 +246,7 @@ goog.require('ga_file_service');
           var that = this;
           options = options || {};
           options.url = url;
-          
+
           // INGRID: Check secure
           var params = {};
           if (options.isSecure) {
@@ -251,6 +255,8 @@ goog.require('ga_file_service');
               var sessionAuthService = JSON.parse($window.sessionStorage.
                   getItem(baseUrl));
               if (sessionAuthService) {
+                options.secureAuthLogin = sessionAuthService.login;
+                options.secureAuthPassword = sessionAuthService.password;
                 params['login'] = sessionAuthService.login;
                 params['password'] = sessionAuthService.password;
               }

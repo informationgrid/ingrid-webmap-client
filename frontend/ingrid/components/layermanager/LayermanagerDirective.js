@@ -89,7 +89,7 @@ goog.require('ga_window_service');
         'required/>' +
         '<input type="submit" class="btn btn-default form-control" ' +
         'ng-click="setLayerLogin(tmpLayer, tmpLogin, tmpPassword)" ' +
-        'value="{{\'service_auth_data_login\' | translate}}"/>' +
+        'value="{{ userMessage | translate}}"/>' +
       '</form>';
 
     // Create the popover
@@ -182,6 +182,9 @@ goog.require('ga_window_service');
         content = $compile(tpl)(scope);
         // INGRID: Compile the login popover template
         contentLogin = $compile(tplLogin)(scope);
+
+        // INGRID: Add userMessage
+        scope.userMessage = 'service_auth_data_login';
 
         // The ngRepeat collection is the map's array of layers. ngRepeat
         // uses $watchCollection internally. $watchCollection watches the
@@ -504,6 +507,14 @@ goog.require('ga_window_service');
               }).then(function(response) {
                 setAuthReload(layer, element, layer.url, login,
                   password, response.data);
+              }, function (reason) {
+                if (reason.status === 401) {
+                  scope.userMessage = 'service_auth_data_login_error';
+                }
+              }).finally(function() {
+                $timeout(function() {
+                  scope.userMessage = 'service_auth_data_login';
+                }, 10000);
               });
             }
           }

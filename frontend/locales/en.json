@@ -128,5 +128,6 @@
 "service_auth_data":"Authentification",
 "service_auth_data_username":"Username",
 "service_auth_data_password":"Password",
-"service_auth_data_login":"Login"
+"service_auth_data_login":"Login",
+"service_auth_data_login_error":"Error"
 }
