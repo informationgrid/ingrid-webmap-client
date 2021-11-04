@@ -145,7 +145,7 @@ goog.require('ga_file_service');
                   visible: options.visible,
                   source: source,
                   //INGRID: Add isSecure
-                  isSecure: options.isSecure || false;
+                  isSecure: options.isSecure || false,
                   attribution: options.attribution
                 };
 
@@ -155,7 +155,8 @@ goog.require('ga_file_service');
 
                 // INGRID: Add label
                 if (layerOptions.label) {
-                  layerOptions.id += '||' + encodeURIComponent(layerOptions.label);
+                  layerOptions.id += '||' + encodeURIComponent(layerOptions.
+                    label);
                 } else {
                   layerOptions.id += '||';
                 }

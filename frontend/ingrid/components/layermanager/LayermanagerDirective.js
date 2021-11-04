@@ -450,7 +450,8 @@ goog.require('ga_window_service');
                 } else if (gaMapUtils.isKmlLayer(tmpLayer) ||
                     gaMapUtils.isGpxLayer(tmpLayer)) {
                   tmpLayer.hasLoggedIn = true;
-                  gaVector.readFeatures(data, map.getView().getProjection()).then(function(responses) {
+                  gaVector.readFeatures(data, map.getView().getProjection()).
+                    then(function(responses) {
                     var source = tmpLayer.getSource();
                     if (source) {
                       if (responses.features) {
@@ -501,7 +502,8 @@ goog.require('ga_window_service');
               $http.post(gaUrlUtils.buildProxyUrl(url), params, {
                 cache: true
               }).then(function(response) {
-                setAuthReload(layer, element, layer.url, login, password, response.data);
+                setAuthReload(layer, element, layer.url, login,
+                  password, response.data);
               });
             }
           }
