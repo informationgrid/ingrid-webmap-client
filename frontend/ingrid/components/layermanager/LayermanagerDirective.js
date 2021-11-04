@@ -53,12 +53,12 @@ goog.require('ga_window_service');
     }
   });
 
-  // INGRID: Add 'gaGlobalOptions', 'gaLayerLoginPopup', 'gaWmts',
+  // INGRID: Add 'gaGlobalOptions', 'gaLayerLoginPopup', 'gaWmts', 'gaVector',
   // '$http', 'gaPermalink'
   module.directive('gaLayermanager', function($compile, $timeout,
       $translate, $window, gaBrowserSniffer, gaLayerFilters,
       gaLayerMetadataPopup, gaLayers, gaUrlUtils,
-      gaMapUtils, gaEvent, gaWindow, gaGlobalOptions, gaWmts,
+      gaMapUtils, gaEvent, gaWindow, gaGlobalOptions, gaWmts, gaVector,
       $http, gaPermalink) {
 
     // Timestamps list template
@@ -410,9 +410,9 @@ goog.require('ga_window_service');
           destroyPopover(element);
         };
 
-        // INGRID: Add auth
+        // INGRID: Add auth and reload layers
         var setAuthReload = function(layer, element, baseUrl, login,
-            password) {
+            password, data) {
           var auth = '{"login":"' + login +
           '","password":"' + password + '"}';
           $window.sessionStorage.setItem(baseUrl, auth);
@@ -423,6 +423,10 @@ goog.require('ga_window_service');
             if (tmpLayer.id) {
               var infos = tmpLayer.id.split('||');
               var tmpBaseUrl = infos[2];
+              if (gaMapUtils.isKmlLayer(tmpLayer) ||
+                  gaMapUtils.isGpxLayer(tmpLayer)) {
+                tmpBaseUrl = infos[1];
+              }
               if (baseUrl === tmpBaseUrl) {
                 if (gaMapUtils.isExternalWmsLayer(tmpLayer)) {
                   tmpLayer.hasLoggedIn = true;
@@ -436,16 +440,29 @@ goog.require('ga_window_service');
                     opacity: tmpLayer.opacity,
                     visible: tmpLayer.visible,
                     time: tmpLayer.time,
-                    // INGRID: Add attributions
                     attribution: decodeURIComponent(infos[3]),
                     attributionUrl: infos[4],
-                    // INGRID: Add label
                     label: decodeURIComponent(infos[5]),
-                    // INGRID: Add isSecure
                     isSecure: infos[6],
                     hasLoggedIn: true
                   });
                   layersToRemove.push(tmpLayer);
+                } else if (gaMapUtils.isKmlLayer(tmpLayer) ||
+                    gaMapUtils.isGpxLayer(tmpLayer)) {
+                  tmpLayer.hasLoggedIn = true;
+                  gaVector.readFeatures(data, map.getView().getProjection()).then(function(responses) {
+                    var source = tmpLayer.getSource();
+                    if (source) {
+                      if (responses.features) {
+                        source.addFeatures(responses.features);
+                      }
+                      if (responses.data) {
+                        source.setProperties({
+                          'rawData': responses.data
+                        });
+                      }
+                    }
+                  });
                 }
               }
             }
@@ -455,7 +472,6 @@ goog.require('ga_window_service');
               map.removeLayer(layersToRemove[i]);
           }
           destroyPopoverLogin(element);
-          scope.$apply();
         };
 
         // INGRID: Add layer login
@@ -463,9 +479,7 @@ goog.require('ga_window_service');
           var id = layer.id;
           if (layer instanceof ol.layer.Layer) {
             if (id && login && password) {
-              var baseUrl = id.split('||')[2];
-              var xhr = new XMLHttpRequest();
-              var url = baseUrl;
+              var url = layer.url;
               if (gaMapUtils.isExternalWmsLayer(layer)) {
                 if (!/service=/i.test(url)) {
                   url = gaUrlUtils.append(url, 'SERVICE=WMS');
@@ -476,21 +490,19 @@ goog.require('ga_window_service');
                 if (!/version=/i.test(url)) {
                   url = gaUrlUtils.append(url);
                 }
-              } else if (gaMapUtils.isExternalWmtsLayer(layer)) {
-
               }
-              xhr.open('GET', url);
-              xhr.setRequestHeader('Authorization', 'Basic ' + window.btoa(
-                  login + ':' + password));
-              xhr.onload = function() {
-                if (this.response && this.status === 200) {
-                  setAuthReload(layer, element, baseUrl, login, password);
-                }
-              };
-              xhr.onerror = function() {
-                console.log('Error load: ' + url);
-              };
-              xhr.send();
+
+              var params = {};
+              if (login && password) {
+                params['login'] = login;
+                params['password'] = password;
+              }
+              
+              $http.post(gaUrlUtils.buildProxyUrl(url), params, {
+                cache: true
+              }).then(function(response) {
+                setAuthReload(layer, element, layer.url, login, password, response.data);
+              });
             }
           }
         };
