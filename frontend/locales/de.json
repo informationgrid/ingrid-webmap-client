@@ -63,7 +63,7 @@
 "themen_service_link_label": "NUMIS",
 "topic_themen_tooltip": "Themen aus Niedersachsen",
 "topic_anbieter_tooltip": "Anbieter aus Niedersachsen",
-"upload_failed_401": "Dieser Dienst ist zugangsgeschützt und kann daher nicht über den Webmapclient geladen/dargestellt werden.",
+"upload_failed_401": "Dieser Dienst ist zugangsgeschützt. Bitte verwenden Sie die Authentifizierung.",
 "upload_failed_404": "Die URL/GetCapabilities zu diesem Dienst wurde nicht gefunden. Bitte prüfen Sie die URL.",
 "zoom_to_extent_label": "",
 "zoom_to_extent_tiplabel": "In den initialen Bereich zoomen",

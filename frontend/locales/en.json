@@ -57,7 +57,7 @@
 "themen_service_link_label": "NUMIS",
 "topic_themen_tooltip": "Topics from Niedersachsen",
 "topic_anbieter_tooltip": "Provider from Niedersachsen",
-"upload_failed_401": "Unauthorized service.",
+"upload_failed_401": "Unauthorized service. Please use authentification.",
 "upload_failed_404": "URL not found.",
 "zoom_to_extent_label": "",
 "zoom_to_extent_tiplabel": "In den initialen Bereich zoomen",
