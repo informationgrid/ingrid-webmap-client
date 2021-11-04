@@ -327,33 +327,35 @@ public class IngridMapPrinterServlet extends BaseMapServlet {
             PJsonArray layers = specJson.getJSONArray("layers");
             for (int i = 0; i < layers.size(); i++) {
                 PJsonObject layer = layers.getJSONObject(i);
-                String baseUrl = layer.getString("baseURL");
-                if(layer.has("login")) {
-                    String login = layer.getString("login");
-                    String password = null;
-                    if(layer.has("password")) {
-                        password = layer.getString("password");
-                    } else {
-                        try {
-                            password = Utils.getServiceLogin(baseUrl, login);
-                        } catch (Exception e) {
-                            LOGGER.error("Error getServiceLogin", e);
+                if(layer.has("baseURL")) { 
+                    String baseUrl = layer.getString("baseURL");
+                    if(layer.has("login")) {
+                        String login = layer.getString("login");
+                        String password = null;
+                        if(layer.has("password")) {
+                            password = layer.getString("password");
+                        } else {
+                            try {
+                                password = Utils.getServiceLogin(baseUrl, login);
+                            } catch (Exception e) {
+                                LOGGER.error("Error getServiceLogin", e);
+                            }
                         }
-                    }
-                    if(password != null) {
-                        BasicAuthSecurity bas = new BasicAuthSecurity();
-                        bas.setUsername(login);
-                        bas.setPassword(password);
-                        DnsHostMatcher matcher = new DnsHostMatcher();
-                        URI uri;
-                        try {
-                            uri = new URI(baseUrl);
-                            matcher.setHost(uri.getHost());
-                            matcher.setPort(uri.getPort());
-                            bas.setMatcher(matcher);
-                            security.add(bas);
-                        } catch (URISyntaxException e) {
-                            LOGGER.error("Error set DnsHostMatcher", e);
+                        if(password != null) {
+                            BasicAuthSecurity bas = new BasicAuthSecurity();
+                            bas.setUsername(login);
+                            bas.setPassword(password);
+                            DnsHostMatcher matcher = new DnsHostMatcher();
+                            URI uri;
+                            try {
+                                uri = new URI(baseUrl);
+                                matcher.setHost(uri.getHost());
+                                matcher.setPort(uri.getPort());
+                                bas.setMatcher(matcher);
+                                security.add(bas);
+                            } catch (URISyntaxException e) {
+                                LOGGER.error("Error set DnsHostMatcher", e);
+                            }
                         }
                     }
                 }
