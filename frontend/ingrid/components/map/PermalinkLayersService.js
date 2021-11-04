@@ -484,7 +484,7 @@ goog.require('ga_wmts_service');
                           // INGRID: id
                           id: layerSpec,
                           // INGRID: label
-                          label: layerSpec.split('||')[2] || layerSpec.split('||')[0],
+                          label: layerSpec.split('||')[2] || undefined,
                           // INGRID: Add isSecure
                           isSecure: layerSpec.split('||')[3] || false,
                           updateDelay: isNaN(delay) ? undefined : delay * 1000
