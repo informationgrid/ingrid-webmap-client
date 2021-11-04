@@ -481,6 +481,12 @@ goog.require('ga_wmts_service');
                         {
                           opacity: opacity || 1,
                           visible: visible,
+                          // INGRID: id
+                          id: layerSpec,
+                          // INGRID: label
+                          label: layerSpec.split('||')[2] || layerSpec.split('||')[0],
+                          // INGRID: Add isSecure
+                          isSecure: layerSpec.split('||')[3] || false,
                           updateDelay: isNaN(delay) ? undefined : delay * 1000
                         },
                         index + 1);

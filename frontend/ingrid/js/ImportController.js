@@ -388,10 +388,20 @@ goog.require('ga_wmts_service');
       } else if (gaFile.isGpx(data) || gaFile.isKml(data) ||
         gaFile.isGpx(data.xmlResponse) || gaFile.isKml(data.xmlResponse)) {
 
+        // INGRID: Add auth to session
+        if (file.url) {
+          var auth = '{"login":"' + file.login +
+            '","password":"' + file.password + '"}';
+          $window.sessionStorage.setItem(file.url, auth);
+        }
+
         // INGRID: Change data
         gaVector.addToMap($scope.map, data.xmlResponse || data, {
           url: file.url || URL.createObjectURL(file),
           useImageVector: gaVector.useImageVector(file.size),
+          // INGRID: Add auth
+          secureAuthLogin: file.login,
+          secureAuthPassword: file.password,
           zoomToExtent: true
 
         }).then(function() {
