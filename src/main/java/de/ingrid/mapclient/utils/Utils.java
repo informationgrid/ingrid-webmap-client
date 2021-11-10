@@ -31,6 +31,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
