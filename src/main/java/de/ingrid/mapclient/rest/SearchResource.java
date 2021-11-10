@@ -36,8 +36,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -51,6 +49,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import de.ingrid.mapclient.utils.Utils;
 
 @Path("/search")
 public class SearchResource {
@@ -109,7 +109,7 @@ public class SearchResource {
                         json.put( newEntry );
                     }
                 } catch (Exception e) {
-                    log.warn( "Problems requesting nominatim: " + questUrl, e);                            
+                    log.warn( "Problems requesting nominatim: " + questUrl, e);
                 }
                 String responseStr = json.toString();
                 if (json != null) {
@@ -176,7 +176,7 @@ public class SearchResource {
                     URLConnection con = questUrl.openConnection();
                     InputStream in = con.getInputStream();
                     XPath xpath = XPathFactory.newInstance().newXPath();
-                    Document doc = getDocumentFromStream(in);
+                    Document doc = Utils.getDocumentFromStream(in);
                     
                     if(doc != null){
                         NodeList items = (NodeList) xpath.evaluate( "/rss/channel/item", doc , XPathConstants.NODESET);
@@ -262,19 +262,4 @@ public class SearchResource {
         return Response.ok( "{\"results\":[]}" ).build();
     }
 
-    /**
-     * Create a parseable DOM-document of the InputStream, which should be
-     * XML/HTML.
-     * 
-     * @param result
-     * @return
-     * @throws ParserConfigurationException
-     * @throws SAXException
-     * @throws IOException
-     */
-    private Document getDocumentFromStream(InputStream result) throws ParserConfigurationException, SAXException, IOException {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        return builder.parse( result );
-    }
 }
