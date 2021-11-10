@@ -31,9 +31,6 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
 
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -94,18 +91,7 @@ public class HttpProxy {
             try (
                 InputStream is = new BufferedInputStream(conn.getInputStream());
             ){
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-                factory.setValidating(false);
-                factory.setNamespaceAware(true);
-                factory.setFeature("http://xml.org/sax/features/namespaces", false);
-                factory.setFeature("http://xml.org/sax/features/validation", false);
-                factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-                factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
-                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-                DocumentBuilder builder = factory.newDocumentBuilder();
-                Document doc = builder.parse(is);
+                Document doc = Utils.getDocumentFromStream(is);
                 
                 TransformerFactory tf = TransformerFactory.newInstance();
                 Transformer transformer = tf.newTransformer();
