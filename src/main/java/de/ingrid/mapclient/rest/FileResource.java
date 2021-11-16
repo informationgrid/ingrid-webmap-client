@@ -260,7 +260,7 @@ public class FileResource {
     @POST
     @Path("images")
     @Produces("image/png")
-    public Response getFileImageRequestPost(String data, String content, @QueryParam("url") String url){
+    public Response getFileImageRequestPost(String data, String content, @QueryParam("url") String url, @QueryParam("baseUrl") String baseUrl){
         String login = null;
         String password = null;
         if(url != null) {
@@ -278,13 +278,13 @@ public class FileResource {
             }
             
         }
-        return getFileImageRequest(url, login, password, true);
+        return getFileImageRequest(url, login, password, baseUrl, true);
     }
 
     @GET
     @Path("images")
     @Produces("image/png")
-    public Response getFileImageRequest(@QueryParam("url") String url, @QueryParam("login") String login, @QueryParam("password") String password, @QueryParam("blankImage") boolean getBlankImageOnError){
+    public Response getFileImageRequest(@QueryParam("url") String url, @QueryParam("login") String login, @QueryParam("password") String password, @QueryParam("baseUrl") String baseUrl, @QueryParam("blankImage") boolean getBlankImageOnError){
         if (url != null && url.length() > 0) {
             try {
                 URL tmpUrl = new URL( url );
@@ -292,6 +292,9 @@ public class FileResource {
                 if(StringUtils.isNotEmpty(login)) {
                     if(password == null) {
                         password = Utils.getServiceLogin( url, login);
+                    }
+                    if((password == null || password.isEmpty()) && baseUrl != null) {
+                        password = Utils.getServiceLogin( baseUrl, login);
                     }
                     if(StringUtils.isNotEmpty(password)) {
                         Utils.urlConnectionAuth(conn, login, password);
