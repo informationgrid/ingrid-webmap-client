@@ -173,7 +173,8 @@ goog.require('ga_urlutils_service');
                 if (layer.auth) {
                   imageTile.getImage().src = gaGlobalOptions.imgproxyUrl +
                     '' + encodeURIComponent(src) + '&login=' +
-                    encodeURIComponent(layer.auth);
+                    encodeURIComponent(layer.auth)  + '&baseUrl=' +
+                    encodeURIComponent(layer.serviceUrl);
                 } else {
                   imageTile.getImage().src = (content) || src;
                 }
