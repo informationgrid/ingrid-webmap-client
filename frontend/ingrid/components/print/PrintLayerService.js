@@ -501,6 +501,7 @@ goog.require('ga_urlutils_service');
       angular.extend(enc, {
         layer: source.getLayer(),
         baseURL: baseUrl,
+        serviceURL: config.serviceUrl,
         matrixIds: matrices
       });
       // }

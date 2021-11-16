@@ -329,6 +329,9 @@ public class IngridMapPrinterServlet extends BaseMapServlet {
                 PJsonObject layer = layers.getJSONObject(i);
                 if(layer.has("baseURL")) { 
                     String baseUrl = layer.getString("baseURL");
+                    if(layer.has("serviceURL")) {
+                        baseUrl = layer.getString("serviceURL");
+                    }
                     if(layer.has("login")) {
                         String login = layer.getString("login");
                         String password = null;
