@@ -296,7 +296,9 @@ goog.require('ga_urlutils_service');
       var layers = this.map.getLayers().getArray();
       layersYears = [];
 
-      var dpi = getDpi($scope.layout.name, $scope.dpi);
+      // var dpi = getDpi($scope.layout.name, $scope.dpi);
+      // INGRID: Use selected dpi value
+      var dpi = $scope.dpi.value;
       var scaleDenom = parseFloat($scope.scale.value);
       var printRectangeCoords = getPrintRectangleCoords();
       var resolution = $scope.map.getView().getResolution();
@@ -507,7 +509,9 @@ goog.require('ga_urlutils_service');
               outputFilename: gaGlobalOptions.printFilename || 'Print.InGrid',
               lang: lang,
               // use a function to get correct dpi according to layout (A4/A3)
-              dpi: getDpi($scope.layout.name, $scope.dpi),
+              // dpi: getDpi($scope.layout.name, $scope.dpi),
+              // INGRID: Use selected dpi value
+              dpi: $scope.dpi.value,
               layers: encLayers,
               legends: encLegends,
               // INGRID: Add legend title
@@ -681,7 +685,9 @@ goog.require('ga_urlutils_service');
 
             // default values:
             $scope.layout = data.layouts[0];
-            $scope.dpi = data.dpis;
+            // $scope.dpi = data.dpis;
+            // INGRID: Set first dpi as default
+            $scope.dpi = data.dpis[0];
             $scope.scales = data.scales;
             $scope.scale = data.scales[5];
             $scope.options.legend = false;
