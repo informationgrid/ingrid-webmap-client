@@ -243,7 +243,7 @@ goog.require('ga_urlutils_service');
     };
 
     // INGRID: Add 'hasGraticule'
-    $scope.hasGraticule = function () {
+    $scope.hasGraticule = function() {
       var l;
       var hasGraticule = false;
       if (gaGlobalOptions.printDependOnMouseProj) {
@@ -254,7 +254,7 @@ goog.require('ga_urlutils_service');
       }
       if (l) {
         if (l.layers && l.url) {
-            hasGraticule = true;
+          hasGraticule = true;
         }
       }
       $scope.disabled = hasGraticule;
@@ -285,7 +285,7 @@ goog.require('ga_urlutils_service');
       // INGRID: Check iFrame for qrcode
       var qrcodeUrl = $scope.options.qrcodeUrl +
           encodeURIComponent(gaPermalink.getHref(undefined,
-          gaGlobalOptions.isParentIFrame));
+              gaGlobalOptions.isParentIFrame));
       var printZoom = getZoomFromScale($scope.scale.value);
       qrcodeUrl = qrcodeUrl.replace(/zoom%3D(\d{1,2})/, 'zoom%3D' + printZoom);
       var encLayers = [];
@@ -359,8 +359,8 @@ goog.require('ga_urlutils_service');
           // INGRID: Add login from session
           var session = $window.sessionStorage;
           if (session) {
-          var sessionAuthService = JSON.parse(session.
-            getItem(layer.url));
+            var sessionAuthService = JSON.parse(session.
+                getItem(layer.url));
             if (sessionAuthService) {
               if (enc.layer) {
                 angular.extend(enc.layer, {
@@ -370,7 +370,7 @@ goog.require('ga_urlutils_service');
               }
             }
           }
-          if(layer.auth) {
+          if (layer.auth) {
             if (enc.layer) {
               angular.extend(enc.layer, {
                 login: layer.auth
@@ -523,9 +523,9 @@ goog.require('ga_urlutils_service');
                 angular.extend({
                   // INGRID: Change center and bbox
                   center: ol.proj.transform(getPrintRectangleCenterCoord(),
-                    gaGlobalOptions.defaultEpsg, proj.getCode()),
+                      gaGlobalOptions.defaultEpsg, proj.getCode()),
                   bbox: ol.proj.transformExtent(getPrintRectangleCoords(),
-                    gaGlobalOptions.defaultEpsg, proj.getCode()),
+                      gaGlobalOptions.defaultEpsg, proj.getCode()),
                   display: [$scope.layout.map.width, $scope.layout.map.height],
                   // scale has to be one of the advertise by the print server
                   scale: $scope.scale.value,
