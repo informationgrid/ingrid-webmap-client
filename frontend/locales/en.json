@@ -43,6 +43,7 @@
 "print_title_placeholder": "Titel",
 "print_comment": "Kommentar",
 "print_comment_placeholder": "Kommentar",
+"print_dpi": "DPI",
 "search_for": "Search: ",
 "service_load_error_layers": "No layers available:",
 "service_load_error_capabilities": "No GetCapabilities available:",

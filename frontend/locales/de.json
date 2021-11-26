@@ -48,6 +48,7 @@
 "print_title_placeholder": "Titel",
 "print_comment": "Kommentar",
 "print_comment_placeholder": "Kommentar",
+"print_dpi": "DPI",
 "search_for": "Suche: ",
 "search_placeholder": "z.B. Hannover, Naturschutz ...",
 "service_load_error_layers": "GetCapabilities verfügt über kein Layer:",
