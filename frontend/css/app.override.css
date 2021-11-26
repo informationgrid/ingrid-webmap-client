@@ -204,3 +204,8 @@ button.ga-btn:not([disabled]):focus-visible {
 .ga-layer-login {
   min-width: 150px;
 }
+
+.twitter-typeahead .tt-menu.tt-open {
+  display: inline-block !important;
+  top: unset !important;
+}
