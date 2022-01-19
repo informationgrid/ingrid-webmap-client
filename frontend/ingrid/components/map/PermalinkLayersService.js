@@ -77,7 +77,7 @@ goog.require('ga_wmts_service');
       var layerOpacitiesOrig;
       var layerVisibilitiesOrig;
       var layerTimestampsOrig;
-      var layersStyleUrlOrig; 
+      var layersStyleUrlOrig;
 
       function updateLayersParam(layers) {
         if (layers.length) {
@@ -110,8 +110,8 @@ goog.require('ga_wmts_service');
           return opacity;
         });
         var hasChange = false;
-        if(!layerOpacitiesOrig ||
-            layerOpacitiesOrig !== opacityValues.join(',')){
+        if (!layerOpacitiesOrig ||
+            layerOpacitiesOrig !== opacityValues.join(',')) {
           layerOpacitiesOrig = opacityValues.join(',');
           hasChange = true;
         }
@@ -123,15 +123,15 @@ goog.require('ga_wmts_service');
             layers_opacity: opacityValues.join(',')
           });
           */
-          if(hasChange) {
+          if (hasChange) {
             $http.put(gaGlobalOptions.publicUrl +
               '/short', '{"key": "layers_opacity", "value":"' +
               opacityValues.join(',') + '"}').
-              then(function(response) {
-                gaPermalink.updateParams({
-                  layers_opacity: response.data
-              });
-            });
+                then(function(response) {
+                  gaPermalink.updateParams({
+                    layers_opacity: response.data
+                  });
+                });
           }
         }
       }
@@ -144,8 +144,8 @@ goog.require('ga_wmts_service');
           return visibility;
         });
         var hasChange = false;
-        if(!layerVisibilitiesOrig ||
-            layerVisibilitiesOrig !== visibilityValues.join(',')){
+        if (!layerVisibilitiesOrig ||
+            layerVisibilitiesOrig !== visibilityValues.join(',')) {
           layerVisibilitiesOrig = visibilityValues.join(',');
           hasChange = true;
         }
@@ -158,15 +158,15 @@ goog.require('ga_wmts_service');
             layers_visibility: visibilityValues.join(',')
           });
           */
-          if(hasChange){
+          if (hasChange) {
             $http.put(gaGlobalOptions.publicUrl +
               '/short', '{"key": "layers_visibility", "value":"' +
               visibilityValues.join(',') + '"}').
-              then(function(response) {
-                gaPermalink.updateParams({
-                  layers_visibility: response.data
-              });
-            });
+                then(function(response) {
+                  gaPermalink.updateParams({
+                    layers_visibility: response.data
+                  });
+                });
           }
         }
       }
@@ -183,8 +183,8 @@ goog.require('ga_wmts_service');
           return '';
         });
         var hasChange = false;
-        if(!layerTimestampsOrig ||
-            layerTimestampsOrig !== timestampValues.join(',')){
+        if (!layerTimestampsOrig ||
+            layerTimestampsOrig !== timestampValues.join(',')) {
           layerTimestampsOrig = timestampValues.join(',');
           hasChange = true;
         }
@@ -198,11 +198,11 @@ goog.require('ga_wmts_service');
             $http.put(gaGlobalOptions.publicUrl +
               '/short', '{"key": "layers_timestamp", "value":"' +
               timestampValues.join(',') + '"}').
-              then(function(response) {
-                gaPermalink.updateParams({
-                  layers_timestamp: response.data
-              });
-            });
+                then(function(response) {
+                  gaPermalink.updateParams({
+                    layers_timestamp: response.data
+                  });
+                });
           }
         } else {
           gaPermalink.deleteParam('layers_timestamp');
@@ -219,8 +219,8 @@ goog.require('ga_wmts_service');
           return '';
         });
         var hasChange = false;
-        if(!layersStyleUrlOrig ||
-            layersStyleUrlOrig !== styleUrlValues.join(',')){
+        if (!layersStyleUrlOrig ||
+            layersStyleUrlOrig !== styleUrlValues.join(',')) {
           layersStyleUrlOrig = styleUrlValues.join(',');
           hasChange = true;
         }
@@ -234,11 +234,11 @@ goog.require('ga_wmts_service');
             $http.put(gaGlobalOptions.publicUrl +
               '/short', '{"key": "layers_styleurl", "value":"' +
               styleUrlValues.join(',') + '"}').
-              then(function(response) {
-                gaPermalink.updateParams({
-                  layers_styleurl: response.data
-              });
-            });
+                then(function(response) {
+                  gaPermalink.updateParams({
+                    layers_styleurl: response.data
+                  });
+                });
           }
         } else {
           gaPermalink.deleteParam('layers_styleurl');
@@ -339,40 +339,40 @@ goog.require('ga_wmts_service');
           if (opacities && opacities.length > 0) {
             var getOpacities = $http.get(gaGlobalOptions.publicUrl +
               '/short', {
-            params: {
-              key: 'layers_opacity',
-              value: opacities.join(',')
-            }
+              params: {
+                key: 'layers_opacity',
+                value: opacities.join(',')
+              }
             });
             all['opacities'] = getOpacities;
           }
           if (visibilities && visibilities.length > 0) {
             var getVisibilities = $http.get(gaGlobalOptions.publicUrl +
               '/short', {
-            params: {
-              key: 'layers_visibility',
-              value: visibilities.join(',')
-            }
+              params: {
+                key: 'layers_visibility',
+                value: visibilities.join(',')
+              }
             });
             all['visibilities'] = getVisibilities;
           }
           if (timestamps && timestamps.length > 0) {
             var getTimestamps = $http.get(gaGlobalOptions.publicUrl +
               '/short', {
-            params: {
-              key: 'layers_timestamp',
-              value: timestamps.join(',')
-            }
+              params: {
+                key: 'layers_timestamp',
+                value: timestamps.join(',')
+              }
             });
             all['timestamps'] = getTimestamps;
           }
           if (styleUrls && styleUrls.length > 0) {
             var getStyleUrls = $http.get(gaGlobalOptions.publicUrl +
               '/short', {
-            params: {
-              key: 'layers_styleurl',
-              value: styleUrls.join(',')
-            }
+              params: {
+                key: 'layers_styleurl',
+                value: styleUrls.join(',')
+              }
             });
             all['styleUrls'] = getStyleUrls;
           }
@@ -382,22 +382,22 @@ goog.require('ga_wmts_service');
                 layerSpecs = values.layerSpecs.data.split(',');
               }
             }
-            if(values.opacities) {
+            if (values.opacities) {
               if (values.opacities.data) {
                 opacities = values.opacities.data.split(',');
               }
             }
-            if(values.visibilities) {
+            if (values.visibilities) {
               if (values.visibilities.data) {
                 visibilities = values.visibilities.data.split(',');
               }
             }
-            if(values.timestamps) {
+            if (values.timestamps) {
               if (values.timestamps.data) {
                 timestamps = values.timestamps.data.split(',');
               }
             }
-            if(values.styleUrls) {
+            if (values.styleUrls) {
               if (values.styleUrls.data) {
                 styleUrls = values.styleUrls.data.split(',');
               }
@@ -481,6 +481,12 @@ goog.require('ga_wmts_service');
                         {
                           opacity: opacity || 1,
                           visible: visible,
+                          // INGRID: id
+                          id: layerSpec,
+                          // INGRID: label
+                          label: layerSpec.split('||')[2] || undefined,
+                          // INGRID: Add isSecure
+                          isSecure: layerSpec.split('||')[3] || false,
                           updateDelay: isNaN(delay) ? undefined : delay * 1000
                         },
                         index + 1);
@@ -515,6 +521,8 @@ goog.require('ga_wmts_service');
                           // INGRID: Add attributions
                           attribution: decodeURIComponent(infos[7]),
                           attributionUrl: infos[8],
+                          // INGRID: Add isSecure
+                          isSecure: infos[9],
                           useReprojection: (infos[6] === 'true')
                         },
                         index + 1);
@@ -532,7 +540,11 @@ goog.require('ga_wmts_service');
                     time: timestamp,
                     // INGRID: Add attributions
                     attribution: decodeURIComponent(infos[3]),
-                    attributionUrl: infos[4]
+                    attributionUrl: infos[4],
+                    // INGRID: Add label
+                    label: decodeURIComponent(infos[5]),
+                    // INGRID: Add isSecure
+                    isSecure: infos[6]
                   });
                 }
               });

@@ -34,7 +34,7 @@ goog.provide('ga_wmsgetcapitem_directive');
     };
   });
 
-// INGRID: Add '$translate'
+  // INGRID: Add '$translate'
   module.directive('gaWmsGetCapItem', function($compile, $translate) {
 
     /** ** UTILS functions ****/
@@ -144,16 +144,16 @@ goog.provide('ga_wmsgetcapitem_directive');
             evt.stopPropagation();
             toggleBt.toggleClass('fa-minus');
             // INGRID: Add aria
-            if(toggleBt.hasClass('fa-minus')) {
+            if (toggleBt.hasClass('fa-minus')) {
               toggleBt.attr('aria-pressed', true);
               toggleBt.attr('aria-expanded', true);
-              toggleBt.attr('aria-label', $translate
-                  .instant('fa_icon_layer_expanded'));
+              toggleBt.attr('aria-label', $translate.
+                  instant('fa_icon_layer_expanded'));
             } else {
               toggleBt.attr('aria-pressed', false);
               toggleBt.attr('aria-expanded', false);
-              toggleBt.attr('aria-label', $translate
-                  .instant('fa_icon_layer_unexpanded'));
+              toggleBt.attr('aria-label', $translate.
+                  instant('fa_icon_layer_unexpanded'));
             }
             if (!childGroup) {
               childGroup = elt.find('> .ga-child-group');

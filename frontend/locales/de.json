@@ -48,6 +48,7 @@
 "print_title_placeholder": "Titel",
 "print_comment": "Kommentar",
 "print_comment_placeholder": "Kommentar",
+"print_dpi": "DPI",
 "search_for": "Suche: ",
 "search_placeholder": "z.B. Hannover, Naturschutz ...",
 "service_load_error_layers": "GetCapabilities verfügt über kein Layer:",
@@ -63,7 +64,7 @@
 "themen_service_link_label": "NUMIS",
 "topic_themen_tooltip": "Themen aus Niedersachsen",
 "topic_anbieter_tooltip": "Anbieter aus Niedersachsen",
-"upload_failed_401": "Dieser Dienst ist zugangsgeschützt und kann daher nicht über den Webmapclient geladen/dargestellt werden.",
+"upload_failed_401": "Dieser Dienst ist zugangsgeschützt. Bitte verwenden Sie die Authentifizierung.",
 "upload_failed_404": "Die URL/GetCapabilities zu diesem Dienst wurde nicht gefunden. Bitte prüfen Sie die URL.",
 "zoom_to_extent_label": "",
 "zoom_to_extent_tiplabel": "In den initialen Bereich zoomen",
@@ -130,5 +131,10 @@
 "navigation_service_menu": "Service-Menü",
 "navigation_map_buttons": "Karten Interaktionsbuttons",
 "navigation_footer": "Footer",
-"navigation_main_menu": "Hauptmenü"
+"navigation_main_menu": "Hauptmenü",
+"service_auth_data":"Authentifizierung",
+"service_auth_data_username":"Benutzername",
+"service_auth_data_password":"Passwort",
+"service_auth_data_login":"Anmelden",
+"service_auth_data_login_error":"Anmeldefehler"
 }

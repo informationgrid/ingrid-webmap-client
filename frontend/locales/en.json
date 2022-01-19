@@ -43,6 +43,7 @@
 "print_title_placeholder": "Titel",
 "print_comment": "Kommentar",
 "print_comment_placeholder": "Kommentar",
+"print_dpi": "DPI",
 "search_for": "Search: ",
 "service_load_error_layers": "No layers available:",
 "service_load_error_capabilities": "No GetCapabilities available:",
@@ -57,7 +58,7 @@
 "themen_service_link_label": "NUMIS",
 "topic_themen_tooltip": "Topics from Niedersachsen",
 "topic_anbieter_tooltip": "Provider from Niedersachsen",
-"upload_failed_401": "Unauthorized service.",
+"upload_failed_401": "Unauthorized service. Please use authentification.",
 "upload_failed_404": "URL not found.",
 "zoom_to_extent_label": "",
 "zoom_to_extent_tiplabel": "In den initialen Bereich zoomen",
@@ -124,6 +125,10 @@
 "navigation_service_menu": "Service menu",
 "navigation_map_buttons": "Map interaction buttons",
 "navigation_footer": "Footer",
-"navigation_main_menu": "Main menu"
-
+"navigation_main_menu": "Main menu",
+"service_auth_data":"Authentification",
+"service_auth_data_username":"Username",
+"service_auth_data_password":"Password",
+"service_auth_data_login":"Login",
+"service_auth_data_login_error":"Error"
 }

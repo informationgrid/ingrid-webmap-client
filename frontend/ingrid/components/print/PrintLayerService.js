@@ -42,10 +42,10 @@ goog.require('ga_urlutils_service');
         encodeWMTS: getEncodeWMTS(gaTime, gaMapUtils, gaGlobalOptions),
         // INGRID: Add 'gaMapUtils', 'gaGlobalOptions'
         encodeFeatures: getEncodeFeatures(gaPrintStyle, gaMapUtils,
-          gaGlobalOptions),
+            gaGlobalOptions),
         // INGRID: Add 'gaMapUtils', 'gaGlobalOptions'
         encodeVector: getEncodeVector(gaPrintStyle, gaMapUtils,
-          gaGlobalOptions),
+            gaGlobalOptions),
         encodeLayer: getEncodeLayer(gaLayers, gaPrintStyle,
             gaTime, gaMapUtils, gaGlobalOptions),
         encodeOverlay: getEncodeOverlay(gaUrlUtils),
@@ -220,7 +220,7 @@ goog.require('ga_urlutils_service');
           } else if (src instanceof ol.source.Vector) {
             // INGRID: Add 'gaMapUtils', 'gaGlobalOptions'
             var encodeVector = getEncodeVector(gaPrintStyle, gaMapUtils,
-              gaGlobalOptions);
+                gaGlobalOptions);
             // INGRID: Add 'map'
             encLayer = encodeVector(layer,
                 src.getFeatures(),
@@ -268,7 +268,7 @@ goog.require('ga_urlutils_service');
 
       // INGRID: Add 'gaMapUtils', 'gaGlobalOptions', 'map'
       var encodeFeatures = getEncodeFeatures(gaPrintStyle, gaMapUtils,
-        gaGlobalOptions, map);
+          gaGlobalOptions, map);
 
       angular.forEach(features, function(feature) {
         var geotype = feature.getGeometry().getType();
@@ -376,9 +376,9 @@ goog.require('ga_urlutils_service');
           var mpProj = gaMapUtils.getMousePositionProjection(map);
           if (gaGlobalOptions.defaultEpsg !== mpProj.getCode()) {
             transformFeature = feature.clone();
-            transformFeature.getGeometry()
-              .transform(gaGlobalOptions.defaultEpsg,
-              mpProj.getCode());
+            transformFeature.getGeometry().
+                transform(gaGlobalOptions.defaultEpsg,
+                    mpProj.getCode());
           }
         }
 
@@ -409,7 +409,7 @@ goog.require('ga_urlutils_service');
 
       // INGRID: Add 'gaMapUtils','gaGlobalOptions'
       var encodeFeatures = getEncodeFeatures(gaPrintStyle, gaMapUtils,
-        gaGlobalOptions);
+          gaGlobalOptions);
 
       // If a feature has a style with a geometryFunction defined, we
       // must also display this geometry with the good style (used for
@@ -501,6 +501,7 @@ goog.require('ga_urlutils_service');
       angular.extend(enc, {
         layer: source.getLayer(),
         baseURL: baseUrl,
+        serviceURL: config.serviceUrl,
         matrixIds: matrices
       });
       // }
@@ -669,9 +670,9 @@ goog.require('ga_urlutils_service');
               angular.forEach(layerNames, function(layerName) {
                 enc.classes.push({
                   name: '',
-                  icon: gaGlobalOptions.imgproxyUrl
-                    + encodeURIComponent(gaWms.getLegendURL(layer, layerName))
-                    + '&blankImage=true'
+                  icon: gaGlobalOptions.imgproxyUrl +
+                    encodeURIComponent(gaWms.getLegendURL(layer, layerName)) +
+                    '&blankImage=true'
                 });
               });
             }

@@ -111,7 +111,7 @@
 }
 
 [ga-popup] {
-  max-height: 500px;
+  max-height: 550px;
 }
 
 [ga-popup] .ga-checkbox {
@@ -199,4 +199,13 @@ button.ga-btn:not([disabled]):focus-visible {
 
 .ga-open .ga-bg-layer, .ga-pulldown-shown #pulldown-content .panel {
   display: block;
+}
+
+.ga-layer-login {
+  min-width: 150px;
+}
+
+.twitter-typeahead .tt-menu.tt-open {
+  display: inline-block !important;
+  top: unset !important;
 }

@@ -2,7 +2,7 @@
  * **************************************************-
  * InGrid Web Map Client
  * ==================================================
- * Copyright (C) 2014 - 2021 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2022 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -29,9 +29,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
-import java.io.StringReader;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -58,8 +57,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -75,7 +73,6 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import de.ingrid.mapclient.ConfigurationProvider;
@@ -303,28 +300,26 @@ public class Utils {
     }
 
     /**
-     * utility method for parsing xml strings
+     * Create a parseable DOM-document of the InputStream, which should be
+     * XML/HTML.
      * 
-     * @param xmlSource
+     * @param result
      * @return
-     * @throws SAXException
      * @throws ParserConfigurationException
+     * @throws SAXException
      * @throws IOException
      */
-    public static Document stringToDom(String xmlSource) throws SAXException {
-
-        try {
-            DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            InputSource is = new InputSource();
-            is.setCharacterStream( new StringReader( xmlSource ) );
-            return db.parse( is );
-        } catch (ParserConfigurationException | IOException e) {
-            log.error( "error on parsing xml string: " + e.getMessage() );
-            throw new WebApplicationException( e, Response.Status.CONFLICT );
-        } catch (SAXException e) {
-            log.error( "error on parsing xml string: " + e.getMessage() );
-            throw new SAXException( e );
-        }
+    public static Document getDocumentFromStream(InputStream result) throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        factory.setValidating(false);
+        factory.setNamespaceAware(false);
+        factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+        factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        factory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+        factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        return builder.parse( result );
     }
 
     /**
@@ -455,17 +450,12 @@ public class Utils {
             if(fileContent.isEmpty()) {
                 fileContent = "{}";
             }
-            URI uri = new URI(url);
             JSONObject serviceAuth = new JSONObject(fileContent);
             JSONObject loginAuth = null;
-            String host = uri.getHost();
             loginAuth = new JSONObject();
             loginAuth.put("login", login);
             loginAuth.put("password", password);
-            if(uri.getScheme().equals("https")) {
-                loginAuth.put("port", "443");
-            }
-            serviceAuth.put(host, loginAuth);
+            serviceAuth.put(url.split("\\?")[0], loginAuth);
             Utils.updateFile("config/service.auth.json", serviceAuth);
         }
     }
@@ -476,11 +466,10 @@ public class Utils {
         if(StringUtils.isNotEmpty(configDir)) {
             String fileContent = Utils.getFileContent(configDir, "service.auth", ".json", "config/");
             if(StringUtils.isNotEmpty(fileContent)) {
-                URI uri = new URI(url);
                 JSONObject serviceAuth = new JSONObject(fileContent);
-                String key = uri.getHost();
-                if(serviceAuth.has(key)){
-                    JSONObject auth = serviceAuth.getJSONObject(key);
+                String tmpUrl = url.split("\\?")[0];
+                if(serviceAuth.has(tmpUrl)){
+                    JSONObject auth = serviceAuth.getJSONObject(tmpUrl);
                     if(auth.has("login") && auth.has("password") && login.equals(auth.getString("login"))) {
                         return auth.getString("password"); 
                     }

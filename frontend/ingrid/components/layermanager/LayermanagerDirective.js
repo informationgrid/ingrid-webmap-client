@@ -53,11 +53,13 @@ goog.require('ga_window_service');
     }
   });
 
-  // INGRID: Add 'gaGlobalOptions'
+  // INGRID: Add 'gaGlobalOptions', 'gaLayerLoginPopup', 'gaWmts', 'gaVector',
+  // '$http', 'gaPermalink'
   module.directive('gaLayermanager', function($compile, $timeout,
       $translate, $window, gaBrowserSniffer, gaLayerFilters,
       gaLayerMetadataPopup, gaLayers, gaUrlUtils,
-      gaMapUtils, gaEvent, gaWindow, gaGlobalOptions) {
+      gaMapUtils, gaEvent, gaWindow, gaGlobalOptions, gaWmts, gaVector,
+      $http, gaPermalink) {
 
     // Timestamps list template
     // INGRID: Add 'role="button"'
@@ -76,8 +78,24 @@ goog.require('ga_window_service');
         '</div>' +
       '</div>';
 
+    // INGRID: Add 'role="button"'
+    var tplLogin =
+      '<form class="ga-layer-login">' +
+        '<input type="text" class="form-control" ng-model="tmpLogin" ' +
+        'placeholder="{{\'service_auth_data_username\' | translate}}" ' +
+        'required/>' +
+        '<input type="password" class="form-control" ng-model="tmpPassword"' +
+        'placeholder="{{\'service_auth_data_password\' | translate}}" ' +
+        'required/>' +
+        '<input type="submit" class="btn btn-default form-control" ' +
+        'ng-click="setLayerLogin(tmpLayer, tmpLogin, tmpPassword)" ' +
+        'value="{{ userMessage | translate}}"/>' +
+      '</form>';
+
     // Create the popover
     var popover, content, container, callback;
+    // Create the popoverLogin
+    var popoverLogin, contentLogin, containerLogin, callbackLogin;
     var win = $($window);
     var createPopover = function(bt, element) {
 
@@ -105,6 +123,32 @@ goog.require('ga_window_service');
       win.on('resize', callback);
     };
 
+    // INGRID: Add login popover
+    var createPopoverLogin = function(bt, element) {
+
+      // Lazy load
+      if (!containerLogin) {
+        containerLogin = element.parent();
+        callbackLogin = function(evt) {
+          destroyPopoverLogin(element);
+        };
+      }
+      popoverLogin = bt.popover({
+        container: containerLogin,
+        content: contentLogin,
+        html: true,
+        placement: 'auto right',
+        title: $translate.instant('service_auth_data') +
+            '<button class="ga-icon ga-btn fa fa-remove"></button>',
+        trigger: 'manual'
+      }).one('shown.bs.popover', function(evt) {
+        containerLogin.find('.fa-remove').one('click', function() {
+          destroyPopoverLogin(element);
+        });
+      }).popover('show');
+      element.on('scroll', callbackLogin);
+      win.on('resize', callbackLogin);
+    };
     // Remove the popover
     var destroyPopover = function(element) {
       if (popover) {
@@ -112,6 +156,16 @@ goog.require('ga_window_service');
         popover = undefined;
         element.off('scroll', callback);
         win.off('resize', callback);
+      }
+    };
+
+    // INGRID: Remove the login popover
+    var destroyPopoverLogin = function(element, layer) {
+      if (popoverLogin) {
+        popoverLogin.popover('destroy');
+        popoverLogin = undefined;
+        element.off('scroll', callbackLogin);
+        win.off('resize', callbackLogin);
       }
     };
 
@@ -126,6 +180,11 @@ goog.require('ga_window_service');
 
         // Compile the time popover template
         content = $compile(tpl)(scope);
+        // INGRID: Compile the login popover template
+        contentLogin = $compile(tplLogin)(scope);
+
+        // INGRID: Add userMessage
+        scope.userMessage = 'service_auth_data_login';
 
         // The ngRepeat collection is the map's array of layers. ngRepeat
         // uses $watchCollection internally. $watchCollection watches the
@@ -221,6 +280,23 @@ goog.require('ga_window_service');
             // We use timeout otherwise the popover is bad centered.
             $timeout(function() {
               createPopover(bt, element, scope);
+            }, 100, false);
+          }
+          evt.preventDefault();
+          evt.stopPropagation();
+        };
+
+        // INGRID: Add popup
+        scope.authLayer = function(evt, layer) {
+          destroyPopoverLogin(element, layer);
+          var bt = $(evt.target);
+          if (!bt.data('bs.popover')) {
+            scope.tmpLayer = layer;
+            scope.tmpLogin = '';
+            scope.tmpPassword = '';
+            // We use timeout otherwise the popover is bad centered.
+            $timeout(function() {
+              createPopoverLogin(bt, element, scope);
             }, 100, false);
           }
           evt.preventDefault();
@@ -335,6 +411,113 @@ goog.require('ga_window_service');
         scope.setLayerTime = function(layer, time) {
           layer.time = time;
           destroyPopover(element);
+        };
+
+        // INGRID: Add auth and reload layers
+        var setAuthReload = function(layer, element, baseUrl, login,
+            password, data) {
+          var auth = '{"login":"' + login +
+          '","password":"' + password + '"}';
+          $window.sessionStorage.setItem(baseUrl, auth);
+          var layers = scope.map.getLayers().getArray();
+          var layersToRemove = [];
+
+          layers.forEach(function(tmpLayer, index) {
+            if (tmpLayer.id) {
+              var infos = tmpLayer.id.split('||');
+              var tmpBaseUrl = infos[2];
+              if (gaMapUtils.isKmlLayer(tmpLayer) ||
+                  gaMapUtils.isGpxLayer(tmpLayer)) {
+                tmpBaseUrl = infos[1];
+              }
+              if (baseUrl === tmpBaseUrl) {
+                if (gaMapUtils.isExternalWmsLayer(tmpLayer)) {
+                  tmpLayer.hasLoggedIn = true;
+                  var source = tmpLayer.getSource();
+                  source.tileCache.expireCache({});
+                  source.tileCache.clear();
+                  source.refresh();
+                } else if (gaMapUtils.isExternalWmtsLayer(tmpLayer)) {
+                  gaWmts.addWmtsToMapFromGetCapUrl(map, infos[2], infos[1], {
+                    index: index + 1,
+                    opacity: tmpLayer.opacity,
+                    visible: tmpLayer.visible,
+                    time: tmpLayer.time,
+                    attribution: decodeURIComponent(infos[3]),
+                    attributionUrl: infos[4],
+                    label: decodeURIComponent(infos[5]),
+                    isSecure: infos[6],
+                    hasLoggedIn: true
+                  });
+                  layersToRemove.push(tmpLayer);
+                } else if (gaMapUtils.isKmlLayer(tmpLayer) ||
+                    gaMapUtils.isGpxLayer(tmpLayer)) {
+                  tmpLayer.hasLoggedIn = true;
+                  gaVector.readFeatures(data, map.getView().getProjection()).
+                    then(function(responses) {
+                    var source = tmpLayer.getSource();
+                    if (source) {
+                      if (responses.features) {
+                        source.addFeatures(responses.features);
+                      }
+                      if (responses.data) {
+                        source.setProperties({
+                          'rawData': responses.data
+                        });
+                      }
+                    }
+                  });
+                }
+              }
+            }
+          });
+          var len = layersToRemove.length;
+          for(var i = 0; i < len; i++) {
+              map.removeLayer(layersToRemove[i]);
+          }
+          destroyPopoverLogin(element);
+        };
+
+        // INGRID: Add layer login
+        scope.setLayerLogin = function(layer, login, password) {
+          var id = layer.id;
+          if (layer instanceof ol.layer.Layer) {
+            if (id && login && password) {
+              var url = layer.url;
+              if (gaMapUtils.isExternalWmsLayer(layer)) {
+                if (!/service=/i.test(url)) {
+                  url = gaUrlUtils.append(url, 'SERVICE=WMS');
+                }
+                if (!/request=/i.test(url)) {
+                  url = gaUrlUtils.append(url, 'REQUEST=GetCapabilities');
+                }
+                if (!/version=/i.test(url)) {
+                  url = gaUrlUtils.append(url);
+                }
+              }
+
+              var params = {};
+              if (login && password) {
+                params['login'] = login;
+                params['password'] = password;
+              }
+              
+              $http.post(gaUrlUtils.buildProxyUrl(url), params, {
+                cache: true
+              }).then(function(response) {
+                setAuthReload(layer, element, layer.url, login,
+                  password, response.data);
+              }, function (reason) {
+                if (reason.status === 401) {
+                  scope.userMessage = 'service_auth_data_login_error';
+                }
+              }).finally(function() {
+                $timeout(function() {
+                  scope.userMessage = 'service_auth_data_login';
+                }, 10000);
+              });
+            }
+          }
         };
 
         scope.useRange = function() {

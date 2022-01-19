@@ -5,6 +5,7 @@ goog.require('ga_browsersniffer_service');
 goog.require('ga_layers_service');
 goog.require('ga_maputils_service');
 goog.require('ga_printlayer_service');
+goog.require('ga_translation_service');
 goog.require('ga_urlutils_service');
 
 (function() {
@@ -242,7 +243,7 @@ goog.require('ga_urlutils_service');
     };
 
     // INGRID: Add 'hasGraticule'
-    $scope.hasGraticule = function () {
+    $scope.hasGraticule = function() {
       var l;
       var hasGraticule = false;
       if (gaGlobalOptions.printDependOnMouseProj) {
@@ -253,7 +254,7 @@ goog.require('ga_urlutils_service');
       }
       if (l) {
         if (l.layers && l.url) {
-            hasGraticule = true;
+          hasGraticule = true;
         }
       }
       $scope.disabled = hasGraticule;
@@ -284,7 +285,7 @@ goog.require('ga_urlutils_service');
       // INGRID: Check iFrame for qrcode
       var qrcodeUrl = $scope.options.qrcodeUrl +
           encodeURIComponent(gaPermalink.getHref(undefined,
-          gaGlobalOptions.isParentIFrame));
+              gaGlobalOptions.isParentIFrame));
       var printZoom = getZoomFromScale($scope.scale.value);
       qrcodeUrl = qrcodeUrl.replace(/zoom%3D(\d{1,2})/, 'zoom%3D' + printZoom);
       var encLayers = [];
@@ -295,7 +296,9 @@ goog.require('ga_urlutils_service');
       var layers = this.map.getLayers().getArray();
       layersYears = [];
 
-      var dpi = getDpi($scope.layout.name, $scope.dpi);
+      // var dpi = getDpi($scope.layout.name, $scope.dpi);
+      // INGRID: Use selected dpi value
+      var dpi = $scope.dpi.value;
       var scaleDenom = parseFloat($scope.scale.value);
       var printRectangeCoords = getPrintRectangleCoords();
       var resolution = $scope.map.getView().getResolution();
@@ -351,6 +354,28 @@ goog.require('ga_urlutils_service');
 
           if (layerConfig.timeEnabled && layer.time) {
             layersYears.push(layer.time);
+          }
+
+          // INGRID: Add login from session
+          var session = $window.sessionStorage;
+          if (session) {
+            var sessionAuthService = JSON.parse(session.
+                getItem(layer.url));
+            if (sessionAuthService) {
+              if (enc.layer) {
+                angular.extend(enc.layer, {
+                  login: sessionAuthService.login,
+                  password: sessionAuthService.password
+                });
+              }
+            }
+          }
+          if (layer.auth) {
+            if (enc.layer) {
+              angular.extend(enc.layer, {
+                login: layer.auth
+              });
+            }
           }
 
           // INGRID: Change check legend
@@ -484,7 +509,9 @@ goog.require('ga_urlutils_service');
               outputFilename: gaGlobalOptions.printFilename || 'Print.InGrid',
               lang: lang,
               // use a function to get correct dpi according to layout (A4/A3)
-              dpi: getDpi($scope.layout.name, $scope.dpi),
+              // dpi: getDpi($scope.layout.name, $scope.dpi),
+              // INGRID: Use selected dpi value
+              dpi: $scope.dpi.value,
               layers: encLayers,
               legends: encLegends,
               // INGRID: Add legend title
@@ -496,9 +523,9 @@ goog.require('ga_urlutils_service');
                 angular.extend({
                   // INGRID: Change center and bbox
                   center: ol.proj.transform(getPrintRectangleCenterCoord(),
-                    gaGlobalOptions.defaultEpsg, proj.getCode()),
+                      gaGlobalOptions.defaultEpsg, proj.getCode()),
                   bbox: ol.proj.transformExtent(getPrintRectangleCoords(),
-                    gaGlobalOptions.defaultEpsg, proj.getCode()),
+                      gaGlobalOptions.defaultEpsg, proj.getCode()),
                   display: [$scope.layout.map.width, $scope.layout.map.height],
                   // scale has to be one of the advertise by the print server
                   scale: $scope.scale.value,
@@ -658,7 +685,9 @@ goog.require('ga_urlutils_service');
 
             // default values:
             $scope.layout = data.layouts[0];
-            $scope.dpi = data.dpis;
+            // $scope.dpi = data.dpis;
+            // INGRID: Set first dpi as default
+            $scope.dpi = data.dpis[0];
             $scope.scales = data.scales;
             $scope.scale = data.scales[5];
             $scope.options.legend = false;

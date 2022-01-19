@@ -2,7 +2,7 @@
  * **************************************************-
  * InGrid Web Map Client
  * ==================================================
- * Copyright (C) 2014 - 2021 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2022 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -257,16 +257,45 @@ public class FileResource {
         return content;
     }
 
+    @POST
+    @Path("images")
+    @Produces("image/png")
+    public Response getFileImageRequestPost(String data, String content, @QueryParam("url") String url, @QueryParam("baseUrl") String baseUrl){
+        String login = null;
+        String password = null;
+        if(url != null) {
+            JSONObject json;
+            try {
+                json = new JSONObject(data);
+                if(json.has("login")) {
+                    login = json.getString("login");
+                }
+                if(json.has("password")) {
+                    password = json.getString("password");
+                }
+            } catch (JSONException e) {
+                log.error("No data defined.", e);
+            }
+            
+        }
+        return getFileImageRequest(url, login, password, baseUrl, true);
+    }
+
     @GET
     @Path("images")
     @Produces("image/png")
-    public Response getFileImageRequest(@QueryParam("url") String url, @QueryParam("login") String login, @QueryParam("blankImage") boolean getBlankImageOnError){
+    public Response getFileImageRequest(@QueryParam("url") String url, @QueryParam("login") String login, @QueryParam("password") String password, @QueryParam("baseUrl") String baseUrl, @QueryParam("blankImage") boolean getBlankImageOnError){
         if (url != null && url.length() > 0) {
             try {
                 URL tmpUrl = new URL( url );
                 URLConnection conn = tmpUrl.openConnection();
                 if(StringUtils.isNotEmpty(login)) {
-                    String password = Utils.getServiceLogin( url, login);
+                    if(password == null) {
+                        password = Utils.getServiceLogin( url, login);
+                    }
+                    if((password == null || password.isEmpty()) && baseUrl != null) {
+                        password = Utils.getServiceLogin( baseUrl, login);
+                    }
                     if(StringUtils.isNotEmpty(password)) {
                         Utils.urlConnectionAuth(conn, login, password);
                     }

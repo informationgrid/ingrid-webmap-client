@@ -89,16 +89,53 @@ goog.provide('ga_file_service');
             // INGRID: Check reason.status
             var rejectMsg = '';
             switch (reason.status) {
-            case 401:
-              rejectMsg += $translate.instant('upload_failed_401');
-              break;
-            case 404:
-              rejectMsg += $translate.instant('upload_failed_404');
-              break;
+              case 401:
+                rejectMsg += $translate.instant('upload_failed_401');
+                break;
+              case 404:
+                rejectMsg += $translate.instant('upload_failed_404');
+                break;
 
-            default:
-              rejectMsg += $translate.instant('upload_failed');
-              break;
+              default:
+                rejectMsg += $translate.instant('upload_failed');
+                break;
+            }
+            defer.reject({
+              'message': rejectMsg,
+              'reason': reason
+            });
+          });
+          return defer.promise;
+        };
+
+        // INGRID: Add load POST
+        this.loadPost = function(url, params, cancelP) {
+
+          if (canceler) {
+            canceler.resolve();
+          }
+          canceler = cancelP || $q.defer();
+
+          // Angularjs doesn't handle onprogress event
+          var defer = $q.defer();
+          $http.post(url, params, {
+            timeout: canceler.promise
+          }).then(function(response) {
+            defer.resolve(response.data);
+          }, function(reason) {
+            $window.console.error('Uploading file failed: ', reason);
+            var rejectMsg = '';
+            switch (reason.status) {
+              case 401:
+                rejectMsg += $translate.instant('upload_failed_401');
+                break;
+              case 404:
+                rejectMsg += $translate.instant('upload_failed_404');
+                break;
+
+              default:
+                rejectMsg += $translate.instant('upload_failed');
+                break;
             }
             defer.reject({
               'message': rejectMsg,

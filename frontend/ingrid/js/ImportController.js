@@ -21,7 +21,7 @@ goog.require('ga_wmts_service');
     'ga_vector_service'
   ]);
 
-  // INGRID: Add 'gaGlobalOptions' and '$http'
+  // INGRID: Add 'gaGlobalOptions', '$http'
   module.controller('GaImportController', function($scope, $q,
       $window, gaFile, gaBrowserSniffer, gaWms, gaUrlUtils,
       gaLang, gaPreviewLayers, gaMapUtils, gaWmts, gaVector,
@@ -287,13 +287,20 @@ goog.require('ga_wmts_service');
       if (layer.wmsUrl) {
         return gaWms.getOlLayerFromGetCapLayer(layer);
       } else if (layer.capabilitiesUrl) {
+        // INGRID: Use layer
         return gaWmts.getOlLayerFromGetCap($scope.map, $scope.wmtsGetCap,
-            layer.Identifier, {
-              capabilitiesUrl: layer.capabilitiesUrl
-            });
+            layer.Identifier, layer);
       }
     };
     $scope.options.addPreviewLayer = function(map, getCapLayer) {
+
+      // INGRID: Add login and password
+      if ($scope.options.login) {
+        getCapLayer.secureAuthLogin = $scope.options.login;
+      }
+      if ($scope.options.password) {
+        getCapLayer.secureAuthPassword = $scope.options.password;
+      }
 
       gaPreviewLayers.addGetCapLayer(map, $scope.wmtsGetCap ||
           $scope.wmsGetCap, getCapLayer);
@@ -350,6 +357,12 @@ goog.require('ga_wmts_service');
       $scope.wmtsGetCap = null;
       file = file || {};
 
+      // INGRID: Add login, password
+      if (file.login && file.password) {
+        $scope.options.login = file.login;
+        $scope.options.password = file.password;
+      }
+
       // INGRID: Add check wms objects
       if (gaFile.isWmsGetCap(data) || data.WMT_MS_Capabilities ||
         data.WMS_Capabilities) {
@@ -375,10 +388,20 @@ goog.require('ga_wmts_service');
       } else if (gaFile.isGpx(data) || gaFile.isKml(data) ||
         gaFile.isGpx(data.xmlResponse) || gaFile.isKml(data.xmlResponse)) {
 
+        // INGRID: Add auth to session
+        if (file.url) {
+          var auth = '{"login":"' + file.login +
+            '","password":"' + file.password + '"}';
+          $window.sessionStorage.setItem(file.url, auth);
+        }
+
         // INGRID: Change data
         gaVector.addToMap($scope.map, data.xmlResponse || data, {
           url: file.url || URL.createObjectURL(file),
           useImageVector: gaVector.useImageVector(file.size),
+          // INGRID: Add auth
+          secureAuthLogin: file.login,
+          secureAuthPassword: file.password,
           zoomToExtent: true
 
         }).then(function() {

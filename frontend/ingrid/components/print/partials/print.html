@@ -25,6 +25,13 @@
       <select class="form-control" ng-model="scale" ng-options="l.name for l in capabilities.scales"></select>
     </div>
   </div>
+  <!-- INGRID: Add dpi -->
+  <div ng-if="capabilities.dpis.length > 1" class="form-group">
+    <label class="col-xs-4 control-label" translate>print_dpi</label>
+    <div class="col-xs-8">
+      <select class="form-control" ng-model="dpi" ng-options="l.name for l in capabilities.dpis"></select>
+    </div>
+  </div>
   <div class="form-group">
     <div class="col-xs-4 ga-checkboxes">
       <div class="checkbox">
