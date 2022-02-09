@@ -79,6 +79,12 @@ goog.require('ga_file_service');
           taElt.typeahead('close');
           // When a WMS is selected in the list, start downloading the
           // GetCapabilities
+          // INGRID: Reset auth
+          scope.needAuth = false;
+          scope.auth = {
+            fileLogin: '',
+            filePassword: ''
+          };
           scope.fileUrl = server.url;
           scope.handleFileUrl();
           scope.$applyAsync();

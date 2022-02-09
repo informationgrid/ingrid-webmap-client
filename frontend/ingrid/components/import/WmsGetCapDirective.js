@@ -391,6 +391,12 @@ goog.require('ga_urlutils_service');
         scope.addLayerList = function(layers, getOlLayerFromGetCapLayer) {
           if (gaGlobalOptions.serviceReverseImport) {
             layers.slice().reverse().forEach(function(getCapLay) {
+              if(scope.options.login && !getCapLay.secureAuthLogin) {
+                getCapLay.secureAuthLogin = scope.options.login;
+              }
+              if(scope.options.password && !getCapLay.secureAuthPassword) {
+                getCapLay.secureAuthPassword = scope.options.password;
+              }
               var olLayer = getOlLayerFromGetCapLayer(getCapLay);
               if (getCapLay.Layer) {
                 scope.addLayerList(getCapLay.Layer, getOlLayerFromGetCapLayer);
@@ -401,6 +407,12 @@ goog.require('ga_urlutils_service');
             });
           } else {
             layers.forEach(function(getCapLay) {
+              if(scope.options.login && !getCapLay.secureAuthLogin) {
+                getCapLay.secureAuthLogin = scope.options.login;
+              }
+              if(scope.options.password && !getCapLay.secureAuthPassword) {
+                getCapLay.secureAuthPassword = scope.options.password;
+              }
               var olLayer = getOlLayerFromGetCapLayer(getCapLay);
               if (olLayer) {
                 scope.addLayer(olLayer);
