@@ -164,6 +164,12 @@ goog.require('ga_file_service');
               // INGRID: Reset import attributes
               options.resetImportAttributes();
               timeoutP = $timeout(initUserMsg, 10000);
+              // INGRID: Reset auth
+              scope.needAuth = false;
+              scope.auth = {
+                fileLogin: '',
+                filePassword: ''
+              };
             });
           });
         };
