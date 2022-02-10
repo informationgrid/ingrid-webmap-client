@@ -371,6 +371,10 @@ goog.require('ga_urlutils_service');
           if (options.hasLoggedIn) {
             olLayer.hasLoggedIn = options.hasLoggedIn;
           }
+          // INGRID: Add url
+          if (options.url) {
+            olLayer.url = options.url;
+          }
           if (options.index) {
             map.getLayers().insertAt(options.index, olLayer);
           } else {
@@ -434,6 +438,7 @@ goog.require('ga_urlutils_service');
             // INGRID: Create dummy layer
             if (reason.status === 401) {
               layerOptions.id = id;
+              layerOptions.url = getCapUrl;
               return that.addWmtsToMapFromGetCap(map, '', layerIdentifier,
                   layerOptions);
             }
