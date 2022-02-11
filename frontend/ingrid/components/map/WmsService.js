@@ -183,18 +183,12 @@ goog.require('ga_urlutils_service');
                           URL.revokeObjectURL(objectUrl);
                         };
                         image.getImage().src = objectUrl;
-                        if (!layer.hasLoggedIn) {
-                          layer.hasLoggedIn = true;
-                        }
                       } else {
                         image.setState(3);
                       }
                     };
                     xhr.onerror = function() {
                       image.setState(3);
-                      if (!layer.hasLoggedIn) {
-                        layer.hasLoggedIn = true;
-                      }
                     };
                     xhr.send();
                   } else {
@@ -221,6 +215,10 @@ goog.require('ga_urlutils_service');
             tileGrid: tileGrid
           });
 
+          // INGRID: Check auth
+          var sessionAuthService = JSON.parse($window.sessionStorage.
+            getItem(options.url));
+
           var layer = new LayerClass({
             id: options.id,
             url: options.url,
@@ -240,6 +238,8 @@ goog.require('ga_urlutils_service');
             maxScale: options.maxScale,
             // INGRID: Add isSecure
             isSecure: options.isSecure,
+            // INGRID: Add hasLoggedIn
+            hasLoggedIn: sessionAuthService ? true : false,
             source: source,
             transition: 0
           });
