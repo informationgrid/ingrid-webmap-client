@@ -199,6 +199,10 @@ goog.require('ga_urlutils_service');
           source.set('featureInfoTpl', options.sourceConfig.featureInfoTpl);
         }
 
+        // INGRID: Check auth
+        var sessionAuthService = JSON.parse($window.sessionStorage.
+          getItem(options.capabilitiesUrl));
+
         var layer = new ol.layer.Tile({
           id: id,
           source: source,
@@ -210,6 +214,8 @@ goog.require('ga_urlutils_service');
           attributionUrl: options.attributionUrl,
           // INGRID: Add isSecure
           isSecure: options.isSecure,
+          // INGRID: Add hasLoggedIn
+          hasLoggedIn: sessionAuthService ? true : false,
           attribution: options.attribution
         });
         gaDefinePropertiesForLayer(layer);
