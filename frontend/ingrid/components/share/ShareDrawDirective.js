@@ -17,7 +17,8 @@ goog.require('ga_urlutils_service');
    * dminId property) as parameter.
    */
   // INGRID: Add param 'gaGlobalOptions'
-  module.directive('gaShareDraw', function(gaPermalink, gaUrlUtils, gaGlobalOptions) {
+  module.directive('gaShareDraw', function(gaPermalink, gaUrlUtils,
+      gaGlobalOptions) {
     return {
       restrict: 'A',
       templateUrl: 'components/share/partials/share-draw.html',
