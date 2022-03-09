@@ -541,8 +541,8 @@ goog.require('ga_urlutils_service');
               y: 200
             });
 
-            if(addLayers.length !== 0 ||
-              !gaGlobalOptions.serviceDisplayIdentPopupImport) {
+            if(addLayers.length === 0 &&
+              gaGlobalOptions.serviceDisplayIdentPopupImport) {
                 popup.open(5000);
             }
 
