@@ -540,7 +540,11 @@ goog.require('ga_urlutils_service');
               x: 400,
               y: 200
             });
-            popup.open(5000);
+
+            if(addLayers.length !== 0 ||
+              !gaGlobalOptions.serviceDisplayIdentPopupImport) {
+                popup.open(5000);
+            }
 
             scope.options.rejectImport(hasAddLayers);
             scope.options.importExtLayerIdent = null;

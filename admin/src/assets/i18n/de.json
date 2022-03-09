@@ -267,6 +267,8 @@
     "setting_settingHideCatalog_help": "Verstecken Sie im Menü des Webmap Clients das Kategorien-Akkordeon.",
     "setting_settingServiceReverseImport": "Dienst importieren - Layer umgekehrt",
     "setting_settingServiceReverseImport_help": "Die Layer eines Dienstes werden der Karte in umgekehrter Reihenfolge hinzugefügt.",
+    "setting_settingServiceDisplayIdentPopupImport": "Dienst importieren - Popup Meldung anzeigen",
+    "setting_settingServiceDisplayIdentPopupImport_help": "Beim Import eines Dienstes mit einem Identifier wird eine Popup angezeigt, wenn kein Identifier gefunden wird.",
     "setting_settingServiceMultiIdentImport": "Dienst importieren - Mehrere Layer mit gleichem Identifier",
     "setting_settingServiceMultiIdentImport_help": "Beim Import eines Dienstes mit einem Identifier werden auch mehrere Layer mit gleichem Identifier ohne Abfrage/Popup der Karte hinzugefügt.",
     "setting_settingServiceAllWithoutIdentImport": "Dienst importieren - Alle Layer",

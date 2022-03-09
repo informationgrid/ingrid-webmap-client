@@ -34,6 +34,7 @@ export class Setting {
         public settingHideCatalog = false,
         public settingServiceAllWithoutIdentImport = false,
         public settingServiceReverseImport = false,
+        public settingServiceDisplayIdentPopupImport = true,
         public settingServiceMultiIdentImport = false,
         public settingEnableW3W = false,
         public w3wUrl = '',
