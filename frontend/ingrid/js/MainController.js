@@ -238,10 +238,12 @@ goog.require('ga_window_service');
         $window.scrollTo(0, 0);
       }
 
-      if (topic.activatedLayers.length) {
+      if (topic.activatedLayers.length &&
+          !gaPermalink.getParams().layers) {
         $scope.globals.selectionShown = true;
         $scope.globals.catalogShown = false;
-      } else if (topic.selectedLayers.length) {
+      } else if (topic.selectedLayers.length &&
+          !gaPermalink.getParams().layers) {
         $scope.globals.catalogShown = true;
         $scope.globals.selectionShown = false;
       } else {
