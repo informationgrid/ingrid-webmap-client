@@ -176,12 +176,15 @@ itemscope itemtype="http://schema.org/WebApplication"
         -->
         <div ga-fullscreen ga-fullscreen-map="map"></div>&nbsp;&nbsp;
         <!-- INGRID: Use 'globals.serviceAnnouncementUrl' to define href -->
-        <a ng-if="!globals.serviceAnnouncementUrl" href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown" role="button">
-          <span translate>problem_announcement</span>
-        </a>
-        <a ng-if="globals.serviceAnnouncementUrl" href="{{globals.serviceAnnouncementUrl}}" target="_blank">
-          <span translate>problem_announcement</span>
-        </a>&nbsp;&nbsp;
+        <div ng-if="globals.serviceAnnouncement">
+          <a ng-if="!globals.serviceAnnouncementUrl" href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown" role="button">
+            <span translate>problem_announcement</span>
+          </a>
+          <a ng-if="globals.serviceAnnouncementUrl" href="{{globals.serviceAnnouncementUrl}}" target="_blank">
+            <span translate>problem_announcement</span>
+          </a>
+          &nbsp;&nbsp;
+        </div>
         <!-- INGRID: Edit href URL -->
         <a target="_blank" href="{{globals.serviceHelpUrl}}" translate>help_label</a>&nbsp;&nbsp;
         <!-- INGRID: Remove on iFrame -->
@@ -297,6 +300,10 @@ itemscope itemtype="http://schema.org/WebApplication"
              ga-mouse-position-ol3d="::ol3d"
              ga-mouse-position-options="options"></div>
       </div>
+      <!-- INGRID: Add accessibility -->
+      <div class="pull-right" ng-if="globals.enableAccessibilityFooter" >
+        <a target="_blank" onclick="window.open(settings.settingAccessibilityUrl, 'blank')" translate>accessibility_label</a>
+      </div>
       <div class="pull-right">
         <!-- INGRID: Edit href URL -->
         <a target="_blank" onclick="window.open(settings.settingCopyrightURL, 'blank')" translate>copyright_label</a>
@@ -308,6 +315,10 @@ itemscope itemtype="http://schema.org/WebApplication"
       <div class="pull-right">
         <!-- INGRID: Edit href URL -->
         <a target="_blank" onclick="window.open(settings.settingSitemapURL, 'blank')" translate>Sitemap</a>
+      </div>
+      <!-- INGRID: Add help -->
+      <div class="pull-right" ng-if="globals.enableHelpFooter">
+        <a target="_blank" onclick="window.open(settings.settingServiceHelpUrl, 'blank')" translate>help_label</a>
       </div>
     </div><!-- #footer -->
 
@@ -534,11 +545,19 @@ itemscope itemtype="http://schema.org/WebApplication"
                 <br>
                 -->
                 <!-- INGRID: Edit -->
+                <div ng-if="globals.enableHelpFooter">
+                 <a target="_blank" onclick="window.open(settings.settingServiceHelpUrl, 'blank')" translate>help_label</a>
+                 <br>
+                </div>
+                <a target="_blank" onclick="window.open(settings.settingSitemapURL, 'blank')" translate>Sitemap</a>
+                <br>
                 <a target="_blank" onclick="window.open(settings.settingCopyrightURL, 'blank')" translate>copyright_label</a>
                 <br>
                 <a target="_blank" onclick="window.open(settings.settingDisclaimerURL, 'blank')" translate>disclaimer_label</a>
                 <br>
-                <a target="_blank" onclick="window.open(settings.settingSitemapURL, 'blank')" translate>Sitemap</a>
+                <div ng-if="globals.enableAccessibilityFooter">
+                  <a target="_blank" onclick="window.open(settings.settingAccessibilityUrl, 'blank')" translate>accessibility_label</a>
+                </div>
               </p>
             </div>
           </div>
@@ -960,7 +979,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Available list of services to import
           settingDefaultImportList: settings.settingDefaultImportList || [],
           // INGRID: Import WMS as single tile
-          settingImportWMSSingleTile: settings.settingImportWMSSingleTile,
+          settingImportWMSSingleTile: settings.settingServiceImportSingleTile,
           // INGRID: Add print logo url
           printLogo: settings.settingPrintLogo.replace('{location.protocol}',location.protocol).replace('{location.host}',location.host),
           // INGRID: Add print north arrow logo url
@@ -1008,9 +1027,17 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Enable share Whatsapp
           enableShareWhatsapp: settings.settingShareWhatsapp,
           // INGRID: Announcement URL
+          serviceAnnouncement: settings.settingServiceAnnouncement,
+          // INGRID: Announcement URL
           serviceAnnouncementUrl: settings.settingServiceAnnouncementUrl,
           // INGRID: Help URL
           serviceHelpUrl: settings.settingServiceHelpUrl,
+          // INGRID: Help footer
+          enableHelpFooter: settings.settingServiceHelpFooter,
+          // INGRID: Accessibility URL
+          accessibilityUrl: settings.settingAccessibilityUrl,
+          // INGRID: Accessibility footer
+          enableAccessibilityFooter: settings.settingAccessibilityFooter,
           // INGRID: Service reverse import all layers
           serviceReverseImport: settings.settingServiceReverseImport || false,
           // INGRID: Service import display ident import popup

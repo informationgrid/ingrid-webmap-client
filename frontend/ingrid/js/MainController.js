@@ -325,10 +325,18 @@ goog.require('ga_window_service');
       isParentIFrame: gaGlobalOptions.isParentIFrame,
       // INGRID: Add 'isHideCatalog'
       isHideCatalog: gaGlobalOptions.isHideCatalog,
+      // INGRID: Add 'serviceAnnouncement'
+      serviceAnnouncement: gaGlobalOptions.serviceAnnouncement,
       // INGRID: Add 'serviceAnnouncementUrl'
       serviceAnnouncementUrl: gaGlobalOptions.serviceAnnouncementUrl,
       // INGRID: Add 'serviceHelpUrl'
       serviceHelpUrl: gaGlobalOptions.serviceHelpUrl,
+      // INGRID: Add 'serviceHelpFooter'
+      enableHelpFooter: gaGlobalOptions.enableHelpFooter,
+      // INGRID: Add 'accessibilityUrl'
+      accessibilityUrl: gaGlobalOptions.accessibilityUrl,
+      // INGRID: Add 'accessibilityFooter'
+      enableAccessibilityFooter: gaGlobalOptions.enableAccessibilityFooter,
       hostIsProd: gaGlobalOptions.hostIsProd
     };
 

@@ -136,5 +136,6 @@
 "service_auth_data_username":"Benutzername",
 "service_auth_data_password":"Passwort",
 "service_auth_data_login":"Anmelden",
-"service_auth_data_login_error":"Anmeldefehler"
+"service_auth_data_login_error":"Anmeldefehler",
+"accessibility_label": "Barrierefreiheit"
 }
