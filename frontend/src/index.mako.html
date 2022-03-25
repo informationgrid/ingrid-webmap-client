@@ -1031,11 +1031,11 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Announcement URL
           serviceAnnouncementUrl: settings.settingServiceAnnouncementUrl,
           // INGRID: Help URL
-          serviceHelpUrl: settings.settingServiceHelpUrl,
+          serviceHelpUrl: settings.settingServiceHelpUrl || '/hilfe?hkey=maps-1',
           // INGRID: Help footer
           enableHelpFooter: settings.settingServiceHelpFooter,
           // INGRID: Accessibility URL
-          accessibilityUrl: settings.settingAccessibilityUrl,
+          accessibilityUrl: settings.settingAccessibilityUrl || '/barrierefreiheit',
           // INGRID: Accessibility footer
           enableAccessibilityFooter: settings.settingAccessibilityFooter,
           // INGRID: Service reverse import all layers
