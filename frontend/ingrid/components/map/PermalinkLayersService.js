@@ -523,6 +523,8 @@ goog.require('ga_wmts_service');
                           attributionUrl: infos[8],
                           // INGRID: Add isSecure
                           isSecure: infos[9],
+                          // INGRID: Add gutter
+                          gutter: gaGlobalOptions.settingImportWMSGutter,
                           useReprojection: (infos[6] === 'true')
                         },
                         index + 1);
