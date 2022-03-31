@@ -370,6 +370,8 @@ goog.require('ga_urlutils_service');
             secureAuthLogin: getCapLayer.secureAuthLogin,
             // INGRID: Add secureAuthPassword
             secureAuthPassword: getCapLayer.secureAuthPassword,
+            // INGRID: Add gutter
+            gutter: gaGlobalOptions.settingWMSImportGutter,
             useReprojection: getCapLayer.useReprojection
           };
           return createWmsLayer(wmsParams, wmsOptions);

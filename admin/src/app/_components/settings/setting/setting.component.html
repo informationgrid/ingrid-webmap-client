@@ -379,6 +379,28 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- settingServiceImportWMSGutter -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingServiceImportWMSGutter</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingServiceImportWMSGutter" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingServiceImportWMSGutter" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingServiceImportWMSGutter_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="number" #settingServiceImportWMSGutter="ngModel" name="settingServiceImportWMSGutter" 
+                                            [(ngModel)]="settings.settingServiceImportWMSGutter">
+                                    </div>
+                                </div>
+                            </div>
                             <!-- settingServiceReverseImport -->
                             <div class="form-group row">
                                 <div class="col-sm-3">

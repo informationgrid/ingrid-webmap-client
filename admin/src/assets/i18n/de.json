@@ -275,6 +275,8 @@
     "setting_settingHideCatalog_help": "Verstecken Sie im Menü des Webmap Clients das Kategorien-Akkordeon.",
     "setting_settingServiceImportSingleTile": "WMS-Layer als SingleTile importieren",
     "setting_settingServiceImportSingleTile_help": "Die WMS GetMap-Abfrage eines importierten Layers wird als ganzes Bild geladen.",
+    "setting_settingServiceImportWMSGutter": "WMS-Layer Gutter definieren",
+    "setting_settingServiceImportWMSGutter_help": "Es werden WMS GetMap-Request angefordert, die größer (plus zweimal Gutter Wert) sind als die normalen GetMap. Die Größe des Gutters in Pixels.",
     "setting_settingServiceReverseImport": "Layer umgekehrt importieren",
     "setting_settingServiceReverseImport_help": "Die Layer eines Dienstes werden in umgekehrter Reihenfolge der Karte hinzugefügt.",
     "setting_settingServiceDisplayIdentPopupImport": "Meldung beim Importieren anzeigen",

@@ -33,6 +33,7 @@ export class Setting {
         public settingKMLName = '',
         public settingHideCatalog = false,
         public settingServiceImportSingleTile = true,
+        public settingServiceImportWMSGutter = 0,
         public settingServiceAllWithoutIdentImport = false,
         public settingServiceReverseImport = false,
         public settingServiceDisplayIdentPopupImport = true,
