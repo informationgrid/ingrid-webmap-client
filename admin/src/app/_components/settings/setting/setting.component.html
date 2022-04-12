@@ -24,6 +24,11 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" id="pills-settings-import-tab" data-toggle="pill" href="#tabs-settings-import" role="tab" aria-controls="pills-settings-import" aria-selected="true" translate>
+                                Import
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" id="pills-settings-layerinfo-tab" data-toggle="pill" href="#tabs-settings-layerinfo" role="tab" aria-controls="pills-settings-layerinfo" aria-selected="true" translate>
                                 Layerinfo
                             </a>
@@ -100,72 +105,6 @@
                                     <div class="form-check mb-2 mr-sm-2">
                                         <input class="form-check-input" type="checkbox" #settingHideCatalog="ngModel" name="settingHideCatalog" 
                                             [(ngModel)]="settings.settingHideCatalog">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- settingServiceReverseImport -->
-                            <div class="form-group row">
-                                <div class="col-sm-3">
-                                    <div class=" d-flex justify-content-between align-items-center">
-                                        <label class="col-form-label" translate>setting_settingServiceReverseImport</label>
-                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingServiceReverseImport" title="{{ ('help') | translate }}">
-                                            <i class="fa fa-info" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-                                    <div class="collapse" id="info_settingServiceReverseImport" data-parent="#setting">
-                                        <div>
-                                            <small class="form-text text-muted" translate>setting_settingServiceReverseImport_help</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-9">
-                                    <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingServiceReverseImport="ngModel" name="settingServiceReverseImport" 
-                                            [(ngModel)]="settings.settingServiceReverseImport">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- settingServiceMultiIdentImport -->
-                            <div class="form-group row">
-                                <div class="col-sm-3">
-                                    <div class=" d-flex justify-content-between align-items-center">
-                                        <label class="col-form-label" translate>setting_settingServiceMultiIdentImport</label>
-                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingServiceMultiIdentImport" title="{{ ('help') | translate }}">
-                                            <i class="fa fa-info" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-                                    <div class="collapse" id="info_settingServiceMultiIdentImport" data-parent="#setting">
-                                        <div>
-                                            <small class="form-text text-muted" translate>setting_settingServiceMultiIdentImport_help</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-9">
-                                    <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingServiceMultiIdentImport="ngModel" name="settingServiceMultiIdentImport" 
-                                            [(ngModel)]="settings.settingServiceMultiIdentImport">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- settingServiceAllWithoutIdentImport -->
-                            <div class="form-group row">
-                                <div class="col-sm-3">
-                                    <div class=" d-flex justify-content-between align-items-center">
-                                        <label class="col-form-label" translate>setting_settingServiceAllWithoutIdentImport</label>
-                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingServiceAllWithoutIdentImport" title="{{ ('help') | translate }}">
-                                            <i class="fa fa-info" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-                                    <div class="collapse" id="info_settingServiceAllWithoutIdentImport" data-parent="#setting">
-                                        <div>
-                                            <small class="form-text text-muted" translate>setting_settingServiceAllWithoutIdentImport_help</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-9">
-                                    <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingServiceAllWithoutIdentImport="ngModel" name="settingServiceAllWithoutIdentImport" 
-                                            [(ngModel)]="settings.settingServiceAllWithoutIdentImport">
                                     </div>
                                 </div>
                             </div>
@@ -409,6 +348,185 @@
                                         <div class="input-group-append">
                                             <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(mouseProjs.value, settings.settingDefaultMouseProjections);"
                                                 [disabled]="!mouseProjs.value">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+<!-- Import -->
+                        <div class="tab-pane fade show" id="tabs-settings-import" role="tabpanel" aria-labelledby="pills-settings-import-tab'">
+                            <!-- settingServiceImportSingleTile -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingServiceImportSingleTile</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingServiceImportSingleTile" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingServiceImportSingleTile" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingServiceImportSingleTile_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingServiceImportSingleTile="ngModel" name="settingServiceImportSingleTile" 
+                                            [(ngModel)]="settings.settingServiceImportSingleTile">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- settingServiceImportWMSGutter -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingServiceImportWMSGutter</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingServiceImportWMSGutter" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingServiceImportWMSGutter" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingServiceImportWMSGutter_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="input-group form-group">
+                                        <input class="form-control" type="number" #settingServiceImportWMSGutter="ngModel" name="settingServiceImportWMSGutter" 
+                                            [(ngModel)]="settings.settingServiceImportWMSGutter">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- settingServiceReverseImport -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingServiceReverseImport</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingServiceReverseImport" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingServiceReverseImport" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingServiceReverseImport_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingServiceReverseImport="ngModel" name="settingServiceReverseImport" 
+                                            [(ngModel)]="settings.settingServiceReverseImport">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- settingServiceDisplayIdentPopupImport -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingServiceDisplayIdentPopupImport</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingServiceDisplayIdentPopupImport" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingServiceDisplayIdentPopupImport" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingServiceDisplayIdentPopupImport_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingServiceDisplayIdentPopupImport="ngModel" name="settingServiceDisplayIdentPopupImport" 
+                                            [(ngModel)]="settings.settingServiceDisplayIdentPopupImport">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- settingServiceMultiIdentImport -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingServiceMultiIdentImport</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingServiceMultiIdentImport" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingServiceMultiIdentImport" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingServiceMultiIdentImport_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingServiceMultiIdentImport="ngModel" name="settingServiceMultiIdentImport" 
+                                            [(ngModel)]="settings.settingServiceMultiIdentImport">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- settingServiceAllWithoutIdentImport -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingServiceAllWithoutIdentImport</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingServiceAllWithoutIdentImport" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingServiceAllWithoutIdentImport" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingServiceAllWithoutIdentImport_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingServiceAllWithoutIdentImport="ngModel" name="settingServiceAllWithoutIdentImport" 
+                                            [(ngModel)]="settings.settingServiceAllWithoutIdentImport">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- settingDefaultImportList -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingDefaultImportList</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDefaultImportList"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingDefaultImportList" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingDefaultImportList_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="input-group form-group" *ngFor="let serviceList of settings.settingDefaultImportList; let i=index;">
+                                        <input type="text" [(ngModel)]="settings.settingDefaultImportList[i]" name="serviceLists{{ i }}" class="form-control" disabled>
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(serviceList, settings.settingDefaultImportList)"
+                                                *ngIf="i !== (settings.settingDefaultImportList.length - 1) && settings.settingDefaultImportList.length > 1">
+                                                <i class="fa fa-sort-down" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onUpItem(serviceList, settings.settingDefaultImportList)"
+                                                *ngIf="i !== 0">
+                                                <i class="fa fa-sort-up" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-danger btn-sm" (click)="onRemoveItem(i, settings.settingDefaultImportList)">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="input-group form-group">
+                                        <input type="text" #serviceLists name="serviceLists" class="form-control" placeholder="{{ ('add_placeholder') | translate }}">
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(serviceLists.value, settings.settingDefaultImportList);"
+                                                [disabled]="!serviceLists.value">
                                                 <i class="fa fa-plus" aria-hidden="true"></i>
                                             </button>
                                         </div>
@@ -983,6 +1101,29 @@
                         </div>
 <!-- Verweise -->
                         <div class="tab-pane fade show" id="tabs-settings-links" role="tabpanel" aria-labelledby="pills-settings-links-tab'">
+                            <!-- settingServiceAnnouncement -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingServiceAnnouncement</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingServiceAnnouncement"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingServiceAnnouncement" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingServiceAnnouncement_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingServiceAnnouncement="ngModel" name="settingServiceAnnouncement" 
+                                            [(ngModel)]="settings.settingServiceAnnouncement">
+                                    </div>
+                                </div>
+                            </div>
                             <!-- settingServiceAnnouncementUrl -->
                             <div class="form-group row">
                                 <div class="col-sm-3">
@@ -1021,6 +1162,29 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <input type="text" #settingServiceHelpUrl="ngModel" [(ngModel)]="settings.settingServiceHelpUrl" name="settingServiceHelpUrl" class="form-control">
+                                </div>
+                            </div>
+                            <!-- settingServiceHelpFooter -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingServiceHelpFooter</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingServiceHelpFooter"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingServiceHelpFooter" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingServiceHelpUFooter</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingServiceHelpFooter="ngModel" name="settingServiceHelpFooter" 
+                                            [(ngModel)]="settings.settingServiceHelpFooter">
+                                    </div>
                                 </div>
                             </div>
                             <!-- settingCopyrightURL -->
@@ -1082,6 +1246,49 @@
                                 </div>
                             </div>
                         </div>
+                            <!-- settingAccessibilityUrl -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingAccessibilityUrl</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingAccessibilityUrl"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingAccessibilityUrl" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingAccessibilityUrl_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingAccessibilityUrl="ngModel" [(ngModel)]="settings.settingAccessibilityUrl" name="settingAccessibilityUrl" class="form-control">
+                                </div>
+                            </div>
+                            <!-- settingAccessibilityFooter -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingAccessibilityFooter</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingAccessibilityFooter"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingAccessibilityFooter" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingAccessibilityFooter</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingAccessibilityFooter="ngModel" name="settingAccessibilityFooter" 
+                                            [(ngModel)]="settings.settingAccessibilityFooter">
+                                    </div>
+                                </div>
+                            </div>
 <!-- Layerinfo -->
                         <div class="tab-pane fade show" id="tabs-settings-layerinfo" role="tabpanel" aria-labelledby="pills-settings-layerinfo-tab'">
                             <!-- settingCheckLayerInRange -->
@@ -1156,50 +1363,6 @@
                         </div>
 <!-- Others -->
                         <div class="tab-pane fade show" id="tabs-settings-others" role="tabpanel" aria-labelledby="pills-settings-others-tab'">
-                            <!-- settingDefaultImportList -->
-                            <div class="form-group row">
-                                <div class="col-sm-3">
-                                    <div class=" d-flex justify-content-between align-items-center">
-                                        <label class="col-form-label" translate>setting_settingDefaultImportList</label>
-                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDefaultImportList"
-                                            title="{{ ('help') | translate }}">
-                                            <i class="fa fa-info" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-                                    <div class="collapse" id="info_settingDefaultImportList" data-parent="#setting">
-                                        <div>
-                                            <small class="form-text text-muted" translate>setting_settingDefaultImportList_help</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-9">
-                                    <div class="input-group form-group" *ngFor="let serviceList of settings.settingDefaultImportList; let i=index;">
-                                        <input type="text" [(ngModel)]="settings.settingDefaultImportList[i]" name="serviceLists{{ i }}" class="form-control" disabled>
-                                        <div class="input-group-append">
-                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(serviceList, settings.settingDefaultImportList)"
-                                                *ngIf="i !== (settings.settingDefaultImportList.length - 1) && settings.settingDefaultImportList.length > 1">
-                                                <i class="fa fa-sort-down" aria-hidden="true"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onUpItem(serviceList, settings.settingDefaultImportList)"
-                                                *ngIf="i !== 0">
-                                                <i class="fa fa-sort-up" aria-hidden="true"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-outline-danger btn-sm" (click)="onRemoveItem(i, settings.settingDefaultImportList)">
-                                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="input-group form-group">
-                                        <input type="text" #serviceLists name="serviceLists" class="form-control" placeholder="{{ ('add_placeholder') | translate }}">
-                                        <div class="input-group-append">
-                                            <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(serviceLists.value, settings.settingDefaultImportList);"
-                                                [disabled]="!serviceLists.value">
-                                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <!-- settingUseGeodesic -->
                             <div class="form-group row">
                                 <div class="col-sm-3">

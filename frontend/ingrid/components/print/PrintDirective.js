@@ -570,6 +570,7 @@ goog.require('ga_urlutils_service');
           });
     };
 
+    /* INGRID: Not in used
     var getDpi = function(layoutName, dpiConfig) {
       if (/a4/i.test(layoutName) && dpiConfig.length > 1) {
         return dpiConfig[1].value;
@@ -577,6 +578,7 @@ goog.require('ga_urlutils_service');
         return dpiConfig[0].value;
       }
     };
+    */
 
     var getPrintRectangleCoords = function() {
       // Framebuffer size!!

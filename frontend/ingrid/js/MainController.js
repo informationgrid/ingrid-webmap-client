@@ -238,10 +238,12 @@ goog.require('ga_window_service');
         $window.scrollTo(0, 0);
       }
 
-      if (topic.activatedLayers.length) {
+      if (topic.activatedLayers.length &&
+          !gaPermalink.getParams().layers) {
         $scope.globals.selectionShown = true;
         $scope.globals.catalogShown = false;
-      } else if (topic.selectedLayers.length) {
+      } else if (topic.selectedLayers.length &&
+          !gaPermalink.getParams().layers) {
         $scope.globals.catalogShown = true;
         $scope.globals.selectionShown = false;
       } else {
@@ -323,10 +325,18 @@ goog.require('ga_window_service');
       isParentIFrame: gaGlobalOptions.isParentIFrame,
       // INGRID: Add 'isHideCatalog'
       isHideCatalog: gaGlobalOptions.isHideCatalog,
+      // INGRID: Add 'serviceAnnouncement'
+      serviceAnnouncement: gaGlobalOptions.serviceAnnouncement,
       // INGRID: Add 'serviceAnnouncementUrl'
       serviceAnnouncementUrl: gaGlobalOptions.serviceAnnouncementUrl,
       // INGRID: Add 'serviceHelpUrl'
       serviceHelpUrl: gaGlobalOptions.serviceHelpUrl,
+      // INGRID: Add 'serviceHelpFooter'
+      enableHelpFooter: gaGlobalOptions.enableHelpFooter,
+      // INGRID: Add 'accessibilityUrl'
+      accessibilityUrl: gaGlobalOptions.accessibilityUrl,
+      // INGRID: Add 'accessibilityFooter'
+      enableAccessibilityFooter: gaGlobalOptions.enableAccessibilityFooter,
       hostIsProd: gaGlobalOptions.hostIsProd
     };
 

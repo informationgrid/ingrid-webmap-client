@@ -32,8 +32,11 @@ export class Setting {
         public settingPrintDependOnMouseProj = false,
         public settingKMLName = '',
         public settingHideCatalog = false,
+        public settingServiceImportSingleTile = true,
+        public settingServiceImportWMSGutter = 0,
         public settingServiceAllWithoutIdentImport = false,
         public settingServiceReverseImport = false,
+        public settingServiceDisplayIdentPopupImport = true,
         public settingServiceMultiIdentImport = false,
         public settingEnableW3W = false,
         public w3wUrl = '',
@@ -46,7 +49,11 @@ export class Setting {
         public settingSearchCoordsZoom = 16,
         public settingEnable3D = false,
         public settingDefaultTerrain = '',
+        public settingServiceAnnouncement = true,
         public settingServiceAnnouncementUrl = '',
         public settingServiceHelpUrl = '',
+        public settingServiceHelpFooter = false,
+        public settingAccessibilityUrl = '',
+        public settingAccessibilityFooter = false,
     ) {}
 }
