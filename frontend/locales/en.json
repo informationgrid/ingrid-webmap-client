@@ -131,5 +131,6 @@
 "service_auth_data_password":"Password",
 "service_auth_data_login":"Login",
 "service_auth_data_login_error":"Error",
-"accessibility_label": "Accessibility"
+"accessibility_label": "Accessibility",
+"view_in_iframe": "The {{url}} embed page must be used in an iframe."
 }
