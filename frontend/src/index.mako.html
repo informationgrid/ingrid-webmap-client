@@ -810,7 +810,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <script>
       window.addEventListener('load', function() {
         if (window.name !== "embed" && window.location == window.parent.location) {
-          document.body.innerHTML = "The map.geo.admin.ch embed page must be used in an iframe."
+          document.body.innerHTML = "<span translate-values=\"{{host}}\" translate>view_in_iframe</span>"
         }
       }, false);
     </script>

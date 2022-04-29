@@ -137,5 +137,6 @@
 "service_auth_data_password":"Passwort",
 "service_auth_data_login":"Anmelden",
 "service_auth_data_login_error":"Anmeldefehler",
-"accessibility_label": "Barrierefreiheit"
+"accessibility_label": "Barrierefreiheit",
+"view_in_iframe": "Die {{url}} eingebettete Seite muss in einem iFrame verwendet werden."
 }
