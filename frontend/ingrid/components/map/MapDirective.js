@@ -126,6 +126,52 @@ goog.require('ga_styles_service');
           });
         }
 
+        // Update permalink based on view states.
+        var updatePermalink = function() {
+          // only update the permalink in 2d mode
+          if (!scope.ol3d || !scope.ol3d.getEnabled()) {
+            // remove 3d params
+            gaPermalink.deleteParam('lon');
+            gaPermalink.deleteParam('lat');
+            gaPermalink.deleteParam('elevation');
+            gaPermalink.deleteParam('heading');
+            gaPermalink.deleteParam('pitch');
+            var center = view.getCenter();
+            var zoom = view.getZoom();
+            // when the directive is instantiated the view may not
+            // be defined yet.
+            if (center && zoom !== undefined) {
+              var e = center[0].toFixed(2);
+              var n = center[1].toFixed(2);
+              gaPermalink.updateParams({E: e, N: n, zoom: zoom});
+              gaPermalink.deleteParam('X');
+              gaPermalink.deleteParam('Y');
+            }
+          }
+        };
+        view.on('propertychange', gaDebounce.debounce(updatePermalink, 1000,
+            false));
+
+        map.setTarget(element[0]);
+
+        // INGRID: Add default zoom
+        // Zoom to default extent
+        if ((gaPermalink.getParams().E === undefined &&
+            gaPermalink.getParams().N === undefined) &&
+            (gaPermalink.getParams().X === undefined &&
+            gaPermalink.getParams().Y === undefined)) {
+          if (!gaBrowserSniffer.embed) {
+            if (window.parent.resizeIframe !== undefined) {
+              window.parent.resizeIframe();
+              map.updateSize();
+            }
+          }
+          var extent = ol.proj.transformExtent(gaMapUtils.defaultExtent,
+              'EPSG:4326', gaGlobalOptions.defaultEpsg);
+          var size = map.getSize();
+          view.fit(extent, size);
+        }
+
         // INGRID: Add bwaStrId 
         if (queryParams.bwaStrId !== undefined &&
           queryParams.bwaStrKm !== undefined) {
@@ -180,63 +226,17 @@ goog.require('ga_styles_service');
                         map.addLayer(gaMapUtils
                           .getFeatureOverlay([crosshair], style));
                         map.getView()
-                          .setCenter([geo.coordinates[0], geo.coordinates[1]]);
+                          .setCenter(geo.coordinates);
+                        map.getView()
+                          .setZoom(+queryParams.zoom || 15);
                       }
                     }
                   }
                 }
               }
             }
-          }, function() {
           });
         }
-
-        // Update permalink based on view states.
-        var updatePermalink = function() {
-          // only update the permalink in 2d mode
-          if (!scope.ol3d || !scope.ol3d.getEnabled()) {
-            // remove 3d params
-            gaPermalink.deleteParam('lon');
-            gaPermalink.deleteParam('lat');
-            gaPermalink.deleteParam('elevation');
-            gaPermalink.deleteParam('heading');
-            gaPermalink.deleteParam('pitch');
-            var center = view.getCenter();
-            var zoom = view.getZoom();
-            // when the directive is instantiated the view may not
-            // be defined yet.
-            if (center && zoom !== undefined) {
-              var e = center[0].toFixed(2);
-              var n = center[1].toFixed(2);
-              gaPermalink.updateParams({E: e, N: n, zoom: zoom});
-              gaPermalink.deleteParam('X');
-              gaPermalink.deleteParam('Y');
-            }
-          }
-        };
-        view.on('propertychange', gaDebounce.debounce(updatePermalink, 1000,
-            false));
-
-        map.setTarget(element[0]);
-
-        // INGRID: Add default zoom
-        // Zoom to default extent
-        if ((gaPermalink.getParams().E === undefined &&
-            gaPermalink.getParams().N === undefined) &&
-            (gaPermalink.getParams().X === undefined &&
-            gaPermalink.getParams().Y === undefined)) {
-          if (!gaBrowserSniffer.embed) {
-            if (window.parent.resizeIframe !== undefined) {
-              window.parent.resizeIframe();
-              map.updateSize();
-            }
-          }
-          var extent = ol.proj.transformExtent(gaMapUtils.defaultExtent,
-              'EPSG:4326', gaGlobalOptions.defaultEpsg);
-          var size = map.getSize();
-          view.fit(extent, size);
-        }
-
         scope.$watch('::ol3d', function(ol3d) {
           if (ol3d) {
             var camera = ol3d.getCesiumScene().camera;
