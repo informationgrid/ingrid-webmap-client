@@ -65,10 +65,10 @@ goog.require('ga_styles_service');
     };
   });
 
-  // INGRID: Add parameter 'gaGlobalOptions'
+  // INGRID: Add parameter 'gaGlobalOptions', '$http'
   module.directive('gaMap', function($window, gaPermalink,
       gaStyleFactory, gaBrowserSniffer, gaLayers, gaDebounce, gaOffline,
-      gaMapUtils, $translate, gaGlobalOptions) {
+      gaMapUtils, $translate, gaGlobalOptions, $http) {
     return {
       restrict: 'A',
       scope: {
@@ -126,6 +126,71 @@ goog.require('ga_styles_service');
           });
         }
 
+        // INGRID: Add bwaStrId 
+        if (queryParams.bwaStrId !== undefined &&
+          queryParams.bwaStrKm !== undefined) {
+          var content = '{' +
+            '"limit":200,' +
+            '"queries":[' +
+            '{' +
+            '"qid":1,' +
+            '"bwastrid":"' + queryParams.bwaStrId + '",' +
+            '"stationierung":{';
+          content = content + '"km_wert":' + queryParams.bwaStrKm;
+          content = content + ',';
+          var offset = 0;
+          if(queryParams.bwaStrOffset) {
+            offset = queryParams.bwaStrOffset;
+          }
+          content = content + '"offset":' + offset;
+          content = content + '},' +
+            '"spatialReference":{' +
+            '"wkid":' + gaGlobalOptions.defaultEpsg.split(':')[1] +
+            '}' +
+            '}' +
+            ']' +
+          '}';
+          $http.get('/ingrid-webmap-client/rest/' +
+            'jsonCallback/queryPost?', {
+            cache: true,
+            params: {
+              'url': gaGlobalOptions.searchBwaLocatorGeoUrl,
+              'data': content
+            }
+          }).then(function(response) {
+            var data = response.data;
+            if(data) {
+              var result = data.result;
+              if(result) {
+                if(result.length > 0) {
+                  var bwaStr = result[0];
+                  if(bwaStr) {
+                    var geo = bwaStr.geometry;
+                    if(geo) {
+                      if(geo.coordinates) {
+                        var crosshair = new ol.Feature({
+                          label: 'link_bowl_crosshair',
+                          geometry: new ol.geom.Point(geo.coordinates)
+                        });
+                        var style = gaStyleFactory
+                          .getStyle(queryParams.crosshair);
+                        if (!style) {
+                          style = gaStyleFactory.getStyle('marker');
+                        }
+                        map.addLayer(gaMapUtils
+                          .getFeatureOverlay([crosshair], style));
+                        map.getView()
+                          .setCenter([geo.coordinates[0], geo.coordinates[1]]);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }, function() {
+          });
+        }
+
         // Update permalink based on view states.
         var updatePermalink = function() {
           // only update the permalink in 2d mode
@@ -160,7 +225,7 @@ goog.require('ga_styles_service');
             gaPermalink.getParams().N === undefined) &&
             (gaPermalink.getParams().X === undefined &&
             gaPermalink.getParams().Y === undefined)) {
-          if(!gaBrowserSniffer.embed) {
+          if (!gaBrowserSniffer.embed) {
             if (window.parent.resizeIframe !== undefined) {
               window.parent.resizeIframe();
               map.updateSize();
