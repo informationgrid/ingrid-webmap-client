@@ -550,7 +550,10 @@ goog.require('ga_urlutils_service');
           layer.displayInLayerManager = true;
           layer.label = label;
           layer.visible = visible;
-          
+          layer.disableCtrlLayerExtent = true;
+          layer.disableCtrlLayerUp = true;
+          layer.disableCtrlLayerDown = true;
+
           // INGRID: Update param 'bwaStrVisible'
           layer.on('change:visible', function(evt) {
             gaPermalink.updateParams({
