@@ -214,17 +214,22 @@ goog.require('ga_styles_service');
                     var geo = bwaStr.geometry;
                     if(geo) {
                       if(geo.coordinates) {
+                        var label = bwaStr.bwastr_name +
+                          ' (' + bwaStr.bwastrid + ') ' + 
+                          ' Km: ' + bwaStr.stationierung.km_wert +
+                          ' Abstand: ' + bwaStr.stationierung.offset;
+                        var visible = true;
+                        if (queryParams.bwaStrVisible !== undefined) {
+                          visible = (queryParams.bwaStrVisible  == "true");
+                        }
                         var crosshair = new ol.Feature({
-                          label: 'link_bowl_crosshair',
+                          label: label,
                           geometry: new ol.geom.Point(geo.coordinates)
                         });
-                        var style = gaStyleFactory
-                          .getStyle(queryParams.crosshair);
-                        if (!style) {
-                          style = gaStyleFactory.getStyle('marker');
-                        }
+                        var style = gaStyleFactory.getStyle('marker');
                         map.addLayer(gaMapUtils
-                          .getFeatureOverlay([crosshair], style));
+                          .getBwaStrFeatureOverlay(crosshair, style,
+                           map, label, visible));
                         map.getView()
                           .setCenter(geo.coordinates);
                         map.getView()
