@@ -385,6 +385,13 @@ goog.require('ga_window_service');
           evt.preventDefault();
         };
 
+        // INGRID: Add wfs download
+        scope.displayWfsDownloads = function(evt, layer) {
+          var isWfsDownload = true;
+          gaLayerMetadataPopup.toggle(layer, isWfsDownload);
+          evt.preventDefault();
+        };
+
         // INGRID: Add function for zoomToExtent
         scope.zoomToExtent = function(evt, layer) {
           if (layer.type === 'VECTOR') {
@@ -501,7 +508,7 @@ goog.require('ga_window_service');
                 params['login'] = login;
                 params['password'] = password;
               }
-              
+
               $http.post(gaUrlUtils.buildProxyUrl(url), params, {
                 cache: true
               }).then(function(response) {

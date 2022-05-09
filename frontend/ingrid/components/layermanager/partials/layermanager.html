@@ -28,6 +28,10 @@
       </div>
       <button class="ga-icon ga-btn fa fa-user"
               ng-click="showWarning(layer)"></button>
+      <!-- INGRID: Add wfs download -->
+      <button class="ga-icon ga-btn fa fa-ga-offline"
+              ng-if="layer.wmsWfsUrl"
+              ng-click="displayWfsDownloads($event, layer)"></button>
       <!-- INGRID: Add button for auth -->
       <!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_maki_entrance' | translate }}"' -->
       <button ng-if="layer.isSecure && !layer.hasLoggedIn" class="ga-icon ga-btn fa fa-maki-entrance"
