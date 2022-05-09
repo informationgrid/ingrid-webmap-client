@@ -2,7 +2,8 @@
   <li ng-repeat="layer in filteredLayers" class="ga-layer-folded"
       ng-class="{
         'ga-layer-time-enabled': layer.timeEnabled,
-        'ga-layer-warning': layer.useThirdPartyData
+        'ga-layer-warning': layer.useThirdPartyData,
+        'ga-layer-wfs': layer.wmsWfsUrl
       }">
 <!-- INGRID: Check layer extent intersects map extent -->
     <div class="ga-layer-infos ga-grab" ng-class="{'extent-outside': !isInRange(layer)}">
