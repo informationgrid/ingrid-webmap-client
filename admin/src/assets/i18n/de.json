@@ -366,7 +366,7 @@
     "layer_category_no_dependency": "Diese Karte wurde keiner Kategorie zugeordnet.",
     "localisation": "Lokalisierung",
     "layer_wmsWfsLabel": "WFS Titel",
-    "layer_wmsWfsLabel_help": "WFS Titel zur Darstellung im Info Popup (WMS)",
-    "layer_wmsWfsUrl": "WFS URL",
-    "layer_wmsWfsUrl_help": "WFS URL zum Abruf von Download-Links"
+    "layer_wmsWfsLabel_help": "WFS Titel zur Auflistung der Feature Types eines WFS-Dienstes",
+    "layer_wmsWfsUrl": "WFS URL (GetCapabilities)",
+    "layer_wmsWfsUrl_help": "WFS URL (GetCapabilities) zum Abruf der Feature Types. Ein Download-Button wird bei dem WMS-Layer unter \"Dargestellte Karten\" angezeigt."
 }
