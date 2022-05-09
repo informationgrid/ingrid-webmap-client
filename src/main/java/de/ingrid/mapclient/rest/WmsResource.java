@@ -393,8 +393,8 @@ public class WmsResource {
                 InputStream is = new BufferedInputStream(conn.getInputStream());
                 Document doc = Utils.getDocumentFromStream(is);
                 XPath xpath = XPathFactory.newInstance().newXPath();
-                String title = xpath.evaluate( "./ows:ServiceIdentification/ows:Title", doc );
-                if(titleStr != null) {
+                String title = xpath.evaluate( "//ServiceIdentification/Title", doc );
+                if(titleStr != null && !titleStr.isEmpty()) {
                     title = titleStr;
                 }
                 NodeList featureTypes = (NodeList) xpath.evaluate( "//FeatureTypeList/FeatureType", doc, XPathConstants.NODESET );

@@ -266,13 +266,33 @@ body:not(.webkit) [ga-layermanager] .ga-layer-infos label {
 
 // INGRID: Add .fa-ga-offline
 [ga-layermanager] {
-  .fa-ga-offline { 
-    display: block;
-    right: 36px;
-    font-size: 40px;
-    width: 18px;
+  .ga-layer-wfs {
+    .ga-layer-infos label {
+      padding-right: 5.1em;
+    }
+    .fa-ga-offline { 
+      display: block;
+      right: 36px;
+      font-size: 40px;
+      width: 18px;
+    }
+    .fa-ga-offline:before {
+      margin-left: -11px;
+    }
   }
-  .fa-ga-offline:before {
-    margin-left: -11px;
+}
+
+@media (max-width: 768px), (max-height: 600px) {
+  [ga-layermanager] {
+    .ga-layer-wfs {
+      .fa-ga-offline {
+        font-size: 58px;
+        width: 24px;
+        top: -9px;
+      }
+     .fa-ga-offline:before {
+        margin-left: -16px;
+      }
+    }
   }
 }
