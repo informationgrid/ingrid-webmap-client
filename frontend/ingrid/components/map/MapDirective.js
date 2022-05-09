@@ -220,7 +220,7 @@ goog.require('ga_styles_service');
                           ' Abstand: ' + bwaStr.stationierung.offset;
                         var visible = true;
                         if (queryParams.bwaStrVisible !== undefined) {
-                          visible = (queryParams.bwaStrVisible  == "true");
+                          visible = (queryParams.bwaStrVisible  === "true");
                         }
                         var crosshair = new ol.Feature({
                           label: label,

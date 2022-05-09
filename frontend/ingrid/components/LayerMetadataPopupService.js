@@ -25,7 +25,8 @@ goog.require('ga_wms_service');
       var popupContent = '<div bind-html-compile="options.result.html"></div>';
 
       // Called to update the content
-      var updateContent = function(popup, layer) {
+      // INGRID: Add wfs download
+      var updateContent = function(popup, layer, isWfsDownload) {
         var promise;
         /* INGRID: Disable intern legend service
         if (layer.bodId) {
@@ -39,7 +40,11 @@ goog.require('ga_wms_service');
           id = layer.id;
         }
         // INGRID: Encode id
-        if (layer.hasLegend && layer.legendUrl) {
+        // INGRID: Add wfs download
+        if (isWfsDownload && layer.wmsWfsUrl) {
+          promise = gaLayers.
+              getWfsDownloadsOfLayer(layer);
+        } else if (layer.hasLegend && layer.legendUrl) {
           promise = gaLayers.
             getMetaDataOfLayerWithLegend(encodeURIComponent(id),
             encodeURIComponent(layer.legendUrl));
@@ -64,7 +69,7 @@ goog.require('ga_wms_service');
 
           // INGRID: Tabs management stuff
           popup.scope.activeTab = function(numTab) {
-              popup.scope.currentTab = numTab;
+            popup.scope.currentTab = numTab;
           };
 
           // INGRID: Tabs management stuff
@@ -79,10 +84,13 @@ goog.require('ga_wms_service');
         });
       };
 
-      var updateContentLang = function(popup, layer, newLang, open) {
+      // INGRID: Add wfs download
+      var updateContentLang = function(popup, layer, newLang, open,
+        isWfsDownload) {
         if ((open || popup.scope.toggle) &&
             popup.scope.options.lang !== newLang) {
-          return updateContent(popup, layer);
+          // INGRID: Add wfs download
+          return updateContent(popup, layer, isWfsDownload);
         }
         return $q.when();
       };
@@ -90,7 +98,8 @@ goog.require('ga_wms_service');
       var LayerMetadataPopup = function() {
         var popups = {};
 
-        var create = function(layer) {
+        // INGRID: Add wfs download
+        var create = function(layer, isWfsDownload) {
           var result = {html: ''},
             popup;
 
@@ -105,35 +114,51 @@ goog.require('ga_wms_service');
             y: 200,
             showPrint: true
           });
-          popups[layer.id] = popup;
+          // INGRID: Add wfs download
+          var popupId = layer.id;
+          if(isWfsDownload) {
+            popupId += '_wfs';
+          }
+          popups[popupId] = popup;
 
           // Open popup only on success
-          updateContent(popup, layer).then(function() {
+          // INGRID: Add wfs download
+          updateContent(popup, layer, isWfsDownload).then(function() {
             popup.open();
           });
 
           $rootScope.$on('$translateChangeEnd', function(evt, newLang) {
-            updateContentLang(popup, layer, newLang);
+            // INGRID: Add wfs download
+            updateContentLang(popup, layer, newLang, isWfsDownload);
           });
         };
 
-        this.toggle = function(olLayerOrBodId) {
+        // INGRID: Add wfs download
+        this.toggle = function(olLayerOrBodId, isWfsDownload) {
           var layer = olLayerOrBodId;
           if (angular.isString(layer)) {
             layer = gaLayers.getOlLayerById(layer);
           }
-          var popup = popups[layer.id];
+          // INGRID: Add wfs download
+          var popupId = layer.id;
+          if(isWfsDownload) {
+            popupId += '_wfs';
+          }
+          var popup = popups[popupId];
           if (popup) { // if the popup already exist we toggle it
             if (popup.scope.toggle) {
               popup.close();
             } else {
-              updateContentLang(popup, layer, gaLang.get(), true).
+              // INGRID: Add wfs download
+              updateContentLang(popup, layer, gaLang.get(), true,
+              isWfsDownload).
                   then(function() {
                     popup.open();
                   });
             }
           } else {
-            create(layer);
+            // INGRID: Add wfs download
+            create(layer, isWfsDownload);
           }
         };
       };

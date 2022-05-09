@@ -22,6 +22,7 @@
  */
 package de.ingrid.mapclient.rest;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,8 +30,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -365,6 +366,64 @@ public class WmsResource {
             log.error("No data defined.", e);
         }
         return metadataRequest(layer, url, lang, legend, login, password);
+    }
+
+    @GET
+    @Path("wfsDownload")
+    @Produces(MediaType.TEXT_HTML)
+    public Response wfsDownloadRequest(@QueryParam("url") String urlStr, @QueryParam("title") String titleStr) {
+        String html = "<div class=\"ga-catalogitem-node\"><ul>";
+        if(urlStr != null) {
+            try {
+                String urlGetCap = urlStr;
+                if(urlGetCap.indexOf("?") == -1) {
+                    urlGetCap += "?";
+                }
+                if(urlGetCap.toLowerCase().indexOf("request=") == -1) {
+                    urlGetCap += "&Request=GetCapabilities";
+                }
+                if(urlGetCap.toLowerCase().indexOf("service=") == -1) {
+                    urlGetCap += "&Service=WFS";
+                }
+                if(urlGetCap.toLowerCase().indexOf("version=") == -1) {
+                    urlGetCap += "&Version=2.0.0";
+                }
+                URL url = new URL( urlGetCap );
+                URLConnection conn = url.openConnection();
+                InputStream is = new BufferedInputStream(conn.getInputStream());
+                Document doc = Utils.getDocumentFromStream(is);
+                XPath xpath = XPathFactory.newInstance().newXPath();
+                String title = xpath.evaluate( "./ows:ServiceIdentification/ows:Title", doc );
+                if(titleStr != null) {
+                    title = titleStr;
+                }
+                NodeList featureTypes = (NodeList) xpath.evaluate( "//FeatureTypeList/FeatureType", doc, XPathConstants.NODESET );
+                html += "<li><div class=\"ga-catalogitem-template\"><div class=\"ga-catalogitem-node\">";
+                html += "<span class=\"ga-catalogitem-entry ga-truncate-text\" title=\"" + title + "\" role=\"button\"\">"
+                    + title
+                    + "</span>";
+                html += "<ul>";
+                if(featureTypes.getLength() > 0) {
+                    for (int i = 0; i < featureTypes.getLength(); i++) {
+                        Node featureType = featureTypes.item(i);
+                        String featureName = xpath.evaluate("./Name", featureType);
+                        String featureTitle = xpath.evaluate("./Title", featureType);
+                        String urlGetFeature = urlStr + "?Request=GetFeature&Service=WFS&Version=2.0.0&TYPENAMES=" + featureName;
+                        html += "<li><div class=\"ga-catalogitem-template\">";
+                        html += "<a href=\"" + urlGetFeature + "\" class=\"ga-catalogitem-entry ga-truncate-text\" title=\"" + featureTitle + "\" role=\"button\">"
+                            + featureTitle
+                            + "</a>";
+                        html += "</div></li>";
+                    }
+                }
+                html += "</ul>";
+                html += "</div></div></li>";
+            } catch (Exception e) {
+                log.error("Error read GetCapabilities: " + urlStr, e);
+            }
+        }
+        html += "</ul></div>";
+        return Response.ok(html).build();
     }
 
     private String getWmsInfo(XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerLegend) throws XPathExpressionException {

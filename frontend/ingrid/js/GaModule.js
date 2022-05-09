@@ -187,7 +187,10 @@ goog.require('ga_waitcursor_service');
     gaLayersProvider.legendUrl = location.origin +
         '/ingrid-webmap-client/rest/wms/metadata?' +
         'layer={Layer}&lang={Lang}&url={URL}&legend={Legend}';
-
+    // INGRID: Add wfs download url
+    gaLayersProvider.wfsDownloadUrl = location.origin +
+        '/ingrid-webmap-client/rest/wms/wfsDownload?' +
+        'url={URL}&title={Title}';
   });
 
   module.config(function(gaTopicProvider, gaGlobalOptions) {

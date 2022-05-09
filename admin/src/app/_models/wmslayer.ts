@@ -13,6 +13,8 @@ export class Wmslayer extends Layer implements ILayerWms {
     gutter: number;
     minScale: number;
     maxScale: number;
+    wmsWfsLabel: string;
+    wmsWfsUrl: string;
 
     constructor() {
         super(LayerType.wms);
@@ -28,6 +30,8 @@ export class Wmslayer extends Layer implements ILayerWms {
         this.timeBehaviour = '';
         this.queryLayers = '';
         this.featureCount = 10;
+        this.wmsWfsLabel = '';
+        this.wmsWfsUrl = '';
     }
 
     generateId(layers: LayerItem[]) {
