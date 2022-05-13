@@ -107,7 +107,7 @@ goog.require('ga_wms_service');
             wfsFilterBbox += '<div class="col-xs-12 ga-checkboxes">' +
               '<div class="checkbox">' +
               '<label class="ga-checkbox">' +
-              '<input type="checkbox" ng-model="options.wfsFilterBbox" '
+              '<input type="checkbox" ng-model="options.wfsFilterBbox" ' +
                 'ng-change="onChangeFilter()">' +
               '<span translate>popup_wfs_filter_bbox</span>' +
               '</label>' +
