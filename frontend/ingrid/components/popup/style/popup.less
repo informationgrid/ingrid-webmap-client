@@ -60,6 +60,10 @@
       }
     }
   }
+  
+  > ul {
+    padding: 0;
+  }
 }
  
 [ga-popup] {
@@ -266,15 +270,25 @@
     }
   }
 
-  .ga-checkboxes {
-    .checkbox {
-      margin: 0;
+  .wfs-filter {
+    padding: 8px;
 
-      .ga-checkbox {
-        padding: 0;
-        margin: 4px 0 4px 8px;
-        border: 0;
-        line-height: 2.125em;
+    span {
+      font-weight: 700;
+    }
+    label {
+      line-height: 2.125em;
+      margin: 8px 0;
+      cursor: pointer;
+      width: 100%;
+
+      input[type=checkbox] {
+        margin: 0;
+
+        + span {
+          margin-left: 8px;
+          font-weight: 400;
+        }
       }
     }
   }

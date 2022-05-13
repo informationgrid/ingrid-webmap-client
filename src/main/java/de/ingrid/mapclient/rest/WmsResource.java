@@ -372,7 +372,7 @@ public class WmsResource {
     @Path("wfsDownload")
     @Produces(MediaType.TEXT_HTML)
     public Response wfsDownloadRequest(@QueryParam("url") String urlStr, @QueryParam("filter") String filterStr, @QueryParam("title") String titleStr) {
-        String html = "<div class=\"ga-catalogitem-node\"><ul>";
+        String html = "<div class=\"metadata-structure\"><ul>";
         if(urlStr != null) {
             try {
                 String urlGetCap = urlStr;
@@ -398,10 +398,10 @@ public class WmsResource {
                     title = titleStr;
                 }
                 NodeList featureTypes = (NodeList) xpath.evaluate( "//FeatureTypeList/FeatureType", doc, XPathConstants.NODESET );
-                html += "<li><div class=\"ga-catalogitem-template\"><div class=\"ga-catalogitem-node\">";
-                html += "<span class=\"ga-catalogitem-entry ga-truncate-text\" title=\"" + title + "\" role=\"button\"\">"
+                html += "<li><div>";
+                html += "<span title=\"" + title + "\">"
                     + title
-                    + "</span>";
+                    + "</span></div></li>";
                 html += "<ul>";
                 if(featureTypes.getLength() > 0) {
                     for (int i = 0; i < featureTypes.getLength(); i++) {
@@ -412,15 +412,15 @@ public class WmsResource {
                         if(filterStr != null) {
                             urlGetFeature += filterStr;
                         }
-                        html += "<li><div class=\"ga-catalogitem-template\">";
-                        html += "<a target=\"_blank\" href=\"" + urlGetFeature + "\" class=\"ga-catalogitem-entry ga-truncate-text\" title=\"" + featureTitle + "\" role=\"button\">"
+                        html += "<li><div>";
+                        html += "<a target=\"_blank\" href=\"" + urlGetFeature + "\" title=\"" + featureTitle + "\">"
                             + featureTitle
                             + "</a>";
                         html += "</div></li>";
                     }
                 }
                 html += "</ul>";
-                html += "</div></div></li>";
+                html += "</div>";
             } catch (Exception e) {
                 log.error("Error read GetCapabilities: " + urlStr, e);
             }
@@ -476,7 +476,7 @@ public class WmsResource {
         NodeList fields = (NodeList) xpath.evaluate( "./*/Capability/Layer", doc, XPathConstants.NODESET );
         if(fields != null){
             StringBuilder wmsStructureLayers = new StringBuilder(getSubLayers(fields, xpath, layerName));
-            wmsStructure.append("<ul style=\"padding: 0px;\">");
+            wmsStructure.append("<ul>");
             wmsStructure.append(wmsStructureLayers);
             wmsStructure.append("</ul>");
         }
