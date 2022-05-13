@@ -100,13 +100,13 @@ goog.require('ga_wms_service');
             popup;
 
           if (isWfsDownload) {
-            var wfsFilterBbox = '<div class="legend-footer">' +
+            var wfsFilterBbox = '<div class="wfs-filter">' +
             '<span translate>popup_wfs_filter</span>';
 
             // BoundingBox filter
-            wfsFilterBbox += '<div class="col-xs-12 ga-checkboxes">' +
-              '<div class="checkbox">' +
-              '<label class="ga-checkbox">' +
+            wfsFilterBbox += '<div>' +
+              '<div>' +
+              '<label>' +
               '<input type="checkbox" ng-model="options.wfsFilterBbox" ' +
                 'ng-change="onChangeFilter()">' +
               '<span translate>popup_wfs_filter_bbox</span>' +
