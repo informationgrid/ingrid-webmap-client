@@ -410,7 +410,7 @@ public class WmsResource {
                         String featureTitle = xpath.evaluate("./Title", featureType);
                         String urlGetFeature = urlStr + "?Request=GetFeature&Service=WFS&Version=2.0.0&TYPENAMES=" + featureName;
                         html += "<li><div class=\"ga-catalogitem-template\">";
-                        html += "<a href=\"" + urlGetFeature + "\" class=\"ga-catalogitem-entry ga-truncate-text\" title=\"" + featureTitle + "\" role=\"button\">"
+                        html += "<a target=\"_blank\" href=\"" + urlGetFeature + "\" class=\"ga-catalogitem-entry ga-truncate-text\" title=\"" + featureTitle + "\" role=\"button\">"
                             + featureTitle
                             + "</a>";
                         html += "</div></li>";
