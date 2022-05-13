@@ -132,5 +132,7 @@
 "service_auth_data_login":"Login",
 "service_auth_data_login_error":"Error",
 "accessibility_label": "Accessibility",
-"view_in_iframe": "The {{url}} embed page must be used in an iframe."
+"view_in_iframe": "The {{url}} embed page must be used in an iframe.",
+"popup_wfs_filter": "Filter",
+"popup_wfs_filter_bbox": "Map view",
 }

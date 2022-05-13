@@ -371,7 +371,7 @@ public class WmsResource {
     @GET
     @Path("wfsDownload")
     @Produces(MediaType.TEXT_HTML)
-    public Response wfsDownloadRequest(@QueryParam("url") String urlStr, @QueryParam("title") String titleStr) {
+    public Response wfsDownloadRequest(@QueryParam("url") String urlStr, @QueryParam("filter") String filterStr, @QueryParam("title") String titleStr) {
         String html = "<div class=\"ga-catalogitem-node\"><ul>";
         if(urlStr != null) {
             try {
@@ -409,6 +409,9 @@ public class WmsResource {
                         String featureName = xpath.evaluate("./Name", featureType);
                         String featureTitle = xpath.evaluate("./Title", featureType);
                         String urlGetFeature = urlStr + "&Request=GetFeature&Service=WFS&Version=2.0.0&TYPENAMES=" + featureName;
+                        if(filterStr != null) {
+                            urlGetFeature += filterStr;
+                        }
                         html += "<li><div class=\"ga-catalogitem-template\">";
                         html += "<a target=\"_blank\" href=\"" + urlGetFeature + "\" class=\"ga-catalogitem-entry ga-truncate-text\" title=\"" + featureTitle + "\" role=\"button\">"
                             + featureTitle

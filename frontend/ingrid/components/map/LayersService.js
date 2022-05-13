@@ -144,9 +144,10 @@ goog.require('ga_urlutils_service');
         };
 
         // INGRID: Add wfs download
-        var getWfsDownloadUrl = function(layer, lang) {
+        var getWfsDownloadUrl = function(layer, filterParam, lang) {
           return wfsDownloadUrl.
               replace('{URL}', encodeURIComponent(layer.wmsWfsUrl)).
+              replace('{Filter}', encodeURIComponent(filterParam)).
               replace('{Title}', encodeURIComponent(layer.wmsWfsLabel));
         };
 
@@ -938,8 +939,8 @@ goog.require('ga_urlutils_service');
         };
 
         // INGRID: Add wfs download
-        this.getWfsDownloadsOfLayer = function(layer) {
-          var url = getWfsDownloadUrl(layer, gaLang.get());
+        this.getWfsDownloadsOfLayer = function(layer, filterParam) {
+          var url = getWfsDownloadUrl(layer, filterParam, gaLang.get());
           return $http.get(url);
         };
 

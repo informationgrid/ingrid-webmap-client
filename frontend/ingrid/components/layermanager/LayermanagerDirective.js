@@ -388,7 +388,7 @@ goog.require('ga_window_service');
         // INGRID: Add wfs download
         scope.displayWfsDownloads = function(evt, layer) {
           var isWfsDownload = true;
-          gaLayerMetadataPopup.toggle(layer, isWfsDownload);
+          gaLayerMetadataPopup.toggle(layer, isWfsDownload, map);
           evt.preventDefault();
         };
 
@@ -461,26 +461,26 @@ goog.require('ga_window_service');
                     gaMapUtils.isGpxLayer(tmpLayer)) {
                   tmpLayer.hasLoggedIn = true;
                   gaVector.readFeatures(data, map.getView().getProjection()).
-                    then(function(responses) {
-                    var source = tmpLayer.getSource();
-                    if (source) {
-                      if (responses.features) {
-                        source.addFeatures(responses.features);
-                      }
-                      if (responses.data) {
-                        source.setProperties({
-                          'rawData': responses.data
-                        });
-                      }
-                    }
-                  });
+                      then(function(responses) {
+                        var source = tmpLayer.getSource();
+                        if (source) {
+                          if (responses.features) {
+                            source.addFeatures(responses.features);
+                          }
+                          if (responses.data) {
+                            source.setProperties({
+                              'rawData': responses.data
+                            });
+                          }
+                        }
+                      });
                 }
               }
             }
           });
           var len = layersToRemove.length;
-          for(var i = 0; i < len; i++) {
-              map.removeLayer(layersToRemove[i]);
+          for (var i = 0; i < len; i++) {
+            map.removeLayer(layersToRemove[i]);
           }
           destroyPopoverLogin(element);
         };
@@ -513,8 +513,8 @@ goog.require('ga_window_service');
                 cache: true
               }).then(function(response) {
                 setAuthReload(layer, element, layer.url, login,
-                  password, response.data);
-              }, function (reason) {
+                    password, response.data);
+              }, function(reason) {
                 if (reason.status === 401) {
                   scope.userMessage = 'service_auth_data_login_error';
                 }
