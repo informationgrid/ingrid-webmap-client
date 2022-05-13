@@ -135,6 +135,7 @@ goog.require('ga_wms_service');
             map.on('moveend', function(evt) {
               if(popup.scope.toggle) {
                 if(popup.scope.options.wfsFilterBbox) {
+                  $rootScope.onChangeFilter();
                   updateContent(popup, layer);
                 }
               }
