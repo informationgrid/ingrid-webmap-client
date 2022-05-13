@@ -138,5 +138,7 @@
 "service_auth_data_login":"Anmelden",
 "service_auth_data_login_error":"Anmeldefehler",
 "accessibility_label": "Barrierefreiheit",
-"view_in_iframe": "Die {{url}} eingebettete Seite muss in einem iFrame verwendet werden."
+"view_in_iframe": "Die {{url}} eingebettete Seite muss in einem iFrame verwendet werden.",
+"popup_wfs_filter": "Filter",
+"popup_wfs_filter_bbox": "Auf Kartenabschnitt",
 }

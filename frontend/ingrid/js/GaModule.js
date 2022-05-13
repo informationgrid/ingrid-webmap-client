@@ -190,7 +190,7 @@ goog.require('ga_waitcursor_service');
     // INGRID: Add wfs download url
     gaLayersProvider.wfsDownloadUrl = location.origin +
         '/ingrid-webmap-client/rest/wms/wfsDownload?' +
-        'url={URL}&title={Title}';
+        'url={URL}&filter={Filter}&title={Title}';
   });
 
   module.config(function(gaTopicProvider, gaGlobalOptions) {
