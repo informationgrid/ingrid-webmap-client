@@ -148,7 +148,9 @@ goog.require('ga_urlutils_service');
           return wfsDownloadUrl.
               replace('{URL}', encodeURIComponent(layer.wmsWfsUrl)).
               replace('{Filter}', encodeURIComponent(filterParam)).
-              replace('{Title}', encodeURIComponent(layer.wmsWfsLabel));
+              replace('{Title}', encodeURIComponent(layer.wmsWfsLabel)).
+              replace('{FeatureTypes}', 
+                encodeURIComponent(layer.wmsWfsFeatureTypes || ''));
         };
 
         // Function to remove the blob url from memory.
@@ -852,6 +854,7 @@ goog.require('ga_urlutils_service');
             // INGRID: Add wfs
             olLayer.wmsWfsUrl = config.wmsWfsUrl;
             olLayer.wmsWfsLabel = config.wmsWfsLabel;
+            olLayer.wmsWfsFeatureTypes = config.wmsWfsFeatureTypes;
           }
           return olLayer;
         };
