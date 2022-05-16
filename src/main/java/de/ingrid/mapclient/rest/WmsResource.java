@@ -24,16 +24,22 @@ package de.ingrid.mapclient.rest;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -50,8 +56,10 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.geotools.gml.producer.FeatureTransformer.FeatureTypeNamespaces;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -371,7 +379,7 @@ public class WmsResource {
     @GET
     @Path("wfsDownload")
     @Produces(MediaType.TEXT_HTML)
-    public Response wfsDownloadRequest(@QueryParam("url") String urlStr, @QueryParam("filter") String filterStr, @QueryParam("title") String titleStr) {
+    public Response wfsDownloadRequest(@QueryParam("url") String urlStr, @QueryParam("filter") String filterStr, @QueryParam("title") String titleStr, @QueryParam("featureTypes") String featureTypesStr, @QueryParam("download") boolean isDownload) {
         String html = "<div class=\"metadata-structure\"><ul>";
         if(urlStr != null) {
             try {
@@ -403,20 +411,36 @@ public class WmsResource {
                     + title
                     + "</span></div></li>";
                 html += "<ul>";
+                ArrayList<String> featureTypeList = new ArrayList<String>();
+                if(featureTypesStr != null) {
+                    String[] includeFeatureTypes = featureTypesStr.split(",");
+                    for (String includeFeatureType : includeFeatureTypes) {
+                        featureTypeList.add(includeFeatureType);
+                    }
+                }
+                boolean hasToExclude = false;
+                if(!featureTypesStr.isEmpty()) {
+                    hasToExclude = true;
+                }
                 if(featureTypes.getLength() > 0) {
                     for (int i = 0; i < featureTypes.getLength(); i++) {
                         Node featureType = featureTypes.item(i);
                         String featureName = xpath.evaluate("./Name", featureType);
                         String featureTitle = xpath.evaluate("./Title", featureType);
-                        String urlGetFeature = urlStr + "&Request=GetFeature&Service=WFS&Version=2.0.0&TYPENAMES=" + featureName;
-                        if(filterStr != null) {
-                            urlGetFeature += filterStr;
+                        if((hasToExclude && featureTypeList.indexOf(featureName) > -1) || !hasToExclude) {
+                            String urlGetFeature = urlStr + "&Request=GetFeature&Service=WFS&Version=2.0.0&TYPENAMES=" + featureName;
+                            if(filterStr != null) {
+                                urlGetFeature += filterStr;
+                            }
+                            if(isDownload) {
+                                urlGetFeature = "/ingrid-webmap-client/rest/wms/wfsDownload/download?url=" + URLEncoder.encode(urlGetFeature);
+                            }
+                            html += "<li><div>";
+                            html += "<a target=\"_blank\" href=\"" + urlGetFeature + "\" title=\"" + featureTitle + "\">"
+                                + featureTitle
+                                + "</a>";
+                            html += "</div></li>";
                         }
-                        html += "<li><div>";
-                        html += "<a target=\"_blank\" href=\"" + urlGetFeature + "\" title=\"" + featureTitle + "\">"
-                            + featureTitle
-                            + "</a>";
-                        html += "</div></li>";
                     }
                 }
                 html += "</ul>";
@@ -427,6 +451,49 @@ public class WmsResource {
         }
         html += "</ul></div>";
         return Response.ok(html).build();
+    }
+
+    @GET
+    @Path("wfsDownload/download")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response wfsDownloadContentRequest(@QueryParam("url") String urlStr) throws MalformedURLException {
+        URL url = new URL(urlStr);
+        String filename = "unknown";
+        String urlQuery = url.getQuery().toLowerCase();
+        if(urlQuery.indexOf("typenames=") > -1 && urlQuery.indexOf("service=wfs") > -1 
+                && urlQuery.indexOf("request=getfeature") > -1) {
+            String[] params = url.getQuery().split("&");
+            for (String param : params) {
+                String[] paramKeyValue = param.split("=");
+                if(paramKeyValue.length > 1) {
+                    String key = paramKeyValue[0];
+                    String value = paramKeyValue[1];
+                    if(key.toLowerCase().equals("typenames")) {
+                        value = value.replace(":", "-");
+                        value = value.replace("\\", "-");
+                        value = value.replace("/", "-");
+                        value = value.replace("*", "-");
+                        value = value.replace("?", "-");
+                        value = value.replace("\"", "-");
+                        value = value.replace("<", "-");
+                        value = value.replace(">", "-");
+                        value = value.replace("|", "-");
+                        filename = value;
+                    }
+                }
+            }
+            filename += ".gml";
+            try {
+                InputStream inputStream = url.openStream();
+                return Response.ok(inputStream, MediaType.APPLICATION_OCTET_STREAM)
+                    .header("Content-Disposition", "attachment; filename=\"" + filename + "\"" ) //optional
+                    .build();
+            } catch (IOException e) {
+              // handle exception
+            } finally {
+            }
+        }
+        throw new WebApplicationException( Response.Status.NOT_FOUND );
     }
 
     private String getWmsInfo(XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerLegend) throws XPathExpressionException {

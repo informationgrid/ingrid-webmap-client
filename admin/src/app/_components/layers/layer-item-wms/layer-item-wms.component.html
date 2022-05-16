@@ -924,6 +924,29 @@
               <input type="text" #wmsWfsUrl="ngModel" [(ngModel)]="layer.item.wmsWfsUrl" name="wmsWfsUrl" class="form-control">
             </div>
           </div>
+          <!-- wmsWfsFeatureTypes -->
+          <div class="form-group row">
+            <div class="col-sm-3">
+              <div class=" d-flex justify-content-between align-items-center">
+                <label class="col-form-label" translate>layer_wmsWfsFeatureTypes</label>
+                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_wmsWfsFeatureTypes_' + layer.id"
+                  title="{{ ('help') | translate }}">
+                  <i class="fa fa-info" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="collapse" id="info_layer_wmsWfsFeatureTypes_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+                <div>
+                  <small class="form-text text-muted" translate>layer_wmsWfsFeatureTypes_help</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-9 input-group" [ngClass]="{
+              'has-danger': (wmsWfsFeatureTypes.invalid && (wmsWfsFeatureTypes.dirty || wmsWfsFeatureTypes.touched)) ,
+              'has-success': (wmsWfsFeatureTypes.valid && (wmsWfsFeatureTypes.dirty || wmsWfsFeatureTypes.touched))
+              }">
+              <input type="text" #wmsWfsFeatureTypes="ngModel" [(ngModel)]="layer.item.wmsWfsFeatureTypes" name="wmsWfsFeatureTypes" class="form-control">
+            </div>
+          </div>
         </div>
       </div>
     </div>

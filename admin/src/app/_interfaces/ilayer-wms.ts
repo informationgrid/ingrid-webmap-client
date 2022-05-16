@@ -9,5 +9,6 @@ export interface ILayerWms extends ILayer {
     maxScale: number;
     wmsWfsLabel: string;
     wmsWfsUrl: string;
+    wmsWfsFeatureTypes: string;
 }
 
