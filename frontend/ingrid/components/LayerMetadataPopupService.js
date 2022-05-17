@@ -97,7 +97,9 @@ goog.require('ga_wms_service');
         // INGRID: Add wfs download
         var create = function(layer, isWfsDownload, map) {
           var result = {html: ''},
-            popup;
+            popup, content;
+
+          content = popupContent;
 
           if (isWfsDownload) {
             var wfsFilterBbox = '<div class="wfs-filter">' +
@@ -114,16 +116,16 @@ goog.require('ga_wms_service');
               '</div>' +
             '</div>';
             wfsFilterBbox += '</div>';
-            popupContent += wfsFilterBbox;
+            content += wfsFilterBbox;
 
             $rootScope.onChangeFilter = function() {
               var wfsFilterParam = '';
               if (popup.scope.options.wfsFilterBbox) {
                 if (map) {
-                  var extent = map.getView()
-                    .calculateExtent(map.getSize()).toString();
-                  var epsg = map.getView().getProjection().getCode()
-                    .replace('EPSG:', '');
+                  var extent = map.getView().
+                      calculateExtent(map.getSize()).toString();
+                  var epsg = map.getView().getProjection().getCode().
+                      replace('EPSG:', '');
                   wfsFilterParam = '&BBOX=' + extent +
                     ',urn:ogc:def:crs:EPSG::' + epsg;
                 }
@@ -131,10 +133,10 @@ goog.require('ga_wms_service');
               popup.scope.options.wfsFilterParam = wfsFilterParam;
               updateContent(popup, layer);
             };
-            
+
             map.on('moveend', function(evt) {
-              if(popup.scope.toggle) {
-                if(popup.scope.options.wfsFilterBbox) {
+              if (popup.scope.toggle) {
+                if (popup.scope.options.wfsFilterBbox) {
                   $rootScope.onChangeFilter();
                   updateContent(popup, layer);
                 }
@@ -147,7 +149,7 @@ goog.require('ga_wms_service');
           popup = gaPopup.create({
             title: $translate.instant('metadata_window_title'),
             destroyOnClose: false,
-            content: popupContent,
+            content: content,
             result: result,
             className: 'ga-tooltip-metadata ga-popup-tablet-full',
             x: 400,
