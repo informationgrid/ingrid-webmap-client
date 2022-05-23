@@ -983,7 +983,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Import WMS as single tile
           settingImportWMSGutter: settings.settingServiceImportWMSGutter || 0,
           // INGRID: Print URL service (external)
-          printServiceUrl : settings.settingPrintServiceUrl,
+          printServiceUrl : settings.settingPrintServiceUrl || '/ingrid-webmap-client/pdf/info.json',
           // INGRID: Add print logo url
           printLogo: settings.settingPrintLogo.replace('{location.protocol}',location.protocol).replace('{location.host}',location.host),
           // INGRID: Add print north arrow logo url
