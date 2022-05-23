@@ -25,6 +25,7 @@ export class Setting {
         public settingShareLink = false,
         public settingShareQR = false,
         public settingShareWhatsapp = false,
+        public settingPrintServiceUrl = '',
         public settingPrintLogo = new Map<string, any>(),
         public settingPrintNorthArrow = '',
         public settingPrintGraticuleLayer = false,

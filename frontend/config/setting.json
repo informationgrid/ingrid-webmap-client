@@ -36,6 +36,7 @@
     "settingShareLink": true,
     "settingShareQR": true,
     "settingShareWhatsapp": true,
+    "settingPrintServiceUrl": "/ingrid-webmap-client/pdf/info.json",
     "settingPrintLogo": "{location.protocol}//{location.host}/ingrid-webmap-client/frontend/prd/img/print_logo.png",
     "settingPrintNorthArrow": "{location.protocol}//{location.host}/ingrid-webmap-client/frontend/prd/img/north_arrow.png",
     "settingPrintGraticuleLayer": { "url": "http://atlas.wsv.bund.de/netze/wms?", "layers": ["GN","GNB"] },
