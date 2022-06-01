@@ -175,6 +175,7 @@ goog.require('ga_styles_service');
         // INGRID: Add bwaStrId 
         if (queryParams.bwaStrId !== undefined &&
           queryParams.bwaStrKm !== undefined) {
+          var bwaStrKm = queryParams.bwaStrKm.replace(',','.');
           var content = '{' +
             '"limit":200,' +
             '"queries":[' +
@@ -182,11 +183,11 @@ goog.require('ga_styles_service');
             '"qid":1,' +
             '"bwastrid":"' + queryParams.bwaStrId + '",' +
             '"stationierung":{';
-          content = content + '"km_wert":' + queryParams.bwaStrKm;
+          content = content + '"km_wert":' + bwaStrKm;
           content = content + ',';
           var offset = 0;
           if(queryParams.bwaStrOffset) {
-            offset = queryParams.bwaStrOffset;
+            offset = queryParams.bwaStrOffset.replace(',','.');
           }
           content = content + '"offset":' + offset;
           content = content + '},' +
