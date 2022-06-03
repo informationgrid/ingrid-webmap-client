@@ -229,18 +229,30 @@ goog.require('ga_styles_service');
                         });
                         var style = gaStyleFactory.getStyle('marker');
                         map.addLayer(gaMapUtils.
-                            getBwaStrFeatureOverlay(crosshair, style,
-                                map, label, visible));
-                        map.getView().
-                            setCenter(geo.coordinates);
-                        map.getView().
-                            setZoom(+queryParams.zoom || 15);
-                        var bwaStrLayers = gaGlobalOptions.bwaStrFinderLayers.
-                            split(',');
-                        for (var index in bwaStrLayers) {
-                          var bwaStrLayer = bwaStrLayers[index];
-                          if(bwaStrLayer) {
-                            map.addLayer(gaLayers.getOlLayerById(bwaStrLayer));
+                          getBwaStrFeatureOverlay(crosshair, style,
+                          map, label, visible));
+                        var e = gaPermalink.getParams().E;
+                        var n = gaPermalink.getParams().N;
+                        if (!e && !n) {
+                          var center = geo.coordinates;
+                          var zoom = +queryParams.zoom || 15;
+                          map.getView().setCenter(center);
+                          map.getView().setZoom(zoom);
+                          if (center && zoom !== undefined) {
+                            e = center[0].toFixed(2);
+                            n = center[1].toFixed(2);
+                            gaPermalink.updateParams({E: e, N: n, zoom: zoom});
+                          }
+                          var bwaStrLayers = gaGlobalOptions.
+                            bwaStrFinderLayers.split(',');
+                          for (var index in bwaStrLayers) {
+                            var bwaStrLayer = bwaStrLayers[index];
+                            if(bwaStrLayer) {
+                              var layer = gaLayers.getOlLayerById(bwaStrLayer);
+                              if (layer) {
+                                map.addLayer(layer);
+                              }
+                            }
                           }
                         }
                       }
