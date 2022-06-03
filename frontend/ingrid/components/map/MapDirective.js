@@ -154,27 +154,27 @@ goog.require('ga_styles_service');
 
         map.setTarget(element[0]);
 
-        // INGRID: Add default zoom
-        // Zoom to default extent
-        if ((gaPermalink.getParams().E === undefined &&
-            gaPermalink.getParams().N === undefined) &&
-            (gaPermalink.getParams().X === undefined &&
-            gaPermalink.getParams().Y === undefined)) {
-          if (!gaBrowserSniffer.embed) {
-            if (window.parent.resizeIframe !== undefined) {
-              window.parent.resizeIframe();
-              map.updateSize();
+        var updateDefaultExtent = function() {
+          // INGRID: Add default zoom
+          // Zoom to default extent
+          if (!gaPermalink.getParams().E && !gaPermalink.getParams().N &&
+            !gaPermalink.getParams().X && !gaPermalink.getParams().Y) {
+            if (!gaBrowserSniffer.embed) {
+              if (window.parent.resizeIframe !== undefined) {
+                window.parent.resizeIframe();
+                map.updateSize();
+              }
             }
-          }
-          var extent = ol.proj.transformExtent(gaMapUtils.defaultExtent,
+            var extent = ol.proj.transformExtent(gaMapUtils.defaultExtent,
               'EPSG:4326', gaGlobalOptions.defaultEpsg);
-          var size = map.getSize();
-          view.fit(extent, size);
-        }
+            var size = map.getSize();
+            view.fit(extent, size);
+          }
+        };
 
         // INGRID: Add bwaStrId
-        if (queryParams.bwaStrId !== undefined &&
-          queryParams.bwaStrKm !== undefined) {
+        if (queryParams.bwaStrId && queryParams.bwaStrKm
+          && gaGlobalOptions.searchBwaLocatorGeoUrl) {
           var bwaStrKm = queryParams.bwaStrKm.replace(',', '.');
           var content = '{' +
             '"limit":200,' +
@@ -206,6 +206,7 @@ goog.require('ga_styles_service');
             }
           }).then(function(response) {
             var data = response.data;
+            var hasData = false;
             if (data) {
               var result = data.result;
               if (result) {
@@ -215,6 +216,7 @@ goog.require('ga_styles_service');
                     var geo = bwaStr.geometry;
                     if (geo) {
                       if (geo.coordinates) {
+                        hasData = true;
                         var label = bwaStr.bwastr_name +
                           ' (' + bwaStr.bwastrid + ') ' +
                           ' Km: ' + bwaStr.stationierung.km_wert +
@@ -261,7 +263,12 @@ goog.require('ga_styles_service');
                 }
               }
             }
+            if(!hasData) {
+              updateDefaultExtent();
+            }
           });
+        } else {
+          updateDefaultExtent();
         }
         scope.$watch('::ol3d', function(ol3d) {
           if (ol3d) {
