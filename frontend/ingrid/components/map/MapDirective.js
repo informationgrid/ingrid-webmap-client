@@ -197,62 +197,69 @@ goog.require('ga_styles_service');
             '}' +
             ']' +
           '}';
-          $http.get('/ingrid-webmap-client/rest/' +
-            'jsonCallback/queryPost?', {
-            cache: true,
-            params: {
-              'url': gaGlobalOptions.searchBwaLocatorGeoUrl,
-              'data': content
-            }
-          }).then(function(response) {
-            var data = response.data;
-            var hasData = false;
-            if (data) {
-              var result = data.result;
-              if (result) {
-                if (result.length > 0) {
-                  var bwaStr = result[0];
-                  if (bwaStr) {
-                    var geo = bwaStr.geometry;
-                    if (geo) {
-                      if (geo.coordinates) {
-                        hasData = true;
-                        var label = bwaStr.bwastr_name +
-                          ' (' + bwaStr.bwastrid + ') ' +
-                          ' Km: ' + bwaStr.stationierung.km_wert +
-                          ' Abstand: ' + bwaStr.stationierung.offset;
-                        var visible = true;
-                        if (queryParams.bwaStrVisible !== undefined) {
-                          visible = (queryParams.bwaStrVisible === 'true');
-                        }
-                        var crosshair = new ol.Feature({
-                          label: label,
-                          geometry: new ol.geom.Point(geo.coordinates)
-                        });
-                        var style = gaStyleFactory.getStyle('marker');
-                        map.addLayer(gaMapUtils.
-                          getBwaStrFeatureOverlay(crosshair, style,
-                          map, label, visible));
-                        var e = gaPermalink.getParams().E;
-                        var n = gaPermalink.getParams().N;
-                        if (!e && !n) {
-                          var center = geo.coordinates;
-                          var zoom = +queryParams.zoom || 15;
-                          map.getView().setCenter(center);
-                          map.getView().setZoom(zoom);
-                          if (center && zoom !== undefined) {
-                            e = center[0].toFixed(2);
-                            n = center[1].toFixed(2);
-                            gaPermalink.updateParams({E: e, N: n, zoom: zoom});
-                          }
-                          var bwaStrLayers = gaGlobalOptions.
-                            bwaStrFinderLayers.split(',');
-                          for (var index in bwaStrLayers) {
-                            var bwaStrLayer = bwaStrLayers[index];
-                            if(bwaStrLayer) {
-                              var layer = gaLayers.getOlLayerById(bwaStrLayer);
-                              if (layer) {
-                                map.addLayer(layer);
+          gaLayers.loadConfig().then(function(layers) {
+              $http.get('/ingrid-webmap-client/rest/' +
+                'jsonCallback/queryPost?', {
+                cache: true,
+                params: {
+                  'url': gaGlobalOptions.searchBwaLocatorGeoUrl,
+                  'data': content
+                }
+              }).then(function(response) {
+                var data = response.data;
+                var hasData = false;
+                if (data) {
+                  var result = data.result;
+                  if (result) {
+                    if (result.length > 0) {
+                      var bwaStr = result[0];
+                      if (bwaStr) {
+                        var geo = bwaStr.geometry;
+                        if (geo) {
+                          if (geo.coordinates) {
+                            hasData = true;
+                            var label = bwaStr.bwastr_name +
+                              ' (' + bwaStr.bwastrid + ') ' +
+                              ' Km: ' + bwaStr.stationierung.km_wert +
+                              ' Abstand: ' + bwaStr.stationierung.offset;
+                            var visible = true;
+                            if (queryParams.bwaStrVisible !== undefined) {
+                              visible = (queryParams.bwaStrVisible === 'true');
+                            }
+                            var crosshair = new ol.Feature({
+                              label: label,
+                              geometry: new ol.geom.Point(geo.coordinates)
+                            });
+                            var style = gaStyleFactory.getStyle('marker');
+                            map.addLayer(gaMapUtils.
+                              getBwaStrFeatureOverlay(crosshair, style,
+                              map, label, visible));
+                            var e = gaPermalink.getParams().E;
+                            var n = gaPermalink.getParams().N;
+                            if (!e && !n) {
+                              var center = geo.coordinates;
+                              var zoom = +queryParams.zoom || 15;
+                              map.getView().setCenter(center);
+                              map.getView().setZoom(zoom);
+                              if (center && zoom !== undefined) {
+                                e = center[0].toFixed(2);
+                                n = center[1].toFixed(2);
+                                gaPermalink.updateParams({
+                                  E: e,
+                                  N: n,
+                                  zoom: zoom
+                                });
+                              }
+                            }
+                            var bwaStrLayers = gaGlobalOptions.
+                              bwaStrFinderLayers.split(',');
+                            for (var index in bwaStrLayers) {
+                              var layerId = bwaStrLayers[index];
+                              if(layerId) {
+                                var layer = gaLayers.getOlLayerById(layerId);
+                                if (layer) {
+                                  map.addLayer(layer);
+                                }
                               }
                             }
                           }
@@ -261,12 +268,11 @@ goog.require('ga_styles_service');
                     }
                   }
                 }
-              }
-            }
-            if(!hasData) {
-              updateDefaultExtent();
-            }
-          });
+                if(!hasData) {
+                  updateDefaultExtent();
+                }
+              });
+           });
         } else {
           updateDefaultExtent();
         }
