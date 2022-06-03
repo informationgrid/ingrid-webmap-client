@@ -12,6 +12,7 @@ export class Setting {
         public settingSearchBwaLocatorUrl = '',
         public settingSearchBwaLocatorGeoUrl = '',
         public settingSearchBwaLocatorStationUrl = '',
+        public settingBwaStrFinderLayers = '',
         public settingCopyrightURL = '',
         public settingSitemapURL = '',
         public settingDisclaimerURL = '',

@@ -172,10 +172,10 @@ goog.require('ga_styles_service');
           view.fit(extent, size);
         }
 
-        // INGRID: Add bwaStrId 
+        // INGRID: Add bwaStrId
         if (queryParams.bwaStrId !== undefined &&
           queryParams.bwaStrKm !== undefined) {
-          var bwaStrKm = queryParams.bwaStrKm.replace(',','.');
+          var bwaStrKm = queryParams.bwaStrKm.replace(',', '.');
           var content = '{' +
             '"limit":200,' +
             '"queries":[' +
@@ -186,8 +186,8 @@ goog.require('ga_styles_service');
           content = content + '"km_wert":' + bwaStrKm;
           content = content + ',';
           var offset = 0;
-          if(queryParams.bwaStrOffset) {
-            offset = queryParams.bwaStrOffset.replace(',','.');
+          if (queryParams.bwaStrOffset) {
+            offset = queryParams.bwaStrOffset.replace(',', '.');
           }
           content = content + '"offset":' + offset;
           content = content + '},' +
@@ -206,35 +206,43 @@ goog.require('ga_styles_service');
             }
           }).then(function(response) {
             var data = response.data;
-            if(data) {
+            if (data) {
               var result = data.result;
-              if(result) {
-                if(result.length > 0) {
+              if (result) {
+                if (result.length > 0) {
                   var bwaStr = result[0];
-                  if(bwaStr) {
+                  if (bwaStr) {
                     var geo = bwaStr.geometry;
-                    if(geo) {
-                      if(geo.coordinates) {
+                    if (geo) {
+                      if (geo.coordinates) {
                         var label = bwaStr.bwastr_name +
-                          ' (' + bwaStr.bwastrid + ') ' + 
+                          ' (' + bwaStr.bwastrid + ') ' +
                           ' Km: ' + bwaStr.stationierung.km_wert +
                           ' Abstand: ' + bwaStr.stationierung.offset;
                         var visible = true;
                         if (queryParams.bwaStrVisible !== undefined) {
-                          visible = (queryParams.bwaStrVisible  === "true");
+                          visible = (queryParams.bwaStrVisible === 'true');
                         }
                         var crosshair = new ol.Feature({
                           label: label,
                           geometry: new ol.geom.Point(geo.coordinates)
                         });
                         var style = gaStyleFactory.getStyle('marker');
-                        map.addLayer(gaMapUtils
-                          .getBwaStrFeatureOverlay(crosshair, style,
-                           map, label, visible));
-                        map.getView()
-                          .setCenter(geo.coordinates);
-                        map.getView()
-                          .setZoom(+queryParams.zoom || 15);
+                        map.addLayer(gaMapUtils.
+                            getBwaStrFeatureOverlay(crosshair, style,
+                                map, label, visible));
+                        map.getView().
+                            setCenter(geo.coordinates);
+                        map.getView().
+                            setZoom(+queryParams.zoom || 15);
+                        var bwaStrLayers = gaGlobalOptions.bwaStrFinderLayers.
+                            split(',');
+                        for (var index in bwaStrLayers) {
+                          var bwaStrLayer = bwaStrLayers[index];
+                          if(bwaStrLayer) {
+                            map.addLayer(gaLayers.getOlLayerById(bwaStrLayer));
+                          }
+                        }
                       }
                     }
                   }

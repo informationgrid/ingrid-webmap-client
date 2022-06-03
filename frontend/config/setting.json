@@ -11,6 +11,7 @@
     "settingSearchBwaLocatorUrl": "https://atlas.wsv.bund.de/bwastr-locator/rest/bwastrinfo/query?limit=200%26searchfield=all",
     "settingSearchBwaLocatorGeoUrl": "https://atlas.wsv.bund.de/bwastr-locator/rest/geokodierung/query",
     "settingSearchBwaLocatorStationUrl": "https://atlas.wsv.bund.de/bwastr-locator/rest/stationierung/query",
+    "settingBwaStrFinderLayers": "",
     "settingServiceAnnouncement": true,
     "settingServiceAnnouncementUrl": "",
     "settingServiceHelpUrl": "/hilfe?hkey=maps-1",
