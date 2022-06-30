@@ -57,7 +57,7 @@ public class ConfigResource {
 
     @GET
     @Path("setting")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces("application/javascript")
     public Response getSettingRequest(@QueryParam("asJson") boolean asJson) {
         String filename = "setting";
         try {
