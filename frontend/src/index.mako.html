@@ -96,7 +96,13 @@ itemscope itemtype="http://schema.org/WebApplication"
         }
       })();
     </script>
-    <script src="../src/auth.jsp"></script>
+    <!-- INGRID: Add 'mapUserId' -->
+    <script language="javascript">
+        var mapUserId = undefined;
+        if (window.parent.mapUserId) {
+          mapUserId = window.parent.mapUserId;
+        }
+    </script>
     <!-- INGRID: Add '${versionslashed}' to reload sources -->
     <link href="${s3basepath}style/app.css?v=${version}" rel="stylesheet"/>
     <!-- INGRID: Add app.override.css -->
