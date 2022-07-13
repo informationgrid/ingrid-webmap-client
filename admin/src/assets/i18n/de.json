@@ -374,5 +374,8 @@
     "layer_wmsWfsUrl": "WFS URL (GetCapabilities)",
     "layer_wmsWfsUrl_help": "WFS URL (GetCapabilities) zum Abruf der Feature Types. Ein Download-Button wird bei dem WMS-Layer unter \"Dargestellte Karten\" angezeigt.",
     "layer_wmsWfsFeatureTypes": "WFS Feature Type Liste",
-    "layer_wmsWfsFeatureTypes_help": "Liste der Feature Types (kommagetrennt) definieren, die angezeigt werden dürfen. Wenn der Eintrag leer ist, werden alle Feature Types angezeigt."
+    "layer_wmsWfsFeatureTypes_help": "Liste der Feature Types (kommagetrennt) definieren, die angezeigt werden dürfen. Wenn der Eintrag leer ist, werden alle Feature Types angezeigt.",
+    "layer_portalUrl": "Portal URL",
+    "layer_portalUrl_help": "URL zur Portal-Detaildarstellung",
+    "others": "Sonstiges"
 }

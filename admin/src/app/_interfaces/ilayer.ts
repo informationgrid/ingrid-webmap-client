@@ -22,4 +22,5 @@ export interface ILayer {
     tooltip: boolean;
     queryLayers: string;
     featureCount: number;
+    portalUrl: string;
 }

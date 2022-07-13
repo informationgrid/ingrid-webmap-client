@@ -27,11 +27,16 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="pills-wms-wfs-tab_{{ layer.id }}" data-toggle="pill" href="#tabs-wms-wfs_{{ layer.id }}" role="tab" aria-controls="pills-wms-wfs" aria-selected="true" translate>
-                WFS
+          <a class="nav-link" id="pills-wms-wfs-tab_{{ layer.id }}" data-toggle="pill" href="#tabs-wms-wfs_{{ layer.id }}" role="tab" aria-controls="pills-wms-wfs" aria-selected="true" translate>
+              WFS
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="pills-wms-others-tab_{{ layer.id }}" data-toggle="pill" href="#tabs-wms-others_{{ layer.id }}" role="tab" aria-controls="pills-wms-others" aria-selected="true" translate>
+              others
             </a>
         </li>
-      </ul>
+    </ul>
       <div class="tab-content" >
         <div class="tab-pane fade show active" id="tabs-wms-main_{{ layer.id }}" role="tabpanel" [attr.aria-labelledby]="'pills-wms-main-tab_' + layer.id">
           <!-- status -->
@@ -945,6 +950,31 @@
               'has-success': (wmsWfsFeatureTypes.valid && (wmsWfsFeatureTypes.dirty || wmsWfsFeatureTypes.touched))
               }">
               <input type="text" #wmsWfsFeatureTypes="ngModel" [(ngModel)]="layer.item.wmsWfsFeatureTypes" name="wmsWfsFeatureTypes" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade show" id="tabs-wms-others_{{ layer.id }}" role="tabpanel" [attr.aria-labelledby]="'pills-wms-others-tab_' + layer.id">
+          <!-- portalUrl -->
+          <div class="form-group row">
+            <div class="col-sm-3">
+              <div class=" d-flex justify-content-between align-items-center">
+                <label class="col-form-label" translate>layer_portalUrl</label>
+                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_portalUrl_' + layer.id"
+                  title="{{ ('help') | translate }}">
+                  <i class="fa fa-info" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="collapse" id="info_layer_portalUrl_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+                <div>
+                  <small class="form-text text-muted" translate>layer_portalUrl_help</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-9 input-group" [ngClass]="{
+              'has-danger': (portalUrl.invalid && (portalUrl.dirty || portalUrl.touched)) ,
+              'has-success': (portalUrl.valid && (portalUrl.dirty || portalUrl.touched))
+              }">
+              <input type="text" #portalUrl="ngModel" [(ngModel)]="layer.item.portalUrl" name="portalUrl" class="form-control">
             </div>
           </div>
         </div>
