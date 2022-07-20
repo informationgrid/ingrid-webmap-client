@@ -389,6 +389,19 @@ goog.require('ga_urlutils_service');
           return false;
         },
 
+        isExternalWfsLayer: function(olLayerOrId) {
+          if (!olLayerOrId) {
+            return false;
+          }
+          if (olLayerOrId instanceof ol.layer.Layer) {
+            olLayerOrId = olLayerOrId.id;
+          }
+          if (angular.isString(olLayerOrId)) {
+            return /^WFS\|\|/.test(olLayerOrId);
+          }
+          return false;
+        },
+
         // INGRID: Add get resolution from scale
         inRange: function(layer, map) {
           var minResolution;

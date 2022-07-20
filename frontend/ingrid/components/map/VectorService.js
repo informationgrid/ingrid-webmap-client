@@ -288,6 +288,47 @@ goog.require('ga_file_service');
           }
         };
 
+        this.addWfsToMapForUrl = function(map, url, options, index) {
+          options = options || {};
+          options.url = url;
+
+          var vectorSource = new ol.source.Vector({
+            format: new ol.format.WFS(),
+            loader: function(extent, resolution, projection) {
+              fetch(url).
+              then(response => response.text()).
+              then(text => {
+                vectorSource.addFeatures(
+                  vectorSource.getFormat().readFeatures(text, {})
+                );
+                if(!options.hasPos) {
+                  var featExtent = vectorSource.getExtent();
+                  if (options.featureId) {
+                    var geom = vectorSource.
+                      getFeatureById(options.featureId);
+                    if (geom) {
+                      featExtent = geom.getGeometry().getExtent();
+                    }
+                  }
+                  map.getView().fit(featExtent, map.getSize());
+                }
+              })
+            }
+          });
+          var vector = new ol.layer.Vector({
+            source: vectorSource
+          });
+          gaDefinePropertiesForLayer(vector);
+          vector.label = options.label;
+          vector.useThirdPartyData = true;
+          vector.opacity = 1;
+          vector.visible = true;
+          vector.id = options.id;
+
+          map.addLayer(vector);
+
+        };
+
         // Defines if we should use a ol.layer.Image instead of a
         // ol.layer.Vector. Currently we define this, only testing the
         // file size but it could be another condition.
