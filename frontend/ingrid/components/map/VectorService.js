@@ -301,17 +301,15 @@ goog.require('ga_file_service');
                 vectorSource.addFeatures(
                   vectorSource.getFormat().readFeatures(text, {})
                 );
-                if(!options.hasPos) {
-                  var featExtent = vectorSource.getExtent();
-                  if (options.featureId) {
-                    var geom = vectorSource.
-                      getFeatureById(options.featureId);
-                    if (geom) {
-                      featExtent = geom.getGeometry().getExtent();
-                    }
+                var featExtent = vectorSource.getExtent();
+                if (options.featureId) {
+                  var geom = vectorSource.
+                    getFeatureById(options.featureId);
+                  if (geom) {
+                    featExtent = geom.getGeometry().getExtent();
                   }
-                  map.getView().fit(featExtent, map.getSize());
                 }
+                map.getView().fit(featExtent, map.getSize());
               })
             }
           });
