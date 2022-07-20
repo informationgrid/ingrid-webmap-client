@@ -568,11 +568,14 @@ goog.require('ga_wmts_service');
                     featUrl += '&Version=1.1.0';
                   }
                   featUrl += '&TYPENAME=' + featTypeName;
-                  var proj = map.getView().getProjection();
+
+                  var view = map.getView();
+                  var proj = view.getProjection();
                   if (proj) {
                     featUrl += '&srsname=' + proj.getCode();
                   }
 
+                  var hasPos = gaMapUtils.hasXYZParams();
                   try {
                     gaVector.addWfsToMapForUrl(map, featUrl,
                         {
@@ -580,7 +583,8 @@ goog.require('ga_wmts_service');
                           visible: true,
                           id: layerSpec,
                           label: label,
-                          featureId: featId
+                          featureId: featId,
+                          hasPos: hasPos
                         },
                         index + 1);
                     mustReorder = true;

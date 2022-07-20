@@ -389,6 +389,7 @@ goog.require('ga_urlutils_service');
           return false;
         },
 
+        // INGRID: External WFS
         isExternalWfsLayer: function(olLayerOrId) {
           if (!olLayerOrId) {
             return false;
@@ -398,6 +399,17 @@ goog.require('ga_urlutils_service');
           }
           if (angular.isString(olLayerOrId)) {
             return /^WFS\|\|/.test(olLayerOrId);
+          }
+          return false;
+        },
+
+        // INGRID: Add hasXYZParams
+        hasXYZParams: function() {
+          var paramsE = gaPermalink.getParams().E;
+          var paramsN = gaPermalink.getParams().N;
+          var paramsZoom = gaPermalink.getParams().zoom;
+          if (paramsE && paramsN && paramsZoom) {
+            return true;
           }
           return false;
         },
@@ -548,7 +560,7 @@ goog.require('ga_urlutils_service');
 
         // INGRID: BwaStr feature
         getBwaStrFeatureOverlay: function(feature, style,
-          map, label, visible) {
+            map, label, visible) {
           var layer = new ol.layer.Vector({
             source: new ol.source.Vector({
               useSpatialIndex: false,
