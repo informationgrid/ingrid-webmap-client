@@ -39,19 +39,23 @@ goog.require('ga_wms_service');
           id = layer.id;
         }
         // INGRID: Encode id
-        if (layer.hasLegend && layer.legendUrl) {
+        // INGRID: Add wfs download
+        if (popup.scope.options.isWfs && layer.wmsWfsUrl) {
           promise = gaLayers.
-            getMetaDataOfLayerWithLegend(encodeURIComponent(id),
-            encodeURIComponent(layer.legendUrl));
+              getWfsDownloadsOfLayer(layer, popup.scope.options.wfsFilterParam);
+        } else if (layer.hasLegend && layer.legendUrl) {
+          promise = gaLayers.
+              getMetaDataOfLayerWithLegend(encodeURIComponent(id),
+                  encodeURIComponent(layer.legendUrl));
         } else if (gaMapUtils.isExternalWmsLayer(layer) ||
           (layer.hasLegend && layer.type &&
             layer.type.toLowerCase() === 'wms')) {
           promise = gaLayers.
-            getMetaDataOfLayerWithLegend(encodeURIComponent(id),
-            encodeURIComponent(gaWms.getLegendURL(layer)));
+              getMetaDataOfLayerWithLegend(encodeURIComponent(id),
+                  encodeURIComponent(gaWms.getLegendURL(layer)));
         } else if (id) {
           promise = gaLayers.
-            getMetaDataOfLayerWithLegend(encodeURIComponent(id));
+              getMetaDataOfLayerWithLegend(encodeURIComponent(id));
         }
         return promise.then(function(resp) {
           popup.scope.options.result.html = $sce.trustAsHtml(resp.data);
@@ -64,7 +68,7 @@ goog.require('ga_wms_service');
 
           // INGRID: Tabs management stuff
           popup.scope.activeTab = function(numTab) {
-              popup.scope.currentTab = numTab;
+            popup.scope.currentTab = numTab;
           };
 
           // INGRID: Tabs management stuff
@@ -90,22 +94,77 @@ goog.require('ga_wms_service');
       var LayerMetadataPopup = function() {
         var popups = {};
 
-        var create = function(layer) {
+        // INGRID: Add wfs download
+        var create = function(layer, isWfsDownload, map) {
           var result = {html: ''},
-            popup;
+            popup, content;
+
+          content = popupContent;
+
+          if (isWfsDownload) {
+            var wfsFilterBbox = '<div class="wfs-filter">' +
+            '<span translate>popup_wfs_filter</span>';
+
+            // BoundingBox filter
+            wfsFilterBbox += '<div>' +
+              '<div>' +
+              '<label>' +
+              '<input type="checkbox" ng-model="options.wfsFilterBbox" ' +
+                'ng-change="onChangeFilter()">' +
+              '<span translate>popup_wfs_filter_bbox</span>' +
+              '</label>' +
+              '</div>' +
+            '</div>';
+            wfsFilterBbox += '</div>';
+            content += wfsFilterBbox;
+
+            $rootScope.onChangeFilter = function() {
+              var wfsFilterParam = '';
+              if (popup.scope.options.wfsFilterBbox) {
+                if (map) {
+                  var extent = map.getView().
+                      calculateExtent(map.getSize()).toString();
+                  var epsg = map.getView().getProjection().getCode().
+                      replace('EPSG:', '');
+                  wfsFilterParam = '&BBOX=' + extent +
+                    ',urn:ogc:def:crs:EPSG::' + epsg;
+                }
+              }
+              popup.scope.options.wfsFilterParam = wfsFilterParam;
+              updateContent(popup, layer);
+            };
+
+            map.on('moveend', function(evt) {
+              if (popup.scope.toggle) {
+                if (popup.scope.options.wfsFilterBbox) {
+                  $rootScope.onChangeFilter();
+                  updateContent(popup, layer);
+                }
+              }
+            });
+          }
 
           // We assume popup does not exist yet
+          // INGRID: Add wfs download
           popup = gaPopup.create({
             title: $translate.instant('metadata_window_title'),
             destroyOnClose: false,
-            content: popupContent,
+            content: content,
             result: result,
             className: 'ga-tooltip-metadata ga-popup-tablet-full',
             x: 400,
             y: 200,
+            isWfs: isWfsDownload,
+            wfsFilterParam: '',
+            wfsFilterBbox: false,
             showPrint: true
           });
-          popups[layer.id] = popup;
+          // INGRID: Add wfs download
+          var popupId = layer.id;
+          if (isWfsDownload) {
+            popupId += '_wfs';
+          }
+          popups[popupId] = popup;
 
           // Open popup only on success
           updateContent(popup, layer).then(function() {
@@ -117,12 +176,18 @@ goog.require('ga_wms_service');
           });
         };
 
-        this.toggle = function(olLayerOrBodId) {
+        // INGRID: Add wfs download
+        this.toggle = function(olLayerOrBodId, isWfsDownload, map) {
           var layer = olLayerOrBodId;
           if (angular.isString(layer)) {
             layer = gaLayers.getOlLayerById(layer);
           }
-          var popup = popups[layer.id];
+          // INGRID: Add wfs download
+          var popupId = layer.id;
+          if (isWfsDownload) {
+            popupId += '_wfs';
+          }
+          var popup = popups[popupId];
           if (popup) { // if the popup already exist we toggle it
             if (popup.scope.toggle) {
               popup.close();
@@ -133,7 +198,8 @@ goog.require('ga_wms_service');
                   });
             }
           } else {
-            create(layer);
+            // INGRID: Add wfs download
+            create(layer, isWfsDownload, map);
           }
         };
       };

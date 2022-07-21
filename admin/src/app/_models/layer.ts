@@ -43,6 +43,10 @@ export class Layer implements ILayer, ILayerWms, ILayerWmts {
     auth: string;
     queryLayers: string;
     featureCount: number;
+    wmsWfsLabel: string;
+    wmsWfsUrl: string;
+    wmsWfsFeatureTypes: string;
+    portalUrl: string;
 
     constructor(type: LayerType) {
         this.type = type;

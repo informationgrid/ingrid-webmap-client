@@ -53,6 +53,7 @@ goog.require('ga_urlutils_service');
 
       var stylePromises = {};
 
+      // INGRID: Add wfs download url
       var Layers = function(
           wmsSubdomains,
           wmtsSubdomains,
@@ -63,7 +64,8 @@ goog.require('ga_urlutils_service');
           terrainUrl,
           vectorTilesUrl,
           layersConfigUrl,
-          legendUrl) {
+          legendUrl,
+          wfsDownloadUrl) {
 
         var layers;
 
@@ -141,6 +143,16 @@ goog.require('ga_urlutils_service');
               replace('{URL}', getLayersConfigUrl(lang));
         };
 
+        // INGRID: Add wfs download
+        var getWfsDownloadUrl = function(layer, filterParam, lang) {
+          return wfsDownloadUrl.
+              replace('{URL}', encodeURIComponent(layer.wmsWfsUrl)).
+              replace('{Filter}', encodeURIComponent(filterParam)).
+              replace('{Title}', encodeURIComponent(layer.wmsWfsLabel)).
+              replace('{FeatureTypes}', 
+                encodeURIComponent(layer.wmsWfsFeatureTypes || ''));
+        };
+
         // Function to remove the blob url from memory.
         var revokeBlob = function() {
           $window.URL.revokeObjectURL(this.src);
@@ -173,7 +185,7 @@ goog.require('ga_urlutils_service');
                 if (layer.auth) {
                   imageTile.getImage().src = gaGlobalOptions.imgproxyUrl +
                     '' + encodeURIComponent(src) + '&login=' +
-                    encodeURIComponent(layer.auth)  + '&baseUrl=' +
+                    encodeURIComponent(layer.auth) + '&baseUrl=' +
                     encodeURIComponent(layer.serviceUrl);
                 } else {
                   imageTile.getImage().src = (content) || src;
@@ -839,6 +851,10 @@ goog.require('ga_urlutils_service');
             olLayer.getCesiumTileset3d = function(scene) {
               return that.getCesiumTileset3dById(bodId, scene);
             };
+            // INGRID: Add wfs
+            olLayer.wmsWfsUrl = config.wmsWfsUrl;
+            olLayer.wmsWfsLabel = config.wmsWfsLabel;
+            olLayer.wmsWfsFeatureTypes = config.wmsWfsFeatureTypes;
           }
           return olLayer;
         };
@@ -923,6 +939,12 @@ goog.require('ga_urlutils_service');
             }
           }
           return $http.post(url, params);
+        };
+
+        // INGRID: Add wfs download
+        this.getWfsDownloadsOfLayer = function(layer, filterParam) {
+          var url = getWfsDownloadUrl(layer, filterParam, gaLang.get());
+          return $http.get(url);
         };
 
         /**
@@ -1013,6 +1035,7 @@ goog.require('ga_urlutils_service');
         };
       };
 
+      // INGRID: Add wfs download url
       return new Layers(
           this.wmsSubdomains,
           this.wmtsSubdomains,
@@ -1023,7 +1046,8 @@ goog.require('ga_urlutils_service');
           this.terrainUrl,
           this.vectorTilesUrl,
           this.layersConfigUrl,
-          this.legendUrl);
+          this.legendUrl,
+          this.wfsDownloadUrl);
     };
   });
 })();

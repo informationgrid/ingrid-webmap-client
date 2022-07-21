@@ -2,7 +2,8 @@
   <li ng-repeat="layer in filteredLayers" class="ga-layer-folded"
       ng-class="{
         'ga-layer-time-enabled': layer.timeEnabled,
-        'ga-layer-warning': layer.useThirdPartyData
+        'ga-layer-warning': layer.useThirdPartyData,
+        'ga-layer-wfs': layer.wmsWfsUrl
       }">
 <!-- INGRID: Check layer extent intersects map extent -->
     <div class="ga-layer-infos ga-grab" ng-class="{'extent-outside': !isInRange(layer)}">
@@ -28,6 +29,10 @@
       </div>
       <button class="ga-icon ga-btn fa fa-user"
               ng-click="showWarning(layer)"></button>
+      <!-- INGRID: Add wfs download -->
+      <button class="ga-icon ga-btn fa fa-ga-offline"
+              ng-if="layer.wmsWfsUrl"
+              ng-click="displayWfsDownloads($event, layer)"></button>
       <!-- INGRID: Add button for auth -->
       <!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_maki_entrance' | translate }}"' -->
       <button ng-if="layer.isSecure && !layer.hasLoggedIn" class="ga-icon ga-btn fa fa-maki-entrance"
@@ -50,18 +55,18 @@
                 ng-attr-aria-label="{{ 'fa_icon_layer_duplicate' | translate }}"
                 ng-click="duplicateLayer($event, layer)"></button>
 <!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_up' | translate }}"' -->
-        <button class="ga-icon ga-btn fa fa-arrow-up"
+        <button ng-if="!layer.disableCtrlLayerUp" class="ga-icon ga-btn fa fa-arrow-up"
                 ng-disabled="$first"
                 ng-attr-aria-label="{{ 'fa_icon_layer_up' | translate }}"
                 ng-click="moveLayer($event, layer, 1)"></button>
 <!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_down' | translate }}"' -->
-        <button class="ga-icon ga-btn fa fa-arrow-down"
+        <button ng-if="!layer.disableCtrlLayerDown" class="ga-icon ga-btn fa fa-arrow-down"
                 ng-disabled="$last"
                 ng-attr-aria-label="{{ 'fa_icon_layer_down' | translate }}"
                 ng-click="moveLayer($event, layer, -1)"></button>
 <!-- INGRID: Add button for zoomToExtent -->
 <!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_zoom' | translate }}"' -->
-        <button ng-if="hasExtent(layer)" class="ga-icon ga-btn fa fa-zoom-in"
+        <button ng-if="hasExtent(layer) && !layer.disableCtrlLayerExtent" class="ga-icon ga-btn fa fa-zoom-in"
                 ng-attr-aria-label="{{ 'fa_icon_layer_zoom' | translate }}"
                 ng-click="zoomToExtent($event, layer)"></button>
 <!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_info' | translate }}" aria-haspopup="dialog"' -->

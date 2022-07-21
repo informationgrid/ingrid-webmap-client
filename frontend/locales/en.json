@@ -24,6 +24,7 @@
 "metadata_service_id": "ID",
 "metadata_service_layer": "Name",
 "metadata_service_abstract": "Summary",
+"metadata_service_portalUrl": "Meta data",
 "metadata_service_fees": "Fees",
 "metadata_service_accessconstraints": "Access constraints",
 "metadata_service_contactperson": "Contact",
@@ -131,5 +132,8 @@
 "service_auth_data_password":"Password",
 "service_auth_data_login":"Login",
 "service_auth_data_login_error":"Error",
-"accessibility_label": "Accessibility"
+"accessibility_label": "Accessibility",
+"view_in_iframe": "The {{url}} embed page must be used in an iframe.",
+"popup_wfs_filter": "Filter",
+"popup_wfs_filter_bbox": "Map view",
 }

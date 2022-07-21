@@ -22,17 +22,24 @@
  */
 package de.ingrid.mapclient.rest;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -49,8 +56,10 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.geotools.gml.producer.FeatureTransformer.FeatureTypeNamespaces;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -255,6 +264,7 @@ public class WmsResource {
             String layerLegend = null;
             String layerTitle = null;
             String layerName = null;
+            String portalUrl = null;
             
             try {
                 if(layer.indexOf("||") > -1){
@@ -309,6 +319,9 @@ public class WmsResource {
                                 }
                                 layerName = jsonLayer.getString("serverLayerName");
                             }
+                            if(jsonLayer.has("portalUrl")) {
+                                portalUrl = jsonLayer.getString("portalUrl");
+                            }
                         }
                     }
                 }
@@ -322,9 +335,9 @@ public class WmsResource {
                         Document doc = getCapabilities.getDoc();
                         XPath xpath = XPathFactory.newInstance().newXPath();
                         if(serviceType.equalsIgnoreCase( "wms" )){
-                            html = getWmsInfo(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
+                            html = getWmsInfo(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, portalUrl);
                         }else if(serviceType.equalsIgnoreCase( "wmts" )){
-                            html = getWmtsInfo(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
+                            html = getWmtsInfo(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, portalUrl);
                         }
                     }
                 }
@@ -367,7 +380,127 @@ public class WmsResource {
         return metadataRequest(layer, url, lang, legend, login, password);
     }
 
-    private String getWmsInfo(XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerLegend) throws XPathExpressionException {
+    @GET
+    @Path("wfsDownload")
+    @Produces(MediaType.TEXT_HTML)
+    public Response wfsDownloadRequest(@QueryParam("url") String urlStr, @QueryParam("filter") String filterStr, @QueryParam("title") String titleStr, @QueryParam("featureTypes") String featureTypesStr, @QueryParam("download") boolean isDownload) {
+        String html = "<div class=\"metadata-structure\"><ul>";
+        if(urlStr != null) {
+            try {
+                String urlGetCap = urlStr;
+                if(urlGetCap.indexOf("?") == -1) {
+                    urlGetCap += "?";
+                }
+                if(urlGetCap.toLowerCase().indexOf("request=") == -1) {
+                    urlGetCap += "&Request=GetCapabilities";
+                }
+                if(urlGetCap.toLowerCase().indexOf("service=") == -1) {
+                    urlGetCap += "&Service=WFS";
+                }
+                if(urlGetCap.toLowerCase().indexOf("version=") == -1) {
+                    urlGetCap += "&Version=2.0.0";
+                }
+                URL url = new URL( urlGetCap );
+                URLConnection conn = url.openConnection();
+                InputStream is = new BufferedInputStream(conn.getInputStream());
+                Document doc = Utils.getDocumentFromStream(is);
+                XPath xpath = XPathFactory.newInstance().newXPath();
+                String title = xpath.evaluate( "//ServiceIdentification/Title", doc );
+                if(titleStr != null && !titleStr.isEmpty()) {
+                    title = titleStr;
+                }
+                NodeList featureTypes = (NodeList) xpath.evaluate( "//FeatureTypeList/FeatureType", doc, XPathConstants.NODESET );
+                html += "<li><div>";
+                html += "<span title=\"" + title + "\">"
+                    + title
+                    + "</span></div></li>";
+                html += "<ul>";
+                ArrayList<String> featureTypeList = new ArrayList<String>();
+                if(featureTypesStr != null) {
+                    String[] includeFeatureTypes = featureTypesStr.split(",");
+                    for (String includeFeatureType : includeFeatureTypes) {
+                        featureTypeList.add(includeFeatureType);
+                    }
+                }
+                boolean hasToExclude = false;
+                if(!featureTypesStr.isEmpty()) {
+                    hasToExclude = true;
+                }
+                if(featureTypes.getLength() > 0) {
+                    for (int i = 0; i < featureTypes.getLength(); i++) {
+                        Node featureType = featureTypes.item(i);
+                        String featureName = xpath.evaluate("./Name", featureType);
+                        String featureTitle = xpath.evaluate("./Title", featureType);
+                        if((hasToExclude && featureTypeList.indexOf(featureName) > -1) || !hasToExclude) {
+                            String urlGetFeature = urlStr + "&Request=GetFeature&Service=WFS&Version=2.0.0&TYPENAMES=" + featureName;
+                            if(filterStr != null) {
+                                urlGetFeature += filterStr;
+                            }
+                            if(isDownload) {
+                                urlGetFeature = "/ingrid-webmap-client/rest/wms/wfsDownload/download?url=" + URLEncoder.encode(urlGetFeature);
+                            }
+                            html += "<li><div>";
+                            html += "<a target=\"_blank\" href=\"" + urlGetFeature + "\" title=\"" + featureTitle + "\">"
+                                + featureTitle
+                                + "</a>";
+                            html += "</div></li>";
+                        }
+                    }
+                }
+                html += "</ul>";
+                html += "</div>";
+            } catch (Exception e) {
+                log.error("Error read GetCapabilities: " + urlStr, e);
+            }
+        }
+        html += "</ul></div>";
+        return Response.ok(html).build();
+    }
+
+    @GET
+    @Path("wfsDownload/download")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response wfsDownloadContentRequest(@QueryParam("url") String urlStr) throws MalformedURLException {
+        URL url = new URL(urlStr);
+        String filename = "unknown";
+        String urlQuery = url.getQuery().toLowerCase();
+        if(urlQuery.indexOf("typenames=") > -1 && urlQuery.indexOf("service=wfs") > -1 
+                && urlQuery.indexOf("request=getfeature") > -1) {
+            String[] params = url.getQuery().split("&");
+            for (String param : params) {
+                String[] paramKeyValue = param.split("=");
+                if(paramKeyValue.length > 1) {
+                    String key = paramKeyValue[0];
+                    String value = paramKeyValue[1];
+                    if(key.toLowerCase().equals("typenames")) {
+                        value = value.replace(":", "-");
+                        value = value.replace("\\", "-");
+                        value = value.replace("/", "-");
+                        value = value.replace("*", "-");
+                        value = value.replace("?", "-");
+                        value = value.replace("\"", "-");
+                        value = value.replace("<", "-");
+                        value = value.replace(">", "-");
+                        value = value.replace("|", "-");
+                        filename = value;
+                    }
+                }
+            }
+            filename += ".gml";
+            try {
+                InputStream inputStream = url.openStream();
+                return Response.ok(inputStream, MediaType.APPLICATION_OCTET_STREAM)
+                    .header("Content-Disposition", "attachment; filename=\"" + filename + "\"" ) //optional
+                    .build();
+            } catch (IOException e) {
+              // handle exception
+            } finally {
+            }
+        }
+        throw new WebApplicationException( Response.Status.NOT_FOUND );
+    }
+
+    private String getWmsInfo(XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerLegend, String portalUrl) throws XPathExpressionException {
         String html = "";
         // Create HTML
         html += "<div ng-if=\"showWMSTree\" class=\"tabbable\">";
@@ -384,7 +517,7 @@ public class WmsResource {
         html += "<div class=\"tab-content\">";
         
         html += "<div class=\"tab-pane\" ng-class=\"getTabClass(1)\">";
-        html += getWMSInfoData(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
+        html += getWMSInfoData(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, portalUrl);
         html += "</div>";
         
         html += "<div class=\"tab-pane\" ng-class=\"getTabClass(2)\">";
@@ -395,7 +528,7 @@ public class WmsResource {
         html += "</div>";
 
         html += "<div ng-if=\"!showWMSTree\">";
-        html += getWMSInfoData(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
+        html += getWMSInfoData(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, portalUrl);
         html += "</div>";
         
         return html;
@@ -414,7 +547,7 @@ public class WmsResource {
         NodeList fields = (NodeList) xpath.evaluate( "./*/Capability/Layer", doc, XPathConstants.NODESET );
         if(fields != null){
             StringBuilder wmsStructureLayers = new StringBuilder(getSubLayers(fields, xpath, layerName));
-            wmsStructure.append("<ul style=\"padding: 0px;\">");
+            wmsStructure.append("<ul>");
             wmsStructure.append(wmsStructureLayers);
             wmsStructure.append("</ul>");
         }
@@ -424,7 +557,7 @@ public class WmsResource {
     }
 
     private String getWMSInfoData(XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle,
-            String layerLegend) throws XPathExpressionException {
+            String layerLegend, String portalUrl) throws XPathExpressionException {
         StringBuilder html = new StringBuilder("");
         html.append("<div class=\"legend-container\">");
         html.append("<div class=\"legend-footer\">");
@@ -449,60 +582,48 @@ public class WmsResource {
             html.append("<table>");
             html.append("<tbody>");
             if(layerTitle != null){
-                html.append("<tr ng-if=\"!showWMSName\"");
-                if(layerAbstracts.isEmpty()){
-                    html.append(" style=\"border-bottom:0;\"");
-                }
-                html.append(">");
-                html.append("<td translate>metadata_service_title</td>");
-                html.append("<td>" + layerTitle + "</td>");
-                html.append("</tr>");
-                html.append("<tr ng-if=\"showWMSName\"");
-                html.append(">");
+                html.append("<tr>");
                 html.append("<td translate>metadata_service_title</td>");
                 html.append("<td>" + layerTitle + "</td>");
                 html.append("</tr>");
             }
-            if(!layerAbstracts.isEmpty()){
+            if(layerAbstracts != null && !layerAbstracts.isEmpty()){
                 for(int i=0; i < layerAbstracts.size(); i++) {
-                    if (i == 0 && layers.length <= 1) {
-                        html.append("<tr ng-if=\"showWMSName\">");
+                    if (i == 0 && layerAbstracts.size() <= 1) {
+                        html.append("<tr>");
                         html.append("<td translate>metadata_service_abstract</td>");
-                        html.append("<td>" + layerAbstracts.get(i) + "</td>");
-                        html.append("</tr>");
-                        html.append("<tr ng-if=\"!showWMSName\" style=\"border-bottom:0;\">");
-                        html.append("<td translate>metadata_service_abstract</td>");
-                        html.append("<td>" + layerAbstracts.get(i) + "</td>");
-                        html.append("</tr>");
-                    } else if (i == 0 && layers.length > 1) {
-                        html.append("<tr style=\"border-bottom:0;\">");
-                        html.append("<td translate>metadata_service_abstract</td>");
-                        html.append("<td>" + layerAbstracts.get(i) + "</td>");
-                        html.append("</tr>");
                     } else if(i == layerAbstracts.size() - 1) {
                         html.append("<tr>");
                         html.append("<td></td>");
-                        html.append("<td>" + layerAbstracts.get(i) + "</td>");
-                        html.append("</tr>");
                     } else {
                         html.append("<tr style=\"border-bottom:0;\">");
                         html.append("<td></td>");
-                        html.append("<td>" + layerAbstracts.get(i) + "</td>");
-                        html.append("</tr>");
                     }
+                    html.append("<td>" + layerAbstracts.get(i) + "</td>");
+                    html.append("</tr>");
                 }
             }
             if(layers.length > 0){
                 for(int i=0; i < layers.length; i++) {
-                    html.append("<tr ng-if=\"showWMSName\" style=\"border-bottom:0;\">");
-                    if (i == 0) {
+                    if (i == 0 && layers.length <= 1) {
+                        html.append("<tr ng-if=\"showWMSName\">");
                         html.append("<td translate>metadata_service_layer</td>");
+                    } else if(i == layers.length - 1) {
+                        html.append("<tr ng-if=\"showWMSName\">");
+                        html.append("<td></td>");
                     } else {
+                        html.append("<tr ng-if=\"showWMSName\" style=\"border-bottom:0;\">");
                         html.append("<td></td>");
                     }
                     html.append("<td>" + layers[i] + "</td>");
                     html.append("</tr>");
                 }
+            }
+            if(portalUrl != null && !portalUrl.isEmpty()) {
+                html.append("<tr>");
+                html.append("<td translate>metadata_service_portalUrl</td>");
+                html.append("<td><a target=\"new\" href=\"" + portalUrl + "\">" + portalUrl + "</a></td>");
+                html.append("</tr>");
             }
             html.append("</tbody>");
             html.append("</table>");
@@ -660,10 +781,10 @@ public class WmsResource {
         return html.toString();
     }
 
-    private String getWmtsInfo(XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerLegend) throws XPathExpressionException {
+    private String getWmtsInfo(XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerLegend, String portalUrl) throws XPathExpressionException {
         Node field = (Node) xpath.evaluate("//Layer/Identifier[text()=\""+layerName+"\"]", doc, XPathConstants.NODE);
         Node layerField = null;
-        String html = "";
+        StringBuilder html = new StringBuilder("");
         String layerAbstract = null;
         
         if(field != null){
@@ -680,22 +801,41 @@ public class WmsResource {
         }
         
         // Create HTML
-        html += "<div class=\"legend-container\">";
-        
-        html += "<div class=\"legend-header\">";
+        html.append("<div class=\"legend-container\">");
+        html.append("<div class=\"legend-footer\">");
+        html.append("<span translate>metadata_information_layer</span><br>");
+        html.append("<table>");
+        html.append("<tbody>");
         if(layerTitle != null){
-            html += "<p class=\"bod-title\">" + layerTitle + " ";
-            if(layerName != null) {
-                html += "<span ng-if=\"showWMSName\">(" + layerName + ")</span>";
+            if(layerTitle != null){
+                html.append("<tr>");
+                html.append("<td translate>metadata_service_title</td>");
+                html.append("<td>" + layerTitle + "</td>");
+                html.append("</tr>");
             }
-            html += "</p>";
         }
         if(layerAbstract != null){
-            html += "<p class=\"legend-abstract\">" + layerAbstract + "</p>";
+            if(layerAbstract != null && !layerAbstract.isEmpty()){
+                html.append("<tr>");
+                html.append("<td translate>metadata_service_abstract</td>");
+                html.append("<td>" + layerAbstract + "</td>");
+                html.append("</tr>");
+            }
         }
-        html += "</div>";
-
-        html += "<div class=\"legend-footer\">";
+        if(!layerName.isEmpty()){
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_layer</td>");
+            html.append("<td>" + layerName + "</td>");
+            html.append("</tr>");
+        }
+        if(portalUrl != null && !portalUrl.isEmpty()) {
+            html.append("<tr style=\"border-bottom:0;\">");
+            html.append("<td translate>metadata_service_portalUrl</td>");
+            html.append("<td><a target=\"new\" href=\"" + portalUrl + "\">" + portalUrl + "</a></td>");
+            html.append("</tr>");
+        }
+        html.append("</tbody>");
+        html.append("</table>");
         if(layerLegend == null || layerLegend.equals( "undefined" )){
             field = (Node) xpath.evaluate( "./Style/LegendURL/@href", layerField, XPathConstants.NODE);
             if(field != null){
@@ -705,74 +845,74 @@ public class WmsResource {
             }
             
         }
-        html += "<br>";
-        html += "<span translate>metadata_legend</span><br>";
-        html += "<div class=\"img-container\">";
-        html += "<img alt=\"{{'no_legend_available' | translate}}\" src=\"";
+        html.append("<div class=\"legend\">");
+        html.append("<span translate>metadata_legend</span><br>");
+        html.append("<div class=\"img-container\">");
+        html.append("<img alt=\"{{'no_legend_available' | translate}}\" src=\"");
         if(layerLegend != null && !layerLegend.equals( "undefined" )) {
-            html += layerLegend;
+            html.append(layerLegend);
         }
-        html += "\">";
-        html += "</div>";
-        html += "<br><br>";
-        html += "<span translate>metadata_information</span><br>";
-        html += "<table>";
-        html += "<tbody>";
+        html.append("\">");
+        html.append("</div>");
+        html.append("</div>");
+        html.append("<span translate>metadata_information_service</span><br>");
+        html.append("<table>");
+        html.append("<tbody>");
         field = (Node) xpath.evaluate( ".//ServiceIdentification/Title", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_title</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_title</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//ServiceIdentification/ServiceType", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_id</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-             html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_id</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+             html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//ServiceIdentification/Abstract", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_abstract</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_abstract</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//ServiceIdentification/Fees", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_fees</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_fees</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//ServiceIdentification/AccessConstraints", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_accessconstraints</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_accessconstraints</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//ServiceProvider/ProviderName", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_contactperson</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_contactperson</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//ServiceProvider/ServiceContact/IndividualName", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_organisation</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_organisation</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//ServiceProvider/ServiceContact/ContactInfo/Address/DeliveryPoint", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_addresse</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_addresse</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         String city = null;
         field = (Node) xpath.evaluate( ".//ServiceProvider/ServiceContact/ContactInfo/Address/City", doc, XPathConstants.NODE);
@@ -785,66 +925,66 @@ public class WmsResource {
             plz = HtmlEncoder.encode(field.getTextContent());
         }
         if(city != null || plz != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_city</td>";
-            html += "<td>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_city</td>");
+            html.append("<td>");
             if(plz != null){
-                html += "" + plz + " ";
+                html.append("" + plz + " ");
             }
             if(city != null){
-                html += "" + city;
+                html.append("" + city);
             }
-            html += "</td>";
-            html += "</tr>";
+            html.append("</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//ServiceProvider/ServiceContact/ContactInfo/Address/Country", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_country</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_country</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//ServiceProvider/ServiceContact/ContactInfo/Phone/Voice", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_phone</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_phone</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//ServiceProvider/ServiceContact/ContactInfo/Phone/Facsimile", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_fax</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_fax</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//ServiceProvider/ServiceContact/ContactInfo/Address/ElectronicMailAddress", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_mail</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_mail</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//ServiceProvider/ProviderSite/@href", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_resource</td>";
-            html += "<td><a target=\"new\" href=\"" + field.getTextContent() + "\">"+ field.getTextContent() + "</a></td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_resource</td>");
+            html.append("<td><a target=\"new\" href=\"" + field.getTextContent() + "\">"+ field.getTextContent() + "</a></td>");
+            html.append("</tr>");
         }
         if(serviceCapabilitiesURL != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_url</td>";
-            html += "<td><a target=\"new\" href=\"" + serviceCapabilitiesURL + "\" translate>metadata_service_url_link</a></td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_url</td>");
+            html.append("<td><a target=\"new\" href=\"" + serviceCapabilitiesURL + "\" translate>metadata_service_url_link</a></td>");
+            html.append("</tr>");
         }
-        html += "</tbody>";
-        html += "</table>";
-        html += "</div>";
+        html.append("</tbody>");
+        html.append("</table>");
+        html.append("</div>");
         
-        html += "</div>";
+        html.append("</div>");
         
-        return html;
+        return html.toString();
     }
 
     private String getSubLayers(NodeList fields, XPath xpath, String layername) throws XPathExpressionException {

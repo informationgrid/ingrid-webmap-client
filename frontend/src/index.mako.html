@@ -96,7 +96,13 @@ itemscope itemtype="http://schema.org/WebApplication"
         }
       })();
     </script>
-    <script src="../src/auth.jsp"></script>
+    <!-- INGRID: Add 'mapUserId' -->
+    <script language="javascript">
+        var mapUserId = undefined;
+        if (window.parent.mapUserId) {
+          mapUserId = window.parent.mapUserId;
+        }
+    </script>
     <!-- INGRID: Add '${versionslashed}' to reload sources -->
     <link href="${s3basepath}style/app.css?v=${version}" rel="stylesheet"/>
     <!-- INGRID: Add app.override.css -->
@@ -810,7 +816,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <script>
       window.addEventListener('load', function() {
         if (window.name !== "embed" && window.location == window.parent.location) {
-          document.body.innerHTML = "The map.geo.admin.ch embed page must be used in an iframe."
+          document.body.innerHTML = "<span translate-values=\"{{host}}\" translate>view_in_iframe</span>"
         }
       }, false);
     </script>
@@ -968,6 +974,8 @@ itemscope itemtype="http://schema.org/WebApplication"
           searchBwaLocatorGeoUrl : settings.settingSearchBwaLocatorGeoUrl,
           // INGRID: Add search BwaLocator Station
           searchBwaLocatorStationUrl : settings.settingSearchBwaLocatorStationUrl,
+          // INGRID: Add search BwaLocator Station
+          bwaStrFinderLayers : settings.settingBwaStrFinderLayers,
           // INGRID: Short URL service (external)
           shortURLService : settings.settingShortURLService || 'https://is.gd/create.php?format=json',
           // INGRID: Add property to check is in iFrame
@@ -982,6 +990,8 @@ itemscope itemtype="http://schema.org/WebApplication"
           settingImportWMSSingleTile: settings.settingServiceImportSingleTile,
           // INGRID: Import WMS as single tile
           settingImportWMSGutter: settings.settingServiceImportWMSGutter || 0,
+          // INGRID: Print URL service (external)
+          printServiceUrl : settings.settingPrintServiceUrl || '/ingrid-webmap-client/pdf/info.json',
           // INGRID: Add print logo url
           printLogo: settings.settingPrintLogo.replace('{location.protocol}',location.protocol).replace('{location.host}',location.host),
           // INGRID: Add print north arrow logo url

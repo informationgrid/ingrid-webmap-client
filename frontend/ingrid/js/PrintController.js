@@ -13,7 +13,7 @@ goog.provide('ga_print_controller');
     $scope.options = {
       printPath: printPath,
       // INGRID: Change print config URL
-      printConfigUrl: '/ingrid-webmap-client/pdf/info.json',
+      printConfigUrl: gaGlobalOptions.printServiceUrl,
       // INGRID: Disable legend URL service
       legendUrl: '',
       qrcodeUrl: gaGlobalOptions.apiUrl + '/qrcodegenerator?url=',

@@ -7,5 +7,8 @@ export interface ILayerWms extends ILayer {
     gutter: number;
     minScale: number;
     maxScale: number;
+    wmsWfsLabel: string;
+    wmsWfsUrl: string;
+    wmsWfsFeatureTypes: string;
 }
 

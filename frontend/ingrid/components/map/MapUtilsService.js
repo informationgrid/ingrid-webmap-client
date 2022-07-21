@@ -16,8 +16,9 @@ goog.require('ga_urlutils_service');
    * Service provides map util functions.
    */
   module.provider('gaMapUtils', function() {
+    // INGRID: Add 'gaPermalink'
     this.$get = function($window, gaGlobalOptions, gaUrlUtils, $q,
-        gaDefinePropertiesForLayer, $rootScope, gaHeight) {
+        gaDefinePropertiesForLayer, $rootScope, gaHeight, gaPermalink) {
       var resolutions = gaGlobalOptions.resolutions;
       var lodsForRes = gaGlobalOptions.lods;
       var isExtentEmpty = function(extent) {
@@ -388,6 +389,31 @@ goog.require('ga_urlutils_service');
           return false;
         },
 
+        // INGRID: External WFS
+        isExternalWfsLayer: function(olLayerOrId) {
+          if (!olLayerOrId) {
+            return false;
+          }
+          if (olLayerOrId instanceof ol.layer.Layer) {
+            olLayerOrId = olLayerOrId.id;
+          }
+          if (angular.isString(olLayerOrId)) {
+            return /^WFS\|\|/.test(olLayerOrId);
+          }
+          return false;
+        },
+
+        // INGRID: Add hasXYZParams
+        hasXYZParams: function() {
+          var paramsE = gaPermalink.getParams().E;
+          var paramsN = gaPermalink.getParams().N;
+          var paramsZoom = gaPermalink.getParams().zoom;
+          if (paramsE && paramsN && paramsZoom) {
+            return true;
+          }
+          return false;
+        },
+
         // INGRID: Add get resolution from scale
         inRange: function(layer, map) {
           var minResolution;
@@ -529,6 +555,46 @@ goog.require('ga_urlutils_service');
           });
           gaDefinePropertiesForLayer(layer);
           layer.displayInLayerManager = false;
+          return layer;
+        },
+
+        // INGRID: BwaStr feature
+        getBwaStrFeatureOverlay: function(feature, style,
+            map, label, visible) {
+          var layer = new ol.layer.Vector({
+            source: new ol.source.Vector({
+              useSpatialIndex: false,
+              features: [feature]
+            }),
+            style: style,
+            updateWhileAnimating: true,
+            updateWhileInteracting: true,
+            zIndex: this.Z_FEATURE_OVERLAY
+          });
+          gaDefinePropertiesForLayer(layer);
+          layer.displayInLayerManager = true;
+          layer.label = label;
+          layer.visible = visible;
+          layer.disableCtrlLayerExtent = true;
+          layer.disableCtrlLayerUp = true;
+          layer.disableCtrlLayerDown = true;
+
+          // INGRID: Update param 'bwaStrVisible'
+          layer.on('change:visible', function(evt) {
+            gaPermalink.updateParams({
+              bwaStrVisible: '' + layer.visible
+            });
+          });
+
+          // INGRID: Remove param 'bwaStr'
+          map.getLayers().on('remove', function(evt) {
+            if (evt.element === layer) {
+              gaPermalink.deleteParam('bwaStrId');
+              gaPermalink.deleteParam('bwaStrKm');
+              gaPermalink.deleteParam('bwaStrOffset');
+              gaPermalink.deleteParam('bwaStrVisible');
+            }
+          });
           return layer;
         },
 

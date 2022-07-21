@@ -29,6 +29,7 @@
 "metadata_service_id": "ID",
 "metadata_service_layer": "Bezeichnung (Name)",
 "metadata_service_abstract": "Zusammenfassung",
+"metadata_service_portalUrl": "Metadaten",
 "metadata_service_fees": "Gebühren",
 "metadata_service_accessconstraints": "Zugriffsbeschränkung",
 "metadata_service_contactperson": "Ansprechpartner",
@@ -137,5 +138,8 @@
 "service_auth_data_password":"Passwort",
 "service_auth_data_login":"Anmelden",
 "service_auth_data_login_error":"Anmeldefehler",
-"accessibility_label": "Barrierefreiheit"
+"accessibility_label": "Barrierefreiheit",
+"view_in_iframe": "Die {{url}} eingebettete Seite muss in einem iFrame verwendet werden.",
+"popup_wfs_filter": "Filter",
+"popup_wfs_filter_bbox": "Auf Kartenausschnitt",
 }

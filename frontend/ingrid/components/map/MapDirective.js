@@ -65,10 +65,10 @@ goog.require('ga_styles_service');
     };
   });
 
-  // INGRID: Add parameter 'gaGlobalOptions'
+  // INGRID: Add parameter 'gaGlobalOptions', '$http'
   module.directive('gaMap', function($window, gaPermalink,
       gaStyleFactory, gaBrowserSniffer, gaLayers, gaDebounce, gaOffline,
-      gaMapUtils, $translate, gaGlobalOptions) {
+      gaMapUtils, $translate, gaGlobalOptions, $http) {
     return {
       restrict: 'A',
       scope: {
@@ -154,24 +154,128 @@ goog.require('ga_styles_service');
 
         map.setTarget(element[0]);
 
-        // INGRID: Add default zoom
-        // Zoom to default extent
-        if ((gaPermalink.getParams().E === undefined &&
-            gaPermalink.getParams().N === undefined) &&
-            (gaPermalink.getParams().X === undefined &&
-            gaPermalink.getParams().Y === undefined)) {
-          if(!gaBrowserSniffer.embed) {
-            if (window.parent.resizeIframe !== undefined) {
-              window.parent.resizeIframe();
-              map.updateSize();
+        var updateDefaultExtent = function() {
+          // INGRID: Add default zoom
+          // Zoom to default extent
+          if (!gaPermalink.getParams().E && !gaPermalink.getParams().N &&
+            !gaPermalink.getParams().X && !gaPermalink.getParams().Y) {
+            if (!gaBrowserSniffer.embed) {
+              if (window.parent.resizeIframe !== undefined) {
+                window.parent.resizeIframe();
+                map.updateSize();
+              }
             }
-          }
-          var extent = ol.proj.transformExtent(gaMapUtils.defaultExtent,
+            var extent = ol.proj.transformExtent(gaMapUtils.defaultExtent,
               'EPSG:4326', gaGlobalOptions.defaultEpsg);
-          var size = map.getSize();
-          view.fit(extent, size);
-        }
+            var size = map.getSize();
+            view.fit(extent, size);
+          }
+        };
 
+        // INGRID: Add bwaStrId
+        if (queryParams.bwaStrId && queryParams.bwaStrKm
+          && gaGlobalOptions.searchBwaLocatorGeoUrl) {
+          var bwaStrKm = queryParams.bwaStrKm.replace(',', '.');
+          var content = '{' +
+            '"limit":200,' +
+            '"queries":[' +
+            '{' +
+            '"qid":1,' +
+            '"bwastrid":"' + queryParams.bwaStrId + '",' +
+            '"stationierung":{';
+          content = content + '"km_wert":' + bwaStrKm;
+          content = content + ',';
+          var offset = 0;
+          if (queryParams.bwaStrOffset) {
+            offset = queryParams.bwaStrOffset.replace(',', '.');
+          }
+          content = content + '"offset":' + offset;
+          content = content + '},' +
+            '"spatialReference":{' +
+            '"wkid":' + gaGlobalOptions.defaultEpsg.split(':')[1] +
+            '}' +
+            '}' +
+            ']' +
+          '}';
+          gaLayers.loadConfig().then(function(layers) {
+              $http.get('/ingrid-webmap-client/rest/' +
+                'jsonCallback/queryPost?', {
+                cache: true,
+                params: {
+                  'url': gaGlobalOptions.searchBwaLocatorGeoUrl,
+                  'data': content
+                }
+              }).then(function(response) {
+                var data = response.data;
+                var hasData = false;
+                if (data) {
+                  var result = data.result;
+                  if (result) {
+                    if (result.length > 0) {
+                      var bwaStr = result[0];
+                      if (bwaStr) {
+                        var geo = bwaStr.geometry;
+                        if (geo) {
+                          if (geo.coordinates) {
+                            hasData = true;
+                            var label = bwaStr.bwastr_name +
+                              ' (' + bwaStr.bwastrid + ') ' +
+                              ' Km: ' + bwaStr.stationierung.km_wert +
+                              ' Abstand: ' + bwaStr.stationierung.offset;
+                            var visible = true;
+                            if (queryParams.bwaStrVisible !== undefined) {
+                              visible = (queryParams.bwaStrVisible === 'true');
+                            }
+                            var crosshair = new ol.Feature({
+                              label: label,
+                              geometry: new ol.geom.Point(geo.coordinates)
+                            });
+                            var style = gaStyleFactory.getStyle('marker');
+                            map.addLayer(gaMapUtils.
+                              getBwaStrFeatureOverlay(crosshair, style,
+                              map, label, visible));
+                            var e = gaPermalink.getParams().E;
+                            var n = gaPermalink.getParams().N;
+                            if (!e && !n) {
+                              var center = geo.coordinates;
+                              var zoom = +queryParams.zoom || 15;
+                              map.getView().setCenter(center);
+                              map.getView().setZoom(zoom);
+                              if (center && zoom !== undefined) {
+                                e = center[0].toFixed(2);
+                                n = center[1].toFixed(2);
+                                gaPermalink.updateParams({
+                                  E: e,
+                                  N: n,
+                                  zoom: zoom
+                                });
+                              }
+                            }
+                            var bwaStrLayers = gaGlobalOptions.
+                              bwaStrFinderLayers.split(',');
+                            for (var index in bwaStrLayers) {
+                              var layerId = bwaStrLayers[index];
+                              if(layerId) {
+                                var layer = gaLayers.getOlLayerById(layerId);
+                                if (layer) {
+                                  map.addLayer(layer);
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                if(!hasData) {
+                  updateDefaultExtent();
+                }
+              });
+           });
+        } else {
+          updateDefaultExtent();
+        }
         scope.$watch('::ol3d', function(ol3d) {
           if (ol3d) {
             var camera = ol3d.getCesiumScene().camera;

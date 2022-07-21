@@ -221,6 +221,8 @@
     "setting_settingSearchBwaLocatorGeoUrl_help": "Zugehörig zu der Funktion “Dienst-URL BWaStr-Locator” können Sie hier die Dienst-URL für die Geokodierung von Bundeswasserstraßen eintragen.. Hinweis: Entfernen Sie den Eintrag und für die Suche wird der Dienst ignoriert.",
     "setting_settingSearchBwaLocatorStationUrl": "Dienst-URL BwaStr-Locator (Station)",
     "setting_settingSearchBwaLocatorStationUrl_help": "Zugehörig zu der Funktion “Dienst-URL BWaStr-Locator” können Sie hier die Dienst-URL für die Stationierung von Bundeswasserstraßen eintragen. Hinweis: Entfernen Sie den Eintrag und der Dienst wird ignoriert.",
+    "setting_settingBwaStrFinderLayers": "BWaStr-Positionsfinder Default-Karten",
+    "setting_settingBwaStrFinderLayers_help": "Fügt bei der Funktion BWaStr-Positionsfinder per Default Karten hinzu. Listen Sie hierbei die eingepflegten Layer-IDs kommagetrennt. (z.B. atlas_wsv_bund_de_WmsIENC,atlas_wsv_bund_de_Wasserstrassenklassen)",
     "setting_settingServiceAnnouncement": "Problem melden",
     "setting_settingServiceAnnouncement_help": "Funktion 'Problem melden' verwenden.",
     "setting_settingServiceAnnouncementUrl": "URL zum Problem melden",
@@ -364,5 +366,14 @@
     "use_alternative_layer": "Ihre angegebene Karte existiert nicht mehr. Wählen Sie bitte eine andere Karte aus der Liste aus.",
     "layer_category_dependency": "Diese Karte ist Bestandteil von folgenden Kategorien:",
     "layer_category_no_dependency": "Diese Karte wurde keiner Kategorie zugeordnet.",
-    "localisation": "Lokalisierung"
+    "localisation": "Lokalisierung",
+    "layer_wmsWfsLabel": "WFS Titel",
+    "layer_wmsWfsLabel_help": "WFS Titel zur Auflistung der Feature Types eines WFS-Dienstes",
+    "layer_wmsWfsUrl": "WFS URL (GetCapabilities)",
+    "layer_wmsWfsUrl_help": "WFS URL (GetCapabilities) zum Abruf der Feature Types. Ein Download-Button wird bei dem WMS-Layer unter \"Dargestellte Karten\" angezeigt.",
+    "layer_wmsWfsFeatureTypes": "WFS Feature Type Liste",
+    "layer_wmsWfsFeatureTypes_help": "Liste der Feature Types (kommagetrennt) definieren, die angezeigt werden dürfen. Wenn der Eintrag leer ist, werden alle Feature Types angezeigt.",
+    "layer_portalUrl": "Metadaten-URL",
+    "layer_portalUrl_help": "URL zu den Metadaten. Diese URL wird in der Infobox dieser Karte angezeigt.",
+    "others": "Sonstiges"
 }

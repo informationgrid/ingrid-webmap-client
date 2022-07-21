@@ -728,6 +728,27 @@
                                         name="settingSearchBwaLocatorStationUrl" class="form-control">
                                 </div>
                             </div>
+                            <!-- settingBwaStrFinderLayers -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingBwaStrFinderLayers</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingBwaStrFinderLayers"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingBwaStrFinderLayers" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingBwaStrFinderLayers_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingBwaStrFinderLayers="ngModel" [(ngModel)]="settings.settingBwaStrFinderLayers"
+                                        name="settingBwaStrFinderLayers" class="form-control">
+                                </div>
+                            </div>
                             <!-- settingEnableW3W -->
                             <div class="form-group row">
                                 <div class="col-sm-3">
@@ -972,6 +993,27 @@
                         </div>
 <!-- Print -->
                         <div class="tab-pane fade show" id="tabs-settings-print" role="tabpanel" aria-labelledby="pills-settings-print-tab'">
+                            <!-- settingPrintServiceUrl -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingPrintServiceUrl</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingPrintServiceUrl"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingPrintServiceUrl" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingPrintServiceUrl_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingPrintServiceUrl="ngModel" [(ngModel)]="settings.settingPrintServiceUrl" name="settingPrintServiceUrl"
+                                        class="form-control">
+                                </div>
+                            </div>
                             <!-- settingPrintLogo -->
                             <div class="form-group row">
                                 <div class="col-sm-3">
@@ -1245,7 +1287,6 @@
                                     <input type="text" #settingSitemapURL="ngModel" [(ngModel)]="settings.settingSitemapURL" name="settingSitemapURL" class="form-control">
                                 </div>
                             </div>
-                        </div>
                             <!-- settingAccessibilityUrl -->
                             <div class="form-group row">
                                 <div class="col-sm-3">
@@ -1289,6 +1330,7 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
 <!-- Layerinfo -->
                         <div class="tab-pane fade show" id="tabs-settings-layerinfo" role="tabpanel" aria-labelledby="pills-settings-layerinfo-tab'">
                             <!-- settingCheckLayerInRange -->

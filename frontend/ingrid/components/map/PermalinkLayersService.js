@@ -548,6 +548,50 @@ goog.require('ga_wmts_service');
                     // INGRID: Add isSecure
                     isSecure: infos[6]
                   });
+                } else if (gaMapUtils.isExternalWfsLayer(layerSpec)) {
+                  // INGRID: Add external WFS
+                  var label = layerSpec.split('||')[1];
+                  var featUrl = layerSpec.split('||')[2];
+                  var featTypeName = layerSpec.split('||')[3];
+                  var featId = layerSpec.split('||')[4];
+
+                  if (featUrl.indexOf('?') === -1) {
+                    featUrl += '?';
+                  }
+                  if (featUrl.toLowerCase().indexOf('request=') === -1) {
+                    featUrl += '&Request=GetFeature';
+                  }
+                  if (featUrl.toLowerCase().indexOf('service=') === -1) {
+                    featUrl += '&Service=WFS';
+                  }
+                  if (featUrl.toLowerCase().indexOf('version=') === -1) {
+                    featUrl += '&Version=1.1.0';
+                  }
+                  featUrl += '&TYPENAME=' + featTypeName;
+
+                  var view = map.getView();
+                  var proj = view.getProjection();
+                  if (proj) {
+                    featUrl += '&srsname=' + proj.getCode();
+                  }
+
+                  var hasPos = gaMapUtils.hasXYZParams();
+                  try {
+                    gaVector.addWfsToMapForUrl(map, featUrl,
+                        {
+                          opacity: 1,
+                          visible: true,
+                          id: layerSpec,
+                          label: label,
+                          featureId: featId,
+                          hasPos: hasPos
+                        },
+                        index + 1);
+                    mustReorder = true;
+                  } catch (e) {
+                    // Adding vector layer failed, native alert, log message?
+                    $log.error(e.message);
+                  }
                 }
               });
             }
