@@ -304,26 +304,28 @@ goog.require('ga_file_service');
                 var featExtent = vectorSource.getExtent();
                 var geom;
                 if (options.featureId) {
-                  var geom = vectorSource.
-                      getFeatureById(options.featureId);
-                  geom.setStyle(new ol.style.Style({
-                    fill: new ol.style.Fill({
-                      color: 'rgba(255, 255, 0, 0.5)'
-                    }),
-                    stroke: new ol.style.Stroke({
-                      color: 'rgba(255, 165, 0, 1.0)',
-                      width: 2
-                    }),
-                    text: new ol.style.Text({
-                      text: geom.getId(),
+                  geom = vectorSource.
+                    getFeatureById(options.featureId);
+                  if(geom) {
+                    geom.setStyle(new ol.style.Style({
                       fill: new ol.style.Fill({
-                        color: '#000'
+                        color: 'rgba(255, 255, 0, 0.5)'
                       }),
                       stroke: new ol.style.Stroke({
-                        color: '#fff',
+                        color: 'rgba(255, 165, 0, 1.0)',
                         width: 2
+                      }),
+                      text: new ol.style.Text({
+                        text: geom.getId(),
+                        fill: new ol.style.Fill({
+                          color: '#000'
+                        }),
+                        stroke: new ol.style.Stroke({
+                          color: '#fff',
+                          width: 2
+                        })
                       })
-                    })
+                    }
                   }));
                 }
                 if (!options.hasPos) {
