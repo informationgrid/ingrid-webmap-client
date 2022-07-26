@@ -325,8 +325,8 @@ goog.require('ga_file_service');
                           width: 2
                         })
                       })
-                    }
-                  }));
+                    }));
+                  }
                 }
                 if (!options.hasPos) {
                   if (geom) {
