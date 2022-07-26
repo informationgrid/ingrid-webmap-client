@@ -296,23 +296,42 @@ goog.require('ga_file_service');
             format: new ol.format.WFS(),
             loader: function(extent, resolution, projection) {
               fetch(url).
-              then(response => response.text()).
-              then(text => {
-                vectorSource.addFeatures(
-                  vectorSource.getFormat().readFeatures(text, {})
-                );
-                if(!options.hasPos) {
-                  var featExtent = vectorSource.getExtent();
-                  if (options.featureId) {
-                    var geom = vectorSource.
-                      getFeatureById(options.featureId);
-                    if (geom) {
-                      featExtent = geom.getGeometry().getExtent();
+                  then(response => response.text()).
+                  then(text => {
+                    vectorSource.addFeatures(
+                        vectorSource.getFormat().readFeatures(text, {})
+                    );
+                    if (options.featureId) {
+                      var geom = vectorSource.
+                        getFeatureById(options.featureId);
+                      geom.setStyle(new ol.style.Style({
+                        fill: new ol.style.Fill({
+                          color: 'rgba(255, 255, 0, 0.5)'
+                        }),
+                        stroke: new ol.style.Stroke({
+                          color: 'rgba(255, 165, 0, 1.0)',
+                          width: 2
+                        }),
+                        text: new ol.style.Text({
+                          text: geom.getId(),
+                          fill: new ol.style.Fill({
+                            color: '#000'
+                          }),
+                          stroke: new ol.style.Stroke({
+                            color: '#fff',
+                            width: 2
+                          })
+                        })
+                    }));
+                      if (!options.hasPos) {
+                        var featExtent = vectorSource.getExtent();
+                        if (geom) {
+                          featExtent = geom.getGeometry().getExtent();
+                        }
+                        map.getView().fit(featExtent, map.getSize());
+                      }
                     }
-                  }
-                  map.getView().fit(featExtent, map.getSize());
-                }
-              })
+                  })
             }
           });
           var vector = new ol.layer.Vector({
