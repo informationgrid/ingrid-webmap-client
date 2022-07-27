@@ -305,34 +305,67 @@ goog.require('ga_file_service');
                 var geom;
                 if (options.featureId) {
                   geom = vectorSource.
-                    getFeatureById(options.featureId);
-                  if(geom) {
-                    geom.setStyle(new ol.style.Style({
+                      getFeatureById(options.featureId);
+                  if (geom) {
+                    var style = new ol.style.Style({
                       fill: new ol.style.Fill({
                         color: 'rgba(255, 255, 0, 0.5)'
                       }),
                       stroke: new ol.style.Stroke({
-                        color: 'rgba(255, 165, 0, 1.0)',
+                        color: 'orange',
                         width: 2
                       }),
                       text: new ol.style.Text({
+                        scale: 1.2,
                         text: geom.getId(),
                         fill: new ol.style.Fill({
-                          color: '#000'
+                          color: '#fff'
                         }),
                         stroke: new ol.style.Stroke({
-                          color: '#fff',
-                          width: 2
+                          color: '#000',
+                          width: 3
                         })
                       })
-                    }));
+                    });
+                    if(geom.getGeometry() instanceof ol.geom.Point) {
+                      style = new ol.style.Style({
+                        image: new ol.style.Circle({
+                          radius: 7,
+                          fill: new ol.style.Fill({
+                            color: 'rgba(255, 255, 0, 0.5)'
+                          }),
+                          stroke: new ol.style.Stroke({
+                            color: 'rgba(255, 165, 0, 1.0)',
+                            width: 3
+                          })
+                        }),
+                        text: new ol.style.Text({
+                          scale: 1.2,
+                          text: geom.getId(),
+                          offsetY: -15,
+                          fill: new ol.style.Fill({
+                            color: '#fff'
+                          }),
+                          stroke: new ol.style.Stroke({
+                            color: '#000',
+                            width: 3
+                          })
+                        })
+                      });
+                    }
+                    geom.setStyle(style);
                   }
                 }
                 if (!options.hasPos) {
                   if (geom) {
                     featExtent = geom.getGeometry().getExtent();
                   }
-                  map.getView().fit(featExtent, map.getSize());
+                  if(featExtent) {
+                    map.getView().fit(featExtent, {
+                      size: map.getSize(),
+                      maxZoom: 19
+                    });
+                  }
                 }
               })
             }
