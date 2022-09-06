@@ -324,8 +324,10 @@ goog.require('ga_file_service');
                         geom = feat;
                         if (geom) {
                           self.stylingGeom(geom);
-                          ol.extent.extend(featExtent, feat.getGeometry().
-                            getExtent());
+                          if(feats.length > 1) {
+                            ol.extent.extend(featExtent, feat.getGeometry().
+                              getExtent());
+                          }
                         }
                       }
                     }
