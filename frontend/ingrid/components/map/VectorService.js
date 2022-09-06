@@ -291,95 +291,55 @@ goog.require('ga_file_service');
         this.addWfsToMapForUrl = function(map, url, options, index) {
           options = options || {};
           options.url = url;
+          var self = this;
 
           var vectorSource = new ol.source.Vector({
             format: new ol.format.WFS(),
             loader: function(extent, resolution, projection) {
               fetch(url).
-                  then(response => response.text()).
-                  then(text => {
-                    vectorSource.addFeatures(
-                        vectorSource.getFormat().readFeatures(text, {})
-                    );
-                    var featExtent = vectorSource.getExtent();
-                    var geom;
-                    if (options.featureId) {
-                      geom = vectorSource.
-                          getFeatureById(options.featureId);
-                    } else if (options.featureAttr &&
-                    options.featureAttrVal) {
-                      var feats = vectorSource.getFeatures();
-                      for (const feat of feats) {
-                        var featAttr = feat.get(options.featureAttr);
-                        if (featAttr) {
-                          if (featAttr === options.featureAttrVal) {
-                            geom = feat;
-                            break;
-                          }
+              then(response => response.text()).
+              then(text => {
+                vectorSource.addFeatures(
+                  vectorSource.getFormat().readFeatures(text, {})
+                );
+                var featExtent = vectorSource.getExtent();
+                var geom;
+                if (options.featureId) {
+                  geom = vectorSource.
+                    getFeatureById(options.featureId);
+                  if (geom) {
+                   self.stylingGeom(geom);
+                   featExtent = geom.getGeometry().getExtent();
+                  }
+                } else if (options.featureAttr &&
+                  options.featureAttrVal) {
+                  var feats = vectorSource.getFeatures();
+                  if(feats.length > 0) {
+                    featExtent = feats[0].getGeometry().getExtent();
+                  }
+                  for (const feat of feats) {
+                    var featAttr = feat.get(options.featureAttr);
+                    if (featAttr) {
+                      if (featAttr === options.featureAttrVal) {
+                        geom = feat;
+                        if (geom) {
+                          self.stylingGeom(geom);
+                          ol.extent.extend(featExtent, feat.getGeometry().
+                            getExtent());
                         }
                       }
                     }
-                    if (geom) {
-                      var style = new ol.style.Style({
-                        fill: new ol.style.Fill({
-                          color: 'rgba(255, 255, 0, 0.5)'
-                        }),
-                        stroke: new ol.style.Stroke({
-                          color: 'orange',
-                          width: 2
-                        }),
-                        text: new ol.style.Text({
-                          scale: 1.2,
-                          text: geom.getId(),
-                          fill: new ol.style.Fill({
-                            color: '#fff'
-                          }),
-                          stroke: new ol.style.Stroke({
-                            color: '#000',
-                            width: 3
-                          })
-                        })
-                      });
-                      if (geom.getGeometry() instanceof ol.geom.Point) {
-                        style = new ol.style.Style({
-                          image: new ol.style.Circle({
-                            radius: 7,
-                            fill: new ol.style.Fill({
-                              color: 'rgba(255, 255, 0, 0.5)'
-                            }),
-                            stroke: new ol.style.Stroke({
-                              color: 'rgba(255, 165, 0, 1.0)',
-                              width: 3
-                            })
-                          }),
-                          text: new ol.style.Text({
-                            scale: 1.2,
-                            text: geom.getId(),
-                            offsetY: -15,
-                            fill: new ol.style.Fill({
-                              color: '#fff'
-                            }),
-                            stroke: new ol.style.Stroke({
-                              color: '#000',
-                              width: 3
-                            })
-                          })
-                        });
-                      }
-                      geom.setStyle(style);
-                    }
-                    if (!options.hasPos) {
-                      if (geom) {
-                        featExtent = geom.getGeometry().getExtent();
-                      }
-                      if (featExtent) {
-                        map.getView().fit(featExtent, {
-                          size: map.getSize(),
-                          maxZoom: 19
-                        });
-                      }
-                    }
-                  })
+                  }
+                }
+                if (!options.hasPos) {
+                  if (featExtent) {
+                    map.getView().fit(featExtent, {
+                      size: map.getSize(),
+                      maxZoom: 19
+                    });
+                  }
+                }
+             })
             }
           });
           var vector = new ol.layer.Vector({
@@ -396,6 +356,56 @@ goog.require('ga_file_service');
 
         };
 
+        this.stylingGeom = function(geom) {
+          var style = new ol.style.Style({
+            fill: new ol.style.Fill({
+              color: 'rgba(255, 255, 0, 0.5)'
+            }),
+            stroke: new ol.style.Stroke({
+              color: 'orange',
+              width: 2
+            }),
+            text: new ol.style.Text({
+              scale: 1.2,
+              text: geom.getId(),
+              fill: new ol.style.Fill({
+                color: '#fff'
+              }),
+              stroke: new ol.style.Stroke({
+                color: '#000',
+                width: 3
+              })
+            })
+          });
+          if (geom.getGeometry() instanceof ol.geom.Point) {
+            style = new ol.style.Style({
+              image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                  color: 'rgba(255, 255, 0, 0.5)'
+                }),
+                stroke: new ol.style.Stroke({
+                  color: 'rgba(255, 165, 0, 1.0)',
+                  width: 3
+                })
+              }),
+              text: new ol.style.Text({
+                scale: 1.2,
+                text: geom.getId(),
+                offsetY: -15,
+                fill: new ol.style.Fill({
+                  color: '#fff'
+                }),
+                stroke: new ol.style.Stroke({
+                  color: '#000',
+                  width: 3
+                })
+              })
+            });
+          }
+          geom.setStyle(style);
+        };
+        
         // Defines if we should use a ol.layer.Image instead of a
         // ol.layer.Vector. Currently we define this, only testing the
         // file size but it could be another condition.

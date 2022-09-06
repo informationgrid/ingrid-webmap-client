@@ -556,7 +556,7 @@ goog.require('ga_wmts_service');
                   var featTypeName = splitLayerSpec[3];
                   var featId = splitLayerSpec[4];
                   var featAttr, featAttrVal;
-                  if (splitLayerSpec.length == 6) {
+                  if (splitLayerSpec.length === 6) {
                     featAttr = splitLayerSpec[4];
                     featAttrVal = splitLayerSpec[5];
                     featId = undefined;
