@@ -296,53 +296,41 @@ goog.require('ga_file_service');
             format: new ol.format.WFS(),
             loader: function(extent, resolution, projection) {
               fetch(url).
-              then(response => response.text()).
-              then(text => {
-                vectorSource.addFeatures(
-                    vectorSource.getFormat().readFeatures(text, {})
-                );
-                var featExtent = vectorSource.getExtent();
-                var geom;
-                if (options.featureId) {
-                  geom = vectorSource.
-                      getFeatureById(options.featureId);
-                  if (geom) {
-                    var style = new ol.style.Style({
-                      fill: new ol.style.Fill({
-                        color: 'rgba(255, 255, 0, 0.5)'
-                      }),
-                      stroke: new ol.style.Stroke({
-                        color: 'orange',
-                        width: 2
-                      }),
-                      text: new ol.style.Text({
-                        scale: 1.2,
-                        text: geom.getId(),
+                  then(response => response.text()).
+                  then(text => {
+                    vectorSource.addFeatures(
+                        vectorSource.getFormat().readFeatures(text, {})
+                    );
+                    var featExtent = vectorSource.getExtent();
+                    var geom;
+                    if (options.featureId) {
+                      geom = vectorSource.
+                          getFeatureById(options.featureId);
+                    } else if (options.featureAttr &&
+                    options.featureAttrVal) {
+                      var feats = vectorSource.getFeatures();
+                      for (const feat of feats) {
+                        var featAttr = feat.get(options.featureAttr);
+                        if (featAttr) {
+                          if (featAttr === options.featureAttrVal) {
+                            geom = feat;
+                            break;
+                          }
+                        }
+                      }
+                    }
+                    if (geom) {
+                      var style = new ol.style.Style({
                         fill: new ol.style.Fill({
-                          color: '#fff'
+                          color: 'rgba(255, 255, 0, 0.5)'
                         }),
                         stroke: new ol.style.Stroke({
-                          color: '#000',
-                          width: 3
-                        })
-                      })
-                    });
-                    if(geom.getGeometry() instanceof ol.geom.Point) {
-                      style = new ol.style.Style({
-                        image: new ol.style.Circle({
-                          radius: 7,
-                          fill: new ol.style.Fill({
-                            color: 'rgba(255, 255, 0, 0.5)'
-                          }),
-                          stroke: new ol.style.Stroke({
-                            color: 'rgba(255, 165, 0, 1.0)',
-                            width: 3
-                          })
+                          color: 'orange',
+                          width: 2
                         }),
                         text: new ol.style.Text({
                           scale: 1.2,
                           text: geom.getId(),
-                          offsetY: -15,
                           fill: new ol.style.Fill({
                             color: '#fff'
                           }),
@@ -352,22 +340,46 @@ goog.require('ga_file_service');
                           })
                         })
                       });
+                      if (geom.getGeometry() instanceof ol.geom.Point) {
+                        style = new ol.style.Style({
+                          image: new ol.style.Circle({
+                            radius: 7,
+                            fill: new ol.style.Fill({
+                              color: 'rgba(255, 255, 0, 0.5)'
+                            }),
+                            stroke: new ol.style.Stroke({
+                              color: 'rgba(255, 165, 0, 1.0)',
+                              width: 3
+                            })
+                          }),
+                          text: new ol.style.Text({
+                            scale: 1.2,
+                            text: geom.getId(),
+                            offsetY: -15,
+                            fill: new ol.style.Fill({
+                              color: '#fff'
+                            }),
+                            stroke: new ol.style.Stroke({
+                              color: '#000',
+                              width: 3
+                            })
+                          })
+                        });
+                      }
+                      geom.setStyle(style);
                     }
-                    geom.setStyle(style);
-                  }
-                }
-                if (!options.hasPos) {
-                  if (geom) {
-                    featExtent = geom.getGeometry().getExtent();
-                  }
-                  if(featExtent) {
-                    map.getView().fit(featExtent, {
-                      size: map.getSize(),
-                      maxZoom: 19
-                    });
-                  }
-                }
-              })
+                    if (!options.hasPos) {
+                      if (geom) {
+                        featExtent = geom.getGeometry().getExtent();
+                      }
+                      if (featExtent) {
+                        map.getView().fit(featExtent, {
+                          size: map.getSize(),
+                          maxZoom: 19
+                        });
+                      }
+                    }
+                  })
             }
           });
           var vector = new ol.layer.Vector({
