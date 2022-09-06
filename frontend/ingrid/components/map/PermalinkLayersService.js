@@ -550,10 +550,17 @@ goog.require('ga_wmts_service');
                   });
                 } else if (gaMapUtils.isExternalWfsLayer(layerSpec)) {
                   // INGRID: Add external WFS
-                  var label = layerSpec.split('||')[1];
-                  var featUrl = layerSpec.split('||')[2];
-                  var featTypeName = layerSpec.split('||')[3];
-                  var featId = layerSpec.split('||')[4];
+                  var splitLayerSpec = layerSpec.split('||');
+                  var label = splitLayerSpec[1];
+                  var featUrl = splitLayerSpec[2];
+                  var featTypeName = splitLayerSpec[3];
+                  var featId = splitLayerSpec[4];
+                  var featAttr, featAttrVal;
+                  if (splitLayerSpec.length == 6) {
+                    featAttr = splitLayerSpec[4];
+                    featAttrVal = splitLayerSpec[5];
+                    featId = undefined;
+                  }
 
                   if (featUrl.indexOf('?') === -1) {
                     featUrl += '?';
@@ -584,6 +591,8 @@ goog.require('ga_wmts_service');
                           id: layerSpec,
                           label: label,
                           featureId: featId,
+                          featureAttr: featAttr,
+                          featureAttrVal: featAttrVal,
                           hasPos: hasPos
                         },
                         index + 1);
