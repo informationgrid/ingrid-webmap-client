@@ -314,9 +314,7 @@ goog.require('ga_file_service');
                 } else if (options.featureAttr &&
                   options.featureAttrVal) {
                   var feats = vectorSource.getFeatures();
-                  if(feats.length > 0) {
-                    featExtent = feats[0].getGeometry().getExtent();
-                  }
+                  var countGeom = 0;
                   for (const feat of feats) {
                     var featAttr = feat.get(options.featureAttr);
                     if (featAttr) {
@@ -324,10 +322,13 @@ goog.require('ga_file_service');
                         geom = feat;
                         if (geom) {
                           self.stylingGeom(geom);
-                          if(feats.length > 1) {
-                            ol.extent.extend(featExtent, feat.getGeometry().
+                          if(countGeom === 0) {
+                            featExtent = geom.getGeometry().getExtent();
+                          } else {
+                            ol.extent.extend(featExtent, geom.getGeometry().
                               getExtent());
                           }
+                          countGeom++;
                         }
                       }
                     }
