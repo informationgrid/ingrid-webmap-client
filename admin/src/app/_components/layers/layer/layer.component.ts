@@ -342,9 +342,15 @@ export class LayerComponent implements OnInit {
           label += l.label;
         }
         if (i !== checkedLayers.length) {
-          wmsLayers += ',';
-          legendUrl += '|';
-          label += '|';
+          if (l.wmsLayers) {
+            wmsLayers += ',';
+          }
+          if (l.legendUrl) {
+            legendUrl += '|';
+          }
+          if (l.label) {
+            label += '|';
+          }
         }
       });
       const layer = _.cloneDeep(checkedLayers[0]);
