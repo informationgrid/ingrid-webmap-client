@@ -102,6 +102,8 @@ goog.require('ga_window_service');
         scope.success = false;
         scope.error = false;
         scope.form = true;
+        // INGRID: Add token
+        scope.token = 0;
 
         var canCreateKml = function() {
           if (!drawingLayer ||
@@ -178,6 +180,11 @@ goog.require('ga_window_service');
           scope.error = false;
           scope.success = false;
 
+          // INGRID: Add token
+          if (active) {
+            scope.token = Date.now();
+          }
+
           // Active draw only on big screen
           scope.showDraw = active && gaWindow.isWidth('>s') &&
               gaWindow.isHeight('>s');
@@ -187,6 +194,8 @@ goog.require('ga_window_service');
         });
 
         scope.submit = function() {
+          // INGRID: Add token
+          var token = Date.now() - scope.token;
           var formData = createFormData();
           var params = {
             method: method,
@@ -211,13 +220,24 @@ goog.require('ga_window_service');
           }
 
           scope.showProgress = true;
-          $http(params).then(function() {
+          // INGRID: Check token and honeypot
+          if (!token || 
+              token < (gaGlobalOptions.serviceAnnouncementMailToken * 1000) ||
+              (scope.yummy_feedback && scope.yummy_email)) {
+            scope.error = true;
+          }
+          if (!scope.error) {
+            $http(params).then(function() {
+              resetF();
+              scope.success = true;
+            }, function() {
+              resetF();
+              scope.error = true;
+            });
+          } else {
             resetF();
             scope.success = true;
-          }, function() {
-            resetF();
-            scope.error = true;
-          });
+          }
         };
       }
     };

@@ -225,6 +225,8 @@
     "setting_settingBwaStrFinderLayers_help": "Fügt bei der Funktion BWaStr-Positionsfinder per Default Karten hinzu. Listen Sie hierbei die eingepflegten Layer-IDs kommagetrennt. (z.B. atlas_wsv_bund_de_WmsIENC,atlas_wsv_bund_de_Wasserstrassenklassen)",
     "setting_settingServiceAnnouncement": "Problem melden",
     "setting_settingServiceAnnouncement_help": "Funktion 'Problem melden' verwenden.",
+    "setting_settingAnnouncementMailToken": "Token: Problem melden",
+    "setting_settingAnnouncementMailToken_help": "Geben Sie die Sekunden an, wie lange das Popup 'Problem melden' geöffnet sein muss um eine E-Mail versenden zu können.",
     "setting_settingServiceAnnouncementUrl": "URL zum Problem melden",
     "setting_settingServiceAnnouncementUrl_help": "Tragen Sie hier eine URL ein, um einen andere Webseite für die Funktion 'Problem melden' zu verwenden. Bleibt der Eintrag leer, so wird Funktion mit Popup-Fenster aus der Kartenkomponente verwendet.",
     "setting_settingServiceHelpUrl": "URL zur Hilfe",

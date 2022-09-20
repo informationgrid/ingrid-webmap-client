@@ -1166,6 +1166,27 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- settingAnnouncementMailToken -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingAnnouncementMailToken</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingAnnouncementMailToken"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingAnnouncementMailToken" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingAnnouncementMailToken_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="number" #settingAnnouncementMailToken="ngModel" [(ngModel)]="settings.settingAnnouncementMailToken" name="settingAnnouncementMailToken"
+                                        class="form-control" required>
+                                </div>
+                            </div>
                             <!-- settingServiceAnnouncementUrl -->
                             <div class="form-group row">
                                 <div class="col-sm-3">

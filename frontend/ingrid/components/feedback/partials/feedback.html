@@ -1,0 +1,65 @@
+<div>
+  <div ng-if="success">
+    <h4 translate>success</h4>
+    <p translate>feedback_success_message</p>
+  </div>
+  <div ng-if="failure">
+    <h4 translate>error</h4>
+    <p translate>feedback_error_message</p>
+  </div>
+  <!-- needs to be ng-show, otherwise we break the ng-model -->
+  <form ng-show="form" ng-submit="submit()">
+    <!-- INGRID: Add honeypot -->
+    <label class="yummy" for="yummy_feedback">feedback</label>
+    <input type="text" class="yummy" id="yummy_feedback" name="yummy_feedback" autocomplete="off" tabindex="-1" ng-model="yummy_feedback"/>
+    <label class="yummy" for="yummy_email">email</label>
+    <input type="text" class="yummy" id="yummy_email" name="yummy_email" autocomplete="off" tabindex="-1" ng-model="yummy_email"/>
+    <!-- feedback text -->
+    <label translate>feedback_description</label>
+    <textarea rows=3 name="feedback" ng-model="feedback" class="form-control" required></textarea>
+    <!-- drawing -->
+    <label class="ga-hidden-3d" ng-if="showDraw" translate>feedback_drawing</label>
+    <div class="ga-hidden-3d" ng-if="showDraw" ng-controller="GaDrawController">
+      <div ga-draw 
+           ga-draw-map="map" 
+           ga-draw-options="options"
+           ga-draw-active="showDraw"></div>
+    </div>
+    <!-- email address -->
+    <label translate>feedback_mail</label>
+    <input type="email" name="email" ng-model="email">
+    <!-- attachement -->
+    <label ng-show="!isIE9" translate>feedback_attachment</label>
+    <div ng-show="!isIE9">
+      <div class="input-group input-group-sm">
+        <!-- The real input -->
+        <input type="file" name="file"/>
+        <!-- The fake input -->
+        <input class="form-control" type="text"
+          value="{{(file.name) ? file.name + ', ' + file.size/1000 + ' ko' : ''}}"
+          placeholder="{{'feedback_placeholder' | translate}}" readonly/>
+        <span class="input-group-btn">
+          <button ng-show="file" ng-click="resetFile($event)" type="button" class="btn btn-default" translate>remove</button>
+          <button ng-show="!file" type="button" class="btn btn-default ga-feedback-browse-button needsclick" translate>browse</button>
+        </span>
+      </div>
+      <div ng-show="!isIE && showProgress" class="progress progress-striped active">
+        <div class="progress-bar" style="width: 100%;"></div>
+      </div>
+    </div>
+ 
+    <!-- permalink -->
+    <p>
+      <span translate>feedback_permalink</span>
+      <a href="{{permalinkValue}}" target="_blank" translate>permalink</a>
+    </p>
+
+    <!-- termas of use -->
+    <p translate>feedback_disclaimer</p>
+
+    <!-- footer -->
+    <div class="ga-feedback-footer">
+      <button type="submit" class="pull-right btn btn-default" translate>send</button>
+    </div>
+  </form>
+</div>

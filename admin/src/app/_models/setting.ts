@@ -52,6 +52,7 @@ export class Setting {
         public settingEnable3D = false,
         public settingDefaultTerrain = '',
         public settingServiceAnnouncement = true,
+        public settingAnnouncementMailToken = 3,
         public settingServiceAnnouncementUrl = '',
         public settingServiceHelpUrl = '',
         public settingServiceHelpFooter = false,
