@@ -13,6 +13,7 @@
     "settingSearchBwaLocatorStationUrl": "https://atlas.wsv.bund.de/bwastr-locator/rest/stationierung/query",
     "settingBwaStrFinderLayers": "",
     "settingServiceAnnouncement": true,
+    "settingAnnouncementMailToken": 3,
     "settingServiceAnnouncementUrl": "",
     "settingServiceHelpUrl": "/hilfe?hkey=maps-1",
     "settingServiceHelpFooter": false,
