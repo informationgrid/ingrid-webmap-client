@@ -297,52 +297,52 @@ goog.require('ga_file_service');
             format: new ol.format.WFS(),
             loader: function(extent, resolution, projection) {
               fetch(url).
-              then(response => response.text()).
-              then(text => {
-                vectorSource.addFeatures(
-                  vectorSource.getFormat().readFeatures(text, {})
-                );
-                var featExtent = vectorSource.getExtent();
-                var geom;
-                if (options.featureId) {
-                  geom = vectorSource.
-                    getFeatureById(options.featureId);
-                  if (geom) {
-                   self.stylingGeom(geom);
-                   featExtent = geom.getGeometry().getExtent();
-                  }
-                } else if (options.featureAttr &&
+                  then(response => response.text()).
+                  then(text => {
+                    vectorSource.addFeatures(
+                        vectorSource.getFormat().readFeatures(text, {})
+                    );
+                    var featExtent = vectorSource.getExtent();
+                    var geom;
+                    if (options.featureId) {
+                      geom = vectorSource.
+                          getFeatureById(options.featureId);
+                      if (geom) {
+                        self.stylingGeom(geom);
+                        featExtent = geom.getGeometry().getExtent();
+                      }
+                    } else if (options.featureAttr &&
                   options.featureAttrVal) {
-                  var feats = vectorSource.getFeatures();
-                  var countGeom = 0;
-                  for (const feat of feats) {
-                    var featAttr = feat.get(options.featureAttr);
-                    if (featAttr) {
-                      if (featAttr === options.featureAttrVal) {
-                        geom = feat;
-                        if (geom) {
-                          self.stylingGeom(geom);
-                          if(countGeom === 0) {
-                            featExtent = geom.getGeometry().getExtent();
-                          } else {
-                            ol.extent.extend(featExtent, geom.getGeometry().
-                              getExtent());
+                      var feats = vectorSource.getFeatures();
+                      var countGeom = 0;
+                      for (const feat of feats) {
+                        var featAttr = feat.get(options.featureAttr);
+                        if (featAttr) {
+                          if (featAttr === options.featureAttrVal) {
+                            geom = feat;
+                            if (geom) {
+                              self.stylingGeom(geom);
+                              if (countGeom === 0) {
+                                featExtent = geom.getGeometry().getExtent();
+                              } else {
+                                ol.extent.extend(featExtent, geom.getGeometry().
+                                    getExtent());
+                              }
+                              countGeom++;
+                            }
                           }
-                          countGeom++;
                         }
                       }
                     }
-                  }
-                }
-                if (!options.hasPos) {
-                  if (featExtent) {
-                    map.getView().fit(featExtent, {
-                      size: map.getSize(),
-                      maxZoom: 19
-                    });
-                  }
-                }
-             })
+                    if (!options.hasPos) {
+                      if (featExtent) {
+                        map.getView().fit(featExtent, {
+                          size: map.getSize(),
+                          maxZoom: 19
+                        });
+                      }
+                    }
+                  })
             }
           });
           var vector = new ol.layer.Vector({
@@ -408,7 +408,7 @@ goog.require('ga_file_service');
           }
           geom.setStyle(style);
         };
-        
+
         // Defines if we should use a ol.layer.Image instead of a
         // ol.layer.Vector. Currently we define this, only testing the
         // file size but it could be another condition.

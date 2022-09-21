@@ -582,7 +582,7 @@ goog.require('ga_wmts_service');
                     featUrl += '&srsname=' + proj.getCode();
                   }
 
-                  var hasPos = gaMapUtils.hasXYZParams();
+                  var hasPos = !gaMapUtils.isInitPos(map);
                   try {
                     gaVector.addWfsToMapForUrl(map, featUrl,
                         {

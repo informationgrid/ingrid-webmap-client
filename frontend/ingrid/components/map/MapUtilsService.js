@@ -414,6 +414,25 @@ goog.require('ga_urlutils_service');
           return false;
         },
 
+        // INGRID: Add isInitPos
+        isInitPos: function(map) {
+          var view = map.getView();
+          var center = view.getCenter();
+          var zoom = view.getZoom();
+          var e = center[0].toFixed(2);
+          var n = center[1].toFixed(2);
+          var initPosE = view.get('initPosE');
+          var initPosN = view.get('initPosN');
+          var initPosZ = view.get('initPosZ');
+          if ((!this.hasXYZParams()) ||
+              (initPosE === e &&
+              initPosN === n &&
+              initPosZ === zoom)) {
+            return true;
+          }
+          return false;
+        },
+
         // INGRID: Add get resolution from scale
         inRange: function(layer, map) {
           var minResolution;
