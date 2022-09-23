@@ -26,8 +26,11 @@
            ga-draw-active="showDraw"></div>
     </div>
     <!-- email address -->
-    <label translate>feedback_mail</label>
-    <input type="email" name="email" ng-model="email">
+    <!-- INGRID: Add 'mailRequired' -->
+    <label ng-if="!mailRequired" translate>feedback_mail</label>
+    <input ng-if="!mailRequired" type="email" name="email" ng-model="email">
+    <label ng-if="mailRequired" translate>feedback_mail_required</label>
+    <input ng-if="mailRequired" type="email" name="email" ng-model="email" required>
     <!-- attachement -->
     <label ng-show="!isIE9" translate>feedback_attachment</label>
     <div ng-show="!isIE9">
