@@ -104,6 +104,7 @@ goog.require('ga_window_service');
         scope.form = true;
         // INGRID: Add token
         scope.token = 0;
+        scope.mailRequired = gaGlobalOptions.serviceAnnouncementMailRequired;
 
         var canCreateKml = function() {
           if (!drawingLayer ||

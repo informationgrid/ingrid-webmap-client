@@ -13,6 +13,7 @@
 "detail_iso_xml": "ISO-XML format",
 "disclaimer_label": "Disclaimer",
 "feedback_subject": "Feedback: InGrid MapClient",
+"feedback_mail_required": "Your Email (required):",
 "Local": "Local",
 "metadata_legend": "Legend",
 "metadata_information": "Information",
