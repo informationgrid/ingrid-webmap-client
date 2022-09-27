@@ -56,10 +56,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.geotools.gml.producer.FeatureTransformer.FeatureTypeNamespaces;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
