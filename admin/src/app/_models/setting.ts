@@ -49,6 +49,7 @@ export class Setting {
         public settingShowISOXML = false,
         public settingSearchCoordsXY = false,
         public settingSearchCoordsZoom = 16,
+        public settingWFSFeaturePointZoom = 19,
         public settingEnable3D = false,
         public settingDefaultTerrain = '',
         public settingServiceAnnouncement = true,

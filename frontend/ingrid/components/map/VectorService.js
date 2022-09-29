@@ -31,10 +31,10 @@ goog.require('ga_file_service');
    */
   module.provider('gaVector', function() {
 
-    // INGRID: Add '$window'
+    // INGRID: Add '$window', 'gaGlobalOptions'
     this.$get = function($http, $q, gaDefinePropertiesForLayer, gaMapUtils,
         gaNetworkStatus, gaStorage, gaUrlUtils, gaMeasure, gaGeomUtils,
-        gaFile, gaGpx, gaKml, $window) {
+        gaFile, gaGpx, gaKml, $window, gaGlobalOptions) {
 
       // Find the good parser according to the raw data
       var getService = function(data) {
@@ -338,7 +338,7 @@ goog.require('ga_file_service');
                       if (featExtent) {
                         map.getView().fit(featExtent, {
                           size: map.getSize(),
-                          maxZoom: 19
+                          maxZoom: gaGlobalOptions.wfsFeaturePointZoom
                         });
                       }
                     }
