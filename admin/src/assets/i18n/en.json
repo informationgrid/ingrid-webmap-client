@@ -309,6 +309,8 @@
     "setting_settingSearchCoordsXY_help": "Definieren Sie den Koordinaten-Tausch bei der Suche für Ihre Default-Projektion.",
     "setting_settingSearchCoordsZoom": "Koordinatensuche-Zoomstufe",
     "setting_settingSearchCoordsZoom_help": "Legen Sie, analog zur Ortsuche, die Zoomstufe für die Koordinaten-Suche fest.",
+    "setting_settingWFSFeaturePointZoom": "WFS-Feature: Point Zoom",
+    "setting_settingWFSFeaturePointZoom_help": "Definieren Sie hier die max. Zoomstufe bei einem WFS-Feature vom Typ Point.",
     "setting_settingEnable3D": "3D-Funktion",
     "setting_settingEnable3D_help": "Hier können Sie die 3D-Funktion für die Karte aktivieren. Hinweis: Diese Funktion ist experimentell.",
     "setting_settingDefaultTerrain": "Terrain-URL (3D)",
