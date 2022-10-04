@@ -13,6 +13,8 @@
     "settingSearchBwaLocatorStationUrl": "https://atlas.wsv.bund.de/bwastr-locator/rest/stationierung/query",
     "settingBwaStrFinderLayers": "",
     "settingServiceAnnouncement": true,
+    "settingAnnouncementMailToken": 10,
+    "settingAnnouncementMailRequired": true,
     "settingServiceAnnouncementUrl": "",
     "settingServiceHelpUrl": "/hilfe?hkey=maps-1",
     "settingServiceHelpFooter": false,
@@ -60,6 +62,7 @@
     "settingShowISOXML": true,
     "settingSearchCoordsXY": false,
     "settingSearchCoordsZoom": 16,
+    "settingWFSFeaturePointZoom": 19,
     "settingEnable3D": false,
     "settingDefaultTerrain": "//assets.agi.com/stk-terrain/world"
 }

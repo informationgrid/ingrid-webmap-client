@@ -306,25 +306,25 @@ itemscope itemtype="http://schema.org/WebApplication"
              ga-mouse-position-ol3d="::ol3d"
              ga-mouse-position-options="options"></div>
       </div>
-      <!-- INGRID: Add accessibility -->
+      <!-- INGRID: Add accessibility and add 'href="#"' -->
       <div class="pull-right" ng-if="globals.enableAccessibilityFooter" >
-        <a target="_blank" onclick="window.open(settings.settingAccessibilityUrl, 'blank')" translate>accessibility_label</a>
+        <a href="#" target="_blank" onclick="window.open(settings.settingAccessibilityUrl, 'blank')" translate>accessibility_label</a>
       </div>
       <div class="pull-right">
-        <!-- INGRID: Edit href URL -->
-        <a target="_blank" onclick="window.open(settings.settingCopyrightURL, 'blank')" translate>copyright_label</a>
+        <!-- INGRID: Edit href URL and add 'href="#"' -->
+        <a href="#" target="_blank" onclick="window.open(settings.settingCopyrightURL, 'blank')" translate>copyright_label</a>
       </div>
       <div class="pull-right">
-        <!-- INGRID: Edit href URL -->
-        <a target="_blank" onclick="window.open(settings.settingDisclaimerURL, 'blank')" translate>disclaimer_label</a>
+        <!-- INGRID: Edit href URL and add 'href="#"' -->
+        <a href="#" target="_blank" onclick="window.open(settings.settingDisclaimerURL, 'blank')" translate>disclaimer_label</a>
       </div>
       <div class="pull-right">
-        <!-- INGRID: Edit href URL -->
-        <a target="_blank" onclick="window.open(settings.settingSitemapURL, 'blank')" translate>Sitemap</a>
+        <!-- INGRID: Edit href URL and add 'href="#"' -->
+        <a href="#" target="_blank" onclick="window.open(settings.settingSitemapURL, 'blank')" translate>Sitemap</a>
       </div>
       <!-- INGRID: Add help -->
       <div class="pull-right" ng-if="globals.enableHelpFooter">
-        <a target="_blank" onclick="window.open(settings.settingServiceHelpUrl, 'blank')" translate>help_label</a>
+        <a href="#" target="_blank" onclick="window.open(settings.settingServiceHelpUrl, 'blank')" translate>help_label</a>
       </div>
     </div><!-- #footer -->
 
@@ -550,19 +550,19 @@ itemscope itemtype="http://schema.org/WebApplication"
                 <a target="_blank" translate translate-attr="{href: topicId + '_service_link_href'}">{{topicId + '_service_link_label'}}</a>
                 <br>
                 -->
-                <!-- INGRID: Edit -->
+                <!-- INGRID: Edit and add 'href="#"' -->
                 <div ng-if="globals.enableHelpFooter">
-                 <a target="_blank" onclick="window.open(settings.settingServiceHelpUrl, 'blank')" translate>help_label</a>
+                 <a href="#" target="_blank" onclick="window.open(settings.settingServiceHelpUrl, 'blank')" translate>help_label</a>
                  <br>
                 </div>
-                <a target="_blank" onclick="window.open(settings.settingSitemapURL, 'blank')" translate>Sitemap</a>
+                <a href="#" target="_blank" onclick="window.open(settings.settingSitemapURL, 'blank')" translate>Sitemap</a>
                 <br>
-                <a target="_blank" onclick="window.open(settings.settingCopyrightURL, 'blank')" translate>copyright_label</a>
+                <a href="#" target="_blank" onclick="window.open(settings.settingCopyrightURL, 'blank')" translate>copyright_label</a>
                 <br>
-                <a target="_blank" onclick="window.open(settings.settingDisclaimerURL, 'blank')" translate>disclaimer_label</a>
+                <a href="#" target="_blank" onclick="window.open(settings.settingDisclaimerURL, 'blank')" translate>disclaimer_label</a>
                 <br>
                 <div ng-if="globals.enableAccessibilityFooter">
-                  <a target="_blank" onclick="window.open(settings.settingAccessibilityUrl, 'blank')" translate>accessibility_label</a>
+                  <a thref="#" arget="_blank" onclick="window.open(settings.settingAccessibilityUrl, 'blank')" translate>accessibility_label</a>
                 </div>
               </p>
             </div>
@@ -1024,6 +1024,8 @@ itemscope itemtype="http://schema.org/WebApplication"
           searchCoordsXY: settings.settingSearchCoordsXY,
           // INGRID: Add zoom for coordinate search
           searchCoordsZoom: settings.settingSearchCoordsZoom,
+          // INGRID: Add zoom for WFS feature point zoom
+          wfsFeaturePointZoom: settings.settingWFSFeaturePointZoom,
           // INGRID: Enable share facebook
           enableShareFacebook: settings.settingShareFacebook,
           // INGRID: Enable share mail
@@ -1038,8 +1040,12 @@ itemscope itemtype="http://schema.org/WebApplication"
           enableShareQR: settings.settingShareQR,
           // INGRID: Enable share Whatsapp
           enableShareWhatsapp: settings.settingShareWhatsapp,
-          // INGRID: Announcement URL
+          // INGRID: Announcement
           serviceAnnouncement: settings.settingServiceAnnouncement,
+          // INGRID: Announcement token seconds
+          serviceAnnouncementMailToken: settings.settingAnnouncementMailToken,
+          // INGRID: Announcement token seconds
+          serviceAnnouncementMailRequired: settings.settingAnnouncementMailRequired,
           // INGRID: Announcement URL
           serviceAnnouncementUrl: settings.settingServiceAnnouncementUrl,
           // INGRID: Help URL

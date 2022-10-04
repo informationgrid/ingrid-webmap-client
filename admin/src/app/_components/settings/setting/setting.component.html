@@ -533,6 +533,28 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- settingWFSFeaturePointZoom -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingWFSFeaturePointZoom</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingWFSFeaturePointZoom" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingWFSFeaturePointZoom" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingWFSFeaturePointZoom_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="input-group form-group">
+                                        <input class="form-control" type="number" #settingWFSFeaturePointZoom="ngModel" name="settingWFSFeaturePointZoom" 
+                                            [(ngModel)]="settings.settingWFSFeaturePointZoom">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 <!-- Search -->
                         <div class="tab-pane fade show" id="tabs-settings-search" role="tabpanel" aria-labelledby="pills-settings-search-tab'">
@@ -1163,6 +1185,50 @@
                                     <div class="form-check mb-2 mr-sm-2">
                                         <input class="form-check-input" type="checkbox" #settingServiceAnnouncement="ngModel" name="settingServiceAnnouncement" 
                                             [(ngModel)]="settings.settingServiceAnnouncement">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- settingAnnouncementMailToken -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingAnnouncementMailToken</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingAnnouncementMailToken"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingAnnouncementMailToken" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingAnnouncementMailToken_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="number" #settingAnnouncementMailToken="ngModel" [(ngModel)]="settings.settingAnnouncementMailToken" name="settingAnnouncementMailToken"
+                                        class="form-control" required>
+                                </div>
+                            </div>
+                            <!-- settingAnnouncementMailRequired -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingAnnouncementMailRequired</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingAnnouncementMailRequired"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingAnnouncementMailRequired" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingAnnouncementMailRequired_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingAnnouncementMailRequired="ngModel" name="settingAnnouncementMailRequired" 
+                                            [(ngModel)]="settings.settingAnnouncementMailRequired">
                                     </div>
                                 </div>
                             </div>
