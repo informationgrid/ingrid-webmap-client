@@ -404,32 +404,38 @@ public class CapabilitiesUpdateTask implements Runnable{
                         }
                         
                     }
-                    // Attribution
-                    Node layerAttribution = (Node) xpath.evaluate(".//ServiceProvider/ProviderName", doc, XPathConstants.NODE);
-                    if(layerAttribution != null) {
-                        String attribution = layerAttribution.getTextContent().trim();
-                        if(layerJSON.has("attribution")) {
-                            if(!layerJSON.getString("attribution").equals(attribution)) {
+                    boolean attributionUpdate = true;
+                    if(layerJSON.has("attributionUpdate")) {
+                        attributionUpdate = layerJSON.getBoolean("attributionUpdate");
+                    }
+                    if(attributionUpdate) {
+                        // Attribution
+                        Node layerAttribution = (Node) xpath.evaluate(".//ServiceProvider/ProviderName", doc, XPathConstants.NODE);
+                        if(layerAttribution != null) {
+                            String attribution = layerAttribution.getTextContent().trim();
+                            if(layerJSON.has("attribution")) {
+                                if(!layerJSON.getString("attribution").equals(attribution)) {
+                                    hasChanges = true;
+                                    layerJSON.put("attribution", attribution);
+                                }
+                            } else {
                                 hasChanges = true;
                                 layerJSON.put("attribution", attribution);
                             }
-                        } else {
-                            hasChanges = true;
-                            layerJSON.put("attribution", attribution);
                         }
-                    }
-                    // AttributionUrl
-                    Node layerAttributionUrl = (Node) xpath.evaluate(".//ServiceProvider/ProviderSite/@href", doc, XPathConstants.NODE);
-                    if(layerAttributionUrl != null) {
-                        String attributionUrl = layerAttributionUrl.getTextContent().trim();
-                        if(layerJSON.has("attributionUrl")) {
-                            if(!layerJSON.getString("attributionUrl").equals(attributionUrl)) {
+                        // AttributionUrl
+                        Node layerAttributionUrl = (Node) xpath.evaluate(".//ServiceProvider/ProviderSite/@href", doc, XPathConstants.NODE);
+                        if(layerAttributionUrl != null) {
+                            String attributionUrl = layerAttributionUrl.getTextContent().trim();
+                            if(layerJSON.has("attributionUrl")) {
+                                if(!layerJSON.getString("attributionUrl").equals(attributionUrl)) {
+                                    hasChanges = true;
+                                    layerJSON.put("attributionUrl", attributionUrl);
+                                }
+                            } else {
                                 hasChanges = true;
                                 layerJSON.put("attributionUrl", attributionUrl);
                             }
-                        } else {
-                            hasChanges = true;
-                            layerJSON.put("attributionUrl", attributionUrl);
                         }
                     }
                     // Style
@@ -621,35 +627,40 @@ public class CapabilitiesUpdateTask implements Runnable{
                             layerJSON.put( layerKey, fieldNode.getTextContent() );
                             hasChanges = true;
                         }
-                        // Attribution
-                        Node layerAttribution = (Node) xpath.evaluate(".//Service/ContactInformation/ContactPersonPrimary/ContactOrganization", doc, XPathConstants.NODE);
-                        if(layerAttribution != null) {
-                            String attribution = layerAttribution.getTextContent().trim();
-                            if (layerJSON.has("attribution")) {
-                                if(!layerJSON.getString("attribution").equals(attribution)) {
+                        boolean attributionUpdate = true;
+                        if(layerJSON.has("attributionUpdate")) {
+                            attributionUpdate = layerJSON.getBoolean("attributionUpdate");
+                        }
+                        if(attributionUpdate) {
+                            // Attribution
+                            Node layerAttribution = (Node) xpath.evaluate(".//Service/ContactInformation/ContactPersonPrimary/ContactOrganization", doc, XPathConstants.NODE);
+                            if(layerAttribution != null) {
+                                String attribution = layerAttribution.getTextContent().trim();
+                                if (layerJSON.has("attribution")) {
+                                    if(!layerJSON.getString("attribution").equals(attribution)) {
+                                        hasChanges = true;
+                                        layerJSON.put("attribution", attribution);
+                                    }
+                                } else {
                                     hasChanges = true;
                                     layerJSON.put("attribution", attribution);
                                 }
-                            } else {
-                                hasChanges = true;
-                                layerJSON.put("attribution", attribution);
                             }
-                        }
-                        // AttributionUrl
-                        Node layerAttributionUrl = (Node) xpath.evaluate(".//Service/OnlineResource/@href", doc, XPathConstants.NODE);
-                        if(layerAttributionUrl != null) {
-                            String attributionUrl = layerAttributionUrl.getTextContent().trim();
-                            if (layerJSON.has("attributionUrl")) {
-                                if(!layerJSON.getString("attributionUrl").equals(attributionUrl)) {
+                            // AttributionUrl
+                            Node layerAttributionUrl = (Node) xpath.evaluate(".//Service/OnlineResource/@href", doc, XPathConstants.NODE);
+                            if(layerAttributionUrl != null) {
+                                String attributionUrl = layerAttributionUrl.getTextContent().trim();
+                                if (layerJSON.has("attributionUrl")) {
+                                    if(!layerJSON.getString("attributionUrl").equals(attributionUrl)) {
+                                        hasChanges = true;
+                                        layerJSON.put("attributionUrl", attributionUrl);
+                                    }
+                                } else {
                                     hasChanges = true;
                                     layerJSON.put("attributionUrl", attributionUrl);
                                 }
-                            } else {
-                                hasChanges = true;
-                                layerJSON.put("attributionUrl", attributionUrl);
                             }
                         }
-                        
                     } else {
                       layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_LAYER_NOT_EXIST);
                       errorLayernames.add("Layer not exists (" + id + "): " + layerWmsLayers + " on service url: " + layerWmsUrl);
