@@ -489,6 +489,28 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- settingServiceImportSingleLayer -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingServiceImportSingleLayer</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingServiceImportSingleLayer" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingServiceImportSingleLayer" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingServiceImportSingleLayer_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingServiceImportSingleLayer="ngModel" name="settingServiceImportSingleLayer" 
+                                            [(ngModel)]="settings.settingServiceImportSingleLayer">
+                                    </div>
+                                </div>
+                            </div>
                             <!-- settingDefaultImportList -->
                             <div class="form-group row">
                                 <div class="col-sm-3">

@@ -314,11 +314,16 @@ goog.require('ga_urlutils_service');
                 scope.layers = root.Layer || [root];
               }
               // INGRID: Add 'importExtLayerIdent'
-              if (scope.options.importExtLayerIdent) {
-                var layerIdent = scope.options.importExtLayerIdent;
-                scope.addLayerByIdent(scope.layers, layerIdent);
-              } else if (gaGlobalOptions.serviceAllWithoutIdentImport) {
+              if (gaGlobalOptions.serviceAllWithoutIdentImport || (
+                scope.layers.length === 1 &&
+                gaGlobalOptions.serviceImportSingleLayer
+              )) {
                 scope.addLayersAll();
+              } else {
+                if (scope.options.importExtLayerIdent) {
+                  var layerIdent = scope.options.importExtLayerIdent;
+                  scope.addLayerByIdent(scope.layers, layerIdent);
+                }
               }
             }
           }
@@ -365,7 +370,10 @@ goog.require('ga_urlutils_service');
             try {
               scope.addLayerList(layersAll,
                   scope.options.getOlLayerFromGetCapLayer);
-              if (gaGlobalOptions.serviceAllWithoutIdentImport) {
+              if (gaGlobalOptions.serviceAllWithoutIdentImport || (
+                scope.layers.length === 1 &&
+                gaGlobalOptions.serviceImportSingleLayer
+              )) {
                 scope.options.rejectImport(true);
               }
               // INGRID: Update menu
@@ -391,10 +399,10 @@ goog.require('ga_urlutils_service');
         scope.addLayerList = function(layers, getOlLayerFromGetCapLayer) {
           if (gaGlobalOptions.serviceReverseImport) {
             layers.slice().reverse().forEach(function(getCapLay) {
-              if(scope.options.login && !getCapLay.secureAuthLogin) {
+              if (scope.options.login && !getCapLay.secureAuthLogin) {
                 getCapLay.secureAuthLogin = scope.options.login;
               }
-              if(scope.options.password && !getCapLay.secureAuthPassword) {
+              if (scope.options.password && !getCapLay.secureAuthPassword) {
                 getCapLay.secureAuthPassword = scope.options.password;
               }
               var olLayer = getOlLayerFromGetCapLayer(getCapLay);
@@ -407,10 +415,10 @@ goog.require('ga_urlutils_service');
             });
           } else {
             layers.forEach(function(getCapLay) {
-              if(scope.options.login && !getCapLay.secureAuthLogin) {
+              if (scope.options.login && !getCapLay.secureAuthLogin) {
                 getCapLay.secureAuthLogin = scope.options.login;
               }
-              if(scope.options.password && !getCapLay.secureAuthPassword) {
+              if (scope.options.password && !getCapLay.secureAuthPassword) {
                 getCapLay.secureAuthPassword = scope.options.password;
               }
               var olLayer = getOlLayerFromGetCapLayer(getCapLay);
@@ -541,9 +549,9 @@ goog.require('ga_urlutils_service');
               y: 200
             });
 
-            if(addLayers.length === 0 &&
+            if (addLayers.length === 0 &&
               gaGlobalOptions.serviceDisplayIdentPopupImport) {
-                popup.open(5000);
+              popup.open(5000);
             }
 
             scope.options.rejectImport(hasAddLayers);

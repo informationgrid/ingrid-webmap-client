@@ -293,6 +293,8 @@
     "setting_settingServiceMultiIdentImport_help": "Beim Import eines Dienstes mit einem Identifier werden auch mehrere Layer mit gleichem Identifier ohne Abfrage/Popup der Karte hinzugefügt.",
     "setting_settingServiceAllWithoutIdentImport": "Alle Layer ohne Abfrage importieren",
     "setting_settingServiceAllWithoutIdentImport_help": "Beim Import eines Dienstes ohne Identifier-Abfrage werden alle Layer ohne Abfrage/Popup der Karte hinzugefügt.",
+    "setting_settingServiceImportSingleLayer": "WMS mit einem Layer direkt importieren",
+    "setting_settingServiceImportSingleLayer_help": "Beim Import eines WMS mit nur einem Layer wird automatisch der Karte hinzugefügt.",
     "setting_settingEnableW3W": "W3W-Dienst",
     "setting_settingEnableW3W_help": "(De-)aktvieren Sie im Popup ‘Positionen’ die Darstellung von What3Words.",
     "setting_w3wUrl": "W3W Dienst-URL",
