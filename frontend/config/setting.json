@@ -58,6 +58,7 @@
     "settingServiceDisplayIdentPopupImport": true,
     "settingServiceMultiIdentImport": false,
     "settingServiceAllWithoutIdentImport": false,
+    "settingServiceImportSingleLayer": true,
     "settingCheckLayerInRange": true,
     "settingShowISOXML": true,
     "settingSearchCoordsXY": false,

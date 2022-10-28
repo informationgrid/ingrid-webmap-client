@@ -37,6 +37,7 @@ export class Setting {
         public settingServiceImportSingleTile = true,
         public settingServiceImportWMSGutter = 0,
         public settingServiceAllWithoutIdentImport = false,
+        public settingServiceImportSingleLayer = true,
         public settingServiceReverseImport = false,
         public settingServiceDisplayIdentPopupImport = true,
         public settingServiceMultiIdentImport = false,
