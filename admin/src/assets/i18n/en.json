@@ -105,6 +105,8 @@
     "layer_attribution_help": "Tragen Sie den Titel für die URL unter 'attributionUrl'ein. Wird diese Karte im Webmap Client aktiviert, so wird in der Karte unten rechts ein Link dargstellt.",
     "layer_attributionUrl": "Attribution-URL",
     "layer_attributionUrl_help": "Tragen Sie hier die URL für weitere Infos zur aktivierten Karte ein.",
+    "layer_attributionUpdate": "Attribution aktualisieren",
+    "layer_attributionUpdate_help": "Aktualisiert die Attribution-Einträge anhand des Aktualisierungsjob.",
     "layer_featureInfoTpl": "GetFeatureInfo-Template",
     "layer_featureInfoTpl_help": "Tragen Sie hier die URL für die GetFeatureInfo-Anfrage als Template ein.",
     "layer_format": "Format",

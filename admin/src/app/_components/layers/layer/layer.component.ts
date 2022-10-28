@@ -663,6 +663,8 @@ export class LayerComponent implements OnInit {
     newLayer.attribution = attribution;
     // AttributionUrl
     newLayer.attributionUrl = attributionUrl;
+    // AttributionUpdate
+    newLayer.attributionUpdate = true;
     // Name
     if (layer['Name']) {
       newLayer.wmsLayers = layer['Name'];
@@ -844,6 +846,8 @@ export class LayerComponent implements OnInit {
               newLayer.attribution = attribution;
               // AttributionUrl
               newLayer.attributionUrl = attributionUrl;
+              // AttributionUpdate
+              newLayer.attributionUpdate = true;
               // Format
               const resourceUrl = layer['ResourceURL'];
               if (resourceUrl) {
