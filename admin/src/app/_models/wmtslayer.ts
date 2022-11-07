@@ -14,6 +14,7 @@ export class Wmtslayer extends Layer implements ILayerWmts {
     scales: number[];
     matrixIds: string[];
     requestEncoding: string;
+    epsg: string;
 
     constructor() {
         super(LayerType.wmts);
@@ -30,6 +31,7 @@ export class Wmtslayer extends Layer implements ILayerWmts {
         this.singleTile = false;
         this.queryLayers = '';
         this.featureCount = 10;
+        this.attributionUpdate = true;
     }
 
     generateId(layers: LayerItem[]) {

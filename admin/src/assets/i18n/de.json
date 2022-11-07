@@ -150,6 +150,8 @@
     "layer_timestamps_help": "Tragen Sie die Zeitstempeln der Karte ein. Zurzeit können nur jährliche Zeitreihenfolgen angegeben werden.",
     "layer_timeEnabled": "Zeitabhängige Darstellung aktivieren",
     "layer_timeEnabled_help": "Aktivieren Sie die zeitabhängige Darstellung der Karte. Umd diese Funktion verwenden zu können, muss in der GetCapabilities des Dienstes die Karte einen Eintrag 'dimension name=\"time\"' enthalten.",
+    "layer_epsg": "Projektion (experimentell)",
+    "layer_epsg_help": "Geben Sie zur Darstellung der Karte hier eine andere Projektion zum Standard ein, z.B. 'EPSG:3587'.",
     "layer_requestEncoding": "RequestEncoding",
     "layer_requestEncoding_help": "Tragen Sie den Request-Encoding der Karte für GetTile fest, z.B. 'REST' oder 'KVP'.",
     "layer_singleTile": "Single-Tile", 

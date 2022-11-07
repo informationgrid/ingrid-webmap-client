@@ -614,7 +614,7 @@ goog.require('ga_urlutils_service');
                 cacheSize: config.timeEnabled ? 0 : 2048,
                 layer: config.serverLayerName,
                 format: config.format,
-                projection: gaGlobalOptions.defaultEpsg,
+                projection: config.epsg || gaGlobalOptions.defaultEpsg,
                 /* INGRID: Use WMTS properties from layer config
                 requestEncoding: 'REST',
                 */
@@ -638,7 +638,7 @@ goog.require('ga_urlutils_service');
                   tileSize: config.tileSize || 256,
                   extent: config.extent ?
                     ol.proj.transformExtent(config.extent, 'EPSG:4326',
-                        gaGlobalOptions.defaultEpsg) : extent
+                        config.epsg || gaGlobalOptions.defaultEpsg) : extent
                 }),
                 tileLoadFunction: tileLoadFunction(config),
                 /* INGRID: Replace generate urls
