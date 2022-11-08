@@ -314,10 +314,11 @@ goog.require('ga_urlutils_service');
                 scope.layers = root.Layer || [root];
               }
               // INGRID: Add 'importExtLayerIdent'
-              if (gaGlobalOptions.serviceAllWithoutIdentImport || (
-                scope.layers.length === 1 &&
-                gaGlobalOptions.serviceImportSingleLayer
-              )) {
+              if (gaGlobalOptions.serviceAllWithoutIdentImport) {
+                scope.addLayersAll();
+              } else if(scope.layers.length === 1 &&
+                gaGlobalOptions.serviceImportSingleLayer &&
+                scope.options.importExtService){
                 scope.addLayersAll();
               } else {
                 if (scope.options.importExtLayerIdent) {
