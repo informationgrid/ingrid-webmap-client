@@ -342,6 +342,34 @@
               </div>
             </div>
           </div>
+          <!-- epsg -->
+          <div class="form-group row">
+            <div class="col-sm-3">
+              <div class=" d-flex justify-content-between align-items-center">
+                <label class="col-form-label" translate>layer_epsg</label>
+                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_epsg_' + layer.id"
+                  title="{{ ('help') | translate }}">
+                  <i class="fa fa-info" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="collapse" id="info_layer_epsg_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+                <div>
+                  <small class="form-text text-muted" translate>layer_epsg_help</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-9" [ngClass]="{
+              'has-danger': (epsg.invalid && (epsg.dirty || epsg.touched)) ,
+              'has-success': (epsg.valid && (epsg.dirty || epsg.touched))
+              }">
+              <input type="text" #epsg="ngModel" [(ngModel)]="layer.item.epsg" name="epsg" class="form-control" required>
+              <div class="form-control-feedback" *ngIf="epsg.errors && (epsg.dirty || epsg.touched)">
+                <div *ngIf="epsg.errors.required">
+                  <span translate>field_required</span>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- tooltip -->
           <div class="form-group row">
               <div class="col-sm-3">
