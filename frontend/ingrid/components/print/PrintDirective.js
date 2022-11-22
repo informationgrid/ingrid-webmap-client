@@ -45,6 +45,9 @@ goog.require('ga_urlutils_service');
     $scope.options.printing = false;
     $scope.options.printsuccess = false;
     $scope.options.progress = '';
+    // INGRID: Add '$scope.options.useReproj'
+    $scope.options.useReproj = false;
+    $scope.options.useReprojLayers = [];
 
     // Get print config
     var loadPrintConfig = function() {
@@ -316,6 +319,17 @@ goog.require('ga_urlutils_service');
         if (!layer.getVisible() || layer.getOpacity() === 0) {
           return;
         }
+        var layId = layer.get('id');
+        if (layId) {
+          $scope.options.useReprojLayers.forEach(function(useReprojLayer){
+            if (useReprojLayer.id) {
+              if (layId && layId === useReprojLayer.id) {
+                return;
+              }
+            }
+          });
+        }
+
         // Only print layer which have an extent intersecting the print extent
         /* INGRID: Remove check intersects of extent
         if (!ol.extent.intersects(layer.getExtent() || gaMapUtils.defaultExtent,
@@ -700,6 +714,28 @@ goog.require('ga_urlutils_service');
         } else {
           activate();
         }
+        // INGRID: Add '$scope.options.useReproj'
+        var layers = $scope.map.getLayers().getArray();
+        var mapProjCode = $scope.map.getView().getProjection().getCode();
+        $scope.options.useReproj = false;
+        $scope.options.useReprojLayers = [];
+        layers.forEach(function(layer) {
+          var layProjCode = layer.getSource().getProjection().getCode();
+          var layLabel = layer.get('label');
+          var layId = layer.get('bodId');
+          if (!layId) {
+            layId = layer.get('id');
+          }
+          if (mapProjCode !== layProjCode) {
+            if (layLabel) {
+              $scope.options.useReproj = true;
+              $scope.options.useReprojLayers.push({
+                label: layLabel,
+                id: layId
+              });
+            }
+          }
+        });
       } else {
         deactivate();
       }
