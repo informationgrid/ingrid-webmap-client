@@ -143,4 +143,5 @@
 "view_in_iframe": "Die {{url}} eingebettete Seite muss in einem iFrame verwendet werden.",
 "popup_wfs_filter": "Filter",
 "popup_wfs_filter_bbox": "Auf Kartenausschnitt",
+"print_useReprojection": "Folgende Karten können nicht gedruckt werden (falsche Projektion):"
 }

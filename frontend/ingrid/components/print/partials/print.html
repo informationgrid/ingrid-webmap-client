@@ -62,6 +62,19 @@
     </div>
   </div>
   <div class="ga-print-progress" ng-if="options.printing && options.progress != ''">{{options.progress}}</div>
+  <!-- INGRID: Add useReprojection info -->
+  <div class="form-group" ng-if="options.useReproj">
+      <div class="col-xs-12">
+          <div class="ga-error">
+            <p translate>print_useReprojection</p>
+            <ul>
+                <li ng-repeat="useReprojLayer in options.useReprojLayers">
+                    {{useReprojLayer.label}}
+                </li>
+            </ul>
+          </div>
+      </div>
+  </div>
   <button ng-show="options.printing" class="btn btn-danger col-xs-12" 
           ng-click="abort()" 
           translate>abort</button>
