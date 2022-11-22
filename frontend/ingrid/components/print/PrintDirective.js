@@ -319,15 +319,23 @@ goog.require('ga_urlutils_service');
         if (!layer.getVisible() || layer.getOpacity() === 0) {
           return;
         }
-        var layId = layer.get('id');
+        // INGRID: Check useReprojection
+        var layId = layer.get('bodId');
+        if (!layId) {
+            layId = layer.get('id');
+        }
         if (layId) {
-          $scope.options.useReprojLayers.forEach(function(useReprojLayer){
-            if (useReprojLayer.id) {
-              if (layId && layId === useReprojLayer.id) {
+          var useReprojLayers = $scope.options.useReprojLayers;
+          var i, len;
+          for (i = 0, len = useReprojLayers.length; i < len; i++) {
+            var useReprojLayer = useReprojLayers[i];
+            var useReprojLayerId = useReprojLayer.id;
+            if (useReprojLayerId) {
+              if (layId === useReprojLayerId) {
                 return;
               }
             }
-          });
+          }
         }
 
         // Only print layer which have an extent intersecting the print extent
@@ -702,7 +710,7 @@ goog.require('ga_urlutils_service');
             // default values:
             $scope.layout = data.layouts[0];
             // $scope.dpi = data.dpis;
-            // INGRID: Set first dpi as default
+            // INGRID: Set first dpi as default()
             $scope.dpi = data.dpis[0];
             $scope.scales = data.scales;
             $scope.scale = data.scales[5];
@@ -720,19 +728,23 @@ goog.require('ga_urlutils_service');
         $scope.options.useReproj = false;
         $scope.options.useReprojLayers = [];
         layers.forEach(function(layer) {
-          var layProjCode = layer.getSource().getProjection().getCode();
-          var layLabel = layer.get('label');
-          var layId = layer.get('bodId');
-          if (!layId) {
-            layId = layer.get('id');
-          }
-          if (mapProjCode !== layProjCode) {
-            if (layLabel) {
-              $scope.options.useReproj = true;
-              $scope.options.useReprojLayers.push({
-                label: layLabel,
-                id: layId
-              });
+          var layProj = layer.getSource().getProjection();
+          if (layProj) {
+            var layProjCode = layProj.getCode();
+            var layLabel = layer.get('label');
+            var layId = layer.get('bodId');
+            if (!layId) {
+              layId = layer.get('id');
+            }
+            if (mapProjCode !== layProjCode) {
+              if (layLabel) {
+                $scope.options.useReproj = true;
+                $scope.options.useReprojLayers.push({
+                  label: layLabel,
+                  id: layId,
+                  epsg: layProjCode
+                });
+              }
             }
           }
         });
