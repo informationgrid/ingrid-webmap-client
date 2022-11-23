@@ -127,7 +127,7 @@
     "layer_version": "Version",
     "layer_version_help": "Bestimmen Sie hier die Version Ihrer Karte. Eine Auswahl der Werte '1.1.1' und '1.3.0' steht zu Auswahl.",
     "layer_opacity": "Opazität / Lichtundurchlässigkeit",
-    "layer_opacity_help": "Definieren Sie die per default dargestellte Transparenz der Karte.",
+    "layer_opacity_help": "Das Gegenteil von Transparenz. 100% bedeutet hier, die Karte ist voll deckend. 80% bedeutet, die Karte wird leicht transparent und 10% sehr transparent dargestellt.",
     "layer_searchable": "Suchbarkeit",
     "layer_searchable_help": "Lassen Sie die Karte über die Suche im Webmap Client auffinderbar machen.",
     "layer_extent": "Extent",
