@@ -74,6 +74,8 @@ goog.require('ga_window_service');
                   gaGlobalOptions.isParentIFrame));
           // assuming document.title never change
           scope.embedValue = gaPermalink.getEmbedHref();
+          // INGRID: Add embedAlt
+          scope.embedAlt = $translate.instant('iframe_alt');
         };
 
         // Function to shorten url
