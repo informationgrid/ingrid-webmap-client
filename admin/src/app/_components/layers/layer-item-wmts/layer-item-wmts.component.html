@@ -326,16 +326,8 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-9" [ngClass]="{
-              'has-danger': (epsg.invalid && (epsg.dirty || epsg.touched)) ,
-              'has-success': (epsg.valid && (epsg.dirty || epsg.touched))
-              }">
-              <input type="text" #epsg="ngModel" [(ngModel)]="layer.item.epsg" name="epsg" class="form-control" required>
-              <div class="form-control-feedback" *ngIf="epsg.errors && (epsg.dirty || epsg.touched)">
-                <div *ngIf="epsg.errors.required">
-                  <span translate>field_required</span>
-                </div>
-              </div>
+            <div class="col-sm-9">
+              <input type="text" #epsg="ngModel" [(ngModel)]="layer.item.epsg" name="epsg" class="form-control">
             </div>
           </div>
           <!-- requestEncoding -->
