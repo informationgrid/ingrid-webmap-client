@@ -57,13 +57,14 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.google.zxing.BarcodeFormat;
@@ -86,7 +87,9 @@ import de.ingrid.mapclient.utils.Utils;
 public class FileResource {
 
     private static final Logger log = Logger.getLogger( FileResource.class );
-    
+
+    private static final ObjectMapper mapper = new ObjectMapper();
+
     @POST
     @Path("files")
     @Produces(MediaType.TEXT_PLAIN)
@@ -264,19 +267,19 @@ public class FileResource {
         String login = null;
         String password = null;
         if(url != null) {
-            JSONObject json;
+            JsonNode json;
             try {
-                json = new JSONObject(data);
+                json = mapper.readTree(data);
                 if(json.has("login")) {
-                    login = json.getString("login");
+                    login = json.get("login").textValue();
                 }
                 if(json.has("password")) {
-                    password = json.getString("password");
+                    password = json.get("password").textValue();
                 }
-            } catch (JSONException e) {
+            } catch (JsonProcessingException e) {
                 log.error("No data defined.", e);
             }
-            
+
         }
         return getFileImageRequest(url, login, password, baseUrl, true);
     }
@@ -320,8 +323,8 @@ public class FileResource {
                 return Response.status(Response.Status.NOT_FOUND ).build();
             } catch (IOException e) {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
-            } catch (JSONException e) {
-                log.error("Error get JSON auth: " + login);
+//            } catch (JSONException e) {
+//                log.error("Error get JSON auth: " + login);
             } catch (Exception e) {
                 log.error("Error getMap for: " + url);
             }
@@ -508,9 +511,9 @@ public class FileResource {
                 try {
                     String shortenUrlContent = HttpProxy.doRequest(shortURLService);
                     if(shortenUrlContent != null) {
-                        JSONObject shortenURLJSON = new JSONObject(shortenUrlContent);
+                        JsonNode shortenURLJSON = mapper.readTree(shortenUrlContent);
                         if(shortenURLJSON.has("shorturl")) {
-                            permalink = shortenURLJSON.getString("shorturl");
+                            permalink = shortenURLJSON.get("shorturl").textValue();
                         }
                     }
                 } catch (Exception e) {
@@ -689,15 +692,15 @@ public class FileResource {
     @PUT
     @Path("short")
     @Produces(MediaType.TEXT_PLAIN)
-    public String getAndPutShortKey(@RequestBody String requestContent) throws  JSONException {
-        JSONObject obj = new JSONObject(requestContent);
+    public String getAndPutShortKey(@RequestBody String requestContent) throws JsonProcessingException {
+        JsonNode obj = mapper.readTree(requestContent);
         String key = null;
         String value = null;
         if(obj.has("key")) {
-            key = obj.getString("key");
+            key = obj.get("key").textValue();
         }
         if(obj.has("value")) {
-            value = obj.getString("value");
+            value = obj.get("value").textValue();
         }
         if(key != null && value != null) {
             return createShortFile(key, value);

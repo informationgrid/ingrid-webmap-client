@@ -28,6 +28,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -41,10 +42,12 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -61,6 +64,9 @@ public class SearchResource {
      */
     private static final String SEARCH_PATH = "query";
 
+    private static final ObjectMapper mapper = new ObjectMapper();
+
+
     @GET
     @Path(SEARCH_PATH)
     @Consumes(MediaType.TEXT_PLAIN)
@@ -71,7 +77,7 @@ public class SearchResource {
 
         if (searchTerm.length() > 2 && type != null) {
             if (type.indexOf( "locations" ) > -1) {
-                JSONArray json = new JSONArray();
+                ArrayNode json = mapper.createArrayNode();
                 URL questUrl = null;
 
                 // Nominatim
@@ -86,27 +92,27 @@ public class SearchResource {
                     encoding = encoding == null ? "UTF-8" : encoding;
 
                     String tmpJson = IOUtils.toString( in, encoding );
-                    JSONArray questJson = new JSONArray( tmpJson );
-                    for (int j = 0; j < questJson.length(); j++) {
-                        JSONObject questJsonEntry = questJson.getJSONObject( j );
-                        JSONObject newEntry = new JSONObject();
+                    ArrayNode questJson = (ArrayNode) mapper.readTree( tmpJson );
+                    for (int j = 0; j < questJson.size(); j++) {
+                        JsonNode questJsonEntry = questJson.get( j );
+                        ObjectNode newEntry = mapper.createObjectNode();
                         newEntry.put( "id", questJsonEntry.get( "place_id" ) );
                         newEntry.put( "weight", 7 );
-                        JSONObject newAttrs = new JSONObject();
+                        ObjectNode newAttrs = mapper.createObjectNode();
                         newAttrs.put( "origin", "gazetteer" );
                         newAttrs.put( "label", questJsonEntry.get( "display_name" ) );
                         newAttrs.put( "detail", questJsonEntry.get( "licence" ) );
                         newAttrs.put( "rank", 6 );
-                        JSONArray bounding = (JSONArray) questJsonEntry.get( "boundingbox" );
-                        float minX = bounding.getInt( 2 );
-                        float minY = bounding.getInt( 0 );
-                        float maxX = bounding.getInt( 3 );
-                        float maxY = bounding.getInt( 1 );
+                        ArrayNode bounding = (ArrayNode) questJsonEntry.get( "boundingbox" );
+                        float minX = bounding.get( 2 ).intValue();
+                        float minY = bounding.get( 0 ).intValue();
+                        float maxX = bounding.get( 3 ).intValue();
+                        float maxY = bounding.get( 1 ).intValue();
                         newAttrs.put( "geom_st_box2d", minX + " " + minY + " " + maxX + " " + maxY );
-                        newAttrs.put( "lon", questJsonEntry.get( "lon" ) );
-                        newAttrs.put( "lat", questJsonEntry.get( "lat" ) );
-                        newEntry.put( "attrs", newAttrs );
-                        json.put( newEntry );
+                        newAttrs.set( "lon", questJsonEntry.get( "lon" ) );
+                        newAttrs.set( "lat", questJsonEntry.get( "lat" ) );
+                        newEntry.set( "attrs", newAttrs );
+                        json.add( newEntry );
                     }
                 } catch (Exception e) {
                     log.warn( "Problems requesting nominatim: " + questUrl, e);
@@ -119,7 +125,7 @@ public class SearchResource {
             } else if (type.equals( "layers" )) {
                 String url = searchUrl;
                 URL questUrl;
-                JSONArray json = new JSONArray();
+                ArrayNode json = mapper.createArrayNode();
                 try {
                     questUrl = new URL( url );
                     URLConnection con = questUrl.openConnection();
@@ -128,15 +134,15 @@ public class SearchResource {
                     encoding = encoding == null ? "UTF-8" : encoding;
 
                     String tmpJson = IOUtils.toString( in, encoding );
-                    JSONObject questJson = new JSONObject( tmpJson );
-                    Iterator<?> keys = questJson.keys();
+                    JsonNode questJson = mapper.readTree( tmpJson );
+                    Iterator<Map.Entry<String, JsonNode>> keys = questJson.fields();
 
                     while (keys.hasNext()) {
-                        String key = (String) keys.next();
-                        if (questJson.get( key ) instanceof JSONObject) {
-                            JSONObject questJsonEntry = (JSONObject) questJson.get( key );
-                            JSONObject newEntry = new JSONObject();
-                            String label = (String) questJsonEntry.get( "label" );
+                        Map.Entry<String, JsonNode> key = keys.next();
+                        if (questJson.get( key.getKey() ) instanceof JsonNode) {
+                            JsonNode questJsonEntry = key.getValue();
+                            ObjectNode newEntry = mapper.createObjectNode();
+                            String label = questJsonEntry.get( "label" ).textValue();
                             boolean isSearchable = false;
                             if(questJsonEntry.has( "searchable" ) && questJsonEntry.get( "searchable" ) != null){
                                 isSearchable = Boolean.valueOf( questJsonEntry.get( "searchable" ).toString());
@@ -144,15 +150,15 @@ public class SearchResource {
                             if(isSearchable && label.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 ){
                                 newEntry.put( "id", "" );
                                 newEntry.put( "weight", 143 );
-                                JSONObject newAttrs = new JSONObject();
+                                ObjectNode newAttrs = mapper.createObjectNode();
                                 newAttrs.put( "origin", "layer" );
-                                newAttrs.put( "layer", key );
+                                newAttrs.put( "layer", key.getKey() );
                                 newAttrs.put( "label", label );
                                 newAttrs.put( "detail", label );
                                 newAttrs.put( "lang", "de" );
                                 newAttrs.put( "staging", "prod" );
                                 newEntry.put( "attrs", newAttrs );
-                                json.put( newEntry );
+                                json.add( newEntry );
                             }
                         }
                     }
@@ -166,7 +172,7 @@ public class SearchResource {
                 return Response.ok( responseStr ).build();
             }else if(type.equals("services")){
                 String osUrl = searchUrl.replace( " ", "+" );
-                JSONArray jsonArray = new JSONArray();
+                ArrayNode jsonArray = mapper.createArrayNode();
                 
                 searchTerm = searchTerm.replaceAll("\\s", "+");
                 try {
@@ -183,10 +189,10 @@ public class SearchResource {
                         for (int i = 0; i < items.getLength(); i++) {
                             Node item = items.item( i );
                             NodeList tmp;
-                            JSONObject newEntry = new JSONObject();
+                            ObjectNode newEntry = mapper.createObjectNode();
                             newEntry.put( "id", "" );
                             newEntry.put( "weight", 143 );
-                            JSONObject newAttrs = new JSONObject();
+                            ObjectNode newAttrs = mapper.createObjectNode();
                             newAttrs.put( "origin", "service" );
                             
                             tmp = ((NodeList) xpath.evaluate("./wms-url", item, XPathConstants.NODESET ));
@@ -206,7 +212,7 @@ public class SearchResource {
                             newAttrs.put( "lang", "de" );
                             newAttrs.put( "staging", "prod" );
                             newEntry.put( "attrs", newAttrs );
-                            jsonArray.put( newEntry );
+                            jsonArray.add( newEntry );
                         }
                     }
                 } catch (SAXException | ParserConfigurationException e) {
@@ -220,7 +226,7 @@ public class SearchResource {
                 }
                 return Response.ok( responseStr ).build();
             }else if(type.equals("bwalocator")){
-                JSONArray jsonArray = new JSONArray();
+                ArrayNode jsonArray = mapper.createArrayNode();
                 URL questUrl;
                 questUrl = new URL(searchUrl.concat("&searchterm="+URLEncoder.encode(searchTerm, "UTF-8")));
                 URLConnection con = questUrl.openConnection();
@@ -228,28 +234,28 @@ public class SearchResource {
                 String encoding = con.getContentEncoding();
                 encoding = encoding == null ? "UTF-8" : encoding;
                 String tmpJson = IOUtils.toString(in, encoding);
-                JSONObject questJsonResult = new JSONObject(tmpJson);
-                if(questJsonResult != JSONObject.NULL){
-                    JSONArray questJson = questJsonResult.getJSONArray("result");
+                JsonNode questJsonResult = mapper.readTree(tmpJson);
+                if(!questJsonResult.isNull()){
+                    ArrayNode questJson = (ArrayNode) questJsonResult.get("result");
                     
-                    for (int j=0; j < questJson.length(); j++) {
-                        JSONObject questJsonEntry = questJson.getJSONObject(j);
-                        JSONObject newEntry = new JSONObject();
-                        newEntry.put( "id", questJsonEntry.getString("bwastrid") );
-                        JSONObject newAttrs = new JSONObject();
-                        newAttrs.put("label", questJsonEntry.getString("concat_name"));
-                        newAttrs.put("qid", questJsonEntry.getString("qid"));
-                        newAttrs.put("bwastrid", questJsonEntry.getString("bwastrid"));
-                        newAttrs.put("bwastr_name", questJsonEntry.getString("bwastr_name"));
-                        newAttrs.put("strecken_name", questJsonEntry.getString("strecken_name"));
-                        newAttrs.put("concat_name", questJsonEntry.getString("concat_name"));
-                        newAttrs.put("km_von", questJsonEntry.getString("km_von"));
-                        newAttrs.put("km_bis", questJsonEntry.getString("km_bis"));
-                        newAttrs.put("priority", questJsonEntry.getString("priority"));
-                        newAttrs.put("fehlkilometer", questJsonEntry.getString("fehlkilometer"));
-                        newAttrs.put("fliessrichtung", questJsonEntry.getString("fliessrichtung"));
-                        newEntry.put( "attrs", newAttrs );
-                        jsonArray.put(newEntry);
+                    for (int j=0; j < questJson.size(); j++) {
+                        JsonNode questJsonEntry = questJson.get(j);
+                        ObjectNode newEntry = mapper.createObjectNode();
+                        newEntry.put( "id", questJsonEntry.get("bwastrid").textValue());
+                        ObjectNode newAttrs = mapper.createObjectNode();
+                        newAttrs.put("label", questJsonEntry.get("concat_name").textValue());
+                        newAttrs.put("qid", questJsonEntry.get("qid").textValue());
+                        newAttrs.put("bwastrid", questJsonEntry.get("bwastrid").textValue());
+                        newAttrs.put("bwastr_name", questJsonEntry.get("bwastr_name").textValue());
+                        newAttrs.put("strecken_name", questJsonEntry.get("strecken_name").textValue());
+                        newAttrs.put("concat_name", questJsonEntry.get("concat_name").textValue());
+                        newAttrs.put("km_von", questJsonEntry.get("km_von").textValue());
+                        newAttrs.put("km_bis", questJsonEntry.get("km_bis").textValue());
+                        newAttrs.put("priority", questJsonEntry.get("priority").textValue());
+                        newAttrs.put("fehlkilometer", questJsonEntry.get("fehlkilometer").textValue());
+                        newAttrs.put("fliessrichtung", questJsonEntry.get("fliessrichtung").textValue());
+                        newEntry.set( "attrs", newAttrs );
+                        jsonArray.add(newEntry);
                     }
                 }
                 String responseStr = jsonArray.toString();

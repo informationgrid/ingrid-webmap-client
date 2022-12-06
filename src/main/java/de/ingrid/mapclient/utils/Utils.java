@@ -62,6 +62,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -129,7 +130,7 @@ public class Utils {
         }
     }
 
-    public static void createFile(String filename, JSONObject item) {
+    public static void createFile(String filename, JsonNode item) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         File file = new File(configDir.concat(filename));
