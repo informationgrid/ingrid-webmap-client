@@ -36,11 +36,7 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -77,7 +73,6 @@ import org.xml.sax.SAXException;
 
 import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.model.GetCapabilitiesDocument;
-import sun.misc.BASE64Encoder;
 
 public class Utils {
 
@@ -438,7 +433,7 @@ public class Utils {
     
     public static void urlConnectionAuth(URLConnection conn, String login, String password) {
         String userPassword = login + ":" + password;
-        String encoding = new BASE64Encoder().encode(userPassword.getBytes());
+        String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
         conn.setRequestProperty("Authorization", "Basic " + encoding);
     }
     

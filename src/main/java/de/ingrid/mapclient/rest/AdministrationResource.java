@@ -27,6 +27,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -62,7 +63,6 @@ import de.ingrid.mapclient.HttpProxy;
 import de.ingrid.mapclient.model.GetCapabilitiesDocument;
 import de.ingrid.mapclient.utils.DataUtils;
 import de.ingrid.mapclient.utils.Utils;
-import sun.misc.BASE64Decoder;
 
 /**
  * WmsResource defines the interface for retrieving WMS data
@@ -747,8 +747,7 @@ public class AdministrationResource {
                 BufferedImage image = null;
                 byte[] imageByte;
 
-                BASE64Decoder decoder = new BASE64Decoder();
-                imageByte = decoder.decodeBuffer(imageString);
+                imageByte = Base64.getDecoder().decode(imageString);
                 ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
                 image = ImageIO.read(bis);
                 bis.close();

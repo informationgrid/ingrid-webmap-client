@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ingrid-webmap-client</artifactId>
-    <version>5.15.0-SNAPSHOT</version>
+    <version>5.15.0.3324-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>InGrid Map Client</name>
     <scm>
@@ -15,6 +15,11 @@
         <developerConnection>scm:git:git@github.com:informationgrid/ingrid-webmap-client.git</developerConnection> 
         <tag>HEAD</tag>
     </scm>
+    <properties>
+        <spring.version>5.3.24</spring.version>
+        <maven.compiler.release>17</maven.compiler.release>
+    </properties>
+    
     <profiles>
       <profile>
         <id>windows</id>
@@ -205,32 +210,26 @@
         </plugins>
     </build>
     <!-- ==================== DEPENDENCY MANAGEMENT ==================== -->
-    <!-- ALWAYS USE DEPENDENCY MANAGEMENT WHEN OVERWRITING VERSIONS FROM ingrid-base-pom, 
-        SO ASSEMBLY PLUGIN WORKS !!!!!!!! -->
-<!--
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>de.ingrid</groupId>
-                <artifactId>ingrid-version-management-pom</artifactId>
-                <version>3.6.0-SNAPSHOT</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.14.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
--->
     <!-- ==================== DEPENDENCIES ==================== -->
     <dependencies>
         <dependency>
             <groupId>de.ingrid</groupId>
             <artifactId>ingrid-utils-geo</artifactId>
-            <version>4.3.0</version>
+            <version>5.15.0.3324-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.ingrid</groupId>
             <artifactId>ingrid-utils</artifactId>
-            <version>4.0.1</version>
+            <version>5.15.0.3324-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
@@ -258,17 +257,17 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
-            <version>4.0.0.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>4.3.21.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>4.0.0.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -279,17 +278,17 @@
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
-            <version>1.4.10-java7</version>
+            <version>1.4.19</version>
         </dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
-            <version>1.8</version>
+            <version>1.19</version>
         </dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-json</artifactId>
-            <version>1.8</version>
+            <version>1.19</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.sun.xml.bind</groupId>
@@ -304,7 +303,7 @@
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-server</artifactId>
-            <version>1.8</version>
+            <version>1.19</version>
         </dependency>
         <dependency>
             <groupId>com.sun.jersey.contribs</groupId>
