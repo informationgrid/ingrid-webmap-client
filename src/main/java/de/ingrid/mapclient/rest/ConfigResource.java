@@ -138,7 +138,7 @@ public class ConfigResource {
     @Path("data")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response dataRequest(String content, @QueryParam("filename") String filename) {
+    public Response dataRequest(@QueryParam("filename") String filename) {
         if(filename != null && filename.length() > 0){
             if(log.isDebugEnabled()){
                 log.debug( "Load file: " + filename );

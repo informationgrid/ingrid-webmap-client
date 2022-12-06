@@ -260,7 +260,7 @@ public class FileResource {
     @POST
     @Path("images")
     @Produces("image/png")
-    public Response getFileImageRequestPost(String data, String content, @QueryParam("url") String url, @QueryParam("baseUrl") String baseUrl){
+    public Response getFileImageRequestPost(@RequestBody String data, @QueryParam("url") String url, @QueryParam("baseUrl") String baseUrl){
         String login = null;
         String password = null;
         if(url != null) {
@@ -376,10 +376,16 @@ public class FileResource {
     @Path("feedback")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFeedbackRequest(@FormDataParam("email") String email, @FormDataParam("feedback") String feedback,
-                                       @FormDataParam("ua") String ua, @FormDataParam("permalink") String permalink, @FormDataParam("attachement") InputStream attachement,
-                                       @FormDataParam("attachement") FormDataContentDisposition attachementContentDisposition, @FormDataParam("kml") String kml, @FormDataParam("version") String version,
-                                       @FormDataParam("subject") String subject, @FormDataParam("shortURLService") String shortURLService) throws IOException{
+    public Response getFeedbackRequest(@FormDataParam("email") String email, 
+                                       @FormDataParam("feedback") String feedback,
+                                       @FormDataParam("ua") String ua, 
+                                       @FormDataParam("permalink") String permalink, 
+                                       @FormDataParam("attachement") InputStream attachement,
+                                       @FormDataParam("attachement") FormDataContentDisposition attachementContentDisposition, 
+                                       @FormDataParam("kml") String kml, 
+                                       @FormDataParam("version") String version,
+                                       @FormDataParam("subject") String subject, 
+                                       @FormDataParam("shortURLService") String shortURLService) throws IOException{
         
         String text = "";
         URL permalinkUrl = null;

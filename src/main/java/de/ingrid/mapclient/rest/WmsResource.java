@@ -62,6 +62,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -216,7 +217,7 @@ public class WmsResource {
     @POST
     @Path("proxy")
     @Produces(MediaType.TEXT_PLAIN)
-    public String doServiceTransformationRequest(String data, String content, @QueryParam("url") String url, @QueryParam("toJson") boolean toJson) {
+    public String doServiceTransformationRequest(@RequestBody String data, @QueryParam("url") String url, @QueryParam("toJson") boolean toJson) {
         if(url != null) {
             JSONObject json;
             try {
@@ -360,7 +361,7 @@ public class WmsResource {
     @POST
     @Path("metadata")
     @Produces(MediaType.TEXT_HTML)
-    public Response metadataPostRequest(String data, String content, @QueryParam("layer") String layer, @QueryParam("url") String url, @QueryParam("lang") String lang, @QueryParam("legend") String legend) {
+    public Response metadataPostRequest(@RequestBody String data, @QueryParam("layer") String layer, @QueryParam("url") String url, @QueryParam("lang") String lang, @QueryParam("legend") String legend) {
         JSONObject json;
         String login = null;
         String password = null;
