@@ -17,6 +17,7 @@
     </scm>
     <properties>
         <spring.version>5.3.24</spring.version>
+        <jersey.version>3.1.0</jersey.version>
         <maven.compiler.release>17</maven.compiler.release>
     </properties>
     
@@ -281,11 +282,12 @@
             <version>1.4.19</version>
         </dependency>
         <dependency>
-            <groupId>com.sun.jersey</groupId>
+            <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
-            <version>1.19</version>
+            <version>${jersey.version}</version>
         </dependency>
-        <dependency>
+
+        <!--<dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-json</artifactId>
             <version>1.19</version>
@@ -299,17 +301,19 @@
                     <artifactId>stax-api</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
+        </dependency>-->
         <dependency>
-            <groupId>com.sun.jersey</groupId>
+            <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-server</artifactId>
-            <version>1.19</version>
+            <version>${jersey.version}</version>
         </dependency>
+
         <dependency>
-            <groupId>com.sun.jersey.contribs</groupId>
-            <artifactId>jersey-multipart</artifactId>
-            <version>1.8</version>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>${jersey.version}</version>
         </dependency>
+
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>jsr311-api</artifactId>
