@@ -38,12 +38,12 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 
 import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.scheduler.tasks.CapabilitiesUpdateTask;
 import de.ingrid.mapclient.utils.Utils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * WmsResource defines the interface for retrieving WMS data

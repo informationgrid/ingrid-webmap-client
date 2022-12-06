@@ -60,8 +60,10 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.google.zxing.BarcodeFormat;
@@ -70,8 +72,6 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import com.sun.jersey.core.header.FormDataContentDisposition;
-import com.sun.jersey.multipart.FormDataParam;
 
 import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.HttpProxy;
@@ -376,10 +376,10 @@ public class FileResource {
     @Path("feedback")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFeedbackRequest(@FormDataParam("email") String email, @FormDataParam("feedback") String feedback, 
-            @FormDataParam("ua") String ua, @FormDataParam("permalink") String permalink, @FormDataParam("attachement") InputStream attachement, 
-            @FormDataParam("attachement") FormDataContentDisposition attachementContentDisposition, @FormDataParam("kml") String kml, @FormDataParam("version") String version,
-            @FormDataParam("subject") String subject, @FormDataParam("shortURLService") String shortURLService) throws IOException{
+    public Response getFeedbackRequest(@FormDataParam("email") String email, @FormDataParam("feedback") String feedback,
+                                       @FormDataParam("ua") String ua, @FormDataParam("permalink") String permalink, @FormDataParam("attachement") InputStream attachement,
+                                       @FormDataParam("attachement") FormDataContentDisposition attachementContentDisposition, @FormDataParam("kml") String kml, @FormDataParam("version") String version,
+                                       @FormDataParam("subject") String subject, @FormDataParam("shortURLService") String shortURLService) throws IOException{
         
         String text = "";
         URL permalinkUrl = null;
