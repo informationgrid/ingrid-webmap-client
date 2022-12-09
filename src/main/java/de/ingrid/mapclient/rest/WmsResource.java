@@ -26,6 +26,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -67,7 +68,7 @@ public class WmsResource {
     private static final String ERROR_WMS_MSG = "Error sending WMS request: ";
 
     private static final ObjectMapper mapper = new ObjectMapper();
-    private final ObjectMapper xmlMapper = new XmlMapper().enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
+    private final ObjectMapper xmlMapper = new XmlMapper().registerModule(new SimpleModule().addDeserializer(JsonNode.class, new CustomJsonNodeDeserializer()));
 
     /**
      * Get WMS response from the given url
