@@ -27,7 +27,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.itextpdf.text.html.HtmlEncoder;
+import com.thoughtworks.xstream.persistence.XmlMap;
 import de.ingrid.mapclient.HttpProxy;
 import de.ingrid.mapclient.model.GetCapabilitiesDocument;
 import de.ingrid.mapclient.utils.Utils;
@@ -64,6 +66,7 @@ public class WmsResource {
     private static final String ERROR_WMS_MSG = "Error sending WMS request: ";
 
     private static final ObjectMapper mapper = new ObjectMapper();
+    private final XmlMapper xmlMapper = new XmlMapper();
 
     /**
      * Get WMS response from the given url
@@ -106,7 +109,7 @@ public class WmsResource {
                         if (toJson) {
                             ObjectNode json;
                             try {
-                                json = (ObjectNode) mapper.readTree(response);
+                                json = (ObjectNode) xmlMapper.readTree(response);
                             } catch (JsonProcessingException e) {
                                 json = mapper.createObjectNode();
                             }
@@ -218,7 +221,7 @@ public class WmsResource {
         try {
             String response = data;
             if (toJson) {
-                ObjectNode json = (ObjectNode) mapper.readTree(response);
+                ObjectNode json = (ObjectNode) xmlMapper.readTree(response);
                 json.put("xmlResponse", response);
                 return json.toString();
             }
