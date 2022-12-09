@@ -23,6 +23,7 @@
 package de.ingrid.mapclient.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -66,7 +67,7 @@ public class WmsResource {
     private static final String ERROR_WMS_MSG = "Error sending WMS request: ";
 
     private static final ObjectMapper mapper = new ObjectMapper();
-    private final XmlMapper xmlMapper = new XmlMapper();
+    private final ObjectMapper xmlMapper = new XmlMapper().enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
 
     /**
      * Get WMS response from the given url
