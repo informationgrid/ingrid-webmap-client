@@ -117,7 +117,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     </servlet-mapping>
     
     <!-- which resources should be protected -->
-    <!--<security-constraint>
+    <security-constraint>
         <web-resource-collection>
             <web-resource-name>MapClient Administration</web-resource-name>
             <url-pattern>/admin/*</url-pattern>
@@ -128,7 +128,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
         </auth-constraint>
     </security-constraint>
 
-    &lt;!&ndash; which resources should be protected &ndash;&gt;
+    <!-- which resources should be protected -->
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>MapClient Administration</web-resource-name>
@@ -138,7 +138,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
             <description>Has to be an administrator</description>
             <role-name>admin-gui</role-name>
         </auth-constraint>
-    </security-constraint>-->
+    </security-constraint>
     
     <!-- which realm to use for basic auth -->
     <login-config>
