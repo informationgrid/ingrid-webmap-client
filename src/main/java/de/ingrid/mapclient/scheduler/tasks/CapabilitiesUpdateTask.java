@@ -92,7 +92,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                         ObjectNode layer = (ObjectNode) key.getValue();
                         // Reset values
                         layer.remove(Constants.LAYER_STATUS);
-                        if (!layer.has("extent")) {
+                        if (!layer.hasNonNull("extent")) {
                             hasChanges = true;
                             layer.set("extent", mapper.readTree(defaultExtent));
                         }
@@ -101,16 +101,16 @@ public class CapabilitiesUpdateTask implements Runnable {
                         String login = null;
                         boolean background = false;
 
-                        if (layer.has(Constants.TYPE)) {
+                        if (layer.hasNonNull(Constants.TYPE)) {
                             layerType = layer.get(Constants.TYPE).textValue();
                         }
-                        if (layer.has(Constants.VERSION)) {
+                        if (layer.hasNonNull(Constants.VERSION)) {
                             layerVersion = layer.get(Constants.VERSION).textValue();
                         }
-                        if (layer.has(Constants.AUTH)) {
+                        if (layer.hasNonNull(Constants.AUTH)) {
                             login = layer.get(Constants.AUTH).textValue();
                         }
-                        if (layer.has(Constants.BACKGROUND)) {
+                        if (layer.hasNonNull(Constants.BACKGROUND)) {
                             background = layer.get(Constants.BACKGROUND).booleanValue();
                             if (!background) {
                                 // check depended categories
@@ -123,7 +123,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                             }
                         }
                         if (layerType.equals(de.ingrid.mapclient.Constants.TYPE_WMS)) {
-                            if (layer.has(Constants.WMS_URL)) {
+                            if (layer.hasNonNull(Constants.WMS_URL)) {
                                 StringBuilder layerWmsUrl = new StringBuilder(layer.get(Constants.WMS_URL).textValue());
                                 if (layerWmsUrl != null) {
                                     try {
@@ -181,7 +181,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                                     }
                                 }
                             }
-                        } else if (layerType.equals(Constants.TYPE_WMTS) && layer.has(Constants.WMTS_URL)) {
+                        } else if (layerType.equals(Constants.TYPE_WMTS) && layer.hasNonNull(Constants.WMTS_URL)) {
                             String layerWtmsUrl = layer.get(Constants.WMTS_URL).textValue();
                             if (layerWtmsUrl != null) {
                                 try {
@@ -342,7 +342,7 @@ public class CapabilitiesUpdateTask implements Runnable {
     private boolean updateLayerWTMSInformation(Document doc, XPath xpath, ObjectNode layerJSON,
                                                String layerWtmsUrl, ArrayList<String> errorLayernames, String id) throws XPathExpressionException {
         boolean hasChanges = false;
-        if (layerJSON.has("serverLayerName") && layerJSON.has("matrixSet")) {
+        if (layerJSON.hasNonNull("serverLayerName") && layerJSON.hasNonNull("matrixSet")) {
             String layerWtmsLayers = layerJSON.get("serverLayerName").textValue();
             String matrixSet = layerJSON.get("matrixSet").textValue();
             if (layerWtmsLayers != null) {
@@ -373,7 +373,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                     Node layerFormatNode = (Node) xpath.evaluate("./Format", layerNode, XPathConstants.NODE);
                     if (layerFormatNode != null) {
                         String format = layerFormatNode.getTextContent().trim().replace("image/", "");
-                        if (layerJSON.has("format")) {
+                        if (layerJSON.hasNonNull("format")) {
                             if (!layerJSON.get("format.textValue()").equals(format)) {
                                 hasChanges = true;
                                 layerJSON.put("format", format);
@@ -387,7 +387,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                     Node layerTemplateNode = (Node) xpath.evaluate("./ResourceURL/@template", layerNode, XPathConstants.NODE);
                     if (layerTemplateNode != null) {
                         String template = layerTemplateNode.getTextContent().trim();
-                        if (layerJSON.has("template")) {
+                        if (layerJSON.hasNonNull("template")) {
                             if (!layerJSON.get("template.textValue()").equals(template)) {
                                 hasChanges = true;
                                 layerJSON.put("template", template);
@@ -399,7 +399,7 @@ public class CapabilitiesUpdateTask implements Runnable {
 
                     }
                     boolean attributionUpdate = true;
-                    if (layerJSON.has("attributionUpdate")) {
+                    if (layerJSON.hasNonNull("attributionUpdate")) {
                         attributionUpdate = layerJSON.get("attributionUpdate").booleanValue();
                     }
                     if (attributionUpdate) {
@@ -407,7 +407,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                         Node layerAttribution = (Node) xpath.evaluate(".//ServiceProvider/ProviderName", doc, XPathConstants.NODE);
                         if (layerAttribution != null) {
                             String attribution = layerAttribution.getTextContent().trim();
-                            if (layerJSON.has("attribution")) {
+                            if (layerJSON.hasNonNull("attribution")) {
                                 if (!layerJSON.get("attribution.textValue()").equals(attribution)) {
                                     hasChanges = true;
                                     layerJSON.put("attribution", attribution);
@@ -421,7 +421,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                         Node layerAttributionUrl = (Node) xpath.evaluate(".//ServiceProvider/ProviderSite/@href", doc, XPathConstants.NODE);
                         if (layerAttributionUrl != null) {
                             String attributionUrl = layerAttributionUrl.getTextContent().trim();
-                            if (layerJSON.has("attributionUrl")) {
+                            if (layerJSON.hasNonNull("attributionUrl")) {
                                 if (!layerJSON.get("attributionUrl.textValue()").equals(attributionUrl)) {
                                     hasChanges = true;
                                     layerJSON.put("attributionUrl", attributionUrl);
@@ -476,7 +476,7 @@ public class CapabilitiesUpdateTask implements Runnable {
     private boolean updateLayerWMSInformation(Document doc, XPath xpath, ObjectNode layerJSON,
                                               String layerWmsUrl, ArrayList<String> errorLayernames, String id) throws XPathExpressionException, FactoryException {
         boolean hasChanges = false;
-        if (layerJSON.has("wmsLayers")) {
+        if (layerJSON.hasNonNull("wmsLayers")) {
             String layerWmsLayers = layerJSON.get("wmsLayers").textValue();
             if (layerWmsLayers != null) {
                 if (layerWmsLayers.indexOf(',') == -1) {
@@ -622,7 +622,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                             hasChanges = true;
                         }
                         boolean attributionUpdate = true;
-                        if (layerJSON.has("attributionUpdate")) {
+                        if (layerJSON.hasNonNull("attributionUpdate")) {
                             attributionUpdate = layerJSON.get("attributionUpdate").booleanValue();
                         }
                         if (attributionUpdate) {
@@ -630,7 +630,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                             Node layerAttribution = (Node) xpath.evaluate(".//Service/ContactInformation/ContactPersonPrimary/ContactOrganization", doc, XPathConstants.NODE);
                             if (layerAttribution != null) {
                                 String attribution = layerAttribution.getTextContent().trim();
-                                if (layerJSON.has("attribution")) {
+                                if (layerJSON.hasNonNull("attribution")) {
                                     if (!layerJSON.get("attribution.textValue()").equals(attribution)) {
                                         hasChanges = true;
                                         layerJSON.put("attribution", attribution);
@@ -644,7 +644,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                             Node layerAttributionUrl = (Node) xpath.evaluate(".//Service/OnlineResource/@href", doc, XPathConstants.NODE);
                             if (layerAttributionUrl != null) {
                                 String attributionUrl = layerAttributionUrl.getTextContent().trim();
-                                if (layerJSON.has("attributionUrl")) {
+                                if (layerJSON.hasNonNull("attributionUrl")) {
                                     if (!layerJSON.get("attributionUrl.textValue()").equals(attributionUrl)) {
                                         hasChanges = true;
                                         layerJSON.put("attributionUrl", attributionUrl);
@@ -672,7 +672,7 @@ public class CapabilitiesUpdateTask implements Runnable {
         String text = fieldNode.getTextContent();
         String oldText;
 //        try {
-        if (layerJSON.has(layerKey)) {
+        if (layerJSON.hasNonNull(layerKey)) {
             oldText = layerJSON.get(layerKey).textValue();
             if (oldText == null || (text != null && !oldText.equals(text))) {
                 layerJSON.put(layerKey, fieldNode.getTextContent());
@@ -690,7 +690,7 @@ public class CapabilitiesUpdateTask implements Runnable {
         String text = fieldNode.getTextContent();
         String oldText;
 //        try {
-        if (layerJSON.has(layerKey)) {
+        if (layerJSON.hasNonNull(layerKey)) {
             oldText = layerJSON.get(layerKey).textValue();
             if (oldText == null || (oldText != null && layerJSON.get(layerKey).isTextual()) || (text != null && !oldText.equals(text))) {
                 layerJSON.put(layerKey, Double.parseDouble(fieldNode.getTextContent()));

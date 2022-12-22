@@ -97,10 +97,10 @@ public class DataUtils {
                                     ObjectNode item = (ObjectNode) obj.get(key.getKey());
                                     ObjectNode itemCompress = mapper.createObjectNode();
                                     itemCompress.put("id", key.getKey());
-                                    if (item.has(DataUtils.LAYER_KEY_LABEL)) {
+                                    if (item.hasNonNull(DataUtils.LAYER_KEY_LABEL)) {
                                         itemCompress.set(DataUtils.LAYER_KEY_LABEL, item.get(DataUtils.LAYER_KEY_LABEL));
                                     }
-                                    if (item.has(DataUtils.LAYER_KEY_BACKGROUND)) {
+                                    if (item.hasNonNull(DataUtils.LAYER_KEY_BACKGROUND)) {
                                         itemCompress.set(DataUtils.LAYER_KEY_BACKGROUND, item.get(DataUtils.LAYER_KEY_BACKGROUND));
                                     }
                                     tmpObj.set("item", itemCompress);
@@ -146,7 +146,7 @@ public class DataUtils {
         if (categories != null) {
             for (int i = 0; i < categories.size(); i++) {
                 JsonNode category = categories.get(i);
-                if (category != null && category.has("id")) {
+                if (category != null && category.hasNonNull("id")) {
                     String categoryId = category.get("id").textValue();
                     ArrayNode categoryTree = getCategoryTree(categoryId);
                     if (categoryTree != null) {
@@ -188,7 +188,7 @@ public class DataUtils {
         if (categoryTree != null) {
             for (int i = 0; i < categoryTree.size(); i++) {
                 ObjectNode categoryTreeBranch = (ObjectNode) categoryTree.get(i);
-                if (categoryTreeBranch.has(DataUtils.CATEGORY_KEY_CHILDREN)) {
+                if (categoryTreeBranch.hasNonNull(DataUtils.CATEGORY_KEY_CHILDREN)) {
                     ArrayNode categoryTreeBranchChildren = (ArrayNode) categoryTreeBranch.get(DataUtils.CATEGORY_KEY_CHILDREN);
                     ArrayNode filterCategoryTreeChildren = mapper.createArrayNode();
                     if (categoryTreeBranchChildren != null) {
@@ -202,7 +202,7 @@ public class DataUtils {
                         }
                     }
                 }
-                if (categoryTreeBranch.has(DataUtils.LAYER_KEY_LAYERBODID)) {
+                if (categoryTreeBranch.hasNonNull(DataUtils.LAYER_KEY_LAYERBODID)) {
                     String layerBodId = categoryTreeBranch.get(DataUtils.LAYER_KEY_LAYERBODID).textValue();
                     if (layerBodId.equals(id)) {
                         filterCategoryTree.add(categoryTreeBranch);
@@ -248,7 +248,7 @@ public class DataUtils {
     public static void searchStringValue(JsonNode obj, String searchText, String[] keys, ArrayNode arrSearch, JsonNode parentObj) {
         boolean hasAdd = false;
         for (String key : keys) {
-            if (obj.has(key)) {
+            if (obj.hasNonNull(key)) {
                 String value = obj.get(key).textValue();
                 if (searchText != null && searchText.length() > 0 && value.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
                     arrSearch.add(parentObj);
@@ -257,7 +257,7 @@ public class DataUtils {
                 }
             }
         }
-        if (obj.has("item") && !hasAdd) {
+        if (obj.hasNonNull("item") && !hasAdd) {
             JsonNode item = obj.get("item");
             searchStringValue(item, searchText, keys, arrSearch, parentObj);
         }
@@ -283,7 +283,7 @@ public class DataUtils {
 
     public static void searchBooleanValue(JsonNode obj, boolean searchFlag, String[] keys, ArrayNode arrSearch, JsonNode parentObj, boolean checkHasContentOnly) {
         for (String key : keys) {
-            if (obj.has(key)) {
+            if (obj.hasNonNull(key)) {
                 if (checkHasContentOnly) {
                     arrSearch.add(parentObj);
                 } else {
@@ -294,7 +294,7 @@ public class DataUtils {
                 }
             }
         }
-        if (obj.has("item")) {
+        if (obj.hasNonNull("item")) {
             JsonNode item = obj.get("item");
             searchBooleanValue(item, searchFlag, keys, arrSearch, parentObj, checkHasContentOnly);
         }
@@ -307,7 +307,7 @@ public class DataUtils {
             JsonNode obj;
             try {
                 obj = arr.get(i);
-                if (obj.has("id")) {
+                if (obj.hasNonNull("id")) {
                     String id = obj.get("id").textValue();
                     if (searchCategoryValue(id, categoryTree)) {
                         arrSearch.add(obj);
@@ -324,14 +324,14 @@ public class DataUtils {
         boolean hasValue = false;
         for (int i = 0; i < categoryTree.size(); i++) {
             JsonNode obj = categoryTree.get(i);
-            if (obj.has(DataUtils.LAYER_KEY_LAYERBODID)) {
+            if (obj.hasNonNull(DataUtils.LAYER_KEY_LAYERBODID)) {
                 String layerBodId = obj.get(DataUtils.LAYER_KEY_LAYERBODID).textValue();
                 if (layerBodId.equals(searchId)) {
                     hasValue = true;
                     break;
                 }
             }
-            if (obj.has(DataUtils.CATEGORY_KEY_CHILDREN)) {
+            if (obj.hasNonNull(DataUtils.CATEGORY_KEY_CHILDREN)) {
                 ArrayNode children = (ArrayNode) obj.get(DataUtils.CATEGORY_KEY_CHILDREN);
                 if (searchCategoryValue(searchId, children)) {
                     hasValue = true;

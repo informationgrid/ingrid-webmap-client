@@ -270,10 +270,10 @@ public class FileResource {
             JsonNode json;
             try {
                 json = mapper.readTree(data);
-                if(json.has("login")) {
+                if(json.hasNonNull("login")) {
                     login = json.get("login").textValue();
                 }
-                if(json.has("password")) {
+                if(json.hasNonNull("password")) {
                     password = json.get("password").textValue();
                 }
             } catch (JsonProcessingException e) {
@@ -512,7 +512,7 @@ public class FileResource {
                     String shortenUrlContent = HttpProxy.doRequest(shortURLService);
                     if(shortenUrlContent != null) {
                         JsonNode shortenURLJSON = mapper.readTree(shortenUrlContent);
-                        if(shortenURLJSON.has("shorturl")) {
+                        if(shortenURLJSON.hasNonNull("shorturl")) {
                             permalink = shortenURLJSON.get("shorturl").textValue();
                         }
                     }
@@ -696,10 +696,10 @@ public class FileResource {
         JsonNode obj = mapper.readTree(requestContent);
         String key = null;
         String value = null;
-        if(obj.has("key")) {
+        if(obj.hasNonNull("key")) {
             key = obj.get("key").textValue();
         }
-        if(obj.has("value")) {
+        if(obj.hasNonNull("value")) {
             value = obj.get("value").textValue();
         }
         if(key != null && value != null) {

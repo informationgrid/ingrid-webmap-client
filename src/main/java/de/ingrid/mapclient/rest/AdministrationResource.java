@@ -163,7 +163,7 @@ public class AdministrationResource {
         try {
             JsonNode layer = mapper.readTree(content);
             String newId = id;
-            if (layer.has("id")) {
+            if (layer.hasNonNull("id")) {
                 newId = layer.get("id").textValue();
             }
             if (!id.equals(newId)) {
@@ -366,7 +366,7 @@ public class AdministrationResource {
                     Iterator<Map.Entry<String, JsonNode>> keys = setting.fields();
                     while (keys.hasNext()) {
                         Map.Entry<String, JsonNode> key = keys.next();
-                        if (settingProfile.has(key.getKey())) {
+                        if (settingProfile.hasNonNull(key.getKey())) {
                             Object obj = key.getValue();
                             Object objProfile = settingProfile.get(key.getKey());
                             if (obj instanceof String && objProfile instanceof String) {
@@ -440,7 +440,7 @@ public class AdministrationResource {
                 }
             }
             updateSetting(settingProfile);
-            if (settingProfile.has("settingLanguages")) {
+            if (settingProfile.hasNonNull("settingLanguages")) {
                 ArrayNode settingLanguages = (ArrayNode) settingProfile.get("settingLanguages");
                 for (int i = 0; i < settingLanguages.size(); i++) {
                     String lang = settingLanguages.get(i).textValue();
@@ -530,7 +530,7 @@ public class AdministrationResource {
                         Iterator<Map.Entry<String, JsonNode>> keys = profileHelp.fields();
                         while (keys.hasNext()) {
                             Map.Entry<String, JsonNode> key = keys.next();
-                            if (profileHelp.has(key.getKey())) {
+                            if (profileHelp.hasNonNull(key.getKey())) {
                                 help.set(key.getKey(), key.getValue());
                             }
                         }
@@ -665,16 +665,16 @@ public class AdministrationResource {
         boolean overrideLogin = false;
         try {
             JsonNode obj = mapper.readTree(content);
-            if (obj.has("url")) {
+            if (obj.hasNonNull("url")) {
                 url = obj.get("url").textValue();
             }
-            if (obj.has("login")) {
+            if (obj.hasNonNull("login")) {
                 login = obj.get("login").textValue();
             }
-            if (obj.has("password")) {
+            if (obj.hasNonNull("password")) {
                 password = obj.get("password").textValue();
             }
-            if (obj.has("overrideLogin")) {
+            if (obj.hasNonNull("overrideLogin")) {
                 overrideLogin = obj.get("overrideLogin").booleanValue();
             }
             if (StringUtils.isNotEmpty(login) && StringUtils.isNotEmpty(password)) {
@@ -728,7 +728,7 @@ public class AdministrationResource {
     public Response addImageRequest(@RequestBody String content) {
         try {
             JsonNode imageJSON = mapper.readTree(content);
-            if (imageJSON.has("data") && imageJSON.has("path") && imageJSON.has("name")) {
+            if (imageJSON.hasNonNull("data") && imageJSON.hasNonNull("path") && imageJSON.hasNonNull("name")) {
                 String data = imageJSON.get("data").textValue();
                 String name = imageJSON.get("name").textValue();
                 String path = imageJSON.get("path").textValue();
@@ -834,10 +834,10 @@ public class AdministrationResource {
                 Iterator<Map.Entry<String, JsonNode>> keys = item.fields();
                 while (keys.hasNext()) {
                     Map.Entry<String, JsonNode> key = keys.next();
-                    if (item.has(key.getKey())) {
+                    if (item.hasNonNull(key.getKey())) {
                         String value = key.getValue().textValue();
                         String valueDefault = "";
-                        if (localeDefault != null && localeDefault.has(key.getKey())) {
+                        if (localeDefault != null && localeDefault.hasNonNull(key.getKey())) {
                             valueDefault = localeDefault.get(key.getKey()).textValue();
                         }
                         if (value.trim().equals(valueDefault.trim())) {
@@ -863,7 +863,7 @@ public class AdministrationResource {
             if (StringUtils.isNotEmpty(fileContent)) {
                 locale = (ObjectNode) mapper.readTree(fileContent);
                 for (String key : keys) {
-                    if (locale.has(key)) {
+                    if (locale.hasNonNull(key)) {
                         locale.remove(key);
                     }
                 }
@@ -900,7 +900,7 @@ public class AdministrationResource {
         for (int i = 0; i < items.size(); i++) {
 //            try {
             ObjectNode item = (ObjectNode) items.get(i);
-            if (item.has(DataUtils.CATEGORY_KEY_CHILDREN)) {
+            if (item.hasNonNull(DataUtils.CATEGORY_KEY_CHILDREN)) {
                 ArrayNode children = (ArrayNode) item.get(DataUtils.CATEGORY_KEY_CHILDREN);
                 if (children.size() > 0) {
                     cleanupCategory(children);
@@ -948,12 +948,12 @@ public class AdministrationResource {
                 Iterator<Map.Entry<String, JsonNode>> keys = help.fields();
                 while (keys.hasNext()) {
                     String key = String.valueOf(keys.next());
-                    if (profileHelp.has(key)) {
+                    if (profileHelp.hasNonNull(key)) {
                         JsonNode helpItem = help.get(key);
                         JsonNode helpProfileItem = profileHelp.get(key);
-                        if (helpItem.has(DataUtils.HELP_KEY_TITLE) && helpProfileItem.has(DataUtils.HELP_KEY_TITLE) && helpItem.get(DataUtils.HELP_KEY_TITLE).equals(helpProfileItem.get(DataUtils.HELP_KEY_TITLE))
-                                && helpItem.has(DataUtils.HELP_KEY_TEXT) && helpProfileItem.has(DataUtils.HELP_KEY_TEXT) && helpItem.get(DataUtils.HELP_KEY_TEXT).equals(helpProfileItem.get(DataUtils.HELP_KEY_TEXT))
-                                && helpItem.has(DataUtils.HELP_KEY_IMAGE) && helpProfileItem.has(DataUtils.HELP_KEY_IMAGE) && helpItem.get(DataUtils.HELP_KEY_IMAGE).equals(helpProfileItem.get(DataUtils.HELP_KEY_IMAGE))) {
+                        if (helpItem.hasNonNull(DataUtils.HELP_KEY_TITLE) && helpProfileItem.hasNonNull(DataUtils.HELP_KEY_TITLE) && helpItem.get(DataUtils.HELP_KEY_TITLE).equals(helpProfileItem.get(DataUtils.HELP_KEY_TITLE))
+                                && helpItem.hasNonNull(DataUtils.HELP_KEY_TEXT) && helpProfileItem.hasNonNull(DataUtils.HELP_KEY_TEXT) && helpItem.get(DataUtils.HELP_KEY_TEXT).equals(helpProfileItem.get(DataUtils.HELP_KEY_TEXT))
+                                && helpItem.hasNonNull(DataUtils.HELP_KEY_IMAGE) && helpProfileItem.hasNonNull(DataUtils.HELP_KEY_IMAGE) && helpItem.get(DataUtils.HELP_KEY_IMAGE).equals(helpProfileItem.get(DataUtils.HELP_KEY_IMAGE))) {
                             profileHelp.remove(key);
                         }
                     }
@@ -975,7 +975,7 @@ public class AdministrationResource {
                 String fileContent = Utils.getFileContent(configDir, DataUtils.FILE_PREFIX_HELP + lang + DataUtils.FILE_PREFIX_PROFILE, DataUtils.FILEFORMAT_JSON, DataUtils.CONFIG_PATH_HELP);
                 if (StringUtils.isNotEmpty(fileContent)) {
                     ObjectNode profileHelp = (ObjectNode) mapper.readTree(fileContent);
-                    if (profileHelp.has(id)) {
+                    if (profileHelp.hasNonNull(id)) {
                         profileHelp.remove(id);
                     }
                     Utils.updateFile(DataUtils.CONFIG_PATH_HELP + DataUtils.FILE_PREFIX_HELP + lang + DataUtils.FILE_PREFIX_PROFILE + DataUtils.FILEFORMAT_JSON, profileHelp.toString());
@@ -1003,11 +1003,11 @@ public class AdministrationResource {
                         for (int i = 0; i < layers.size(); i++) {
                             JsonNode tmpObj = layers.get(i);
                             String id = tmpObj.get("id").textValue();
-                            if (obj.has(id)) {
+                            if (obj.hasNonNull(id)) {
                                 id = generateID(obj, id);
                             }
                             JsonNode tmpItem = tmpObj.get("item");
-                            if (tmpItem.has("wmsLayers") || tmpItem.has("serverLayerName")) {
+                            if (tmpItem.hasNonNull("wmsLayers") || tmpItem.hasNonNull("serverLayerName")) {
                                 newObj.set(id, tmpItem);
                             }
                         }
@@ -1027,7 +1027,7 @@ public class AdministrationResource {
     }
 
     private String generateID(JsonNode obj, String id) {
-        if (obj.has(id)) {
+        if (obj.hasNonNull(id)) {
             id = generateID(obj, id + "_");
         }
         return id.replace(".", "_");
@@ -1043,21 +1043,21 @@ public class AdministrationResource {
                     try {
                         ObjectNode obj = (ObjectNode) mapper.readTree(fileContent);
                         ObjectNode layerItem = (ObjectNode) layer.get("item");
-                        if (layerItem.has(Constants.LAYER_STATUS)) {
+                        if (layerItem.hasNonNull(Constants.LAYER_STATUS)) {
                             String status = layerItem.get(Constants.LAYER_STATUS).textValue();
                             String version = null;
-                            if (layerItem.has(Constants.LAYER_VERSION)) {
+                            if (layerItem.hasNonNull(Constants.LAYER_VERSION)) {
                                 version = layerItem.get(Constants.LAYER_VERSION).textValue();
                             }
                             String layername = null;
-                            if (layerItem.has(Constants.WMS_LAYERNAME)) {
+                            if (layerItem.hasNonNull(Constants.WMS_LAYERNAME)) {
                                 layername = layerItem.get(Constants.WMS_LAYERNAME).textValue();
                             }
-                            if (layerItem.has(Constants.WMTS_LAYERNAME)) {
+                            if (layerItem.hasNonNull(Constants.WMTS_LAYERNAME)) {
                                 layername = layerItem.get(Constants.WMTS_LAYERNAME).textValue();
                             }
                             String url = null;
-                            if (layerItem.has(Constants.WMS_URL)) {
+                            if (layerItem.hasNonNull(Constants.WMS_URL)) {
                                 url = layerItem.get(Constants.WMS_URL).textValue();
                                 if (url.indexOf('?') == -1) {
                                     url += "?";
@@ -1076,7 +1076,7 @@ public class AdministrationResource {
                                     }
                                 }
                             }
-                            if (layerItem.has(Constants.WMTS_URL)) {
+                            if (layerItem.hasNonNull(Constants.WMTS_URL)) {
                                 url = layerItem.get(Constants.WMTS_URL).textValue();
                             }
                             if (status != null && layername != null && url != null) {
@@ -1183,7 +1183,7 @@ public class AdministrationResource {
         ObjectNode obj = null;
 //        try {
         boolean layerExist = false;
-        if (item.has(DataUtils.LAYER_KEY_LAYERBODID)) {
+        if (item.hasNonNull(DataUtils.LAYER_KEY_LAYERBODID)) {
             String layerBodId = item.get(DataUtils.LAYER_KEY_LAYERBODID).textValue();
             if (layerBodId != null) {
                 if (ids != null) {
@@ -1199,7 +1199,7 @@ public class AdministrationResource {
         }
         if (!layerExist) {
             obj = (ObjectNode) item;
-            if (item.has(DataUtils.CATEGORY_KEY_CHILDREN)) {
+            if (item.hasNonNull(DataUtils.CATEGORY_KEY_CHILDREN)) {
                 ArrayNode children = (ArrayNode) item.get(DataUtils.CATEGORY_KEY_CHILDREN);
                 if (children != null) {
                     ArrayNode childList = mapper.createArrayNode();

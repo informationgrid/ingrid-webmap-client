@@ -89,7 +89,7 @@ public class ConfigResource {
                         Iterator<Map.Entry<String, JsonNode>> keys = profileSetting.fields();
                         while( keys.hasNext() ) {
                             Map.Entry<String, JsonNode> key = keys.next();
-                            if (profileSetting.has(key.getKey())) {
+                            if (profileSetting.hasNonNull(key.getKey())) {
                                 setting.set(key.getKey(), key.getValue());
                             }
                         }
@@ -187,7 +187,7 @@ public class ConfigResource {
                 Iterator<Map.Entry<String, JsonNode>> keys = frontendLocale.fields();
                 while( keys.hasNext() ) {
                     Map.Entry<String, JsonNode> key = keys.next();
-                    if (frontendLocale.has(key.getKey())) {
+                    if (frontendLocale.hasNonNull(key.getKey())) {
                         locales.set(key.getKey(), frontendLocale.get(key.getKey()));
                     }
                 }
@@ -202,7 +202,7 @@ public class ConfigResource {
                 Iterator<Map.Entry<String, JsonNode>> keys = frontendLocale.fields();
                 while( keys.hasNext() ) {
                     Map.Entry<String, JsonNode> key = keys.next();
-                    if (frontendLocale.has(key.getKey())) {
+                    if (frontendLocale.hasNonNull(key.getKey())) {
                         locales.set(key.getKey(), frontendLocale.get(key.getKey()));
                     }
                 }
@@ -217,10 +217,10 @@ public class ConfigResource {
                 Iterator<Map.Entry<String, JsonNode>> keys = frontendLocale.fields();
                 while( keys.hasNext() ) {
                     Map.Entry<String, JsonNode> key = keys.next();
-                    if (frontendLocale.has(key.getKey())) {
+                    if (frontendLocale.hasNonNull(key.getKey())) {
                         String value = frontendLocale.get(key.getKey()).textValue();
                         if(value.equals("#ignore#")) {
-                            if(locales.has(key.getKey())) {
+                            if(locales.hasNonNull(key.getKey())) {
                                 locales.remove(key.getKey());
                             }
                         } else {
@@ -239,7 +239,7 @@ public class ConfigResource {
                 Iterator<Map.Entry<String, JsonNode>> keys = frontendLocale.fields();
                 while( keys.hasNext() ) {
                     Map.Entry<String, JsonNode> key = keys.next();
-                    if (frontendLocale.has(key.getKey())) {
+                    if (frontendLocale.hasNonNull(key.getKey())) {
                         locales.set(key.getKey(), frontendLocale.get(key.getKey()));
                     }
                 }
@@ -257,7 +257,7 @@ public class ConfigResource {
                     Iterator<Map.Entry<String, JsonNode>> keys = profileLocale.fields();
                     while( keys.hasNext() ) {
                         Map.Entry<String, JsonNode> key = keys.next();
-                        if (profileLocale.has(key.getKey())) {
+                        if (profileLocale.hasNonNull(key.getKey())) {
                             locales.set(key.getKey(), profileLocale.get(key.getKey()));
                         }
                     }

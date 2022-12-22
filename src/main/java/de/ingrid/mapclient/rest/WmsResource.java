@@ -149,16 +149,16 @@ public class WmsResource {
         boolean toJson = false;
         try {
             JsonNode obj = mapper.readTree(content);
-            if (obj.has("url")) {
+            if (obj.hasNonNull("url")) {
                 url = obj.get("url").textValue();
             }
-            if (obj.has("login")) {
+            if (obj.hasNonNull("login")) {
                 login = obj.get("login").textValue();
             }
-            if (obj.has("password")) {
+            if (obj.hasNonNull("password")) {
                 password = obj.get("password").textValue();
             }
-            if (obj.has("toJson")) {
+            if (obj.hasNonNull("toJson")) {
                 toJson = obj.get("toJson").booleanValue();
             }
             return doWmsRequest(url, toJson, login, password);
@@ -209,10 +209,10 @@ public class WmsResource {
                 json = mapper.readTree(data);
                 String login = null;
                 String password = null;
-                if (json.has("login")) {
+                if (json.hasNonNull("login")) {
                     login = json.get("login").textValue();
                 }
-                if (json.has("password")) {
+                if (json.hasNonNull("password")) {
                     password = json.get("password").textValue();
                 }
                 return doWmsRequest(url, toJson, login, password);
@@ -291,19 +291,19 @@ public class WmsResource {
                                     }
                                     serviceCapabilitiesURL = Utils.checkWMSUrl(serviceHost, "SERVICE=WMS&REQUEST=GetCapabilities&VERSION=" + jsonLayer.get("version").textValue());
                                 }
-                                if (jsonLayer.has("legendUrl")) {
+                                if (jsonLayer.hasNonNull("legendUrl")) {
                                     layerLegend = jsonLayer.get("legendUrl").textValue();
                                 }
                                 layerName = jsonLayer.get("wmsLayers").textValue();
                             } else if (serviceType.equalsIgnoreCase("wmts")) {
                                 layerTitle = jsonLayer.get("label").textValue();
                                 serviceCapabilitiesURL = jsonLayer.get("serviceUrl").textValue();
-                                if (jsonLayer.has("legendUrl")) {
+                                if (jsonLayer.hasNonNull("legendUrl")) {
                                     layerLegend = jsonLayer.get("legendUrl").textValue();
                                 }
                                 layerName = jsonLayer.get("serverLayerName").textValue();
                             }
-                            if (jsonLayer.has("portalUrl")) {
+                            if (jsonLayer.hasNonNull("portalUrl")) {
                                 portalUrl = jsonLayer.get("portalUrl").textValue();
                             }
                         }
@@ -352,10 +352,10 @@ public class WmsResource {
         String password = null;
         try {
             json = mapper.readTree(data);
-            if (json.has("login")) {
+            if (json.hasNonNull("login")) {
                 login = json.get("login").textValue();
             }
-            if (json.has("password")) {
+            if (json.hasNonNull("password")) {
                 password = json.get("password").textValue();
             }
         } catch (JsonProcessingException e) {

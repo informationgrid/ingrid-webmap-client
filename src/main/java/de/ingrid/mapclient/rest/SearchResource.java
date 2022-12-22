@@ -144,7 +144,7 @@ public class SearchResource {
                             ObjectNode newEntry = mapper.createObjectNode();
                             String label = questJsonEntry.get( "label" ).textValue();
                             boolean isSearchable = false;
-                            if(questJsonEntry.has( "searchable" ) && questJsonEntry.get( "searchable" ) != null){
+                            if(questJsonEntry.hasNonNull( "searchable" ) && questJsonEntry.get( "searchable" ) != null){
                                 isSearchable = Boolean.valueOf( questJsonEntry.get( "searchable" ).toString());
                             }
                             if(isSearchable && label.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 ){
