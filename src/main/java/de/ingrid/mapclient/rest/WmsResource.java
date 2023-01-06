@@ -72,13 +72,15 @@ public class WmsResource {
     private static final String ERROR_WMS_MSG = "Error sending WMS request: ";
 
     private static final ObjectMapper mapper = new ObjectMapper();
-    private final ObjectMapper xmlMapper; // = new XmlMapper().registerModule(new SimpleModule().addDeserializer(JsonNode.class, new CustomJsonNodeDeserializer()));
-
+    private final ObjectMapper xmlMapper;
+    
 
     public WmsResource() {
         XMLInputFactory input = new WstxInputFactory();
         input.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.FALSE);
-        this.xmlMapper = new ObjectMapper(new XmlFactory(input, new WstxOutputFactory()));
+        this.xmlMapper = new ObjectMapper(new XmlFactory(input, new WstxOutputFactory()))
+                .registerModule(new SimpleModule().addDeserializer(JsonNode.class, new CustomJsonNodeDeserializer()));
+
     }
 
     /**
