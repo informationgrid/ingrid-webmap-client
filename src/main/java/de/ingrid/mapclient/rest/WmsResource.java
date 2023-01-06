@@ -22,6 +22,8 @@
  */
 package de.ingrid.mapclient.rest;
 
+import com.ctc.wstx.stax.WstxInputFactory;
+import com.ctc.wstx.stax.WstxOutputFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -29,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.dataformat.xml.XmlFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.itextpdf.text.html.HtmlEncoder;
 import com.thoughtworks.xstream.persistence.XmlMap;
@@ -45,6 +48,7 @@ import org.w3c.dom.NodeList;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -68,7 +72,14 @@ public class WmsResource {
     private static final String ERROR_WMS_MSG = "Error sending WMS request: ";
 
     private static final ObjectMapper mapper = new ObjectMapper();
-    private final ObjectMapper xmlMapper = new XmlMapper().registerModule(new SimpleModule().addDeserializer(JsonNode.class, new CustomJsonNodeDeserializer()));
+    private final ObjectMapper xmlMapper; // = new XmlMapper().registerModule(new SimpleModule().addDeserializer(JsonNode.class, new CustomJsonNodeDeserializer()));
+
+
+    public WmsResource() {
+        XMLInputFactory input = new WstxInputFactory();
+        input.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.FALSE);
+        this.xmlMapper = new ObjectMapper(new XmlFactory(input, new WstxOutputFactory()));
+    }
 
     /**
      * Get WMS response from the given url
