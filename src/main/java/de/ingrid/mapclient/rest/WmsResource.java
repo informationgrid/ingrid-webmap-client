@@ -282,7 +282,7 @@ public class WmsResource {
                             }
                             serviceCapabilitiesURL = Utils.checkWMSUrl(serviceHost, "SERVICE=WMS&REQUEST=GetCapabilities&VERSION=" + wmsVersion);
                         } else if (serviceType.equalsIgnoreCase("wmts")) {
-                            // WMTS||WmsBWaStr||http:%2F%2Fatlas.wsv.bund.de%2Fbwastr%2Fwmts%2F1.0.0%2FWMTSCapabilities.xml
+                            // WMTS||WmsBWaStr||http:%2F%2Fvia.bund.de%2Fwsv%2Fbwastr%2Fwmts%2F1.0.0%2FWMTSCapabilities.xml
                             layerTitle = layerSplit[1];
                             layerName = layerSplit[1];
                             serviceCapabilitiesURL = layerSplit[2];
