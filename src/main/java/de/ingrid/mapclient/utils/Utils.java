@@ -36,11 +36,7 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -66,18 +62,18 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.model.GetCapabilitiesDocument;
-import sun.misc.BASE64Encoder;
 
 public class Utils {
 
@@ -134,7 +130,7 @@ public class Utils {
         }
     }
 
-    public static void createFile(String filename, JSONObject item) {
+    public static void createFile(String filename, JsonNode item) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         File file = new File(configDir.concat(filename));
@@ -438,7 +434,7 @@ public class Utils {
     
     public static void urlConnectionAuth(URLConnection conn, String login, String password) {
         String userPassword = login + ":" + password;
-        String encoding = new BASE64Encoder().encode(userPassword.getBytes());
+        String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
         conn.setRequestProperty("Authorization", "Basic " + encoding);
     }
     

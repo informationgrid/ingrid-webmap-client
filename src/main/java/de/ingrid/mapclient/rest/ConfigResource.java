@@ -22,10 +22,7 @@
  */
 package de.ingrid.mapclient.rest;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Properties;
+import java.util.*;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -36,14 +33,18 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 
 import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.scheduler.tasks.CapabilitiesUpdateTask;
 import de.ingrid.mapclient.utils.Utils;
+
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * WmsResource defines the interface for retrieving WMS data
@@ -55,14 +56,16 @@ public class ConfigResource {
 
     private static final Logger log = Logger.getLogger( ConfigResource.class );
 
+    private static final ObjectMapper mapper = new ObjectMapper();
+    
     @GET
     @Path("setting")
     @Produces("application/javascript")
     public Response getSettingRequest(@QueryParam("asJson") boolean asJson) {
         String filename = "setting";
         try {
-            JSONObject setting = null;
-            JSONObject profileSetting = null;
+            ObjectNode setting = null;
+            JsonNode profileSetting = null;
             
             if(log.isDebugEnabled()){
                 log.debug( "Load file: " + filename );
@@ -72,7 +75,7 @@ public class ConfigResource {
             String fileSetting = classPath + "frontend/";
             String fileContent = Utils.getFileContent(fileSetting, filename, ".json", "config/");
             if(StringUtils.isNotEmpty(fileContent)) {
-                setting = new JSONObject(fileContent);
+                setting = (ObjectNode) mapper.readTree(fileContent);
             }
             
             filename = "setting.profile";
@@ -81,13 +84,13 @@ public class ConfigResource {
             if(StringUtils.isNotEmpty(configDir)) {
                 fileContent = Utils.getFileContent(configDir, filename, ".json", "config/");
                 if(StringUtils.isNotEmpty(fileContent)) {
-                    profileSetting = new JSONObject(fileContent);
+                    profileSetting = mapper.readTree(fileContent);
                     if(setting != null) {
-                        Iterator<?> keys = profileSetting.keys();
+                        Iterator<Map.Entry<String, JsonNode>> keys = profileSetting.fields();
                         while( keys.hasNext() ) {
-                            String key = (String)keys.next();
-                            if (profileSetting.has(key)) {
-                                setting.put(key, profileSetting.get(key));
+                            Map.Entry<String, JsonNode> key = keys.next();
+                            if (profileSetting.hasNonNull(key.getKey())) {
+                                setting.set(key.getKey(), key.getValue());
                             }
                         }
                     }
@@ -98,7 +101,9 @@ public class ConfigResource {
             } else {
                 return Response.ok( "var settings = " + setting ).build();
             }
-        } catch (JSONException e) {
+        } catch (JsonMappingException e) {
+            log.error("Error getSettingRequest: " + e);
+        } catch (JsonProcessingException e) {
             log.error("Error getSettingRequest: " + e);
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
@@ -138,7 +143,7 @@ public class ConfigResource {
     @Path("data")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response dataRequest(String content, @QueryParam("filename") String filename) {
+    public Response dataRequest(@QueryParam("filename") String filename) {
         if(filename != null && filename.length() > 0){
             if(log.isDebugEnabled()){
                 log.debug( "Load file: " + filename );
@@ -168,22 +173,22 @@ public class ConfigResource {
     @GET
     @Path("locales/{locale}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLocales(@PathParam("locale") String locale, @QueryParam("excludeProfile") boolean excludeProfile) throws JSONException {
+    public Response getLocales(@PathParam("locale") String locale, @QueryParam("excludeProfile") boolean excludeProfile) throws JsonProcessingException {
         String classPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
-        JSONObject locales = new JSONObject();
+        ObjectNode locales = mapper.createObjectNode();
         String fileLocalePath = null;
         String fileContent = null;
         // Get frontend locale
         fileLocalePath = classPath + "frontend/prd/";
         fileContent = Utils.getFileContent(fileLocalePath, locale, "", "locales/");
         if(StringUtils.isNotEmpty(fileContent)) {
-            JSONObject frontendLocale = new JSONObject(fileContent);
+            JsonNode frontendLocale = mapper.readTree(fileContent);
             if(frontendLocale != null) {
-                Iterator<?> keys = frontendLocale.keys();
+                Iterator<Map.Entry<String, JsonNode>> keys = frontendLocale.fields();
                 while( keys.hasNext() ) {
-                    String key = (String)keys.next();
-                    if (frontendLocale.has(key)) {
-                        locales.put(key, frontendLocale.get(key));
+                    Map.Entry<String, JsonNode> key = keys.next();
+                    if (frontendLocale.hasNonNull(key.getKey())) {
+                        locales.set(key.getKey(), frontendLocale.get(key.getKey()));
                     }
                 }
             }
@@ -192,13 +197,13 @@ public class ConfigResource {
         fileLocalePath = classPath + "admin/assets/";
         fileContent = Utils.getFileContent(fileLocalePath, locale, "", "i18n/");
         if(StringUtils.isNotEmpty(fileContent)) {
-            JSONObject frontendLocale = new JSONObject(fileContent);
+            JsonNode frontendLocale = mapper.readTree(fileContent);
             if(frontendLocale != null) {
-                Iterator<?> keys = frontendLocale.keys();
+                Iterator<Map.Entry<String, JsonNode>> keys = frontendLocale.fields();
                 while( keys.hasNext() ) {
-                    String key = (String)keys.next();
-                    if (frontendLocale.has(key)) {
-                        locales.put(key, frontendLocale.get(key));
+                    Map.Entry<String, JsonNode> key = keys.next();
+                    if (frontendLocale.hasNonNull(key.getKey())) {
+                        locales.set(key.getKey(), frontendLocale.get(key.getKey()));
                     }
                 }
             }
@@ -207,19 +212,19 @@ public class ConfigResource {
         fileLocalePath = classPath + "frontend/";
         fileContent = Utils.getFileContent(fileLocalePath, locale, "", "locales/");
         if(StringUtils.isNotEmpty(fileContent)) {
-            JSONObject frontendLocale = new JSONObject(fileContent);
+            JsonNode frontendLocale = mapper.readTree(fileContent);
             if(frontendLocale != null) {
-                Iterator<?> keys = frontendLocale.keys();
+                Iterator<Map.Entry<String, JsonNode>> keys = frontendLocale.fields();
                 while( keys.hasNext() ) {
-                    String key = (String)keys.next();
-                    if (frontendLocale.has(key)) {
-                        String value = frontendLocale.getString(key);
+                    Map.Entry<String, JsonNode> key = keys.next();
+                    if (frontendLocale.hasNonNull(key.getKey())) {
+                        String value = frontendLocale.get(key.getKey()).textValue();
                         if(value.equals("#ignore#")) {
-                            if(locales.has(key)) {
-                                locales.remove(key);
+                            if(locales.hasNonNull(key.getKey())) {
+                                locales.remove(key.getKey());
                             }
                         } else {
-                            locales.put(key, value);
+                            locales.put(key.getKey(), value);
                         }
                     }
                 }
@@ -229,13 +234,13 @@ public class ConfigResource {
         fileLocalePath = classPath + "frontend/";
         fileContent = Utils.getFileContent(fileLocalePath, "override." + locale, "", "locales/");
         if(StringUtils.isNotEmpty(fileContent)) {
-            JSONObject frontendLocale = new JSONObject(fileContent);
+            JsonNode frontendLocale = mapper.readTree(fileContent);
             if(frontendLocale != null) {
-                Iterator<?> keys = frontendLocale.keys();
+                Iterator<Map.Entry<String, JsonNode>> keys = frontendLocale.fields();
                 while( keys.hasNext() ) {
-                    String key = (String)keys.next();
-                    if (frontendLocale.has(key)) {
-                        locales.put(key, frontendLocale.get(key));
+                    Map.Entry<String, JsonNode> key = keys.next();
+                    if (frontendLocale.hasNonNull(key.getKey())) {
+                        locales.set(key.getKey(), frontendLocale.get(key.getKey()));
                     }
                 }
             }
@@ -247,29 +252,29 @@ public class ConfigResource {
             fileLocalePath = configDir;
             fileContent = Utils.getFileContent(fileLocalePath, locale.replace(".", ".profile."), "", "locales/");
             if(StringUtils.isNotEmpty(fileContent)) {
-                JSONObject profileLocale = new JSONObject(fileContent);
+                JsonNode profileLocale = mapper.readTree(fileContent);
                 if(profileLocale != null) {
-                    Iterator<?> keys = profileLocale.keys();
+                    Iterator<Map.Entry<String, JsonNode>> keys = profileLocale.fields();
                     while( keys.hasNext() ) {
-                        String key = (String)keys.next();
-                        if (profileLocale.has(key)) {
-                            locales.put(key, profileLocale.get(key));
+                        Map.Entry<String, JsonNode> key = keys.next();
+                        if (profileLocale.hasNonNull(key.getKey())) {
+                            locales.set(key.getKey(), profileLocale.get(key.getKey()));
                         }
                     }
                 }
             }
         }
-        Iterator<?> keysItr = locales.keys();
+        Iterator<Map.Entry<String, JsonNode>> keysItr = locales.fields();
         ArrayList<String> sortKey = new ArrayList<>();
-        JSONObject sortLocales = new JSONObject();
+        ObjectNode sortLocales = mapper.createObjectNode();
         while(keysItr.hasNext()) {
-            String key = (String)keysItr.next();
-            sortKey.add(key);
+            Map.Entry<String, JsonNode> key = keysItr.next();
+            sortKey.add(key.getKey());
         }
         Collections.sort(sortKey);
         for (Iterator iterator = sortKey.iterator(); iterator.hasNext();) {
             String key = (String) iterator.next();
-            sortLocales.put(key, locales.getString(key));
+            sortLocales.put(key, locales.get(key).textValue());
         }
         return Response.ok( sortLocales ).build();
     }

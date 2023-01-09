@@ -15,6 +15,12 @@
         <developerConnection>scm:git:git@github.com:informationgrid/ingrid-webmap-client.git</developerConnection> 
         <tag>HEAD</tag>
     </scm>
+    <properties>
+        <spring.version>5.3.24</spring.version>
+        <jersey.version>2.37</jersey.version>
+        <maven.compiler.release>17</maven.compiler.release>
+    </properties>
+    
     <profiles>
       <profile>
         <id>windows</id>
@@ -205,32 +211,38 @@
         </plugins>
     </build>
     <!-- ==================== DEPENDENCY MANAGEMENT ==================== -->
-    <!-- ALWAYS USE DEPENDENCY MANAGEMENT WHEN OVERWRITING VERSIONS FROM ingrid-base-pom, 
-        SO ASSEMBLY PLUGIN WORKS !!!!!!!! -->
-<!--
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>de.ingrid</groupId>
-                <artifactId>ingrid-version-management-pom</artifactId>
-                <version>3.6.0-SNAPSHOT</version>
+                <groupId>org.glassfish.jersey</groupId>
+                <artifactId>jersey-bom</artifactId>
+                <version>${jersey.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.14.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-xml</artifactId>
+                <version>2.14.1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
--->
     <!-- ==================== DEPENDENCIES ==================== -->
     <dependencies>
         <dependency>
             <groupId>de.ingrid</groupId>
             <artifactId>ingrid-utils-geo</artifactId>
-            <version>4.3.0</version>
+            <version>5.15.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.ingrid</groupId>
             <artifactId>ingrid-utils</artifactId>
-            <version>4.0.1</version>
+            <version>5.15.0-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
@@ -258,17 +270,17 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
-            <version>4.0.0.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>4.3.21.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>4.0.0.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -279,38 +291,43 @@
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
-            <version>1.4.10-java7</version>
+            <version>1.4.19</version>
         </dependency>
+        
         <dependency>
-            <groupId>com.sun.jersey</groupId>
+            <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
-            <version>1.8</version>
         </dependency>
         <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-json</artifactId>
-            <version>1.8</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.sun.xml.bind</groupId>
-                    <artifactId>jaxb-impl</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>stax</groupId>
-                    <artifactId>stax-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.jersey</groupId>
+            <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-server</artifactId>
-            <version>1.8</version>
         </dependency>
         <dependency>
-            <groupId>com.sun.jersey.contribs</groupId>
-            <artifactId>jersey-multipart</artifactId>
-            <version>1.8</version>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>2.3.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>jsr311-api</artifactId>

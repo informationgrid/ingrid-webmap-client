@@ -18,7 +18,7 @@
     "settingSearchBwaLocatorStationUrl": "",
     "settingDefaultImportList": [],
     "settingPrintGraticuleLayer": {
-        "url": "http:\/\/atlas.wsv.bund.de\/netze\/wms?",
+        "url": "https:\/\/via.bund.de\/wsv\/netze\/wms?",
         "layers": [
             "GN",
             "GNB"
