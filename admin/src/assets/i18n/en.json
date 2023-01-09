@@ -323,6 +323,8 @@
     "setting_settingEnable3D_help": "Hier können Sie die 3D-Funktion für die Karte aktivieren. Hinweis: Diese Funktion ist experimentell.",
     "setting_settingDefaultTerrain": "Terrain-URL (3D)",
     "setting_settingDefaultTerrain_help": "Definieren Sie einen Terrain (URL) für die 3D Funktion. Hinweis: Diese Funktion ist experimentell.",
+    "setting_settingDataOwnerReplacements": "Copyright-Ersetzungen",
+    "setting_settingDataOwnerReplacements_help": "Definieren Sie Ersetzungen von Copyright-Strings (im Portal und auf dem Ausdruck).",
     "search": "Suchen",
     "paging_previous": "",
     "paging_next": "",

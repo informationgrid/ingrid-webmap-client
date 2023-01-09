@@ -95,6 +95,22 @@ layouts:
                    url: "${logo}"
 
 #---------------------------------------
+# Verbose Copyright
+#---------------------------------------
+        - !columns
+          condition: dataOwnerVerbose
+          absoluteX: 144
+          absoluteY: 58
+          width: 400
+          items:
+            - !text
+              fontSize: 7
+              align: left
+              text: |
+                Grundlage:
+                ${dataOwnerVerbose}
+
+#---------------------------------------
 # North arrow
 #---------------------------------------
         - !columns
@@ -422,6 +438,22 @@ layouts:
                    maxWidth: 123
                    maxHeight: 35
                    url: "${logo}"
+
+#---------------------------------------
+# Verbose Copyright
+#---------------------------------------
+        - !columns
+          condition: dataOwnerVerbose
+          absoluteX: 144
+          absoluteY: 52
+          width: 400
+          items:
+            - !text
+              fontSize: 7
+              align: left
+              text: |
+                Grundlage:
+                ${dataOwnerVerbose}
 
 #---------------------------------------
 # North arrow
@@ -754,6 +786,22 @@ layouts:
                    url: "${logo}"
 
 #---------------------------------------
+# Verbose Copyright
+#---------------------------------------
+        - !columns
+          condition: dataOwnerVerbose
+          absoluteX: 144
+          absoluteY: 60
+          width: 400
+          items:
+            - !text
+              fontSize: 6
+              align: left
+              text: |
+                Grundlage:
+                ${dataOwnerVerbose}
+
+#---------------------------------------
 # North arrow
 #---------------------------------------
         - !columns
@@ -1081,6 +1129,22 @@ layouts:
                    maxWidth: 123
                    maxHeight: 35
                    url: "${logo}"
+
+#---------------------------------------
+# Verbose Copyright
+#---------------------------------------
+        - !columns
+          condition: dataOwnerVerbose
+          absoluteX: 144
+          absoluteY: 50
+          width: 400
+          items:
+            - !text
+              fontSize: 7
+              align: left
+              text: |
+                Grundlage:
+                ${dataOwnerVerbose}
 
 #---------------------------------------
 # North arrow

@@ -53,6 +53,7 @@ export class Setting {
         public settingWFSFeaturePointZoom = 19,
         public settingEnable3D = false,
         public settingDefaultTerrain = '',
+        public settingDataOwnerReplacements = '',
         public settingServiceAnnouncement = true,
         public settingAnnouncementMailToken = 10,
         public settingAnnouncementMailRequired = true,
