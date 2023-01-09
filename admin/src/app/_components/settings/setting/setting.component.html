@@ -1559,6 +1559,27 @@
                                         class="form-control">
                                 </div>
                             </div>
+                            <!-- settingDataOwnerReplacements -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingDataOwnerReplacements</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDataOwnerReplacements"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingDataOwnerReplacements" data-parent="#setting">
+                                        <div>
+                                          <small class="form-text text-muted" translate>setting_settingDataOwnerReplacements_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" name="settingDataOwnerReplacements" rows="5" value="{{ settings.settingDataOwnerReplacements | json }}"
+                                        #settingDataOwnerReplacements (blur)="onTextAreaBlur('settingDataOwnerReplacements', settingDataOwnerReplacements.value)"></textarea>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

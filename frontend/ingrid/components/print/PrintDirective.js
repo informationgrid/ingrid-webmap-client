@@ -514,7 +514,17 @@ goog.require('ga_urlutils_service');
 
             // Build the correct copyright text to display
             var allDataOwner = attributions.concat(thirdPartyAttributions);
+            var replacements = gaGlobalOptions.defaultDataOwnerReplacements;
+            var dataOwnerVerbose = [];
+            for (var i = 0; i < allDataOwner.length; i++) {
+                var replacement = replacements[allDataOwner[i]];
+                if (replacement) {
+                    dataOwnerVerbose.push('- ' + replacement[1]);
+                    allDataOwner[i] = replacement[0];
+                }
+            }
             allDataOwner = allDataOwner.join(', ');
+            dataOwnerVerbose = dataOwnerVerbose.join('\n');
             var movieprint = $scope.options.movie && $scope.options.multiprint;
             var spec = {
               layout: $scope.layout.name,
@@ -552,6 +562,7 @@ goog.require('ga_urlutils_service');
                   // scale has to be one of the advertise by the print server
                   scale: $scope.scale.value,
                   dataOwner: allDataOwner ? '© ' + allDataOwner : '',
+                  dataOwnerVerbose: dataOwnerVerbose ? dataOwnerVerbose : 'false',
                   shortLink: shortLink || '',
                   rotation: -((view.getRotation() * 180.0) / Math.PI),
                   // INGRID: Add comment and title for print
