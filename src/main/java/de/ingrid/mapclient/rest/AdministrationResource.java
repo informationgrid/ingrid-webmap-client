@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.Constants;
 import de.ingrid.mapclient.HttpProxy;
@@ -427,6 +428,11 @@ public class AdministrationResource {
                                             } else if (arrayObj.getClass() != arrayProfileObj.getClass()) {
                                                 isSame = false;
                                                 break;
+                                            } else if (arrayObj instanceof TextNode && arrayProfileObj instanceof TextNode) {
+                                                if (!settingArr.get(i).textValue().equals(settingProfileArr.get(i).textValue())) {
+                                                    isSame = false;
+                                                    break;
+                                                }
                                             }
                                         }
                                     }
