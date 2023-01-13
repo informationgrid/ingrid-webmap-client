@@ -149,8 +149,8 @@ goog.require('ga_urlutils_service');
               replace('{URL}', encodeURIComponent(layer.wmsWfsUrl)).
               replace('{Filter}', encodeURIComponent(filterParam)).
               replace('{Title}', encodeURIComponent(layer.wmsWfsLabel)).
-              replace('{FeatureTypes}', 
-                encodeURIComponent(layer.wmsWfsFeatureTypes || ''));
+              replace('{FeatureTypes}',
+                  encodeURIComponent(layer.wmsWfsFeatureTypes || ''));
         };
 
         // Function to remove the blob url from memory.
@@ -614,7 +614,7 @@ goog.require('ga_urlutils_service');
                 cacheSize: config.timeEnabled ? 0 : 2048,
                 layer: config.serverLayerName,
                 format: config.format,
-                projection: gaGlobalOptions.defaultEpsg,
+                projection: config.epsg || gaGlobalOptions.defaultEpsg,
                 /* INGRID: Use WMTS properties from layer config
                 requestEncoding: 'REST',
                 */
@@ -638,7 +638,7 @@ goog.require('ga_urlutils_service');
                   tileSize: config.tileSize || 256,
                   extent: config.extent ?
                     ol.proj.transformExtent(config.extent, 'EPSG:4326',
-                        gaGlobalOptions.defaultEpsg) : extent
+                        config.epsg || gaGlobalOptions.defaultEpsg) : extent
                 }),
                 tileLoadFunction: tileLoadFunction(config),
                 /* INGRID: Replace generate urls
@@ -694,6 +694,8 @@ goog.require('ga_urlutils_service');
                   url: config.wmsUrl,
                   params: wmsParams,
                   crossOrigin: crossOrigin,
+                  // INGRID: Add projection
+                  projection: config.epsg || gaGlobalOptions.defaultEpsg,
                   // INGRID: Add imageLoadFunction
                   imageLoadFunction: imageLoadFunction(config),
                   ratio: 1
@@ -736,6 +738,8 @@ goog.require('ga_urlutils_service');
                   params: wmsParams,
                   gutter: config.gutter || 0,
                   crossOrigin: crossOrigin,
+                  // INGRID: Add projection
+                  projection: config.epsg || gaGlobalOptions.defaultEpsg,
                   tileGrid: gaTileGrid.get(tileGridMinRes, config.type),
                   // INGRID: Add config
                   tileLoadFunction: tileLoadFunction(config),

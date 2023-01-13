@@ -7,6 +7,7 @@ export interface ILayer {
     format: string;
     attribution: string;
     attributionUrl: string;
+    attributionUpdate: boolean;
     highlightable: boolean;
     hasLegend: boolean;
     legendUrl: string;

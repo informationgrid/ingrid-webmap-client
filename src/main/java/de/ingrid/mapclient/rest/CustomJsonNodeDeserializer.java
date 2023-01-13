@@ -20,23 +20,24 @@
  * limitations under the Licence.
  * **************************************************#
  */
-package de.ingrid.mapclient;
+package de.ingrid.mapclient.rest;
 
-public class Constants {
-    public static final String TYPE_WMS = "wms";
-    public static final String TYPE_WMTS = "wmts";
-    public static final String WMS_LAYERNAME = "wmsLayers";
-    public static final String WMTS_LAYERNAME = "serverLayerName";
-    public static final String BOD_ID = "bod_id";
-    public static final String AUTH = "auth";
-    public static final String TYPE = "type";
-    public static final String BACKGROUND = "background";
-    public static final String VERSION = "version";
-    public static final String WMS_URL = "wmsUrl";
-    public static final String WMTS_URL = "serviceUrl";
-    public static final String LAYER_VERSION = "version";
-    public static final String LAYER_STATUS = "status";
-    public static final String STATUS_LAYER_NOT_EXIST = "status_layer_not_exist";
-    public static final String STATUS_SERVICE_NOT_EXIST = "status_service_not_exist";
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.deser.std.JsonNodeDeserializer;
+import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
 
+import java.io.IOException;
+
+public class CustomJsonNodeDeserializer extends JsonNodeDeserializer {
+
+    @Override
+    public JsonNode deserialize(JsonParser p, DeserializationContext context) throws IOException {
+        //first deserialize
+        JsonNode rootNode = super.deserialize(p, context);
+        //then get the root name
+        String rootName = ((FromXmlParser)p).getStaxReader().getLocalName();
+        return context.getNodeFactory().objectNode().set(rootName, rootNode);
+    }
 }

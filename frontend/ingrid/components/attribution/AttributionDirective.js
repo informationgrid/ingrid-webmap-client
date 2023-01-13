@@ -12,9 +12,10 @@ goog.require('ga_event_service');
     'ga_debounce_service'
   ]);
 
-  // INGRID: Add 'gaPermalink'
+  // INGRID: Add 'gaPermalink', 'gaGlobalOptions'
   module.directive('gaAttribution', function($translate, $window,
-      gaAttribution, $rootScope, gaDebounce, gaEvent, gaPermalink) {
+      gaAttribution, $rootScope, gaDebounce, gaEvent, gaPermalink,
+      gaGlobalOptions) {
     return {
       restrict: 'A',
       scope: {
@@ -74,18 +75,27 @@ goog.require('ga_event_service');
           }
           // INGRID: Add if
           if (layers) {
+            var replacements = gaGlobalOptions.defaultDataOwnerReplacements;
             layers.forEach(function(layer) {
               var key = gaAttribution.getTextFromLayer(layer, is3dActive);
               if (!attrs[key]) {
                 var attrib = gaAttribution.getHtmlFromLayer(layer, is3dActive);
                 if (attrib) {
                   attrs[key] = attrib;
+                  // if a replacement for the link description exists in the
+                  // options, apply it here
+                  if (replacements[key]) {
+                    // append '</a>' as a quick fix to replace the key
+                    // in the link description, not in the link itself
+                    attrs[key] = attrib.replace(key + '</a>',
+                        replacements[key][0] + '</a>');
+                  }
                   list.push(attrs[key]);
                 }
               }
             });
           }
-          var text = list.join(', ');
+          var text = ' ' + list.join(', ');
           element.html(text ? $translate.instant('copyright_data') + text :
             '');
         };

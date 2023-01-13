@@ -34,6 +34,7 @@ export class Wmslayer extends Layer implements ILayerWms {
         this.wmsWfsLabel = '';
         this.wmsWfsUrl = '';
         this.wmsWfsFeatureTypes = '';
+        this.attributionUpdate = true;
     }
 
     generateId(layers: LayerItem[]) {

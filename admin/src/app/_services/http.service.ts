@@ -30,6 +30,9 @@ export class HttpService {
     return this.http.get<LayerItem[]>(httpApiHost + '/layers', httpJsonOptions).map(
       res => {
         return res.map(resItem => {
+          if (resItem.item.attributionUpdate == undefined) {
+            resItem.item.attributionUpdate = true;
+          }
           return new LayerItem(
             resItem.id,
             resItem.item
@@ -64,6 +67,9 @@ export class HttpService {
       res => {
         const items: LayerItem[] = [];
         res.items.forEach(resItem => {
+          if (resItem.item.attributionUpdate == undefined) {
+            resItem.item.attributionUpdate = true;
+          }
           items.push(new LayerItem(resItem.id, resItem.item));
         });
         return new LayerPaging(res.firstPage, res.lastPage, res.totalItemsNum, items);
@@ -79,6 +85,9 @@ export class HttpService {
     return this.http.get<LayerItem[]>(url, httpJsonOptions).map(
       res => {
         return res.map(resItem => {
+          if (resItem.item.attributionUpdate == undefined) {
+            resItem.item.attributionUpdate = true;
+          }
           return new LayerItem(
             resItem.id,
             resItem.item

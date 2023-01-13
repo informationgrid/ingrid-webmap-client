@@ -10,6 +10,7 @@ export class Layer implements ILayer, ILayerWms, ILayerWmts {
     format: string;
     attribution: string;
     attributionUrl: string;
+    attributionUpdate: boolean;
     highlightable: boolean;
     hasLegend: boolean;
     legendUrl: string;
@@ -47,6 +48,7 @@ export class Layer implements ILayer, ILayerWms, ILayerWmts {
     wmsWfsUrl: string;
     wmsWfsFeatureTypes: string;
     portalUrl: string;
+    epsg: string;
 
     constructor(type: LayerType) {
         this.type = type;

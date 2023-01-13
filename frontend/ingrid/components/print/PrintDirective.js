@@ -45,6 +45,9 @@ goog.require('ga_urlutils_service');
     $scope.options.printing = false;
     $scope.options.printsuccess = false;
     $scope.options.progress = '';
+    // INGRID: Add '$scope.options.useReproj'
+    $scope.options.useReproj = false;
+    $scope.options.useReprojLayers = [];
 
     // Get print config
     var loadPrintConfig = function() {
@@ -316,6 +319,25 @@ goog.require('ga_urlutils_service');
         if (!layer.getVisible() || layer.getOpacity() === 0) {
           return;
         }
+        // INGRID: Check useReprojection
+        var layId = layer.get('bodId');
+        if (!layId) {
+            layId = layer.get('id');
+        }
+        if (layId) {
+          var useReprojLayers = $scope.options.useReprojLayers;
+          var i, len;
+          for (i = 0, len = useReprojLayers.length; i < len; i++) {
+            var useReprojLayer = useReprojLayers[i];
+            var useReprojLayerId = useReprojLayer.id;
+            if (useReprojLayerId) {
+              if (layId === useReprojLayerId) {
+                return;
+              }
+            }
+          }
+        }
+
         // Only print layer which have an extent intersecting the print extent
         /* INGRID: Remove check intersects of extent
         if (!ol.extent.intersects(layer.getExtent() || gaMapUtils.defaultExtent,
@@ -492,7 +514,17 @@ goog.require('ga_urlutils_service');
 
             // Build the correct copyright text to display
             var allDataOwner = attributions.concat(thirdPartyAttributions);
+            var replacements = gaGlobalOptions.defaultDataOwnerReplacements;
+            var dataOwnerVerbose = [];
+            for (var i = 0; i < allDataOwner.length; i++) {
+                var replacement = replacements[allDataOwner[i]];
+                if (replacement) {
+                    dataOwnerVerbose.push('- ' + replacement[1]);
+                    allDataOwner[i] = replacement[0];
+                }
+            }
             allDataOwner = allDataOwner.join(', ');
+            dataOwnerVerbose = dataOwnerVerbose.join('\n');
             var movieprint = $scope.options.movie && $scope.options.multiprint;
             var spec = {
               layout: $scope.layout.name,
@@ -530,6 +562,7 @@ goog.require('ga_urlutils_service');
                   // scale has to be one of the advertise by the print server
                   scale: $scope.scale.value,
                   dataOwner: allDataOwner ? '© ' + allDataOwner : '',
+                  dataOwnerVerbose: dataOwnerVerbose ? dataOwnerVerbose : 'false',
                   shortLink: shortLink || '',
                   rotation: -((view.getRotation() * 180.0) / Math.PI),
                   // INGRID: Add comment and title for print
@@ -688,7 +721,7 @@ goog.require('ga_urlutils_service');
             // default values:
             $scope.layout = data.layouts[0];
             // $scope.dpi = data.dpis;
-            // INGRID: Set first dpi as default
+            // INGRID: Set first dpi as default()
             $scope.dpi = data.dpis[0];
             $scope.scales = data.scales;
             $scope.scale = data.scales[5];
@@ -700,6 +733,32 @@ goog.require('ga_urlutils_service');
         } else {
           activate();
         }
+        // INGRID: Add '$scope.options.useReproj'
+        var layers = $scope.map.getLayers().getArray();
+        var mapProjCode = $scope.map.getView().getProjection().getCode();
+        $scope.options.useReproj = false;
+        $scope.options.useReprojLayers = [];
+        layers.forEach(function(layer) {
+          var layProj = layer.getSource().getProjection();
+          if (layProj) {
+            var layProjCode = layProj.getCode();
+            var layLabel = layer.get('label');
+            var layId = layer.get('bodId');
+            if (!layId) {
+              layId = layer.get('id');
+            }
+            if (mapProjCode !== layProjCode) {
+              if (layLabel) {
+                $scope.options.useReproj = true;
+                $scope.options.useReprojLayers.push({
+                  label: layLabel,
+                  id: layId,
+                  epsg: layProjCode
+                });
+              }
+            }
+          }
+        });
       } else {
         deactivate();
       }

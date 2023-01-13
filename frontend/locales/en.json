@@ -137,4 +137,6 @@
 "view_in_iframe": "The {{url}} embed page must be used in an iframe.",
 "popup_wfs_filter": "Filter",
 "popup_wfs_filter_bbox": "Map view",
+"print_useReprojection": "The following maps can't be printed (wrong projection):",
+"iframe_alt": "Map"
 }

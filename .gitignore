@@ -9,3 +9,4 @@ work
 *.stackdump
 src/main/resources/application.override.properties
 /admin/*.log
+/.idea

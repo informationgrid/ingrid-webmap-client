@@ -310,6 +310,26 @@
               </div>
             </div>
           </div>
+          <!-- epsg -->
+          <div class="form-group row">
+            <div class="col-sm-3">
+              <div class=" d-flex justify-content-between align-items-center">
+                <label class="col-form-label" translate>layer_epsg</label>
+                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_epsg_' + layer.id"
+                  title="{{ ('help') | translate }}">
+                  <i class="fa fa-info" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="collapse" id="info_layer_epsg_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+                <div>
+                  <small class="form-text text-muted" translate>layer_epsg_help</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-9">
+              <input type="text" #epsg="ngModel" [(ngModel)]="layer.item.epsg" name="epsg" class="form-control">
+            </div>
+          </div>
           <!-- requestEncoding -->
           <div class="form-group row">
             <div class="col-sm-3">
@@ -792,6 +812,28 @@
                 <button type="button" class="btn btn-primary btn-sm" appShowURL [url]="layer.item.attributionUrl">
                   <i class="fa fa-external-link" aria-hidden="true"></i>
                 </button>
+              </div>
+            </div>
+          </div>
+          <!-- attributionUpdate -->
+          <div class="form-group row">
+            <div class="col-sm-3">
+              <div class=" d-flex justify-content-between align-items-center">
+                <label class="col-form-label" translate>layer_attributionUpdate</label>
+                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_attributionUpdate_' + layer.id"
+                  title="{{ ('help') | translate }}">
+                  <i class="fa fa-info" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="collapse" id="info_layer_attributionUpdate_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+                <div>
+                  <small class="form-text text-muted" translate>layer_attributionUpdate_help</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-9">
+              <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="checkbox" #attributionUpdate="ngModel" name="attributionUpdate" [(ngModel)]="layer.item.attributionUpdate">
               </div>
             </div>
           </div>

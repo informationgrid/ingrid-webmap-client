@@ -308,23 +308,23 @@ itemscope itemtype="http://schema.org/WebApplication"
       </div>
       <!-- INGRID: Add accessibility and add 'href="#"' -->
       <div class="pull-right" ng-if="globals.enableAccessibilityFooter" >
-        <a href="#" target="_blank" onclick="window.open(settings.settingAccessibilityUrl, 'blank')" translate>accessibility_label</a>
+        <a role="button" tabindex="0" onclick="window.open(settings.settingAccessibilityUrl, 'blank')" translate>accessibility_label</a>
       </div>
       <div class="pull-right">
         <!-- INGRID: Edit href URL and add 'href="#"' -->
-        <a href="#" target="_blank" onclick="window.open(settings.settingCopyrightURL, 'blank')" translate>copyright_label</a>
+        <a role="button" tabindex="0" onclick="window.open(settings.settingCopyrightURL, 'blank')" translate>copyright_label</a>
       </div>
       <div class="pull-right">
         <!-- INGRID: Edit href URL and add 'href="#"' -->
-        <a href="#" target="_blank" onclick="window.open(settings.settingDisclaimerURL, 'blank')" translate>disclaimer_label</a>
+        <a role="button" tabindex="0" onclick="window.open(settings.settingDisclaimerURL, 'blank')" translate>disclaimer_label</a>
       </div>
       <div class="pull-right">
         <!-- INGRID: Edit href URL and add 'href="#"' -->
-        <a href="#" target="_blank" onclick="window.open(settings.settingSitemapURL, 'blank')" translate>Sitemap</a>
+        <a role="button" tabindex="0" onclick="window.open(settings.settingSitemapURL, 'blank')" translate>Sitemap</a>
       </div>
       <!-- INGRID: Add help -->
       <div class="pull-right" ng-if="globals.enableHelpFooter">
-        <a href="#" target="_blank" onclick="window.open(settings.settingServiceHelpUrl, 'blank')" translate>help_label</a>
+        <a role="button" tabindex="0" onclick="window.open(settings.settingServiceHelpUrl, 'blank')" translate>help_label</a>
       </div>
     </div><!-- #footer -->
 
@@ -552,17 +552,17 @@ itemscope itemtype="http://schema.org/WebApplication"
                 -->
                 <!-- INGRID: Edit and add 'href="#"' -->
                 <div ng-if="globals.enableHelpFooter">
-                 <a href="#" target="_blank" onclick="window.open(settings.settingServiceHelpUrl, 'blank')" translate>help_label</a>
+                 <a role="button" tabindex="0" onclick="window.open(settings.settingServiceHelpUrl, 'blank')" translate>help_label</a>
                  <br>
                 </div>
-                <a href="#" target="_blank" onclick="window.open(settings.settingSitemapURL, 'blank')" translate>Sitemap</a>
+                <a role="button" tabindex="0" onclick="window.open(settings.settingSitemapURL, 'blank')" translate>Sitemap</a>
                 <br>
-                <a href="#" target="_blank" onclick="window.open(settings.settingCopyrightURL, 'blank')" translate>copyright_label</a>
+                <a role="button" tabindex="0" onclick="window.open(settings.settingCopyrightURL, 'blank')" translate>copyright_label</a>
                 <br>
-                <a href="#" target="_blank" onclick="window.open(settings.settingDisclaimerURL, 'blank')" translate>disclaimer_label</a>
+                <a role="button" tabindex="0" onclick="window.open(settings.settingDisclaimerURL, 'blank')" translate>disclaimer_label</a>
                 <br>
                 <div ng-if="globals.enableAccessibilityFooter">
-                  <a thref="#" arget="_blank" onclick="window.open(settings.settingAccessibilityUrl, 'blank')" translate>accessibility_label</a>
+                  <a role="button" tabindex="0" onclick="window.open(settings.settingAccessibilityUrl, 'blank')" translate>accessibility_label</a>
                 </div>
               </p>
             </div>
@@ -1064,7 +1064,10 @@ itemscope itemtype="http://schema.org/WebApplication"
           serviceMultiIdentImport: settings.settingServiceMultiIdentImport || false,
           // INGRID: Service import all layers by add without identifier
           serviceAllWithoutIdentImport: settings.settingServiceAllWithoutIdentImport || false,
-
+          // INGRID: Service import all layers by add without identifier
+          serviceImportSingleLayer: settings.settingServiceImportSingleLayer || false,
+          // INGRID: Replace copyright string
+          defaultDataOwnerReplacements: settings.settingDataOwnerReplacements,
           // Map state values
           // INGRID: Read setting from settings
           defaultExtent: settings.settingExtent || JSON.parse(${default_extent}),
