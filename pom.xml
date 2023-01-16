@@ -7,12 +7,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ingrid-webmap-client</artifactId>
-    <version>5.14.3-SNAPSHOT</version>
+    <version>5.14.4</version>
     <packaging>war</packaging>
     <name>InGrid Map Client</name>
     <scm>
-        <connection>scm:git:git@github.com:informationgrid/ingrid-webmap-client.git</connection> 
-        <developerConnection>scm:git:git@github.com:informationgrid/ingrid-webmap-client.git</developerConnection> 
+        <connection>scm:git:git@github.com:informationgrid/ingrid-webmap-client.git</connection>
+        <developerConnection>scm:git:git@github.com:informationgrid/ingrid-webmap-client.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
     <profiles>
@@ -59,14 +59,14 @@
     </profiles>
     <build>
         <finalName>${project.artifactId}</finalName>
-        
+
         <!-- ==================== PLUGINS ==================== -->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
-                    <!-- add class files to WEB-INF/classes also config files ->CONFIG-FILES 
+                    <!-- add class files to WEB-INF/classes also config files ->CONFIG-FILES
                         needed at runtime in classes-path -->
                     <packagingExcludes>**/frontend/ingrid/</packagingExcludes>
                     <archiveClasses>false</archiveClasses>
@@ -205,7 +205,7 @@
         </plugins>
     </build>
     <!-- ==================== DEPENDENCY MANAGEMENT ==================== -->
-    <!-- ALWAYS USE DEPENDENCY MANAGEMENT WHEN OVERWRITING VERSIONS FROM ingrid-base-pom, 
+    <!-- ALWAYS USE DEPENDENCY MANAGEMENT WHEN OVERWRITING VERSIONS FROM ingrid-base-pom,
         SO ASSEMBLY PLUGIN WORKS !!!!!!!! -->
 <!--
     <dependencyManagement>
