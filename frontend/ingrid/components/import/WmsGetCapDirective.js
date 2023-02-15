@@ -316,9 +316,9 @@ goog.require('ga_urlutils_service');
               // INGRID: Add 'importExtLayerIdent'
               if (gaGlobalOptions.serviceAllWithoutIdentImport) {
                 scope.addLayersAll();
-              } else if(scope.layers.length === 1 &&
+              } else if (scope.layers.length === 1 &&
                 gaGlobalOptions.serviceImportSingleLayer &&
-                scope.options.importExtService){
+                scope.options.importExtService) {
                 scope.addLayersAll();
               } else {
                 if (scope.options.importExtLayerIdent) {
@@ -393,7 +393,10 @@ goog.require('ga_urlutils_service');
             x: 400,
             y: 200
           });
-          popup.open(5000);
+          if (!(scope.layers.length === 1 &&
+            gaGlobalOptions.serviceImportSingleLayer)) {
+            popup.open(5000);
+          }
         };
 
         // INGRID: Add all layers to the map
@@ -602,7 +605,10 @@ goog.require('ga_urlutils_service');
 
         // INGRID: Add function
         scope.addLayer = function(olLayer) {
-          if (!scope.activateLayers) {
+          if (scope.layers.length === 1 &&
+            gaGlobalOptions.serviceImportSingleLayer) {
+            olLayer.visible = true;
+          } else if (!scope.activateLayers) {
             olLayer.visible = false;
           }
           scope.map.addLayer(olLayer);
