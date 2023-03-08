@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ingrid-webmap-client</artifactId>
-    <version>5.14.4.2</version>
+    <version>5.14.5-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>InGrid Map Client</name>
     <scm>
