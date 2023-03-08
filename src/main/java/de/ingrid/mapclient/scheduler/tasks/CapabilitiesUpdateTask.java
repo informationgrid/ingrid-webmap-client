@@ -616,7 +616,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                         }
                         // LegendUrl
                         layerKey = "legendUrl";
-                        fieldNode = (Node) xpath.evaluate("./Style/LegendURL/OnlineResources/@href", layerNode, XPathConstants.NODE);
+                        fieldNode = (Node) xpath.evaluate("./Style/LegendURL/OnlineResource/@href", layerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
                             layerJSON.put(layerKey, fieldNode.getTextContent());
                             hasChanges = true;
