@@ -1,4 +1,14 @@
 
+## 6.1.0 (14.04.2023)
+
+### Features
+
+* Direkte Anzeige, wenn nur ein Layer im WMS existiert (#4376)
+
+### Bugfixes
+
+* MAPCLIENT: "Problem melden" in der Karte -> E-Mail-Adresse wird nicht weitergegeben  (#4796)
+    
 ## 6.0.0 (13.01.2023)
 
 ### Features
