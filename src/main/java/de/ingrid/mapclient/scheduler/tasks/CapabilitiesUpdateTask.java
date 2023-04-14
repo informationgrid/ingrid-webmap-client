@@ -374,7 +374,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                     if (layerFormatNode != null) {
                         String format = layerFormatNode.getTextContent().trim().replace("image/", "");
                         if (layerJSON.hasNonNull("format")) {
-                            if (!layerJSON.get("format.textValue()").equals(format)) {
+                            if (!layerJSON.get("format").textValue().equals(format)) {
                                 hasChanges = true;
                                 layerJSON.put("format", format);
                             }
@@ -388,7 +388,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                     if (layerTemplateNode != null) {
                         String template = layerTemplateNode.getTextContent().trim();
                         if (layerJSON.hasNonNull("template")) {
-                            if (!layerJSON.get("template.textValue()").equals(template)) {
+                            if (!layerJSON.get("template").textValue().equals(template)) {
                                 hasChanges = true;
                                 layerJSON.put("template", template);
                             }
@@ -408,7 +408,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                         if (layerAttribution != null) {
                             String attribution = layerAttribution.getTextContent().trim();
                             if (layerJSON.hasNonNull("attribution")) {
-                                if (!layerJSON.get("attribution.textValue()").equals(attribution)) {
+                                if (!layerJSON.get("attribution").textValue().equals(attribution)) {
                                     hasChanges = true;
                                     layerJSON.put("attribution", attribution);
                                 }
@@ -422,7 +422,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                         if (layerAttributionUrl != null) {
                             String attributionUrl = layerAttributionUrl.getTextContent().trim();
                             if (layerJSON.hasNonNull("attributionUrl")) {
-                                if (!layerJSON.get("attributionUrl.textValue()").equals(attributionUrl)) {
+                                if (!layerJSON.get("attributionUrl").textValue().equals(attributionUrl)) {
                                     hasChanges = true;
                                     layerJSON.put("attributionUrl", attributionUrl);
                                 }
@@ -616,7 +616,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                         }
                         // LegendUrl
                         layerKey = "legendUrl";
-                        fieldNode = (Node) xpath.evaluate("./Style/LegendURL/OnlineResources/@href", layerNode, XPathConstants.NODE);
+                        fieldNode = (Node) xpath.evaluate("./Style/LegendURL/OnlineResource/@href", layerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
                             layerJSON.put(layerKey, fieldNode.getTextContent());
                             hasChanges = true;
@@ -631,7 +631,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                             if (layerAttribution != null) {
                                 String attribution = layerAttribution.getTextContent().trim();
                                 if (layerJSON.hasNonNull("attribution")) {
-                                    if (!layerJSON.get("attribution.textValue()").equals(attribution)) {
+                                    if (!layerJSON.get("attribution").textValue().equals(attribution)) {
                                         hasChanges = true;
                                         layerJSON.put("attribution", attribution);
                                     }
@@ -645,7 +645,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                             if (layerAttributionUrl != null) {
                                 String attributionUrl = layerAttributionUrl.getTextContent().trim();
                                 if (layerJSON.hasNonNull("attributionUrl")) {
-                                    if (!layerJSON.get("attributionUrl.textValue()").equals(attributionUrl)) {
+                                    if (!layerJSON.get("attributionUrl").textValue().equals(attributionUrl)) {
                                         hasChanges = true;
                                         layerJSON.put("attributionUrl", attributionUrl);
                                     }

@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ingrid-webmap-client</artifactId>
-    <version>6.0.0</version>
+    <version>6.1.0</version>
     <packaging>war</packaging>
     <name>InGrid Map Client</name>
     <scm>
@@ -328,11 +328,6 @@
             <artifactId>jackson-dataformat-xml</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>jsr311-api</artifactId>
-            <version>1.1.1</version>
-        </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
