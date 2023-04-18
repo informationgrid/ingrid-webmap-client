@@ -433,9 +433,12 @@ public class Utils {
     }
     
     public static void urlConnectionAuth(URLConnection conn, String login, String password) {
-        String userPassword = login + ":" + password;
-        String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
-        conn.setRequestProperty("Authorization", "Basic " + encoding);
+        if(StringUtils.isNotEmpty(login) && !login.equals("undefined")
+                && StringUtils.isNotEmpty(password) && !password.equals("undefined")) {
+            String userPassword = login + ":" + password;
+            String encoding = Base64.getEncoder().encodeToString(userPassword.getBytes());
+            conn.setRequestProperty("Authorization", "Basic " + encoding);
+        }
     }
     
     public static void setServiceLogin(String url, String login, String password) throws JSONException, URISyntaxException {
