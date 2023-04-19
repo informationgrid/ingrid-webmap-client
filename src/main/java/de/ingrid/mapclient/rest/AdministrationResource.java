@@ -1261,15 +1261,18 @@ public class AdministrationResource {
                     try {
                         JsonNode obj = mapper.readTree(fileContent);
                         ArrayNode topics = (ArrayNode) obj.get(DataUtils.CATEGORY_KEY_TOPICS);
+                        ArrayNode updateTopics = new ArrayNode(null);
                         for (int i = 0; i < topics.size(); i++) {
                             JsonNode tmpObj = topics.get(i);
-                            if (tmpObj.get("id").equals(id)) {
-//                                topics.add(i, item); // TODO: !!!
-                                topics.add(item);
-                                break;
+                            if (tmpObj.hasNonNull("id") && tmpObj.get("id").textValue().equals(id)) {
+                                updateTopics.add(item);
+                            } else {
+                                updateTopics.add(tmpObj);
                             }
                         }
-                        Utils.updateFile(DataUtils.CONFIG_PATH_DATA + DataUtils.FILE_NAME_CATALOGS + DataUtils.FILEFORMAT_JSON, obj);
+                        ObjectNode newObj = (ObjectNode) obj;
+                        newObj.put(DataUtils.CATEGORY_KEY_TOPICS, updateTopics);
+                        Utils.updateFile(DataUtils.CONFIG_PATH_DATA + DataUtils.FILE_NAME_CATALOGS + DataUtils.FILEFORMAT_JSON, newObj);
                     } catch (JsonProcessingException e) {
                         log.error("Error 'updateCategory'!");
                     }
@@ -1292,7 +1295,7 @@ public class AdministrationResource {
                         ArrayNode newTopics = mapper.createArrayNode();
                         for (int i = 0; i < topics.size(); i++) {
                             JsonNode tmpObj = topics.get(i);
-                            if (!tmpObj.get("id").equals(id)) {
+                            if (tmpObj.hasNonNull("id") && !tmpObj.get("id").textValue().equals(id)) {
                                 newTopics.add(tmpObj);
                             }
                         }
@@ -1337,7 +1340,7 @@ public class AdministrationResource {
                         boolean toDelete = false;
                         if (ids != null) {
                             for (String id : ids) {
-                                if (id != null && id.length() > 0 && tmpObj.get("id").equals(id)) {
+                                if (id != null && !id.isEmpty() && tmpObj.hasNonNull("id") && tmpObj.get("id").textValue().equals(id)) {
                                     Utils.removeFile(DataUtils.CONFIG_PATH_DATA + DataUtils.FILE_PREFIX_CATALOG + id + DataUtils.FILEFORMAT_JSON);
                                     deleteCategoriesLocales(id);
                                     toDelete = true;
@@ -1345,10 +1348,12 @@ public class AdministrationResource {
                                 }
                             }
                         } else {
-                            String id = tmpObj.get("id").textValue();
-                            Utils.removeFile(DataUtils.CONFIG_PATH_DATA + DataUtils.FILE_PREFIX_CATALOG + id + DataUtils.FILEFORMAT_JSON);
-                            deleteCategoriesLocales(id);
-                            toDelete = true;
+                            if(tmpObj.hasNonNull("id")) {
+                                String id = tmpObj.get("id").textValue();
+                                Utils.removeFile(DataUtils.CONFIG_PATH_DATA + DataUtils.FILE_PREFIX_CATALOG + id + DataUtils.FILEFORMAT_JSON);
+                                deleteCategoriesLocales(id);
+                                toDelete = true;
+                            }
                         }
                         if (!toDelete) {
                             newTopics.add(tmpObj);
