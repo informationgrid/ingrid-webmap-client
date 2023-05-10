@@ -66,5 +66,6 @@
     "settingWFSFeaturePointZoom": 19,
     "settingEnable3D": false,
     "settingDefaultTerrain": "//assets.agi.com/stk-terrain/world",
+    "settingEnableMapScale": false,
     "settingDataOwnerReplacements": {}
 }
