@@ -34,6 +34,7 @@ export class Setting {
         public settingPrintDependOnMouseProj = false,
         public settingKMLName = '',
         public settingHideCatalog = false,
+        public settingEnableMapScale = false,
         public settingServiceImportSingleTile = true,
         public settingServiceImportWMSGutter = 0,
         public settingServiceAllWithoutIdentImport = false,
