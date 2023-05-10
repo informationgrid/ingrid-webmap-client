@@ -22,38 +22,51 @@
  */
 package de.ingrid.mapclient.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
-import de.ingrid.mapclient.ConfigurationProvider;
-import de.ingrid.mapclient.Constants;
-import de.ingrid.mapclient.HttpProxy;
-import de.ingrid.mapclient.model.GetCapabilitiesDocument;
-import de.ingrid.mapclient.utils.DataUtils;
-import de.ingrid.mapclient.utils.Utils;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.imageio.ImageIO;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import javax.imageio.ImageIO;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import de.ingrid.mapclient.ConfigurationProvider;
+import de.ingrid.mapclient.Constants;
+import de.ingrid.mapclient.HttpProxy;
+import de.ingrid.mapclient.model.GetCapabilitiesDocument;
+import de.ingrid.mapclient.utils.DataUtils;
+import de.ingrid.mapclient.utils.Utils;
 
 /**
  * WmsResource defines the interface for retrieving WMS data
@@ -368,78 +381,8 @@ public class AdministrationResource {
                     while (keys.hasNext()) {
                         Map.Entry<String, JsonNode> key = keys.next();
                         if (settingProfile.hasNonNull(key.getKey())) {
-                            Object obj = key.getValue();
-                            Object objProfile = settingProfile.get(key.getKey());
-                            if (obj instanceof String && objProfile instanceof String) {
-                                if (setting.get(key.getKey()).textValue().equals(settingProfile.get(key.getKey()).textValue())) {
-                                    settingProfile.remove(key.getKey());
-                                }
-                            } else if (obj instanceof Boolean && objProfile instanceof Boolean) {
-                                if (setting.get(key.getKey()).booleanValue() == settingProfile.get(key.getKey()).booleanValue()) {
-                                    settingProfile.remove(key.getKey());
-                                }
-                            } else if (obj instanceof Integer && objProfile instanceof Integer) {
-                                if (setting.get(key.getKey()).intValue() == settingProfile.get(key.getKey()).intValue()) {
-                                    settingProfile.remove(key.getKey());
-                                }
-                            } else if (obj instanceof Double && objProfile instanceof Double) {
-                                if (setting.get(key.getKey()).doubleValue() == settingProfile.get(key.getKey()).doubleValue()) {
-                                    settingProfile.remove(key.getKey());
-                                }
-                            } else if (obj instanceof Long && objProfile instanceof Long) {
-                                if (setting.get(key.getKey()).longValue() == settingProfile.get(key.getKey()).longValue()) {
-                                    settingProfile.remove(key.getKey());
-                                }
-                            } else if (obj instanceof ArrayNode) {
-                                ArrayNode settingArr = (ArrayNode) setting.get(key.getKey());
-                                ArrayNode settingProfileArr = (ArrayNode) settingProfile.get(key.getKey());
-                                if (settingArr != null && settingProfileArr != null) {
-                                    boolean isSame = false;
-                                    if (settingArr.size() == settingProfileArr.size()) {
-                                        isSame = true;
-                                        for (int i = 0; i < settingArr.size(); i++) {
-                                            Object arrayObj = settingArr.get(i);
-                                            Object arrayProfileObj = settingProfileArr.get(i);
-                                            if (arrayObj instanceof String && arrayProfileObj instanceof String) {
-                                                if (!settingArr.get(i).equals(settingProfileArr.get(i))) {
-                                                    isSame = false;
-                                                    break;
-                                                }
-                                            } else if (arrayObj instanceof Boolean && arrayProfileObj instanceof Boolean) {
-                                                if (settingArr.get(i).booleanValue() != settingProfileArr.get(i).booleanValue()) {
-                                                    isSame = false;
-                                                    break;
-                                                }
-                                            } else if (arrayObj instanceof Integer && arrayProfileObj instanceof Integer) {
-                                                if (settingArr.get(i).intValue() != settingProfileArr.get(i).intValue()) {
-                                                    isSame = false;
-                                                    break;
-                                                }
-                                            } else if (arrayObj instanceof Double && arrayProfileObj instanceof Double) {
-                                                if (settingArr.get(i).doubleValue() != settingProfileArr.get(i).doubleValue()) {
-                                                    isSame = false;
-                                                    break;
-                                                }
-                                            } else if (arrayObj instanceof Long && arrayProfileObj instanceof Long) {
-                                                if (settingArr.get(i).longValue() != settingProfileArr.get(i).longValue()) {
-                                                    isSame = false;
-                                                    break;
-                                                }
-                                            } else if (arrayObj.getClass() != arrayProfileObj.getClass()) {
-                                                isSame = false;
-                                                break;
-                                            } else if (arrayObj instanceof TextNode && arrayProfileObj instanceof TextNode) {
-                                                if (!settingArr.get(i).textValue().equals(settingProfileArr.get(i).textValue())) {
-                                                    isSame = false;
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if (isSame) {
-                                        settingProfile.remove(key.getKey());
-                                    }
-                                }
+                            if (setting.get(key.getKey()).toString().equals(settingProfile.get(key.getKey()).toString())) {
+                                settingProfile.remove(key.getKey());
                             }
                         }
                     }
