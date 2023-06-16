@@ -624,7 +624,7 @@ public class AdministrationResource {
                 password = obj.get("password").textValue();
             }
             if (obj.hasNonNull("overrideLogin")) {
-                overrideLogin = obj.get("overrideLogin").booleanValue();
+                overrideLogin = obj.get("overrideLogin").asBoolean();
             }
             if (StringUtils.isNotEmpty(login) && StringUtils.isNotEmpty(password)) {
                 try {

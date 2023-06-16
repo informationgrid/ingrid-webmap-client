@@ -111,7 +111,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                             login = layer.get(Constants.AUTH).textValue();
                         }
                         if (layer.hasNonNull(Constants.BACKGROUND)) {
-                            background = layer.get(Constants.BACKGROUND).booleanValue();
+                            background = layer.get(Constants.BACKGROUND).asBoolean();
                             if (!background) {
                                 // check depended categories
                                 ArrayNode layerCategories = DataUtils.getCategoryByLayerId(key.getKey(), false);
@@ -400,7 +400,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                     }
                     boolean attributionUpdate = true;
                     if (layerJSON.hasNonNull("attributionUpdate")) {
-                        attributionUpdate = layerJSON.get("attributionUpdate").booleanValue();
+                        attributionUpdate = layerJSON.get("attributionUpdate").asBoolean();
                     }
                     if (attributionUpdate) {
                         // Attribution
@@ -623,7 +623,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                         }
                         boolean attributionUpdate = true;
                         if (layerJSON.hasNonNull("attributionUpdate")) {
-                            attributionUpdate = layerJSON.get("attributionUpdate").booleanValue();
+                            attributionUpdate = layerJSON.get("attributionUpdate").asBoolean();
                         }
                         if (attributionUpdate) {
                             // Attribution
