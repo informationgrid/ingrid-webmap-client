@@ -172,7 +172,7 @@ public class WmsResource {
                 password = obj.get("password").textValue();
             }
             if (obj.hasNonNull("toJson")) {
-                toJson = obj.get("toJson").booleanValue();
+                toJson = obj.get("toJson").asBoolean();
             }
             return doWmsRequest(url, toJson, login, password);
         } catch (Exception e) {
