@@ -84,7 +84,7 @@ public class SearchResource {
                 try {
                     questUrl = new URL( searchUrl.concat( "&q=" + URLEncoder.encode( searchTerm, "UTF-8" ) ) );
                     if (log.isDebugEnabled()) {
-                        log.debug( "Requesting nominatim: " + questUrl);                            
+                        log.debug( "Requesting nominatim: " + questUrl);
                     }
                     URLConnection con = questUrl.openConnection();
                     InputStream in = con.getInputStream();
@@ -104,10 +104,10 @@ public class SearchResource {
                         newAttrs.put( "detail", questJsonEntry.get( "licence" ) );
                         newAttrs.put( "rank", 6 );
                         ArrayNode bounding = (ArrayNode) questJsonEntry.get( "boundingbox" );
-                        float minX = bounding.get( 2 ).intValue();
-                        float minY = bounding.get( 0 ).intValue();
-                        float maxX = bounding.get( 3 ).intValue();
-                        float maxY = bounding.get( 1 ).intValue();
+                        String minX = bounding.get( 2 ).textValue();
+                        String minY = bounding.get( 0 ).textValue();
+                        String maxX = bounding.get( 3 ).textValue();
+                        String maxY = bounding.get( 1 ).textValue();
                         newAttrs.put( "geom_st_box2d", minX + " " + minY + " " + maxX + " " + maxY );
                         newAttrs.set( "lon", questJsonEntry.get( "lon" ) );
                         newAttrs.set( "lat", questJsonEntry.get( "lat" ) );
@@ -241,19 +241,19 @@ public class SearchResource {
                     for (int j=0; j < questJson.size(); j++) {
                         JsonNode questJsonEntry = questJson.get(j);
                         ObjectNode newEntry = mapper.createObjectNode();
-                        newEntry.put( "id", questJsonEntry.get("bwastrid").textValue());
+                        newEntry.set( "id", questJsonEntry.get("bwastrid"));
                         ObjectNode newAttrs = mapper.createObjectNode();
-                        newAttrs.put("label", questJsonEntry.get("concat_name").textValue());
-                        newAttrs.put("qid", questJsonEntry.get("qid").textValue());
-                        newAttrs.put("bwastrid", questJsonEntry.get("bwastrid").textValue());
-                        newAttrs.put("bwastr_name", questJsonEntry.get("bwastr_name").textValue());
-                        newAttrs.put("strecken_name", questJsonEntry.get("strecken_name").textValue());
-                        newAttrs.put("concat_name", questJsonEntry.get("concat_name").textValue());
-                        newAttrs.put("km_von", questJsonEntry.get("km_von").textValue());
-                        newAttrs.put("km_bis", questJsonEntry.get("km_bis").textValue());
-                        newAttrs.put("priority", questJsonEntry.get("priority").textValue());
-                        newAttrs.put("fehlkilometer", questJsonEntry.get("fehlkilometer").textValue());
-                        newAttrs.put("fliessrichtung", questJsonEntry.get("fliessrichtung").textValue());
+                        newAttrs.set("label", questJsonEntry.get("concat_name"));
+                        newAttrs.set("qid", questJsonEntry.get("qid"));
+                        newAttrs.set("bwastrid", questJsonEntry.get("bwastrid"));
+                        newAttrs.set("bwastr_name", questJsonEntry.get("bwastr_name"));
+                        newAttrs.set("strecken_name", questJsonEntry.get("strecken_name"));
+                        newAttrs.set("concat_name", questJsonEntry.get("concat_name"));
+                        newAttrs.set("km_von", questJsonEntry.get("km_von"));
+                        newAttrs.set("km_bis", questJsonEntry.get("km_bis"));
+                        newAttrs.set("priority", questJsonEntry.get("priority"));
+                        newAttrs.set("fehlkilometer", questJsonEntry.get("fehlkilometer"));
+                        newAttrs.set("fliessrichtung", questJsonEntry.get("fliessrichtung"));
                         newEntry.set( "attrs", newAttrs );
                         jsonArray.add(newEntry);
                     }

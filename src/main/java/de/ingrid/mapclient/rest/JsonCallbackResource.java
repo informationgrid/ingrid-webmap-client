@@ -141,11 +141,11 @@ public class JsonCallbackResource {
                     for (int j = 0; j < questJson.size(); j++) {
                         JsonNode questJsonEntry = questJson.get(j);
                         ObjectNode newEntry = mapper.createObjectNode();
-                        newEntry.put("display_field", questJsonEntry.get("display_name").textValue());
+                        newEntry.set("display_field", questJsonEntry.get("display_name"));
                         newEntry.set("value_field", questJsonEntry.get("boundingbox"));
                         newEntry.put("group", group);
                         newEntry.put("displayPre", displayPre);
-                        newEntry.put("name", questJsonEntry.get("display_name").textValue());
+                        newEntry.set("name", questJsonEntry.get("display_name"));
                         ArrayNode bounds = mapper.createArrayNode();
                         bounds.add(questJsonEntry.get("boundingbox").get(2));
                         bounds.add(questJsonEntry.get("boundingbox").get(0));
@@ -163,12 +163,12 @@ public class JsonCallbackResource {
                     for (int j = 0; j < questJson.size(); j++) {
                         JsonNode questJsonEntry = questJson.get(j);
                         ObjectNode newEntry = mapper.createObjectNode();
-                        newEntry.put("display_field", questJsonEntry.get("name").textValue());
-                        newEntry.put("value_field", questJsonEntry.get("capabilitiesUrl").textValue());
+                        newEntry.set("display_field", questJsonEntry.get("name"));
+                        newEntry.set("value_field", questJsonEntry.get("capabilitiesUrl"));
                         newEntry.put("group", group);
                         newEntry.put("displayPre", displayPre);
-                        newEntry.put("name", questJsonEntry.get("name").textValue());
-                        newEntry.put("capabilitiesUrl", questJsonEntry.get("capabilitiesUrl").textValue());
+                        newEntry.set("name", questJsonEntry.get("name"));
+                        newEntry.set("capabilitiesUrl", questJsonEntry.get("capabilitiesUrl"));
                         json.add(newEntry);
                     }
                 } else if (group.equals("bwastrlocator")) {
@@ -179,20 +179,20 @@ public class JsonCallbackResource {
                         for (int j = 0; j < questJson.size(); j++) {
                             JsonNode questJsonEntry = questJson.get(j);
                             ObjectNode newEntry = mapper.createObjectNode();
-                            newEntry.put("display_field", questJsonEntry.get("concat_name").textValue());
-                            newEntry.put("value_field", questJsonEntry.get("bwastrid").textValue());
+                            newEntry.set("display_field", questJsonEntry.get("concat_name"));
+                            newEntry.set("value_field", questJsonEntry.get("bwastrid"));
                             newEntry.put("group", group);
                             newEntry.put("displayPre", displayPre);
-                            newEntry.put("qid", questJsonEntry.get("qid").textValue());
-                            newEntry.put("bwastrid", questJsonEntry.get("bwastrid").textValue());
-                            newEntry.put("bwastr_name", questJsonEntry.get("bwastr_name").textValue());
-                            newEntry.put("strecken_name", questJsonEntry.get("strecken_name").textValue());
-                            newEntry.put("concat_name", questJsonEntry.get("concat_name").textValue());
-                            newEntry.put("km_von", questJsonEntry.get("km_von").textValue());
-                            newEntry.put("km_bis", questJsonEntry.get("km_bis").textValue());
-                            newEntry.put("priority", questJsonEntry.get("priority").textValue());
-                            newEntry.put("fehlkilometer", questJsonEntry.get("fehlkilometer").textValue());
-                            newEntry.put("fliessrichtung", questJsonEntry.get("fliessrichtung").textValue());
+                            newEntry.set("qid", questJsonEntry.get("qid"));
+                            newEntry.set("bwastrid", questJsonEntry.get("bwastrid"));
+                            newEntry.set("bwastr_name", questJsonEntry.get("bwastr_name"));
+                            newEntry.set("strecken_name", questJsonEntry.get("strecken_name"));
+                            newEntry.set("concat_name", questJsonEntry.get("concat_name"));
+                            newEntry.set("km_von", questJsonEntry.get("km_von"));
+                            newEntry.set("km_bis", questJsonEntry.get("km_bis"));
+                            newEntry.set("priority", questJsonEntry.get("priority"));
+                            newEntry.set("fehlkilometer", questJsonEntry.get("fehlkilometer"));
+                            newEntry.set("fliessrichtung", questJsonEntry.get("fliessrichtung"));
                             json.add(newEntry);
                         }
                     }
