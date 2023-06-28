@@ -5,7 +5,8 @@ export class CategoryItem {
         public id: number = null,
         public label: string = '',
         public staging: string = 'prod',
-        public selectedOpen: boolean = false
+        public selectedOpen: boolean = false,
+        public checkboxSelect: boolean = false,
     ) {}
 
     getNextCategoryNodeId(nodes: any[] , nodeId) {

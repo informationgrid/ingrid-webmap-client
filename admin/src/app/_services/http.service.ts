@@ -203,7 +203,8 @@ export class HttpService {
       resItem.id,
       resItem.label,
       resItem.staging,
-      resItem.selectedOpen
+      resItem.selectedOpen,
+      resItem.checkboxSelect
     );
     if (resItem.layerBodId) {
       item.layerBodId = resItem.layerBodId;

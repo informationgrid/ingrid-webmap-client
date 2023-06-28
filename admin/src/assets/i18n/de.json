@@ -44,6 +44,7 @@
     "category_item_edit_layerBodId": "Karte",
     "category_item_edit_layerBodId_input": "Karte suchen und auswählen ...",
     "category_item_edit_selectedOpen": "Aufklappen",
+    "category_item_edit_checkboxSelect": "Mehrfachauswahl",
     "category_edit_title": "Bearbeitung der Kategorie: ",
     "category_edit_success": "Die Änderungen wurde gespeichert!",
     "category_edit_unsuccess": "Ein Fehler ist beim Speichern aufgetreten!",
