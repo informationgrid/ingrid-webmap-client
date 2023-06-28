@@ -63,9 +63,17 @@ goog.require('ga_previewlayers_service');
             if (item) {
               var layer = getOlLayer(map, item);
               if (state) {
-                if (!layer) {
+                if (!layer && item.layerBodId) {
                   addBodLayer(map, item.layerBodId);
+                } else {
+                  if (item.active) {
+                    item.active(state);
+                  }
                 }
+              } else {
+                  if (item.active) {
+                    item.active(state);
+                  }
               }
               if (layer) {
                 layer.visible = state
@@ -79,14 +87,20 @@ goog.require('ga_previewlayers_service');
             return state;
           }
         };
-        
+
         // INGRID: Add 'selectItemChild'
         var isItemChecked = function(map, item) {
           var isAllChecked = true;
           if (item) {
-            var layer = getOlLayer(map, item);
-            if (!layer || !layer.visible) {
-              isAllChecked = false;
+            if (item.layerBodId) {
+              var layer = getOlLayer(map, item);
+              if (!layer || !layer.visible) {
+               isAllChecked = false;
+              }
+            } else {
+              if (!item.selectedOpen) {
+                isAllChecked = false;
+              }
             }
           }
           if (item.children && isAllChecked) {
@@ -211,7 +225,7 @@ goog.require('ga_previewlayers_service');
 
             // INGRID: Add 'hasAllActivatedLayers'
             $scope.hasAllActivatedLayers = {
-              active: function (state) {
+              active: function(state) {
                 return selectItemChild($scope.map, $scope.item, state);
               }
             };
