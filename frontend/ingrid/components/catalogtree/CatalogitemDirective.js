@@ -97,10 +97,6 @@ goog.require('ga_previewlayers_service');
               if (!layer || !layer.visible) {
                isAllChecked = false;
               }
-            } else {
-              if (!item.selectedOpen) {
-                isAllChecked = false;
-              }
             }
           }
           if (item.children && isAllChecked) {
