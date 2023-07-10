@@ -1,4 +1,18 @@
 
+## 6.2.0 (10.07.2023)
+
+### Features
+
+* MAPCLIENT: KM-Angabe durch Maßstab ersetzen (#5083)
+* Alle Layer eines Ordners mit Checkbox aktivieren (#5023)
+* Direkte Anzeige, wenn nur ein Layer im WMS existiert (#4376)
+
+### Bugfixes
+
+* MAPCLIENT: Probleme BWaStrLocator Anfrage im GeoViewer  (#5255)
+* MAPCLIENT: Luftbilder werden nicht angezeigt  (#5216)
+* MAPCLIENT: "Problem melden" in der Karte -> E-Mail-Adresse wird nicht weitergegeben  (#4796)
+    
 ## 6.1.0 (14.04.2023)
 
 ### Features

@@ -247,6 +247,15 @@
           </ul>
         </div>
       </div>
+      <div *ngIf="focusItem.children" class="form-group row">
+        <label class="col-sm-4 col-form-label" for="checkboxSelect" translate>category_item_edit_checkboxSelect</label>
+        <div class="col-sm-8">
+          <select class="form-control" #checkboxSelect="ngModel" [(ngModel)]="focusItem.checkboxSelect" name="checkboxSelect">
+              <option [ngValue]="false" translate>false</option>
+              <option [ngValue]="true" translate>true</option>
+            </select>
+        </div>
+      </div>
     </form>
   </div>
   <div class="app-modal-footer">

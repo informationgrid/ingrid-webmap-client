@@ -274,7 +274,7 @@ public class ConfigResource {
         Collections.sort(sortKey);
         for (Iterator iterator = sortKey.iterator(); iterator.hasNext();) {
             String key = (String) iterator.next();
-            sortLocales.put(key, locales.get(key).textValue());
+            sortLocales.set(key, locales.get(key));
         }
         return Response.ok( sortLocales ).build();
     }

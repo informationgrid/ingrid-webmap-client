@@ -55,6 +55,60 @@ goog.require('ga_previewlayers_service');
           return gaMapUtils.getMapOverlayForBodId(map, item.layerBodId);
         };
 
+        // INGRID: Add 'selectItemChild'
+        var selectItemChild = function(map, item, state) {
+          if (state === undefined) {
+            return isItemChecked(map, item);
+          } else {
+            if (item) {
+              var layer = getOlLayer(map, item);
+              if (state) {
+                if (!layer && item.layerBodId) {
+                  addBodLayer(map, item.layerBodId);
+                } else {
+                  if (item.active) {
+                    item.active(state);
+                  }
+                }
+              } else {
+                  if (item.active) {
+                    item.active(state);
+                  }
+              }
+              if (layer) {
+                layer.visible = state
+              }
+              if (item.children) {
+                item.children.forEach(function(child) {
+                  selectItemChild(map, child, state);
+                });
+              }
+            }
+            return state;
+          }
+        };
+
+        // INGRID: Add 'selectItemChild'
+        var isItemChecked = function(map, item) {
+          var isAllChecked = true;
+          if (item) {
+            if (item.layerBodId) {
+              var layer = getOlLayer(map, item);
+              if (!layer || !layer.visible) {
+               isAllChecked = false;
+              }
+            }
+          }
+          if (item.children && isAllChecked) {
+            item.children.forEach(function(child) {
+              if (isAllChecked) {
+                isAllChecked = isItemChecked(map, child);
+              }
+            });
+          }
+          return isAllChecked;
+        };
+
         return {
           restrict: 'A',
           replace: true,
@@ -139,7 +193,7 @@ goog.require('ga_previewlayers_service');
               if (gaGlobalOptions.checkLayerInRange) {
                 var layer = gaLayers.getLayer(bodId);
                 if (layer) {
-                  return gaMapUtils.inRange(layer, this.map);
+                  return gaMapUtils.inRange(layer, $scope.map);
                 }
               }
               return true;
@@ -164,6 +218,13 @@ goog.require('ga_previewlayers_service');
               }
               return false;
             };
+
+            // INGRID: Add 'hasAllActivatedLayers'
+            $scope.hasAllActivatedLayers = {
+              active: function(state) {
+                return selectItemChild($scope.map, $scope.item, state);
+              }
+            };
           },
 
           compile: function(tEl, tAttr) {
@@ -179,8 +240,8 @@ goog.require('ga_previewlayers_service');
                 scope.$watch('item.selectedOpen', function(value) {
                   controller.updatePermalink(scope.item.id, value);
                 });
-               // INGRID: Add preview for parent layers
-               }
+                // INGRID: Add preview for parent layers
+              }
 
               // Leaf
             //} else {

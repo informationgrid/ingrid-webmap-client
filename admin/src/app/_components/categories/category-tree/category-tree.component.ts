@@ -250,7 +250,8 @@ export class CategoryTreeComponent implements OnInit {
         this.focusNode.data.id,
         this.focusNode.data.label,
         'prod',
-        this.focusNode.data.selectedOpen
+        this.focusNode.data.selectedOpen,
+        this.focusNode.data.checkboxSelect
       );
       if (this.focusNode.data.children) {
        this.focusItem.children = this.focusNode.data.children;
@@ -263,6 +264,7 @@ export class CategoryTreeComponent implements OnInit {
           id: this.focusItem.id,
           label: this.focusItem.label,
           selectedOpen: this.focusItem.selectedOpen,
+          checkboxSelect: this.focusItem.checkboxSelect,
           layerBodId: this.focusItem.layerBodId
         });
       }
@@ -276,6 +278,7 @@ export class CategoryTreeComponent implements OnInit {
       this.focusNode.data.label = this.focusItem.label;
       this.focusNode.data.layerBodId = this.focusItem.layerBodId;
       this.focusNode.data.selectedOpen = this.focusItem.selectedOpen;
+      this.focusNode.data.checkboxSelect = this.focusItem.checkboxSelect;
 
       const treeModel = this.focusNode.treeModel;
       treeModel.update();
