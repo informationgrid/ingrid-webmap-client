@@ -25,10 +25,10 @@
       <input ng-if="item.checkboxSelect && !item.layerBodId" type="checkbox" ng-model="item.hasAllActivatedLayers.active" ng-model-options="{ getterSetter: true }">
     </div>
     <!-- INGRID: Check if item is not a parent layer, role="button" ng-attr-aria-expanded="{{ item.selectedOpen }} -->
-    <div ng-if="!isParentLayer(item)" ng-click="toggle($event)" class="ga-catalogitem-entry ga-truncate-text" title="{{item.label}}" role="button" ng-attr-aria-expanded="{{ item.selectedOpen }}" ng-class="{'catalogitem-select-checkbox': item.checkboxSelect}">
+    <a ng-if="!isParentLayer(item)" href="#" ng-click="toggle($event)" class="ga-catalogitem-entry ga-truncate-text" title="{{item.label}}" role="button" ng-attr-aria-expanded="{{ item.selectedOpen }}" ng-class="{'catalogitem-select-checkbox': item.checkboxSelect}">
       <i ng-class="{'fa fa-minus': item.selectedOpen, 'fa fa-plus': !item.selectedOpen}"></i>
       {{item.label}}
-    </div>
+    </a>
     <!-- INGRID: Check if item is a parent layer and check layer extent intersects map extent -->
     <!-- INGRID: Add 'tabindex="-1"' -->
     <div ng-if="isParentLayer(item)" class="ga-catalogitem-entry ga-catalogitem-leaf ga-truncate-text" title="{{item.label}}" ng-class="{'extent-outside': !isInRange(item.layerBodId), 'catalogitem-select-checkbox': item.checkboxSelect}" tabindex="-1">
