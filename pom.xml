@@ -18,6 +18,7 @@
     <properties>
         <spring.version>5.3.24</spring.version>
         <jersey.version>2.37</jersey.version>
+        <utils-geo.version>6.3.0-SNAPSHOT</utils-geo.version>
         <maven.compiler.release>17</maven.compiler.release>
     </properties>
     
@@ -237,7 +238,7 @@
         <dependency>
             <groupId>de.ingrid</groupId>
             <artifactId>ingrid-utils-geo</artifactId>
-            <version>6.1.1.1</version>
+            <version>${utils-geo.version}</version>
         </dependency>
         <dependency>
             <groupId>de.ingrid</groupId>
