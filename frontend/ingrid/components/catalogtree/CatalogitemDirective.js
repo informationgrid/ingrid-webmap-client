@@ -71,9 +71,9 @@ goog.require('ga_previewlayers_service');
                   }
                 }
               } else {
-                  if (item.active) {
-                    item.active(state);
-                  }
+                if (item.active) {
+                  item.active(state);
+                }
               }
               if (layer) {
                 layer.visible = state
@@ -95,7 +95,7 @@ goog.require('ga_previewlayers_service');
             if (item.layerBodId) {
               var layer = getOlLayer(map, item);
               if (!layer || !layer.visible) {
-               isAllChecked = false;
+                isAllChecked = false;
               }
             }
           }
@@ -160,15 +160,15 @@ goog.require('ga_previewlayers_service');
               if (layer) {
                 if (layer.extent) {
                   var extent = ol.proj.transformExtent(layer.extent,
-                    'EPSG:4326', gaGlobalOptions.defaultEpsg);
+                      'EPSG:4326', gaGlobalOptions.defaultEpsg);
                   if (layer.maxScale) {
                     var scale = layer.maxScale;
                     if (layer.type === 'wms' && layer.version === '1.1.1') {
                       scale = gaMapUtils.getScaleForScaleHint(scale,
-                        $scope.map);
+                          $scope.map);
                     }
                     gaMapUtils.zoomToExtentScale($scope.map, undefined,
-                      extent, scale);
+                        extent, scale);
                   } else {
                     gaMapUtils.zoomToExtent($scope.map, undefined, extent);
                   }
@@ -220,7 +220,7 @@ goog.require('ga_previewlayers_service');
             };
 
             // INGRID: Add 'hasAllActivatedLayers'
-            $scope.hasAllActivatedLayers = {
+            $scope.item.hasAllActivatedLayers = {
               active: function(state) {
                 return selectItemChild($scope.map, $scope.item, state);
               }
