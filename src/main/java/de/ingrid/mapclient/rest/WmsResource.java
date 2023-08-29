@@ -22,30 +22,29 @@
  */
 package de.ingrid.mapclient.rest;
 
-import com.ctc.wstx.stax.WstxInputFactory;
-import com.ctc.wstx.stax.WstxOutputFactory;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.dataformat.xml.XmlFactory;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.itextpdf.text.html.HtmlEncoder;
-import com.thoughtworks.xstream.persistence.XmlMap;
-import de.ingrid.mapclient.HttpProxy;
-import de.ingrid.mapclient.model.GetCapabilitiesDocument;
-import de.ingrid.mapclient.utils.Utils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
 
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.stream.XMLInputFactory;
@@ -53,11 +52,28 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-import java.io.*;
-import java.net.*;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.regex.Pattern;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import com.ctc.wstx.stax.WstxInputFactory;
+import com.ctc.wstx.stax.WstxOutputFactory;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.dataformat.xml.XmlFactory;
+import com.itextpdf.text.html.HtmlEncoder;
+
+import de.ingrid.mapclient.HttpProxy;
+import de.ingrid.mapclient.model.GetCapabilitiesDocument;
+import de.ingrid.mapclient.utils.Utils;
 
 /**
  * WmsResource defines the interface for retrieving WMS data
@@ -89,13 +105,6 @@ public class WmsResource {
      * @param url The request url
      * @return String
      */
-    @GET
-    @Path("proxy")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String doWmsRequest(@QueryParam("url") String url, @QueryParam("toJson") boolean toJson, @QueryParam("login") String login, @QueryParam("password") String password) {
-        return doWmsRequest(url, toJson, login, password, false);
-    }
-
     @GET
     @Path("proxy")
     @Produces(MediaType.TEXT_PLAIN)
@@ -181,7 +190,7 @@ public class WmsResource {
             if (obj.hasNonNull("toJson")) {
                 toJson = obj.get("toJson").asBoolean();
             }
-            return doWmsRequest(url, toJson, login, password);
+            return doWmsRequest(url, toJson, login, password, false);
         } catch (Exception e) {
             log.error(ERROR_WMS_MSG + url, e);
             throw new WebApplicationException(e, Response.Status.NOT_FOUND);
@@ -235,7 +244,7 @@ public class WmsResource {
                 if (json.hasNonNull("password")) {
                     password = json.get("password").textValue();
                 }
-                return doWmsRequest(url, toJson, login, password);
+                return doWmsRequest(url, toJson, login, password, false);
             } catch (JsonProcessingException e) {
                 log.error("No data defined.", e);
             }
