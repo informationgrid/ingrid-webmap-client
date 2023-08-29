@@ -93,13 +93,20 @@ public class WmsResource {
     @Path("proxy")
     @Produces(MediaType.TEXT_PLAIN)
     public String doWmsRequest(@QueryParam("url") String url, @QueryParam("toJson") boolean toJson, @QueryParam("login") String login, @QueryParam("password") String password) {
+        return doWmsRequest(url, toJson, login, password, false);
+    }
+
+    @GET
+    @Path("proxy")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String doWmsRequest(@QueryParam("url") String url, @QueryParam("toJson") boolean toJson, @QueryParam("login") String login, @QueryParam("password") String password, @QueryParam("isFeatureInfo") boolean isFeatureInfo) {
         try {
             String response = null;
             if (StringUtils.isNotEmpty(login) && StringUtils.isEmpty(password)) {
                 password = Utils.getServiceLogin(url, login);
             }
-            boolean isGetFeatureInfo = false;
-            if (url.toLowerCase().indexOf("getfeatureinfo") > -1) {
+            boolean isGetFeatureInfo = isFeatureInfo;
+            if (url.toLowerCase().indexOf("getfeatureinfo") > -1 ) {
                 isGetFeatureInfo = true;
             }
             if (isGetFeatureInfo) {
