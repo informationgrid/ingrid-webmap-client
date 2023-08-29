@@ -87,7 +87,7 @@ goog.require('ga_window_service');
               // INGRID: Add wms layers to 'wmsLayers'
               layersToQuery.wmsLayers.push(l);
             } else if (gaMapUtils.isWMTSLayer(l) &&
-                (gaLayers.hasTooltipBodLayer(l) || l.get('queryable') || 
+                (gaLayers.hasTooltipBodLayer(l) || l.get('queryable') ||
                 (gaMapUtils.isExternalWmtsLayer(l) &&
                     l.getSource().get('featureInfoTpl')))) {
               // INGRID: Add check external wmts with featureInfoTpl
@@ -160,7 +160,7 @@ goog.require('ga_window_service');
                 function() {
                   return true;
                 }, {
-                'layerFilter': function(layer) {
+                  'layerFilter': function(layer) {
                   /* INGRID: Add check for crossOrigin
                   // EDGE: An IndexSizeError is triggered by the
                   // map.forEachLayerAtPixel when the mouse is outside the
@@ -173,7 +173,7 @@ goog.require('ga_window_service');
                   }
                   return gaLayers.hasTooltipBodLayer(layer);
                   */
-                  return gaLayers.hasTooltipBodLayer(layer) &&
+                    return gaLayers.hasTooltipBodLayer(layer) &&
                     layer.getSource().crossOrigin;
                   }
                 });
@@ -513,10 +513,11 @@ goog.require('ga_window_service');
                     coordinate)) {
                   return;
                 }
-                // INGRID: Add queryLayers
+                // INGRID: Add queryLayers, set TRANSPARENT param
                 var params = {
                   'INFO_FORMAT': 'text/html',
                   'LANG': gaLang.get(),
+                  'TRANSPARENT': '',
                   'FEATURE_COUNT': layerToQuery.featureCount || 10
                 };
                 if (layerToQuery.queryLayers) {
@@ -534,6 +535,7 @@ goog.require('ga_window_service');
                       proxyUrl += '&login=' +
                       encodeURIComponent(layerToQuery.get('auth'));
                     }
+                    proxyUrl += '&isFeatureInfo=true';
                     all.push($http.get(proxyUrl, {
                       timeout: canceler.promise,
                       layer: layerToQuery
@@ -576,6 +578,7 @@ goog.require('ga_window_service');
                     getSource(), coordinate, mapRes, mapProj, params);
                 if (!is3dActive() && url) {
                   gaUrlUtils.proxifyUrl(url).then(function(proxyUrl) {
+                    proxyUrl += '&isFeatureInfo=true';
                     all.push($http.get(proxyUrl, {
                       timeout: canceler.promise,
                       layer: layerToQuery
@@ -718,9 +721,9 @@ goog.require('ga_window_service');
               var id = layerId + '#' + featureId;
               // INGRID: Change description
               var descr = '';
-              if(feature.get('description') || feature.get('desc')) {
+              if (feature.get('description') || feature.get('desc')) {
                 descr = feature.get('description') || feature.get('desc');
-                if(descr.indexOf('<html') === -1) {
+                if (descr.indexOf('<html') === -1) {
                   descr = descr.replaceAll('\n', '<br>');
                 }
               }
