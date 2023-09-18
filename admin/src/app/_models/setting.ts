@@ -34,6 +34,8 @@ export class Setting {
         public settingPrintDependOnMouseProj = false,
         public settingKMLName = '',
         public settingHideCatalog = false,
+        public settingHideDraw = false,
+        public settingHideEpsgSelection = false,
         public settingEnableMapScale = false,
         public settingServiceImportSingleTile = true,
         public settingServiceImportWMSGutter = 0,

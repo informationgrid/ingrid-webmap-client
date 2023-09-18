@@ -325,6 +325,10 @@ goog.require('ga_window_service');
       isParentIFrame: gaGlobalOptions.isParentIFrame,
       // INGRID: Add 'isHideCatalog'
       isHideCatalog: gaGlobalOptions.isHideCatalog,
+      // INGRID: Add 'isHideDraw'
+      isHideDraw: gaGlobalOptions.isHideDraw,
+      // INGRID: Add 'globals.isHideEpsgSelection'
+      isHideEpsgSelection: gaGlobalOptions.isHideEpsgSelection,
       // INGRID: Add 'serviceAnnouncement'
       serviceAnnouncement: gaGlobalOptions.serviceAnnouncement,
       // INGRID: Add 'serviceAnnouncementUrl'

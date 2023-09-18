@@ -47,6 +47,8 @@
     "settingPrintDependOnMouseProj": false,
     "settingKMLName": "INGRID",
     "settingHideCatalog": false,
+    "settingHideDraw": false,
+    "settingHideEpsgSelection": false,
     "settingEnableW3W": true,
     "w3wUrl": "https://api.what3words.com",
     "w3wApiKey": "OM48J50Y",

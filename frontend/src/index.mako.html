@@ -298,7 +298,9 @@ itemscope itemtype="http://schema.org/WebApplication"
     <div ng-cloak translate-cloak id="footer" class="navbar navbar-fixed-bottom" role="footer" ng-attr-aria-label="{{ 'navigation_footer' | translate }}">
       <div  class="pull-left" ga-scale-line ga-scale-line-map="::map" ng-show="!globals.is3dActive"></div>
       <div id="mouseposition" class="pull-left" ng-controller="GaMousePositionController">
+        <!-- INGRID: Add 'ng-hide="globals.isHideEpsgSelection"' -->
         <select ng-model="options.projection"
+                ng-hide="globals.isHideEpsgSelection"
                 ng-options="p.label for p in ::mousePositionProjections">
         </select>
         <div ga-mouse-position
@@ -409,7 +411,8 @@ itemscope itemtype="http://schema.org/WebApplication"
         </div>  <!-- .panel -->
 
         <!-- Draw -->
-        <div class="panel" ng-show="!globals.is3dActive">
+        <!-- INGRID: Add 'ng-hide="globals.isHideDraw"' -->
+        <div class="panel" ng-show="!globals.is3dActive" ng-hide="globals.isHideDraw>
           <!-- INGRID: Add 'role="button"' -->
           <a id="drawHeading" class="panel-heading accordion-toggle collapsed"
              data-toggle="collapse" data-parent="#pulldown-content" href="#draw"
@@ -1008,6 +1011,10 @@ itemscope itemtype="http://schema.org/WebApplication"
           defaultPrintGraticuleLayer: settings.settingPrintGraticuleLayer,
           // INGRID: Add setting to hide catalog menu
           isHideCatalog: settings.settingHideCatalog,
+          // INGRID: Add setting to hide catalog menu
+          isHideDraw: settings.settingHideDraw,
+          // INGRID: Add setting to hide catalog menu
+          isHideEpsgSelection: settings.settingHideEpsgSelection,
           // INGRID: Add setting to define zoom level of gazetter search
           gazetterZoom: settings.settingGazetterZoom || 10,
           // INGRID: Enable what3words
