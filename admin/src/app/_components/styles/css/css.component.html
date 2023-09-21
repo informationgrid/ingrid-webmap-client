@@ -1,11 +1,11 @@
 <div class="card">
-    <div class="card-header" id="cssHeader"  data-toggle="collapse" data-target="#css" aria-expanded="false" aria-controls="css">
+    <div class="card-header" id="cssHeader"  data-toggle="collapse" data-target="#css_accordion" aria-expanded="false" aria-controls="css_accordion">
         <span translate>css</span>
     </div>
-    <div id="css" class="collapse" aria-labelledby="cssHeader" data-parent="#accordion">
+    <div id="css_accordion" class="collapse" aria-labelledby="cssHeader" data-parent="#accordion">
         <div class="card-body">
             <div class="modal-body">
-                <textarea class="form-control" name="css" id="css" rows="20"  [(ngModel)]="css" #textarea="ngModel" ></textarea>
+                <textarea class="form-control" name="css" id="css" rows="20" [(ngModel)]="css" #textarea="ngModel" ></textarea>
                 <br>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary" (click)="onLoad()" translate>

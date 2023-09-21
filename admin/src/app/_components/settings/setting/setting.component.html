@@ -1,9 +1,9 @@
 <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center" id="settingHeader" data-toggle="collapse" data-target="#setting"
-        aria-expanded="false" aria-controls="setting">
+    <div class="card-header d-flex justify-content-between align-items-center" id="settingHeader" data-toggle="collapse" data-target="#setting_accordion"
+        aria-expanded="false" aria-controls="setting_accordion">
         <span translate>settings</span>
     </div>
-    <div id="setting" class="collapse" aria-labelledby="settingHeader" data-parent="#accordion">
+    <div id="setting_accordion" class="collapse" aria-labelledby="settingHeader" data-parent="#accordion">
         <div class="card-body">
             <form #f="ngForm" (ngSubmit)="onUpdate()" novalidate>
                 <div class="modal-header">
