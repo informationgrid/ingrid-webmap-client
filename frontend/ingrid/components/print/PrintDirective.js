@@ -525,6 +525,13 @@ goog.require('ga_urlutils_service');
             }
             allDataOwner = allDataOwner.join(', ');
             dataOwnerVerbose = dataOwnerVerbose.join('\n');
+            var filename = gaGlobalOptions.printFilename || 'Print.InGrid';
+            var title = $scope.title ? $scope.title : '';
+            if (gaGlobalOptions.printFilenameAddTitle) {
+                if (title) {
+                    filename += '-' + title;
+                }
+            }
             var movieprint = $scope.options.movie && $scope.options.multiprint;
             var spec = {
               layout: $scope.layout.name,
@@ -538,7 +545,7 @@ goog.require('ga_urlutils_service');
               // INGRID: Add north arrow logo url
               northArrow: gaGlobalOptions.printNorthArrow,
               // INGRID: Add filename
-              outputFilename: gaGlobalOptions.printFilename || 'Print.InGrid',
+              outputFilename: filename,
               lang: lang,
               // use a function to get correct dpi according to layout (A4/A3)
               // dpi: getDpi($scope.layout.name, $scope.dpi),
@@ -567,7 +574,7 @@ goog.require('ga_urlutils_service');
                   rotation: -((view.getRotation() * 180.0) / Math.PI),
                   // INGRID: Add comment and title for print
                   comment: $scope.comment ? $scope.comment : '',
-                  title: $scope.title ? $scope.title : ''
+                  title: title
                 }, defaultPage)
               ]
             };

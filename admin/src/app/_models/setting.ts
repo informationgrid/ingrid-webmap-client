@@ -31,6 +31,7 @@ export class Setting {
         public settingPrintNorthArrow = '',
         public settingPrintGraticuleLayer = false,
         public settingPrintFilename = '',
+        public settingPrintFilenameAddTitle = false,
         public settingPrintDependOnMouseProj = false,
         public settingKMLName = '',
         public settingHideCatalog = false,
