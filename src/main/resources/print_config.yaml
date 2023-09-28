@@ -372,9 +372,9 @@ layouts:
             - !legends
               horizontalAlignment: left
               maxWidth: 0
-              maxHeight: 420
+              maxHeight: 780
               iconMaxWidth: 250
-              iconMaxHeight: 420
+              iconMaxHeight: 720
               defaultScale: 0.75
               classIndentation: 3
               layerSpace: 5
@@ -717,10 +717,10 @@ layouts:
           items:
             - !legends
               horizontalAlignment: left
-              maxHeight: 420
+              maxHeight: 530
               maxWidth: 0
               iconMaxWidth: 200
-              iconMaxHeight: 420
+              iconMaxHeight: 470
               defaultScale: 0.75
               classIndentation: 3
               layerSpace: 5
@@ -1062,10 +1062,10 @@ layouts:
           items:
             - !legends
               horizontalAlignment: left
-              maxHeight: 420
+              maxHeight: 780
               maxWidth: 0
               iconMaxWidth: 250
-              iconMaxHeight: 420
+              iconMaxHeight: 720
               defaultScale: 0.75
               classIndentation: 3
               layerSpace: 5
@@ -1408,10 +1408,10 @@ layouts:
           items:
             - !legends
               horizontalAlignment: left
-              maxHeight: 420
+              maxHeight: 530
               maxWidth: 0
               iconMaxWidth: 200
-              iconMaxHeight: 420
+              iconMaxHeight: 470
               defaultScale: 0.75
               classIndentation: 3
               layerSpace: 5
