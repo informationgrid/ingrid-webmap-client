@@ -245,7 +245,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                                 Iterator<Map.Entry<String, JsonNode>> keysUpdate = layers.fields();
                                 while (keysUpdate.hasNext()) {
                                     Map.Entry<String, JsonNode> key = keysUpdate.next();
-                                    if (deleteLayernames.indexOf(key) == -1) {
+                                    if (deleteLayernames.indexOf(key.getKey()) == -1) {
                                         JsonNode layerJSON = key.getValue();
                                         out.println("\"" + key.getKey() + "\":");
 
