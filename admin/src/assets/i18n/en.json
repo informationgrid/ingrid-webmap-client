@@ -292,6 +292,8 @@
     "setting_settingHideDraw_help": "Verstecken Sie im Menü des Webmap Clients das \"Zeichnen & Messen\"-Akkordeon.",
     "setting_settingHideEpsgSelection": "Koordinatensystem-Auswahl verstecken",
     "setting_settingHideEpsgSelection_help": "Verstecken Sie im Webmap Client die Auswahlliste der Koordinatensysteme.",
+    "setting_settingHideCompare": "\"Vergleichen\"-Funktion verstecken",
+    "setting_settingHideCompare_help": "Verstecken Sie im Menü des Webmap Clients die Funktion \"Vergleichen\".",
     "setting_settingEnableMapScale": "Zeige die Maßstabszahl der Karte an",
     "setting_settingEnableMapScale_help": "Zeigt den Maßstabszahl statt der Maßstabslinie der Karte an.",
     "setting_settingServiceImportSingleTile": "WMS-Layer als SingleTile importieren",

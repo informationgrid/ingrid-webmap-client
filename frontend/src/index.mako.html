@@ -451,7 +451,8 @@ itemscope itemtype="http://schema.org/WebApplication"
                     <span ng-class="{'selected': globals.importPopupShown}" translate>import</span>
                   </a>
                 </li>
-                <li ng-show="!globals.is3dActive"><!-- Compare -->
+                <!-- INGRID: Add 'ng-hide="globals.isHideCompare"' -->
+                <li ng-show="!globals.is3dActive" ng-hide="globals.isHideCompare"><!-- Compare -->
                   <a href=""  accesskey="c" role="button"
                      ng-click="globals.isSwipeActive = !globals.isSwipeActive"
                      translate-attr="{title: 'swipe_tooltip'}">
@@ -1013,10 +1014,12 @@ itemscope itemtype="http://schema.org/WebApplication"
           defaultPrintGraticuleLayer: settings.settingPrintGraticuleLayer,
           // INGRID: Add setting to hide catalog menu
           isHideCatalog: settings.settingHideCatalog,
-          // INGRID: Add setting to hide catalog menu
+          // INGRID: Add setting to hide draw menu
           isHideDraw: settings.settingHideDraw,
-          // INGRID: Add setting to hide catalog menu
+          // INGRID: Add setting to hide epsg selection
           isHideEpsgSelection: settings.settingHideEpsgSelection,
+          // INGRID: Add setting to hide compare function
+          isHideCompare: settings.settingHideCompare,
           // INGRID: Add setting to define zoom level of gazetter search
           gazetterZoom: settings.settingGazetterZoom || 10,
           // INGRID: Enable what3words

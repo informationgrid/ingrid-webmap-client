@@ -37,6 +37,7 @@ export class Setting {
         public settingHideCatalog = false,
         public settingHideDraw = false,
         public settingHideEpsgSelection = false,
+        public settingHideCompare = false,
         public settingEnableMapScale = false,
         public settingServiceImportSingleTile = true,
         public settingServiceImportWMSGutter = 0,
