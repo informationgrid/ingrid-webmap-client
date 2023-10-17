@@ -1,4 +1,18 @@
 
+## 6.3.0 (17.10.2023)
+
+### Features
+
+* Verschlankung Kartenkomponente (#5440)
+* Gendern in der Infobox der Kartendienste (#5363)
+* Behebung Server Side Request Forgery (SSRF) Schwachstellen (#5325)
+
+### Bugfixes
+
+* MAPCLIENT: Job für das Löschen von Karten funktioniert nicht korrekt  (#5554)
+* Mapclient: Für WMS-Dienste von MV werden die Attributinformationen (GetFeatureInfo-Attribute) nicht angezeigt  (#5439)
+* MAPCLIENT: Admin-GUI - Text von Style nicht zu sehen  (#1259)
+    
 ## 6.2.0 (10.07.2023)
 
 ### Features
