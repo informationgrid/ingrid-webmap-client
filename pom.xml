@@ -18,7 +18,7 @@
     <properties>
         <spring.version>5.3.24</spring.version>
         <jersey.version>2.37</jersey.version>
-        <utils-geo.version>6.3.0-SNAPSHOT</utils-geo.version>
+        <utils-geo.version>6.3.0</utils-geo.version>
         <maven.compiler.release>17</maven.compiler.release>
     </properties>
     
