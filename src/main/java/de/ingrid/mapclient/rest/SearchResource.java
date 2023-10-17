@@ -74,8 +74,10 @@ public class SearchResource {
     public Response search(@QueryParam("q") String searchTerm, @QueryParam("lang") String lang, @QueryParam("type") String type, @QueryParam("searchUrl") String searchUrl,
             @QueryParam("searchUrlParams") String searchUrlParams) throws Exception {
         searchTerm = searchTerm.trim();
-
-        if (searchTerm.length() > 2 && type != null) {
+        
+        if(searchTerm == null || searchTerm.indexOf("http://") > -1 || searchTerm.indexOf("https://") > -1) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        } else if (searchTerm.length() > 2 && type != null) {
             if (type.indexOf( "locations" ) > -1) {
                 ArrayNode json = mapper.createArrayNode();
                 URL questUrl = null;
