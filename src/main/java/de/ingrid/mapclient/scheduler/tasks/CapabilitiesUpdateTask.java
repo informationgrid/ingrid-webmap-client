@@ -238,25 +238,25 @@ public class CapabilitiesUpdateTask implements Runnable {
                         log.info("Update file :" + file.getAbsoluteFile());
                         if (file != null) {
                             try (FileWriter fw = new FileWriter(file, true);
-                                 BufferedWriter bw = new BufferedWriter(fw);
-                                 PrintWriter out = new PrintWriter(bw)) {
-                                out.println("{");
+                                BufferedWriter bw = new BufferedWriter(fw);
+                                PrintWriter out = new PrintWriter(bw)) {
+                                String temp = "{";
                                 //more code
                                 Iterator<Map.Entry<String, JsonNode>> keysUpdate = layers.fields();
+                                
                                 while (keysUpdate.hasNext()) {
                                     Map.Entry<String, JsonNode> key = keysUpdate.next();
                                     if (deleteLayernames.indexOf(key.getKey()) == -1) {
-                                        JsonNode layerJSON = key.getValue();
-                                        out.println("\"" + key.getKey() + "\":");
-
-                                        String layerString = layerJSON.toString();
-                                        if (keysUpdate.hasNext()) {
-                                            layerString += ",";
+                                        if(!temp.equals("{")) {
+                                            temp += ",";
                                         }
-                                        out.println(layerString);
+                                        temp += "\"" + key.getKey() + "\":";
+                                        JsonNode layerJSON = key.getValue();
+                                        temp += layerJSON.toString();
                                     }
                                 }
-                                out.println("}");
+                                temp += "}";
+                                out.println(temp);
                                 //more code
                             } catch (IOException e) {
                                 log.error("Error write new json file!");
