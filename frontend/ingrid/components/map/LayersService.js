@@ -740,7 +740,8 @@ goog.require('ga_urlutils_service');
                   crossOrigin: crossOrigin,
                   // INGRID: Add projection
                   projection: config.epsg || gaGlobalOptions.defaultEpsg,
-                  tileGrid: gaTileGrid.get(tileGridMinRes, config.type),
+                  // INGRID: Add 'config.tileSize'
+                  tileGrid: gaTileGrid.get(tileGridMinRes, config.type, config.tileSize),
                   // INGRID: Add config
                   tileLoadFunction: tileLoadFunction(config),
                   wrapX: false,
