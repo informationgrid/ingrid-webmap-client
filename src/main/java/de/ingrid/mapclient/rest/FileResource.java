@@ -229,7 +229,7 @@ public class FileResource {
             } catch (IOException e) {
                 log.error("Error getFileRequest: " + e);
             }
-        }
+            }
         return content;
     }
     
@@ -256,7 +256,7 @@ public class FileResource {
                     log.error("Error getFileRequest: " + e);
                 }
             }
-        }
+            }
         return content;
     }
 
@@ -763,19 +763,33 @@ public class FileResource {
     @Path("short")
     @Produces(MediaType.TEXT_PLAIN)
     public String getShortKey(@QueryParam("key") String key, @QueryParam("value") String valueToMd5) {
-        Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String path = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./").trim();
-        
-        if(!path.endsWith( "/")){
-            path += "/";
-        }
-
-        File shortenFile = new File(path + "shorten/" + key + "/" + valueToMd5.substring(0, 2), valueToMd5);
-        if(shortenFile.exists()) {
-            String fileContent = Utils.getFileContent(path, valueToMd5 , "", "shorten/" + key + "/" + valueToMd5.substring(0, 2) + "/");
-            if(StringUtils.isNotEmpty(fileContent)) {
-                Utils.updateFile("shorten/" + key + "/" + valueToMd5.substring(0, 2) + "/" + valueToMd5, fileContent, false);
-                return fileContent.trim();
+        if(Utils.isValidMD5(valueToMd5)) {
+            Properties p = ConfigurationProvider.INSTANCE.getProperties();
+            String path = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./").trim();
+            
+            if(!path.endsWith( "/")){
+                path += "/";
+            }
+            File shortenDir = new File(path + "shorten");
+            if(shortenDir.exists()) {
+                File shortenKeyDir = new File(shortenDir.getAbsolutePath() + "/" + key);
+                if(shortenKeyDir.exists()) {
+                    File shortenKeyDirParent = shortenKeyDir.getParentFile();
+                    if(shortenKeyDirParent != null && shortenDir.getAbsolutePath().equals(shortenKeyDirParent.getAbsolutePath())) {
+                        File shortenDirParent = new File(shortenKeyDir.getAbsolutePath() + "/" + valueToMd5.substring(0, 2));
+                        File shortenFile = new File(shortenDirParent.getAbsolutePath(), valueToMd5);
+                        if(shortenFile.exists()) {
+                            File shortenFileParent = shortenFile.getParentFile();
+                            if(shortenFileParent != null && shortenDirParent.getAbsolutePath().equals(shortenFileParent.getAbsolutePath())) {
+                                String fileContent = Utils.getFileContent(path, valueToMd5 , "", "shorten/" + key + "/" + valueToMd5.substring(0, 2) + "/");
+                                if(StringUtils.isNotEmpty(fileContent)) {
+                                    Utils.updateFile("shorten/" + key + "/" + valueToMd5.substring(0, 2) + "/" + valueToMd5, fileContent, false);
+                                    return fileContent.trim();
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
         return valueToMd5;

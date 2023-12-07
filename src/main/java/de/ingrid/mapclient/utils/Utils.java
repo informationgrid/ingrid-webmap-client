@@ -505,7 +505,11 @@ public class Utils {
             }
         }
         return count;
-    } 
+    }
+    
+    public static boolean isValidMD5(String s) {
+        return s.matches("^[a-fA-F0-9]{32}$");
+    }
 }
 
 class MailAuthenticator extends Authenticator {
