@@ -769,7 +769,7 @@ public class FileResource {
     @Path("short")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getShortKey(@QueryParam("key") String key, @QueryParam("value") String valueToMd5) {
-        if(Utils.isValidMD5(valueToMd5)) {
+        if(Utils.isValidMD5(valueToMd5) || !Utils.isInvalidInput(valueToMd5)) {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
             String path = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./").trim();
             
@@ -793,6 +793,8 @@ public class FileResource {
                                     return Response.ok(fileContent.trim()).build();
                                 }
                             }
+                        } else {
+                            return Response.ok(valueToMd5).build();
                         }
                     }
                 }
