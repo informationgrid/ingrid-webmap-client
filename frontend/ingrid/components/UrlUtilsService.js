@@ -194,8 +194,8 @@ goog.provide('ga_urlutils_service');
 
         // INGRID: Add function isMD5Hash
         this.isMD5Hash = function(str) {
-          var regex = "^[a-fA-F0-9]{32}$";
-          return regexExp.test(str);
+          var regex = /^[a-fA-F0-9]{32}$/;
+          return regex.test(str);
         };
 
         this.remove = function(url, params, ignoreCase) {
