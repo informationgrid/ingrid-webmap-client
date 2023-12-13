@@ -327,54 +327,69 @@ goog.require('ga_wmts_service');
           // INGRID: Get values from shorten
           var all = {};
           if (layerSpecs && layerSpecs.length > 0) {
-            var getLayerSpecs = $http.get(gaGlobalOptions.publicUrl +
-                '/short', {
-              params: {
-                key: 'layers',
-                value: layerSpecs.join(',')
-              }
-            });
-            all['layerSpecs'] = getLayerSpecs;
+            var value = layerSpecs.join(',');
+            if(gaUrlUtils.isMD5Hash(value)) {
+                var getLayerSpecs = $http.get(gaGlobalOptions.publicUrl +
+                    '/short', {
+                  params: {
+                    key: 'layers',
+                    value: value
+                  }
+                });
+                all['layerSpecs'] = getLayerSpecs;
+            }
           }
           if (opacities && opacities.length > 0) {
-            var getOpacities = $http.get(gaGlobalOptions.publicUrl +
-              '/short', {
-              params: {
-                key: 'layers_opacity',
-                value: opacities.join(',')
-              }
-            });
-            all['opacities'] = getOpacities;
+            var value = opacities.join(',');
+            if(gaUrlUtils.isMD5Hash(value)) {
+                var getOpacities = $http.get(gaGlobalOptions.publicUrl +
+                  '/short', {
+                  params: {
+                    key: 'layers_opacity',
+                    value: value
+                  }
+                });
+                all['opacities'] = getOpacities;
+            }
           }
           if (visibilities && visibilities.length > 0) {
-            var getVisibilities = $http.get(gaGlobalOptions.publicUrl +
-              '/short', {
-              params: {
-                key: 'layers_visibility',
-                value: visibilities.join(',')
-              }
-            });
-            all['visibilities'] = getVisibilities;
+            var value = visibilities.join(',');
+            if(gaUrlUtils.isMD5Hash(value)) {
+                var getVisibilities = $http.get(gaGlobalOptions.publicUrl +
+                  '/short', {
+                  params: {
+                    key: 'layers_visibility',
+                    value: value
+                  }
+                });
+                all['visibilities'] = getVisibilities;
+            }
           }
           if (timestamps && timestamps.length > 0) {
-            var getTimestamps = $http.get(gaGlobalOptions.publicUrl +
-              '/short', {
-              params: {
-                key: 'layers_timestamp',
-                value: timestamps.join(',')
-              }
-            });
-            all['timestamps'] = getTimestamps;
+            var value = timestamps.join(',');
+            if(gaUrlUtils.isMD5Hash(value)) {
+                var getTimestamps = $http.get(gaGlobalOptions.publicUrl +
+                  '/short', {
+                  params: {
+                    key: 'layers_timestamp',
+                    value: value
+                  }
+                });
+                all['timestamps'] = getTimestamps;
+            }
           }
           if (styleUrls && styleUrls.length > 0) {
-            var getStyleUrls = $http.get(gaGlobalOptions.publicUrl +
-              '/short', {
-              params: {
-                key: 'layers_styleurl',
-                value: styleUrls.join(',')
-              }
-            });
-            all['styleUrls'] = getStyleUrls;
+            var value = styleUrls.join(',');
+            if(gaUrlUtils.isMD5Hash(value)) {
+                var getStyleUrls = $http.get(gaGlobalOptions.publicUrl +
+                  '/short', {
+                  params: {
+                    key: 'layers_styleurl',
+                    value: value
+                  }
+                });
+                all['styleUrls'] = getStyleUrls;
+            }
           }
           $q.all(all).then(function(values) {
             if (values.layerSpecs) {
