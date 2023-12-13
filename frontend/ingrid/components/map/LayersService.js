@@ -741,7 +741,8 @@ goog.require('ga_urlutils_service');
                   // INGRID: Add projection
                   projection: config.epsg || gaGlobalOptions.defaultEpsg,
                   // INGRID: Add 'config.tileSize'
-                  tileGrid: gaTileGrid.get(tileGridMinRes, config.type, config.tileSize),
+                  tileGrid: gaTileGrid.get(tileGridMinRes, config.type,
+                        config.tileSize),
                   // INGRID: Add config
                   tileLoadFunction: tileLoadFunction(config),
                   wrapX: false,

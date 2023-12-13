@@ -326,8 +326,9 @@ goog.require('ga_wmts_service');
             timestamps, parameters, styleUrls) {
           // INGRID: Get values from shorten
           var all = {};
+          var value;
           if (layerSpecs && layerSpecs.length > 0) {
-            var value = layerSpecs.join(',');
+            value = layerSpecs.join(',');
             if(gaUrlUtils.isMD5Hash(value)) {
                 var getLayerSpecs = $http.get(gaGlobalOptions.publicUrl +
                     '/short', {
@@ -340,7 +341,7 @@ goog.require('ga_wmts_service');
             }
           }
           if (opacities && opacities.length > 0) {
-            var value = opacities.join(',');
+            value = opacities.join(',');
             if(gaUrlUtils.isMD5Hash(value)) {
                 var getOpacities = $http.get(gaGlobalOptions.publicUrl +
                   '/short', {
@@ -353,7 +354,7 @@ goog.require('ga_wmts_service');
             }
           }
           if (visibilities && visibilities.length > 0) {
-            var value = visibilities.join(',');
+            value = visibilities.join(',');
             if(gaUrlUtils.isMD5Hash(value)) {
                 var getVisibilities = $http.get(gaGlobalOptions.publicUrl +
                   '/short', {
@@ -366,7 +367,7 @@ goog.require('ga_wmts_service');
             }
           }
           if (timestamps && timestamps.length > 0) {
-            var value = timestamps.join(',');
+            value = timestamps.join(',');
             if(gaUrlUtils.isMD5Hash(value)) {
                 var getTimestamps = $http.get(gaGlobalOptions.publicUrl +
                   '/short', {
@@ -379,7 +380,7 @@ goog.require('ga_wmts_service');
             }
           }
           if (styleUrls && styleUrls.length > 0) {
-            var value = styleUrls.join(',');
+            value = styleUrls.join(',');
             if(gaUrlUtils.isMD5Hash(value)) {
                 var getStyleUrls = $http.get(gaGlobalOptions.publicUrl +
                   '/short', {
