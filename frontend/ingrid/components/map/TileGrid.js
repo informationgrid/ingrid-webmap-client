@@ -6,7 +6,8 @@ goog.provide('ga_tilegrid_service');
 
   module.provider('gaTileGrid', function() {
 
-    function createTileGrid(origin, resolutions, type, tileSize, gaGlobalOptions) {
+    function createTileGrid(origin, resolutions, type, tileSize,
+        gaGlobalOptions) {
       // INGRID: Use proj resolution
       var extent = ol.proj.get(gaGlobalOptions.defaultEpsg).getExtent();
       var startResolution = ol.extent.getWidth(extent) / (tileSize || 256);

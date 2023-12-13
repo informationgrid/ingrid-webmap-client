@@ -14,7 +14,9 @@ goog.provide('ga_print_service');
       html += head || '';
       html += getStylesheetString();
       // INGRID: Add 'style="overflow:unset;'
-      html += '</head><body onload="window.opener.printOnLoad(window);" style="overflow:unset;">';
+      html += '</head>';
+      html += '<body onload="window.opener.printOnLoad(window); "';
+      html += 'style="overflow:unset;">';
       html += body;
       html += '</body></html>';
       return html;
