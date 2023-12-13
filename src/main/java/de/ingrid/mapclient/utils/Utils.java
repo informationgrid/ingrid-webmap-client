@@ -68,6 +68,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.web.util.HtmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -509,6 +510,11 @@ public class Utils {
     
     public static boolean isValidMD5(String s) {
         return s.matches("^[a-fA-F0-9]{32}$");
+    }
+
+    public static boolean isInvalidInput(String s) {
+        return (s != null && (s.indexOf('<') != -1 || s.indexOf('>') != -1 || s.indexOf("%3C") != -1
+                || s.indexOf("%3c") != -1 || s.indexOf("%3E") != -1 || s.indexOf("%3e") != -1));
     }
 }
 
