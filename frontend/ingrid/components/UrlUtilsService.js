@@ -192,6 +192,12 @@ goog.provide('ga_urlutils_service');
           return url;
         };
 
+        // INGRID: Add function isMD5Hash
+        this.isMD5Hash = function(str) {
+          var regex = /^[a-fA-F0-9]{32}$/;
+          return regex.test(str);
+        };
+
         this.remove = function(url, params, ignoreCase) {
           var parts = url.split('?');
           if (parts.length > 1) {

@@ -2,16 +2,16 @@
  * **************************************************-
  * InGrid Web Map Client
  * ==================================================
- * Copyright (C) 2014 - 2023 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2024 wemove digital solutions GmbH
  * ==================================================
- * Licensed under the EUPL, Version 1.1 or – as soon they will be
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
  * EUPL (the "Licence");
  * 
  * You may not use this work except in compliance with the Licence.
  * You may obtain a copy of the Licence at:
  * 
- * http://ec.europa.eu/idabc/eupl5
+ * https://joinup.ec.europa.eu/software/page/eupl
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" basis,
@@ -211,7 +211,7 @@ public class FileResource {
     @GET
     @Path("{id}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String getFileRequest(@PathParam("id") String id, @QueryParam("adminId") String mapUserId) throws IOException {
+    public Response getFileRequest(@PathParam("id") String id, @QueryParam("adminId") String mapUserId) throws IOException {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./kml/").trim();
         
@@ -229,14 +229,17 @@ public class FileResource {
             } catch (IOException e) {
                 log.error("Error getFileRequest: " + e);
             }
+            if(content != null) { 
+                return Response.ok(content).build();
+            }
         }
-        return content;
+        return Response.status(Response.Status.NOT_FOUND ).build();
     }
     
     @GET
     @Path("{user}/{id}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String getFileRequest(@PathParam("id") String id, @PathParam("user") String user, @QueryParam("adminId") String mapUserId) throws IOException {
+    public Response getFileRequest(@PathParam("id") String id, @PathParam("user") String user, @QueryParam("adminId") String mapUserId) throws IOException {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./kml/").trim();
         
@@ -256,8 +259,11 @@ public class FileResource {
                     log.error("Error getFileRequest: " + e);
                 }
             }
+            if(content != null) { 
+                return Response.ok(content).build();
+            }
         }
-        return content;
+        return Response.status(Response.Status.NOT_FOUND ).build();
     }
 
     @POST
@@ -692,7 +698,7 @@ public class FileResource {
     @PUT
     @Path("short")
     @Produces(MediaType.TEXT_PLAIN)
-    public String getAndPutShortKey(@RequestBody String requestContent) throws JsonProcessingException {
+    public Response getAndPutShortKey(@RequestBody String requestContent) throws JsonProcessingException {
         JsonNode obj = mapper.readTree(requestContent);
         String key = null;
         String value = null;
@@ -703,12 +709,12 @@ public class FileResource {
             value = obj.get("value").textValue();
         }
         if(key != null && value != null) {
-            return createShortFile(key, value);
+            return Response.ok(createShortFile(key, value)).build();
         }
         if(value != null) {
-            return value;
+            return Response.ok(value).build();
         }
-        return "";
+        return Response.status(Response.Status.NOT_FOUND ).build();
     }
 
     
@@ -762,23 +768,39 @@ public class FileResource {
     @GET
     @Path("short")
     @Produces(MediaType.TEXT_PLAIN)
-    public String getShortKey(@QueryParam("key") String key, @QueryParam("value") String valueToMd5) {
-        Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String path = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./").trim();
-        
-        if(!path.endsWith( "/")){
-            path += "/";
-        }
-
-        File shortenFile = new File(path + "shorten/" + key + "/" + valueToMd5.substring(0, 2), valueToMd5);
-        if(shortenFile.exists()) {
-            String fileContent = Utils.getFileContent(path, valueToMd5 , "", "shorten/" + key + "/" + valueToMd5.substring(0, 2) + "/");
-            if(StringUtils.isNotEmpty(fileContent)) {
-                Utils.updateFile("shorten/" + key + "/" + valueToMd5.substring(0, 2) + "/" + valueToMd5, fileContent, false);
-                return fileContent.trim();
+    public Response getShortKey(@QueryParam("key") String key, @QueryParam("value") String valueToMd5) {
+        if(Utils.isValidMD5(valueToMd5)) {
+            Properties p = ConfigurationProvider.INSTANCE.getProperties();
+            String path = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./").trim();
+            
+            if(!path.endsWith( "/")){
+                path += "/";
+            }
+            File shortenDir = new File(path + "shorten");
+            if(shortenDir.exists()) {
+                File shortenKeyDir = new File(shortenDir.getAbsolutePath() + "/" + key);
+                if(shortenKeyDir.exists()) {
+                    File shortenKeyDirParent = shortenKeyDir.getParentFile();
+                    if(shortenKeyDirParent != null && shortenDir.getAbsolutePath().equals(shortenKeyDirParent.getAbsolutePath())) {
+                        File shortenDirParent = new File(shortenKeyDir.getAbsolutePath() + "/" + valueToMd5.substring(0, 2));
+                        File shortenFile = new File(shortenDirParent.getAbsolutePath(), valueToMd5);
+                        if(shortenFile.exists()) {
+                            File shortenFileParent = shortenFile.getParentFile();
+                            if(shortenFileParent != null && shortenDirParent.getAbsolutePath().equals(shortenFileParent.getAbsolutePath())) {
+                                String fileContent = Utils.getFileContent(path, valueToMd5 , "", "shorten/" + key + "/" + valueToMd5.substring(0, 2) + "/");
+                                if(StringUtils.isNotEmpty(fileContent)) {
+                                    Utils.updateFile("shorten/" + key + "/" + valueToMd5.substring(0, 2) + "/" + valueToMd5, fileContent, false);
+                                    return Response.ok(fileContent.trim()).build();
+                                }
+                            }
+                        } else {
+                            return Response.ok(valueToMd5).build();
+                        }
+                    }
+                }
             }
         }
-        return valueToMd5;
+        return Response.status(Response.Status.NOT_FOUND ).build();
     }
 
     private String createKMLFile(String content, String mapUserId) throws IOException{

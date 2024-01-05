@@ -2,16 +2,16 @@
  * **************************************************-
  * InGrid Web Map Client
  * ==================================================
- * Copyright (C) 2014 - 2023 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2024 wemove digital solutions GmbH
  * ==================================================
- * Licensed under the EUPL, Version 1.1 or – as soon they will be
+ * Licensed under the EUPL, Version 1.2 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
  * EUPL (the "Licence");
  * 
  * You may not use this work except in compliance with the Licence.
  * You may obtain a copy of the Licence at:
  * 
- * http://ec.europa.eu/idabc/eupl5
+ * https://joinup.ec.europa.eu/software/page/eupl
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" basis,
@@ -68,6 +68,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.web.util.HtmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -505,7 +506,16 @@ public class Utils {
             }
         }
         return count;
-    } 
+    }
+    
+    public static boolean isValidMD5(String s) {
+        return s.matches("^[a-fA-F0-9]{32}$");
+    }
+
+    public static boolean isInvalidInput(String s) {
+        return (s != null && (s.indexOf('<') != -1 || s.indexOf('>') != -1 || s.indexOf("%3C") != -1
+                || s.indexOf("%3c") != -1 || s.indexOf("%3E") != -1 || s.indexOf("%3e") != -1));
+    }
 }
 
 class MailAuthenticator extends Authenticator {

@@ -1,4 +1,15 @@
 
+## 7.0.0 (05.01.2024)
+
+### Features
+
+* Umstellung Lizenz auf EUPL Version 1.2 (#1585)
+
+### Bugfixes
+
+* Webmap Client: Sicherheitsmangel - Reflektion beliebiger Eingaben (#5782)
+* Webmap Client: Path Traversal Schwachstelle (#5780)
+    
 ## 6.3.0 (17.10.2023)
 
 ### Features
