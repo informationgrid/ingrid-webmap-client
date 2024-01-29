@@ -1,4 +1,11 @@
 
+## 7.0.2 (29.01.2024)
+
+
+### Bugfixes
+
+* MAPCLIENT: Fehler bei GFI auf PEGELONLINE WMS, GetMap braucht boolean TRANSPARENT Param (#5905)
+    
 ## 7.0.0 (05.01.2024)
 
 ### Features
