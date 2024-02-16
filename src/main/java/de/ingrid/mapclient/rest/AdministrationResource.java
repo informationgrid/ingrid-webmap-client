@@ -1183,7 +1183,7 @@ public class AdministrationResource {
                     root.put("root", rootItem);
                     ObjectNode results = mapper.createObjectNode();
                     results.put("results", root);
-                    Utils.createFile(DataUtils.CONFIG_PATH_DATA + DataUtils.FILE_PREFIX_CATALOG + catelog.get("id") + DataUtils.FILEFORMAT_JSON, results);
+                    Utils.createFile(DataUtils.CONFIG_PATH_DATA + DataUtils.FILE_PREFIX_CATALOG + catelog.get("id").textValue() + DataUtils.FILEFORMAT_JSON, results);
                     ((ArrayNode) obj.get(DataUtils.CATEGORY_KEY_TOPICS)).add(catelog);
                     Utils.updateFile(DataUtils.CONFIG_PATH_DATA + DataUtils.FILE_NAME_CATALOGS + DataUtils.FILEFORMAT_JSON, obj);
                 } catch (JsonProcessingException e) {
