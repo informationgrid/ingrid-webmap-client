@@ -731,7 +731,7 @@ public class AdministrationResource {
                 // Update css
                 if (path.equals("category")) {
                     String css = Utils.getFileContent(configDir, "app.profile", ".css", "css/");
-                    if (css.indexOf(".ga-topics-sprite-" + name) == -1) {
+                    if (css.indexOf(".ga-topics-sprite-" + name + " ") == -1) {
                         css = css + "\n[ga-topic] .ga-topics-sprite-" + name + " {\n" +
                                 "  background: url(\"" + urlPathPrefix + "/ingrid-webmap-client/rest/data/images/" + path + "/" + name + "\");\n" +
                                 "  width: 140px;\n" +
@@ -740,7 +740,7 @@ public class AdministrationResource {
                     }
                 } else if (path.equals("background")) {
                     String css = Utils.getFileContent(configDir, "app.profile", ".css", "css/");
-                    if (css.indexOf("[ga-background-selector] .ga-" + name) == -1) {
+                    if (css.indexOf("[ga-background-selector] .ga-" + name + " ") == -1) {
                         css = css + "\n@media (max-width: 768px) {\n" +
                                 "[ga-background-selector] .ga-" + name + " {\n" +
                                 "  background: url(\"" + urlPathPrefix + "/ingrid-webmap-client/rest/data/images/" + path + "/" + name + "\");\n" +
