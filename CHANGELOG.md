@@ -1,4 +1,15 @@
 
+## 7.1.0 (27.03.2024)
+
+### Features
+
+* Probleme mit Kategorieerstellung und Dienstzuweisung im InGrid Webmap Client Admin-GUI der NUMIS-Testumgebung (#6004)
+
+### Bugfixes
+
+* Styles werden nicht automatisch hinzugefügt bei Hintergrundkartenbild (#6138)
+* MAPCLIENT: Fehler bei GFI auf PEGELONLINE WMS, GetMap braucht boolean TRANSPARENT Param (#5905)
+    
 ## 7.0.0 (05.01.2024)
 
 ### Features
