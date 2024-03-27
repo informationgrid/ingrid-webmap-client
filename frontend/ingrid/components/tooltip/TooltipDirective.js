@@ -517,7 +517,7 @@ goog.require('ga_window_service');
                 var params = {
                   'INFO_FORMAT': 'text/html',
                   'LANG': gaLang.get(),
-                  'TRANSPARENT': '',
+                  'TRANSPARENT': false,
                   'FEATURE_COUNT': layerToQuery.featureCount || 10
                 };
                 if (layerToQuery.queryLayers) {
