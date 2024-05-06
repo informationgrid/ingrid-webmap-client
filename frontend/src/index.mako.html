@@ -1094,10 +1094,12 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Change to settingDefaultTerrain
           defaultTerrain: settings.settingDefaultTerrain,
           defaultLod: ${default_level_of_detail},
-          resolutions: JSON.parse(${resolutions}),
+          resolutions: settings.settingDefaultMapScales,
+          // INGRID: Add resolutions label
+          resolutionsLabel: settings.settingDefaultMapScalesLabel,
           lods: JSON.parse(${level_of_details}),
           tileGridOrigin: JSON.parse(${tilegrid_origin}),
-          tileGridResolutions: JSON.parse(${tilegrid_resolutions}),
+          tileGridResolutions: settings.settingDefaultMapScales,
           tileGridWmtsDfltMinRes: ${tilegrid_wmts_dflt_min_res}
         });
       })();

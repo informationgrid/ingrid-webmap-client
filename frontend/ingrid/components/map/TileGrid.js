@@ -12,8 +12,12 @@ goog.provide('ga_tilegrid_service');
       var extent = ol.proj.get(gaGlobalOptions.defaultEpsg).getExtent();
       var startResolution = ol.extent.getWidth(extent) / (tileSize || 256);
       var tmpResolutions = new Array(22);
-      for (let i = 0, ii = tmpResolutions.length; i < ii; ++i) {
-        tmpResolutions[i] = startResolution / Math.pow(2, i);
+      if (resolutions.length === 0) {
+          for (let i = 0, ii = tmpResolutions.length; i < ii; ++i) {
+            tmpResolutions[i] = startResolution / Math.pow(2, i);
+          }
+      } else {
+        tmpResolutions = resolutions;
       }
       if (type === 'wms') {
         return new ol.tilegrid.TileGrid({
