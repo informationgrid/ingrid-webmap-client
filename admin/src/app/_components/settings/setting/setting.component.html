@@ -412,7 +412,7 @@
                                     </div>
                                     <div class="input-group form-group">
                                         <input type="number" #mapScale [(ngModel)]="mapScaleValue" name="mapScale" class="form-control" placeholder="{{ ('value_placeholder') | translate }}">
-                                        <input type="text" #mapScaleLabel [(ngModel)]="mapScaleLabelValue" name="mapScaleLabel" class="form-control" placeholder="{{ ('label_placeholder') | translate }}">
+                                        <input type="number" #mapScaleLabel [(ngModel)]="mapScaleLabelValue" name="mapScaleLabel" class="form-control" placeholder="{{ ('label_placeholder') | translate }}">
                                         <div class="input-group-append">
                                             <button type="button" class="btn btn-primary btn-sm" (click)="onAddTwoItems(mapScaleValue, settings.settingDefaultMapScales, mapScaleLabelValue, settings.settingDefaultMapScalesLabel);mapScale.value = '';mapScaleLabel.value = '';"
                                                 [disabled]="!mapScale.value || !mapScaleLabel.value">

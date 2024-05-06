@@ -116,13 +116,16 @@ export class UtilsLayers {
         }
     }
 
-    static onMoveItem(value: string, list: any, delta: number) {
+    static onMoveItem(value: any, list: any, delta: number) {
         const index = list.indexOf(value);
         const newIndex = index + delta;
         if (newIndex < 0 || newIndex === list.length) {
             return;
         }
-        const indexes = [index, newIndex].sort();
+        let indexes = [index, newIndex].sort();
+        if (typeof value === 'number') {
+            indexes = [index, newIndex].sort(function(a, b) { return a - b; });
+        }
         list.splice(indexes[0], 2, list[indexes[1]], list[indexes[0]]);
     }
 
