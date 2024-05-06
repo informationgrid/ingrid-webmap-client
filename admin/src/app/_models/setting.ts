@@ -18,6 +18,8 @@ export class Setting {
         public settingDisclaimerURL = '',
         public settingUseGeodesic = false,
         public settingDefaultMouseProjections = false,
+        public settingDefaultMapScales = [],
+        public settingDefaultMapScalesLabel = [],
         public settingDefaultImportList: string[] = [],
         public settingShareFacebook = false,
         public settingShareMail = false,
