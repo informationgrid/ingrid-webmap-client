@@ -422,6 +422,8 @@ goog.require('ga_urlutils_service');
          * Returns an Cesium imagery provider.
          */
         this.getCesiumImageryProviderById = function(bodId, olLayer) {
+          // INGRID: Use default url on settings
+          var provider;
           var config = layers[bodId];
           var config3d = this.getConfig3d(config);
           if (!/^(wms|wmts|aggregate)$/.test(config3d.type)) {
@@ -462,20 +464,22 @@ goog.require('ga_urlutils_service');
               tileSize: 256,
               subdomains: h2(wmtsSubdomains)
             };
+            // INGRID: Change provider
+            provider = new Cesium.WebMapTileServiceImageryProvider({
+              url : config.template,
+              layer : requestedLayer,
+              style : config.style,
+              format : 'image/' + config.format,
+              tileMatrixSetID : config.matrixSet3D,
+            });
+            return provider
           } else if (config3d.type === 'wms') {
             var tileSize = 512;
+            // INGRID: Change params
             var wmsParams = {
-              layers: requestedLayer,
-              format: 'image/' + format,
-              service: 'WMS',
-              version: '1.3.0',
-              request: 'GetMap',
-              crs: 'CRS:84',
-              bbox: '{westProjected},{southProjected},' +
-                    '{eastProjected},{northProjected}',
-              width: tileSize,
-              height: tileSize,
-              styles: ''
+              SERVICE: 'WMS',
+              VERSION: config.version,
+              REQUEST: 'GetCapabilities'
             };
             if (config3d.timeEnabled) {
               wmsParams.time = '{Time}';
@@ -485,6 +489,16 @@ goog.require('ga_urlutils_service');
               tileSize: tileSize,
               subdomains: wmsSubdomains
             };
+            // INGRID: Change provider
+            provider = new Cesium.WebMapServiceImageryProvider({
+              url : getWmsTpl(config.wmsUrl, wmsParams),
+              layers: requestedLayer,
+                parameters: {
+                  transparent: true,
+                  format: 'image/' + format
+                }
+              });
+            return provider;
           }
           var extent = config3d.extent || gaMapUtils.defaultExtent;
           if (params) {
@@ -502,7 +516,7 @@ goog.require('ga_urlutils_service');
                 return olLayer.time || '';
               }
             };
-            var provider = new Cesium.UrlTemplateImageryProvider({
+            provider = new Cesium.UrlTemplateImageryProvider({
               url: params.url,
               subdomains: params.subdomains,
               minimumLevel: minRetLod,

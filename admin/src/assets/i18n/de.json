@@ -147,6 +147,8 @@
     "layer_template_help": "Tragen Sie hier die WMTS-ResourceURL ein.",
     "layer_matrixSet": "MatrixSet",
     "layer_matrixSet_help": "Definieren Sie den TileMatrixSet Identifier der Karte.",
+    "layer_matrixSet3D": "MatrixSet3D",
+    "layer_matrixSet3D_help": "Definieren Sie den TileMatrixSet Identifier der Karte für die Projektion EPSG:4326.",
     "layer_serverLayerName": "Layername",
     "layer_serverLayerName_help": "Tragen Sie hier den Layer-Name für Ihre Karte ein.",
     "layer_timestamps": "Zeitstempeln definieren",
