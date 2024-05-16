@@ -397,6 +397,9 @@ goog.require('ga_urlutils_service');
          */
         this.getCesiumTileset3dById = function(bodId) {
           var config3d = this.getConfig3d(layers[bodId]);
+          if (!/^tileset3d$/.test(config3d.type)) {
+            return;
+          }
           var timestamp = this.getLayerTimestampFromYear(config3d,
               gaTime.get());
           var requestedLayer = config3d.serverLayerName || bodId;
@@ -404,7 +407,7 @@ goog.require('ga_urlutils_service');
               h2(vectorTilesSubdomains));
           url += 'tileset.json';
           var tileset = new Cesium.Cesium3DTileset({
-            url: 'http://localhost/tileset/3d/4978/tileset.json',
+            url: url,
             maximumNumberOfLoadedTiles: 3
           });
           tileset.bodId = bodId;
