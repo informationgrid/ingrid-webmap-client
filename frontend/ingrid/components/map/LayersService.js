@@ -397,9 +397,6 @@ goog.require('ga_urlutils_service');
          */
         this.getCesiumTileset3dById = function(bodId) {
           var config3d = this.getConfig3d(layers[bodId]);
-          if (!/^tileset3d$/.test(config3d.type)) {
-            return;
-          }
           var timestamp = this.getLayerTimestampFromYear(config3d,
               gaTime.get());
           var requestedLayer = config3d.serverLayerName || bodId;
@@ -407,7 +404,7 @@ goog.require('ga_urlutils_service');
               h2(vectorTilesSubdomains));
           url += 'tileset.json';
           var tileset = new Cesium.Cesium3DTileset({
-            url: url,
+            url: 'http://localhost/tileset/3d/4978/tileset.json',
             maximumNumberOfLoadedTiles: 3
           });
           tileset.bodId = bodId;
@@ -491,10 +488,11 @@ goog.require('ga_urlutils_service');
             };
             // INGRID: Change provider
             provider = new Cesium.WebMapServiceImageryProvider({
-              url : getWmsTpl(config.wmsUrl, wmsParams),
+              url : config.wmsUrl,
               layers: requestedLayer,
                 parameters: {
                   transparent: true,
+                  version: config.version || '1.1.1',
                   format: 'image/' + format
                 }
               });
