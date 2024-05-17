@@ -397,7 +397,7 @@ goog.require('ga_urlutils_service');
          */
         this.getCesiumTileset3dById = function(bodId) {
           // INGRID: Add osmLayer
-          if(bodId  === 'osmLayer') {
+          if (bodId === 'osmLayer') {
             if (!gaGlobalOptions.osmTileset3dUrl) {
               return;
             }
@@ -414,10 +414,10 @@ goog.require('ga_urlutils_service');
               return;
             }
             var timestamp = this.getLayerTimestampFromYear(config3d,
-              gaTime.get());
+                gaTime.get());
             var requestedLayer = config3d.serverLayerName || bodId;
             var url = getVectorTilesUrl(requestedLayer, timestamp,
-              h2(vectorTilesSubdomains));
+                h2(vectorTilesSubdomains));
             url += 'tileset.json';
             // INGRID: Change url
             url = config3d.tileset3dUrl;
@@ -441,7 +441,7 @@ goog.require('ga_urlutils_service');
           // INGRID: Use default url on settings
           var provider;
           // INGRID: Add createOpenStreetMapImageryProvider
-          if(bodId  === 'osmLayer') {
+          if (bodId === 'osmLayer') {
             provider = new Cesium.createOpenStreetMapImageryProvider({});
             return provider;
           }
@@ -486,14 +486,17 @@ goog.require('ga_urlutils_service');
               subdomains: h2(wmtsSubdomains)
             };
             // INGRID: Change provider
-            provider = new Cesium.WebMapTileServiceImageryProvider({
-              url : config.template,
-              layer : requestedLayer,
-              style : config.style,
-              format : 'image/' + config.format,
-              tileMatrixSetID : config.matrixSet3D,
-            });
-            return provider
+            if (config.matrixSet3D) {
+              provider = new Cesium.WebMapTileServiceImageryProvider({
+                url: config.template,
+                layer: requestedLayer,
+                style: config.style,
+                format: 'image/' + config.format,
+                tileMatrixSetID: config.matrixSet3D
+              });
+              return provider;
+            }
+            return;
           } else if (config3d.type === 'wms') {
             var tileSize = 512;
             // INGRID: Change params
@@ -511,15 +514,23 @@ goog.require('ga_urlutils_service');
               subdomains: wmsSubdomains
             };
             // INGRID: Change provider
+            params = {
+              width: config.tileSize || '256',
+              height: config.tileSize || '256',
+              transparent: true,
+              version: config.version || '1.3.0',
+              format: 'image/' + format
+            };
+            if (config.VERSION === '1.1.1') {
+              params.srs = 'EPSG:4326';
+            } else {
+              params.crs = 'EPSG:4326';
+            }
             provider = new Cesium.WebMapServiceImageryProvider({
-              url : config.wmsUrl,
+              url: config.wmsUrl,
               layers: requestedLayer,
-                parameters: {
-                  transparent: true,
-                  version: config.version || '1.1.1',
-                  format: 'image/' + format
-                }
-              });
+              parameters: params
+            });
             return provider;
           }
           var extent = config3d.extent || gaMapUtils.defaultExtent;
@@ -778,7 +789,7 @@ goog.require('ga_urlutils_service');
                   projection: config.epsg || gaGlobalOptions.defaultEpsg,
                   // INGRID: Add 'config.tileSize'
                   tileGrid: gaTileGrid.get(tileGridMinRes, config.type,
-                        config.tileSize),
+                      config.tileSize),
                   // INGRID: Add config
                   tileLoadFunction: tileLoadFunction(config),
                   wrapX: false,
