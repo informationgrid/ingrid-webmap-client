@@ -1717,6 +1717,27 @@
                                         class="form-control">
                                 </div>
                             </div>
+                            <!-- settingOSMTileset3dUrl -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingOSMTileset3dUrl</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingOSMTileset3dUrl"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingOSMTileset3dUrl" data-parent="#setting_accordion">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingOSMTileset3dUrl_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingOSMTileset3dUrl="ngModel" [(ngModel)]="settings.settingOSMTileset3dUrl" name="settingOSMTileset3dUrl"
+                                        class="form-control">
+                                </div>
+                            </div>
                             <!-- settingDataOwnerReplacements -->
                             <div class="form-group row">
                                 <div class="col-sm-3">
