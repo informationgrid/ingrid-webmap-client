@@ -81,8 +81,12 @@ goog.require('ga_urlutils_service');
         };
         if (params.VERSION === '1.1.1') {
             wmsParams.srs = 'EPSG:4326';
+            wmsParams.bbox = '{westProjected},{southProjected},' +
+               '{eastProjected},{northProjected}';
         } else {
             wmsParams.crs = 'EPSG:4326';
+            wmsParams.bbox = '{southProjected},{westProjected},' +
+                '{northProjected},{eastProjected}';
         }
         var provider = new Cesium.WebMapServiceImageryProvider({
           url: layer.get("url"),

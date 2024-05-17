@@ -397,16 +397,16 @@ goog.require('ga_urlutils_service');
          */
         this.getCesiumTileset3dById = function(bodId) {
           // INGRID: Add osmLayer
+          var tileset;
           if (bodId === 'osmLayer') {
             if (!gaGlobalOptions.osmTileset3dUrl) {
               return;
             }
-            var tileset = new Cesium.Cesium3DTileset({
+            tileset = new Cesium.Cesium3DTileset({
               url: gaGlobalOptions.osmTileset3dUrl,
               maximumNumberOfLoadedTiles: 3
             });
             tileset.bodId = bodId;
-            return tileset;
           } else {
             var config3d = this.getConfig3d(layers[bodId]);
             // INGRID: Change check 3D tiles exists
@@ -421,7 +421,7 @@ goog.require('ga_urlutils_service');
             url += 'tileset.json';
             // INGRID: Change url
             url = config3d.tileset3dUrl;
-            var tileset = new Cesium.Cesium3DTileset({
+            tileset = new Cesium.Cesium3DTileset({
               url: url,
               maximumNumberOfLoadedTiles: 3
             });
@@ -430,8 +430,8 @@ goog.require('ga_urlutils_service');
               var style = gaStyleFactory.getStyle(config3d.style);
               tileset.style = new Cesium.Cesium3DTileStyle(style);
             }
-            return tileset;
           }
+          return tileset;
         };
 
         /**
@@ -523,8 +523,12 @@ goog.require('ga_urlutils_service');
             };
             if (config.VERSION === '1.1.1') {
               params.srs = 'EPSG:4326';
+              params.bbox = '{westProjected},{southProjected},' +
+                           '{eastProjected},{northProjected}';
             } else {
               params.crs = 'EPSG:4326';
+              params.bbox = '{southProjected},{westProjected},' +
+                '{northProjected},{eastProjected}';
             }
             provider = new Cesium.WebMapServiceImageryProvider({
               url: config.wmsUrl,
