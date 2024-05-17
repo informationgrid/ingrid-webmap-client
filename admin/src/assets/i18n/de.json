@@ -408,5 +408,7 @@
     "layer_wmsWfsFeatureTypes_help": "Liste der Feature Types (kommagetrennt) definieren, die angezeigt werden dürfen. Wenn der Eintrag leer ist, werden alle Feature Types angezeigt.",
     "layer_portalUrl": "Metadaten-URL",
     "layer_portalUrl_help": "URL zu den Metadaten. Diese URL wird in der Infobox dieser Karte angezeigt.",
+    "layer_tileset3dUrl": "Tileset3D-URL",
+    "layer_tileset3dUrl_help": "URL des 3D-Tilesets, welches in der 3D Ansicht geladen werden soll.",
     "others": "Sonstiges"
 }

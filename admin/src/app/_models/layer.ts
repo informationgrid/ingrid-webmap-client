@@ -49,6 +49,7 @@ export class Layer implements ILayer, ILayerWms, ILayerWmts {
     wmsWfsUrl: string;
     wmsWfsFeatureTypes: string;
     portalUrl: string;
+    tileset3dUrl: string;
     epsg: string;
 
     constructor(type: LayerType) {
