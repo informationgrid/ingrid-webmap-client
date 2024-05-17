@@ -396,29 +396,42 @@ goog.require('ga_urlutils_service');
          * Returns an Cesium 3D Tileset.
          */
         this.getCesiumTileset3dById = function(bodId) {
-          var config3d = this.getConfig3d(layers[bodId]);
-          // INGRID: Change check 3D tiles exists
-          if (!config3d.tileset3dUrl) {
-            return;
-          }
-          var timestamp = this.getLayerTimestampFromYear(config3d,
+          // INGRID: Add osmLayer
+          if(bodId  === 'osmLayer') {
+            if (!gaGlobalOptions.osmTileset3dUrl) {
+              return;
+            }
+            var tileset = new Cesium.Cesium3DTileset({
+              url: gaGlobalOptions.osmTileset3dUrl,
+              maximumNumberOfLoadedTiles: 3
+            });
+            tileset.bodId = bodId;
+            return tileset;
+          } else {
+            var config3d = this.getConfig3d(layers[bodId]);
+            // INGRID: Change check 3D tiles exists
+            if (!config3d.tileset3dUrl) {
+              return;
+            }
+            var timestamp = this.getLayerTimestampFromYear(config3d,
               gaTime.get());
-          var requestedLayer = config3d.serverLayerName || bodId;
-          var url = getVectorTilesUrl(requestedLayer, timestamp,
+            var requestedLayer = config3d.serverLayerName || bodId;
+            var url = getVectorTilesUrl(requestedLayer, timestamp,
               h2(vectorTilesSubdomains));
-          url += 'tileset.json';
-          // INGRID: Change url
-          url = config3d.tileset3dUrl;
-          var tileset = new Cesium.Cesium3DTileset({
-            url: url,
-            maximumNumberOfLoadedTiles: 3
-          });
-          tileset.bodId = bodId;
-          if (config3d.style) {
-            var style = gaStyleFactory.getStyle(config3d.style);
-            tileset.style = new Cesium.Cesium3DTileStyle(style);
+            url += 'tileset.json';
+            // INGRID: Change url
+            url = config3d.tileset3dUrl;
+            var tileset = new Cesium.Cesium3DTileset({
+              url: url,
+              maximumNumberOfLoadedTiles: 3
+            });
+            tileset.bodId = bodId;
+            if (config3d.style) {
+              var style = gaStyleFactory.getStyle(config3d.style);
+              tileset.style = new Cesium.Cesium3DTileStyle(style);
+            }
+            return tileset;
           }
-          return tileset;
         };
 
         /**
@@ -427,6 +440,11 @@ goog.require('ga_urlutils_service');
         this.getCesiumImageryProviderById = function(bodId, olLayer) {
           // INGRID: Use default url on settings
           var provider;
+          // INGRID: Add createOpenStreetMapImageryProvider
+          if(bodId  === 'osmLayer') {
+            provider = new Cesium.createOpenStreetMapImageryProvider({});
+            return provider;
+          }
           var config = layers[bodId];
           var config3d = this.getConfig3d(config);
           if (!/^(wms|wmts|aggregate)$/.test(config3d.type)) {

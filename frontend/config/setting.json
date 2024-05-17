@@ -71,7 +71,8 @@
     "settingSearchCoordsZoom": 16,
     "settingWFSFeaturePointZoom": 19,
     "settingEnable3D": false,
-    "settingDefaultTerrain": "//assets.agi.com/stk-terrain/world",
+    "settingDefaultTerrain": "",
+    "settingOSMTileset3dUrl": "",
     "settingEnableMapScale": false,
     "settingDataOwnerReplacements": {}
 }
