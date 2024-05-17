@@ -397,7 +397,8 @@ goog.require('ga_urlutils_service');
          */
         this.getCesiumTileset3dById = function(bodId) {
           var config3d = this.getConfig3d(layers[bodId]);
-          if (!/^tileset3d$/.test(config3d.type)) {
+          // INGRID: Change check 3D tiles exists
+          if (!config3d.tileset3dUrl) {
             return;
           }
           var timestamp = this.getLayerTimestampFromYear(config3d,
@@ -406,6 +407,8 @@ goog.require('ga_urlutils_service');
           var url = getVectorTilesUrl(requestedLayer, timestamp,
               h2(vectorTilesSubdomains));
           url += 'tileset.json';
+          // INGRID: Change url
+          url = config3d.tileset3dUrl;
           var tileset = new Cesium.Cesium3DTileset({
             url: url,
             maximumNumberOfLoadedTiles: 3
