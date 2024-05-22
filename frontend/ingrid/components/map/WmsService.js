@@ -55,8 +55,8 @@ goog.require('ga_urlutils_service');
                            '{eastProjected},{northProjected}';
         }
 
-        var extent = gaGlobalOptions.defaultExtent;
         /* INGRID: Change to WebMapServiceImageryProvider
+        var extent = gaGlobalOptions.defaultExtent;
         return new Cesium.UrlTemplateImageryProvider({
           minimumRetrievingLevel: gaGlobalOptions.minimumRetrievingLevel,
           url: new Cesium.Resource({
