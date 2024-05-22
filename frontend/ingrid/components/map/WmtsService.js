@@ -68,6 +68,7 @@ goog.require('ga_urlutils_service');
           return;
         }
 
+        /* INGRID: Change to WebMapTileServiceImageryProvider
         var tpl = source.getUrls()[0];
         if (source.getRequestEncoding() === 'KVP') {
           tpl += 'service=WMTS&version=1.0.0&request=GetTile' +
@@ -88,7 +89,6 @@ goog.require('ga_urlutils_service');
             replace('{TileCol}', '{x}').
             replace('{TileRow}', '{y}');
 
-        /* INGRID: Change to WebMapTileServiceImageryProvider
         return new Cesium.UrlTemplateImageryProvider({
           minimumRetrievingLevel: gaGlobalOptions.minimumRetrievingLevel,
           url: new Cesium.Resource({
@@ -106,6 +106,7 @@ goog.require('ga_urlutils_service');
           layer: source.getLayer(),
           style: source.getStyle(),
           format: source.getFormat(),
+          tilingScheme: tilingScheme,
           tileMatrixSetID: matrixSet
         });
         return provider;

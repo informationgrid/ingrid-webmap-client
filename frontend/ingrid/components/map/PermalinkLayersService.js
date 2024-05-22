@@ -295,7 +295,8 @@ goog.require('ga_wmts_service');
         var scope = $rootScope.$new();
         var dupId = 0; // Use for duplicate layer
         // We must reorder layer when async layer are added
-        var mustReorder = false;
+        // INGRID: Change to true
+        var mustReorder = true;
 
         var addTopicSelectedLayers = function() {
           // if plConf is active, we get layers from there. This
@@ -329,67 +330,69 @@ goog.require('ga_wmts_service');
           var value;
           if (layerSpecs && layerSpecs.length > 0) {
             value = layerSpecs.join(',');
-            if(gaUrlUtils.isMD5Hash(value)) {
-                var getLayerSpecs = $http.get(gaGlobalOptions.publicUrl +
+            if (gaUrlUtils.isMD5Hash(value)) {
+              var getLayerSpecs = $http.get(gaGlobalOptions.publicUrl +
                     '/short', {
-                  params: {
-                    key: 'layers',
-                    value: value
-                  }
-                });
-                all['layerSpecs'] = getLayerSpecs;
+                params: {
+                  key: 'layers',
+                  value: value
+                }
+              });
+              all['layerSpecs'] = getLayerSpecs;
+              // INGRID: Set layerSpecs
+              layerSpecs = getLayerSpecs;
             }
           }
           if (opacities && opacities.length > 0) {
             value = opacities.join(',');
-            if(gaUrlUtils.isMD5Hash(value)) {
-                var getOpacities = $http.get(gaGlobalOptions.publicUrl +
+            if (gaUrlUtils.isMD5Hash(value)) {
+              var getOpacities = $http.get(gaGlobalOptions.publicUrl +
                   '/short', {
-                  params: {
-                    key: 'layers_opacity',
-                    value: value
-                  }
-                });
-                all['opacities'] = getOpacities;
+                params: {
+                  key: 'layers_opacity',
+                  value: value
+                }
+              });
+              all['opacities'] = getOpacities;
             }
           }
           if (visibilities && visibilities.length > 0) {
             value = visibilities.join(',');
-            if(gaUrlUtils.isMD5Hash(value)) {
-                var getVisibilities = $http.get(gaGlobalOptions.publicUrl +
+            if (gaUrlUtils.isMD5Hash(value)) {
+              var getVisibilities = $http.get(gaGlobalOptions.publicUrl +
                   '/short', {
-                  params: {
-                    key: 'layers_visibility',
-                    value: value
-                  }
-                });
-                all['visibilities'] = getVisibilities;
+                params: {
+                  key: 'layers_visibility',
+                  value: value
+                }
+              });
+              all['visibilities'] = getVisibilities;
             }
           }
           if (timestamps && timestamps.length > 0) {
             value = timestamps.join(',');
-            if(gaUrlUtils.isMD5Hash(value)) {
-                var getTimestamps = $http.get(gaGlobalOptions.publicUrl +
+            if (gaUrlUtils.isMD5Hash(value)) {
+              var getTimestamps = $http.get(gaGlobalOptions.publicUrl +
                   '/short', {
-                  params: {
-                    key: 'layers_timestamp',
-                    value: value
-                  }
-                });
-                all['timestamps'] = getTimestamps;
+                params: {
+                  key: 'layers_timestamp',
+                  value: value
+                }
+              });
+              all['timestamps'] = getTimestamps;
             }
           }
           if (styleUrls && styleUrls.length > 0) {
             value = styleUrls.join(',');
-            if(gaUrlUtils.isMD5Hash(value)) {
-                var getStyleUrls = $http.get(gaGlobalOptions.publicUrl +
+            if (gaUrlUtils.isMD5Hash(value)) {
+              var getStyleUrls = $http.get(gaGlobalOptions.publicUrl +
                   '/short', {
-                  params: {
-                    key: 'layers_styleurl',
-                    value: value
-                  }
-                });
-                all['styleUrls'] = getStyleUrls;
+                params: {
+                  key: 'layers_styleurl',
+                  value: value
+                }
+              });
+              all['styleUrls'] = getStyleUrls;
             }
           }
           $q.all(all).then(function(values) {
@@ -624,10 +627,12 @@ goog.require('ga_wmts_service');
 
           // When an async layer is added we must reorder correctly the layers.
           if (mustReorder) {
-            var nbLayersToAdd = layerSpecs.length;
+            // INGRID: Remove unused nbLayersToAdd
+            //var nbLayersToAdd = layerSpecs.length;
             var deregister2 = scope.$watchCollection(
                 'layers | filter : layerFilter', function(layers) {
-                  if (layers.length === nbLayersToAdd) {
+                  // INGRID: Change to layerSpecs.length
+                  if (layers.length === layerSpecs.length) {
                     deregister2();
                     var hasBg = map.getLayers().item(0).background;
                     var ii = map.getLayers().getLength();
