@@ -322,7 +322,7 @@ goog.require('ga_urlutils_service');
         // INGRID: Check useReprojection
         var layId = layer.get('bodId');
         if (!layId) {
-            layId = layer.get('id');
+          layId = layer.get('id');
         }
         if (layId) {
           var useReprojLayers = $scope.options.useReprojLayers;
@@ -517,25 +517,27 @@ goog.require('ga_urlutils_service');
             var replacements = gaGlobalOptions.defaultDataOwnerReplacements;
             var dataOwnerVerbose = [];
             for (var i = 0; i < allDataOwner.length; i++) {
-                var replacement = replacements[allDataOwner[i]];
-                if (replacement) {
-                    dataOwnerVerbose.push('- ' + replacement[1]);
-                    allDataOwner[i] = replacement[0];
-                }
+              var replacement = replacements[allDataOwner[i]];
+              if (replacement) {
+                dataOwnerVerbose.push('- ' + replacement[1]);
+                allDataOwner[i] = replacement[0];
+              }
             }
             allDataOwner = allDataOwner.join(', ');
             dataOwnerVerbose = dataOwnerVerbose.join('\n');
             var filename = gaGlobalOptions.printFilename || 'Print.InGrid';
             var title = $scope.title ? $scope.title : '';
             if (gaGlobalOptions.printFilenameAddTitle) {
-                if (title) {
-                    filename += '-' + title;
-                }
+              if (title) {
+                filename += '-' + title;
+              }
             }
             var movieprint = $scope.options.movie && $scope.options.multiprint;
             var spec = {
               layout: $scope.layout.name,
               srs: proj.getCode(),
+              // INGRID: Add geodetic
+              geodetic: gaGlobalOptions.useGeodesic,
               units: proj.getUnits() || 'm',
               rotation: -((view.getRotation() * 180.0) / Math.PI),
               // INGRID: Set to comment app
@@ -568,8 +570,10 @@ goog.require('ga_urlutils_service');
                   display: [$scope.layout.map.width, $scope.layout.map.height],
                   // scale has to be one of the advertise by the print server
                   scale: $scope.scale.value,
+                  // INGRID: Add geodetic
+                  geodetic: gaGlobalOptions.useGeodesic,
                   dataOwner: allDataOwner ? '© ' + allDataOwner : '',
-                  dataOwnerVerbose: dataOwnerVerbose ? dataOwnerVerbose : 'false',
+                  dataOwnerVerbose: dataOwnerVerbose || 'false',
                   shortLink: shortLink || '',
                   rotation: -((view.getRotation() * 180.0) / Math.PI),
                   // INGRID: Add comment and title for print
