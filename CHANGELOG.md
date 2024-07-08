@@ -1,4 +1,17 @@
 
+## 7.2.0 (08.07.2024)
+
+### Features
+
+* Webmap Client (#6462)
+* MAPCLIENT: Scale Einstellungen von kombinierten eingepflegten Karten im Update-Job integrieren (#6291)
+* MAPCLIENT: Einstellbarkeit der Karten-Zoomstufen (#6287)
+* 3D Darstellung im Umweltportal (#5943)
+
+### Bugfixes
+
+* MAPCLIENT: Druck-Funktion erzeugt falsche Scaleline im PDF (#6390)
+    
 ## 7.1.0 (27.03.2024)
 
 ### Features
