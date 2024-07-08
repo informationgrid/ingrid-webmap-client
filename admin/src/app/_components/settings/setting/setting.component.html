@@ -376,6 +376,52 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- settingDefaultMapScales -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingDefaultMapScales</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDefaultMapScales"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingDefaultMapScales" data-parent="#setting_accordion">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingDefaultMapScales_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="input-group form-group" *ngFor="let mapScale of settings.settingDefaultMapScales; let i=index;">
+                                        <input type="number" [(ngModel)]="settings.settingDefaultMapScales[i]" name="mapScales{{ i }}" class="form-control" disabled>
+                                        <input type="number" [(ngModel)]="settings.settingDefaultMapScalesLabel[i]" name="mapScalesLabel{{ i }}" class="form-control" disabled>
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownTwoItems(settings.settingDefaultMapScales[i], settings.settingDefaultMapScales, settings.settingDefaultMapScalesLabel[i], settings.settingDefaultMapScalesLabel)"
+                                                *ngIf="i !== (settings.settingDefaultMapScales.length - 1) && settings.settingDefaultMapScales.length > 1">
+                                                <i class="fa fa-sort-down" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onUpTwoItems(settings.settingDefaultMapScales[i], settings.settingDefaultMapScales, settings.settingDefaultMapScalesLabel[i], settings.settingDefaultMapScalesLabel)"
+                                                *ngIf="i !== 0">
+                                                <i class="fa fa-sort-up" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-danger btn-sm" (click)="onRemoveTwoItems(i, settings.settingDefaultMapScales, settings.settingDefaultMapScalesLabel)">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="input-group form-group">
+                                        <input type="number" #mapScale [(ngModel)]="mapScaleValue" name="mapScale" class="form-control" placeholder="{{ ('value_placeholder') | translate }}">
+                                        <input type="number" #mapScaleLabel [(ngModel)]="mapScaleLabelValue" name="mapScaleLabel" class="form-control" placeholder="{{ ('label_placeholder') | translate }}">
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-primary btn-sm" (click)="onAddTwoItems(mapScaleValue, settings.settingDefaultMapScales, mapScaleLabelValue, settings.settingDefaultMapScalesLabel);mapScale.value = '';mapScaleLabel.value = '';"
+                                                [disabled]="!mapScale.value || !mapScaleLabel.value">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <!-- settingHideDraw -->
                             <div class="form-group row">
                                 <div class="col-sm-3">
@@ -1668,6 +1714,27 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <input type="text" #settingDefaultTerrain="ngModel" [(ngModel)]="settings.settingDefaultTerrain" name="settingDefaultTerrain"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <!-- settingOSMTileset3dUrl -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingOSMTileset3dUrl</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingOSMTileset3dUrl"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingOSMTileset3dUrl" data-parent="#setting_accordion">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingOSMTileset3dUrl_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingOSMTileset3dUrl="ngModel" [(ngModel)]="settings.settingOSMTileset3dUrl" name="settingOSMTileset3dUrl"
                                         class="form-control">
                                 </div>
                             </div>

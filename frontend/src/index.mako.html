@@ -981,7 +981,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Add search BwaLocator Station
           bwaStrFinderLayers : settings.settingBwaStrFinderLayers,
           // INGRID: Short URL service (external)
-          shortURLService : settings.settingShortURLService || 'https://is.gd/create.php?format=json',
+          shortURLService : settings.settingShortURLService || '',
           // INGRID: Add property to check is in iFrame
           isParentIFrame: window.document.referrer.length == 0 ? false : (window.document.referrer.indexOf(window.location.host) > -1 ? (window.parent.iframe ? true : false) : true),
           // INGRID: Load map images over rest
@@ -1093,11 +1093,15 @@ itemscope itemtype="http://schema.org/WebApplication"
           defaultElevationModel: '${default_elevation_model}',
           // INGRID: Change to settingDefaultTerrain
           defaultTerrain: settings.settingDefaultTerrain,
+          // INGRID: Add settingOSMTileset3dUrl
+          osmTileset3dUrl: settings.settingOSMTileset3dUrl,
           defaultLod: ${default_level_of_detail},
-          resolutions: JSON.parse(${resolutions}),
+          resolutions: settings.settingDefaultMapScales,
+          // INGRID: Add resolutions label
+          resolutionsLabel: settings.settingDefaultMapScalesLabel,
           lods: JSON.parse(${level_of_details}),
           tileGridOrigin: JSON.parse(${tilegrid_origin}),
-          tileGridResolutions: JSON.parse(${tilegrid_resolutions}),
+          tileGridResolutions: settings.settingDefaultMapScales,
           tileGridWmtsDfltMinRes: ${tilegrid_wmts_dflt_min_res}
         });
       })();

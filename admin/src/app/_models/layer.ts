@@ -35,6 +35,7 @@ export class Layer implements ILayer, ILayerWms, ILayerWmts {
     serverLayerName: string;
     origin: number[];
     matrixSet: string;
+    matrixSet3D: string;
     tileSize: number;
     scales: number[];
     matrixIds: string[];
@@ -48,6 +49,7 @@ export class Layer implements ILayer, ILayerWms, ILayerWmts {
     wmsWfsUrl: string;
     wmsWfsFeatureTypes: string;
     portalUrl: string;
+    tileset3dUrl: string;
     epsg: string;
 
     constructor(type: LayerType) {

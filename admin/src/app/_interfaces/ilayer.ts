@@ -24,4 +24,5 @@ export interface ILayer {
     queryLayers: string;
     featureCount: number;
     portalUrl: string;
+    tileset3dUrl: string;
 }

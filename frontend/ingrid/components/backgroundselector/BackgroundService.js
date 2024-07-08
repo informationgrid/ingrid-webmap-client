@@ -124,6 +124,12 @@ goog.require('ga_urlutils_service');
                   osm.displayInLayerManager = false;
                   osm.displayIn3d = true;
                   osm.visible = true;
+                  osm.getCesiumImageryProvider = function() {
+                      return gaLayers.getCesiumImageryProviderById(bg.id, osm);
+                  };
+                  osm.getCesiumTileset3d = function(scene) {
+                      return gaLayers.getCesiumTileset3dById(bg.id);
+                  };
                   if (layers.item(0) && layers.item(0).background) {
                     layers.setAt(0, osm);
                   } else {

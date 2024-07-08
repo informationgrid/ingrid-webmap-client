@@ -20,6 +20,9 @@ export class SettingComponent implements OnInit {
   @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
   @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
 
+  mapScaleValue: number;
+  mapScaleLabelValue: string;
+
   constructor(private httpService: HttpService) { }
 
   ngOnInit() {
@@ -29,16 +32,36 @@ export class SettingComponent implements OnInit {
     UtilsLayers.onAddItem(value, list);
   }
 
+  onAddTwoItems(value1: any, list1: any, value2: any, list2: any) {
+    UtilsLayers.onAddItem(value1, list1);
+    UtilsLayers.onAddItem(value2, list2);
+  }
+
   onRemoveItem(index, list: any) {
     UtilsLayers.onRemoveItem(index, list);
+  }
+
+  onRemoveTwoItems(index, list1: any, list2: any) {
+    UtilsLayers.onRemoveItem(index, list1);
+    UtilsLayers.onRemoveItem(index, list2);
   }
 
   onUpItem(value: any, list: any) {
     UtilsLayers.onUpItem(value, list);
   }
 
+  onUpTwoItems(value1: any, list1: any, value2: any, list2: any) {
+    UtilsLayers.onUpItem(value1, list1);
+    UtilsLayers.onUpItem(value2, list2);
+  }
+
   onDownItem(value: any, list: any) {
     UtilsLayers.onDownItem(value, list);
+  }
+
+  onDownTwoItems(value1: any, list1: any, value2: any, list2: any) {
+    UtilsLayers.onDownItem(value1, list1);
+    UtilsLayers.onDownItem(value2, list2);
   }
 
   onTextAreaBlur(key: string, value: string) {

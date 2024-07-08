@@ -25,6 +25,8 @@
     "settingDisclaimerURL": "/impressum",
     "settingUseGeodesic": true,
     "settingDefaultMouseProjections": ["EPSG:3857", "EPSG:4326", "EPSG:31466", "EPSG:31467", "EPSG:31468", "EPSG:31469", "EPSG:25832", "EPSG:25833"],
+    "settingDefaultMapScales": [],
+    "settingDefaultMapScalesLabel": [],
     "settingDefaultImportList": [
         "https://via.bund.de/wsv/bwastr/wms?VERSION=1.1.1",
         "https://via.bund.de/wsv/ienc/wms?",
@@ -69,7 +71,8 @@
     "settingSearchCoordsZoom": 16,
     "settingWFSFeaturePointZoom": 19,
     "settingEnable3D": false,
-    "settingDefaultTerrain": "//assets.agi.com/stk-terrain/world",
+    "settingDefaultTerrain": "",
+    "settingOSMTileset3dUrl": "",
     "settingEnableMapScale": false,
     "settingDataOwnerReplacements": {}
 }

@@ -68,6 +68,7 @@ goog.require('ga_urlutils_service');
           return;
         }
 
+        /* INGRID: Change to WebMapTileServiceImageryProvider
         var tpl = source.getUrls()[0];
         if (source.getRequestEncoding() === 'KVP') {
           tpl += 'service=WMTS&version=1.0.0&request=GetTile' +
@@ -99,6 +100,16 @@ goog.require('ga_urlutils_service');
           hasAlphaChannel: !/jp/i.test(source.getFormat()),
           availableLevels: gaGlobalOptions.imageryAvailableLevels
         });
+        */
+        var provider = new Cesium.WebMapTileServiceImageryProvider({
+          url: source.getUrls()[0],
+          layer: source.getLayer(),
+          style: source.getStyle(),
+          format: source.getFormat(),
+          tilingScheme: tilingScheme,
+          tileMatrixSetID: matrixSet
+        });
+        return provider;
       };
 
       // Create an WMTS layer

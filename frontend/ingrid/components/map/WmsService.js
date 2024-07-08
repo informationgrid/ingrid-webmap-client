@@ -55,6 +55,7 @@ goog.require('ga_urlutils_service');
                            '{eastProjected},{northProjected}';
         }
 
+        /* INGRID: Change to WebMapServiceImageryProvider
         var extent = gaGlobalOptions.defaultExtent;
         return new Cesium.UrlTemplateImageryProvider({
           minimumRetrievingLevel: gaGlobalOptions.minimumRetrievingLevel,
@@ -70,6 +71,29 @@ goog.require('ga_urlutils_service');
           subdomains: gaUrlUtils.parseSubdomainsTpl(layer.url) ||
               DFLT_SUBDOMAINS
         });
+        */
+        wmsParams = {
+          width: '256',
+          height: '256',
+          transparent: true,
+          version: params.VERSION || '1.3.0',
+          format: params.FORMAT || 'image/png'
+        };
+        if (params.VERSION === '1.1.1') {
+            wmsParams.srs = 'EPSG:4326';
+            wmsParams.bbox = '{westProjected},{southProjected},' +
+               '{eastProjected},{northProjected}';
+        } else {
+            wmsParams.crs = 'EPSG:4326';
+            wmsParams.bbox = '{southProjected},{westProjected},' +
+                '{northProjected},{eastProjected}';
+        }
+        var provider = new Cesium.WebMapServiceImageryProvider({
+          url: layer.get("url"),
+          layers: params.LAYERS,
+          parameters: wmsParams
+        });
+        return provider;
       };
 
       var Wms = function() {
@@ -172,7 +196,7 @@ goog.require('ga_urlutils_service');
                     xhr.open('GET', src);
                     xhr.setRequestHeader('Authorization', 'Basic ' +
                       window.btoa(
-                        sessionAuthService.login + ':' +
+                          sessionAuthService.login + ':' +
                         sessionAuthService.password
                       )
                     );
@@ -217,7 +241,7 @@ goog.require('ga_urlutils_service');
 
           // INGRID: Check auth
           var sessionAuthService = JSON.parse($window.sessionStorage.
-            getItem(options.url));
+              getItem(options.url));
 
           var layer = new LayerClass({
             id: options.id,
@@ -239,7 +263,7 @@ goog.require('ga_urlutils_service');
             // INGRID: Add isSecure
             isSecure: options.isSecure,
             // INGRID: Add hasLoggedIn
-            hasLoggedIn: sessionAuthService ? true : false,
+            hasLoggedIn: !!sessionAuthService,
             source: source,
             transition: 0
           });

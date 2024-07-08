@@ -396,24 +396,40 @@ goog.require('ga_urlutils_service');
          * Returns an Cesium 3D Tileset.
          */
         this.getCesiumTileset3dById = function(bodId) {
-          var config3d = this.getConfig3d(layers[bodId]);
-          if (!/^tileset3d$/.test(config3d.type)) {
-            return;
-          }
-          var timestamp = this.getLayerTimestampFromYear(config3d,
-              gaTime.get());
-          var requestedLayer = config3d.serverLayerName || bodId;
-          var url = getVectorTilesUrl(requestedLayer, timestamp,
-              h2(vectorTilesSubdomains));
-          url += 'tileset.json';
-          var tileset = new Cesium.Cesium3DTileset({
-            url: url,
-            maximumNumberOfLoadedTiles: 3
-          });
-          tileset.bodId = bodId;
-          if (config3d.style) {
-            var style = gaStyleFactory.getStyle(config3d.style);
-            tileset.style = new Cesium.Cesium3DTileStyle(style);
+          // INGRID: Add osmLayer
+          var tileset;
+          if (bodId === 'osmLayer') {
+            if (!gaGlobalOptions.osmTileset3dUrl) {
+              return;
+            }
+            tileset = new Cesium.Cesium3DTileset({
+              url: gaGlobalOptions.osmTileset3dUrl,
+              maximumNumberOfLoadedTiles: 3
+            });
+            tileset.bodId = bodId;
+          } else {
+            var config3d = this.getConfig3d(layers[bodId]);
+            // INGRID: Change check 3D tiles exists
+            if (!config3d.tileset3dUrl) {
+              return;
+            }
+            var timestamp = this.getLayerTimestampFromYear(config3d,
+                gaTime.get());
+            var requestedLayer = config3d.serverLayerName || bodId;
+            var url = getVectorTilesUrl(requestedLayer, timestamp,
+                h2(vectorTilesSubdomains));
+            url += 'tileset.json';
+            // INGRID: Change url
+            url = config3d.tileset3dUrl;
+            tileset = new Cesium.Cesium3DTileset({
+              url: url,
+              maximumNumberOfLoadedTiles: 3
+            });
+            tileset.bodId = bodId;
+            if (config3d.style) {
+              var style = gaStyleFactory.getStyle(config3d.style);
+              tileset.style = new Cesium.Cesium3DTileStyle(style);
+            }
           }
           return tileset;
         };
@@ -422,6 +438,13 @@ goog.require('ga_urlutils_service');
          * Returns an Cesium imagery provider.
          */
         this.getCesiumImageryProviderById = function(bodId, olLayer) {
+          // INGRID: Use default url on settings
+          var provider;
+          // INGRID: Add createOpenStreetMapImageryProvider
+          if (bodId === 'osmLayer') {
+            provider = new Cesium.createOpenStreetMapImageryProvider({});
+            return provider;
+          }
           var config = layers[bodId];
           var config3d = this.getConfig3d(config);
           if (!/^(wms|wmts|aggregate)$/.test(config3d.type)) {
@@ -462,20 +485,25 @@ goog.require('ga_urlutils_service');
               tileSize: 256,
               subdomains: h2(wmtsSubdomains)
             };
+            // INGRID: Change provider
+            if (config.matrixSet3D) {
+              provider = new Cesium.WebMapTileServiceImageryProvider({
+                url: config.template,
+                layer: requestedLayer,
+                style: config.style,
+                format: 'image/' + config.format,
+                tileMatrixSetID: config.matrixSet3D
+              });
+              return provider;
+            }
+            return;
           } else if (config3d.type === 'wms') {
             var tileSize = 512;
+            // INGRID: Change params
             var wmsParams = {
-              layers: requestedLayer,
-              format: 'image/' + format,
-              service: 'WMS',
-              version: '1.3.0',
-              request: 'GetMap',
-              crs: 'CRS:84',
-              bbox: '{westProjected},{southProjected},' +
-                    '{eastProjected},{northProjected}',
-              width: tileSize,
-              height: tileSize,
-              styles: ''
+              SERVICE: 'WMS',
+              VERSION: config.version,
+              REQUEST: 'GetCapabilities'
             };
             if (config3d.timeEnabled) {
               wmsParams.time = '{Time}';
@@ -485,6 +513,29 @@ goog.require('ga_urlutils_service');
               tileSize: tileSize,
               subdomains: wmsSubdomains
             };
+            // INGRID: Change provider
+            params = {
+              width: config.tileSize || '256',
+              height: config.tileSize || '256',
+              transparent: true,
+              version: config.version || '1.3.0',
+              format: 'image/' + format
+            };
+            if (config.VERSION === '1.1.1') {
+              params.srs = 'EPSG:4326';
+              params.bbox = '{westProjected},{southProjected},' +
+                           '{eastProjected},{northProjected}';
+            } else {
+              params.crs = 'EPSG:4326';
+              params.bbox = '{southProjected},{westProjected},' +
+                '{northProjected},{eastProjected}';
+            }
+            provider = new Cesium.WebMapServiceImageryProvider({
+              url: config.wmsUrl,
+              layers: requestedLayer,
+              parameters: params
+            });
+            return provider;
           }
           var extent = config3d.extent || gaMapUtils.defaultExtent;
           if (params) {
@@ -502,7 +553,7 @@ goog.require('ga_urlutils_service');
                 return olLayer.time || '';
               }
             };
-            var provider = new Cesium.UrlTemplateImageryProvider({
+            provider = new Cesium.UrlTemplateImageryProvider({
               url: params.url,
               subdomains: params.subdomains,
               minimumLevel: minRetLod,
@@ -742,7 +793,7 @@ goog.require('ga_urlutils_service');
                   projection: config.epsg || gaGlobalOptions.defaultEpsg,
                   // INGRID: Add 'config.tileSize'
                   tileGrid: gaTileGrid.get(tileGridMinRes, config.type,
-                        config.tileSize),
+                      config.tileSize),
                   // INGRID: Add config
                   tileLoadFunction: tileLoadFunction(config),
                   wrapX: false,

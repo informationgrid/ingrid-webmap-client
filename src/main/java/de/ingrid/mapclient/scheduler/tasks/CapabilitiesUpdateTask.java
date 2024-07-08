@@ -483,7 +483,7 @@ public class CapabilitiesUpdateTask implements Runnable {
                     Node layerNode = (Node) xpath.evaluate("//Layer/Name[text()=\"" + layerWmsLayers + "\"]/..", doc, XPathConstants.NODE);
                     Node parentLayerNode = (Node) xpath.evaluate("//Layer/Name[text()=\"" + layerWmsLayers + "\"]/../..", doc, XPathConstants.NODE);
                     if (layerNode != null) {
-                        log.debug("Check for Update layer: " + layerWmsLayers);
+                        log.debug("Check for update on layer: " + layerWmsLayers);
                         Node fieldNode = null;
                         String layerKey = null;
 
@@ -660,8 +660,197 @@ public class CapabilitiesUpdateTask implements Runnable {
                         errorLayernames.add("Layer not exists (" + id + "): " + layerWmsLayers + " on service url: " + layerWmsUrl);
                     }
                 } else {
-                    /* TODO: Execute combine layers
-                     */
+                    String[] splitLayers = layerWmsLayers.split(",");
+                    String firstLayer = splitLayers[0];
+                    Node layerNode = (Node) xpath.evaluate("//Layer/Name[text()=\"" + firstLayer + "\"]/..", doc, XPathConstants.NODE);
+                    Node parentLayerNode = (Node) xpath.evaluate("//Layer/Name[text()=\"" + firstLayer + "\"]/../..", doc, XPathConstants.NODE);
+                    if (layerNode != null) {
+                        log.debug("Check for updates on combine layer: " + firstLayer);
+                        Node fieldNode = null;
+                        String layerKey = null;
+
+                        // MinScale
+                        layerKey = "minScale";
+                        if (parentLayerNode != null) {
+                            // Check inherit parent value
+                            fieldNode = (Node) xpath.evaluate("./MinScaleDenominator", parentLayerNode, XPathConstants.NODE);
+                            if (fieldNode != null) {
+                                hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
+                            }
+                            fieldNode = (Node) xpath.evaluate("./ScaleHint/@min", parentLayerNode, XPathConstants.NODE);
+                            if (fieldNode != null) {
+                                hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
+                            }
+                        }
+                        fieldNode = (Node) xpath.evaluate("./MinScaleDenominator", layerNode, XPathConstants.NODE);
+                        if (fieldNode != null) {
+                            hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
+                        }
+                        fieldNode = (Node) xpath.evaluate("./ScaleHint/@min", layerNode, XPathConstants.NODE);
+                        if (fieldNode != null) {
+                            hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
+                        }
+
+                        // MaxScale
+                        layerKey = "maxScale";
+                        if (parentLayerNode != null) {
+                            // Check inherit parent value
+                            fieldNode = (Node) xpath.evaluate("./MaxScaleDenominator", parentLayerNode, XPathConstants.NODE);
+                            if (fieldNode != null) {
+                                hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
+                            }
+                            fieldNode = (Node) xpath.evaluate("./ScaleHint/@max", parentLayerNode, XPathConstants.NODE);
+                            if (fieldNode != null) {
+                                hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
+                            }
+                        }
+
+                        layerKey = "maxScale";
+                        fieldNode = (Node) xpath.evaluate("./MaxScaleDenominator", layerNode, XPathConstants.NODE);
+                        if (fieldNode != null) {
+                            hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
+                        }
+                        fieldNode = (Node) xpath.evaluate("./ScaleHint/@max", layerNode, XPathConstants.NODE);
+                        if (fieldNode != null) {
+                            hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
+                        }
+                        // Extent
+                        layerKey = "extent";
+                        if (parentLayerNode != null) {
+                            fieldNode = (Node) xpath.evaluate("./EX_GeographicBoundingBox", parentLayerNode, XPathConstants.NODE);
+                            if (fieldNode != null) {
+                                ArrayNode array = mapper.createArrayNode();
+                                getExtent(xpath, fieldNode, array, FIELD_BOUND);
+                                layerJSON.set(layerKey, array);
+                                hasChanges = true;
+                            }
+
+                            fieldNode = (Node) xpath.evaluate("./BoundingBox[@CRS=\"" + defaultEpsg + "\"]", parentLayerNode, XPathConstants.NODE);
+                            if (fieldNode != null) {
+                                try {
+                                    ArrayNode array = mapper.createArrayNode();
+                                    getExtent(xpath, fieldNode, array, FIELD_XY);
+                                    transformExtent(defaultEpsg, layerKey, array, layerJSON);
+                                } catch (Exception e) {
+                                    log.error("Error transform extent!");
+                                }
+                                hasChanges = true;
+                            }
+
+                            fieldNode = (Node) xpath.evaluate("./LatLonBoundingBox", parentLayerNode, XPathConstants.NODE);
+                            if (fieldNode != null) {
+                                ArrayNode array = mapper.createArrayNode();
+                                getExtent(xpath, fieldNode, array, FIELD_XY);
+                                layerJSON.put(layerKey, array);
+                                hasChanges = true;
+                            }
+
+                            fieldNode = (Node) xpath.evaluate("./BoundingBox[@SRS=\"" + defaultEpsg + "\"]", parentLayerNode, XPathConstants.NODE);
+                            if (fieldNode != null) {
+                                try {
+                                    ArrayNode array = mapper.createArrayNode();
+                                    getExtent(xpath, fieldNode, array, FIELD_XY);
+                                    transformExtent(defaultEpsg, layerKey, array, layerJSON);
+                                } catch (Exception e) {
+                                    log.error("Error transform extent!");
+                                }
+                                hasChanges = true;
+                            }
+                        }
+                        fieldNode = (Node) xpath.evaluate("./EX_GeographicBoundingBox", layerNode, XPathConstants.NODE);
+                        if (fieldNode != null) {
+                            ArrayNode array = mapper.createArrayNode();
+                            getExtent(xpath, fieldNode, array, FIELD_BOUND);
+                            layerJSON.put(layerKey, array);
+                            hasChanges = true;
+                        }
+
+                        fieldNode = (Node) xpath.evaluate("./BoundingBox[@CRS=\"" + defaultEpsg + "\"]", layerNode, XPathConstants.NODE);
+                        if (fieldNode != null) {
+                            try {
+                                ArrayNode array = mapper.createArrayNode();
+                                getExtent(xpath, fieldNode, array, FIELD_XY);
+                                transformExtent(defaultEpsg, layerKey, array, layerJSON);
+                            } catch (Exception e) {
+                                log.error("Error transform extent!");
+                            }
+                            hasChanges = true;
+                        }
+
+                        fieldNode = (Node) xpath.evaluate("./LatLonBoundingBox", layerNode, XPathConstants.NODE);
+                        if (fieldNode != null) {
+                            ArrayNode array = mapper.createArrayNode();
+                            getExtent(xpath, fieldNode, array, FIELD_XY);
+                            layerJSON.put(layerKey, array);
+                            hasChanges = true;
+                        }
+
+                        fieldNode = (Node) xpath.evaluate("./BoundingBox[@SRS=\"" + defaultEpsg + "\"]", layerNode, XPathConstants.NODE);
+                        if (fieldNode != null) {
+                            try {
+                                ArrayNode array = mapper.createArrayNode();
+                                getExtent(xpath, fieldNode, array, FIELD_XY);
+                                transformExtent(defaultEpsg, layerKey, array, layerJSON);
+                            } catch (Exception e) {
+                                log.error("Error transform extent!");
+                            }
+                            hasChanges = true;
+                        }
+                        // LegendUrl
+                        layerKey = "legendUrl";
+                        String legendUrl = "";
+                        for (String splitLayer : splitLayers) {
+                            Node splitNode = (Node) xpath.evaluate("//Layer/Name[text()=\"" + splitLayer + "\"]/..", doc, XPathConstants.NODE);
+                            fieldNode = (Node) xpath.evaluate("./Style/LegendURL/OnlineResource/@href", splitNode, XPathConstants.NODE);
+                            if (fieldNode != null) {
+                                if (!legendUrl.isEmpty()) {
+                                    legendUrl += "|";
+                                }
+                                legendUrl += fieldNode.getTextContent();
+                            }
+                        }
+                        if(!legendUrl.isEmpty()) {
+                            layerJSON.put(layerKey, legendUrl);
+                            hasChanges = true;
+                        }
+                        boolean attributionUpdate = true;
+                        if (layerJSON.hasNonNull("attributionUpdate")) {
+                            attributionUpdate = layerJSON.get("attributionUpdate").asBoolean();
+                        }
+                        if (attributionUpdate) {
+                            // Attribution
+                            Node layerAttribution = (Node) xpath.evaluate(".//Service/ContactInformation/ContactPersonPrimary/ContactOrganization", doc, XPathConstants.NODE);
+                            if (layerAttribution != null) {
+                                String attribution = layerAttribution.getTextContent().trim();
+                                if (layerJSON.hasNonNull("attribution")) {
+                                    if (!layerJSON.get("attribution").textValue().equals(attribution)) {
+                                        hasChanges = true;
+                                        layerJSON.put("attribution", attribution);
+                                    }
+                                } else {
+                                    hasChanges = true;
+                                    layerJSON.put("attribution", attribution);
+                                }
+                            }
+                            // AttributionUrl
+                            Node layerAttributionUrl = (Node) xpath.evaluate(".//Service/OnlineResource/@href", doc, XPathConstants.NODE);
+                            if (layerAttributionUrl != null) {
+                                String attributionUrl = layerAttributionUrl.getTextContent().trim();
+                                if (layerJSON.hasNonNull("attributionUrl")) {
+                                    if (!layerJSON.get("attributionUrl").textValue().equals(attributionUrl)) {
+                                        hasChanges = true;
+                                        layerJSON.put("attributionUrl", attributionUrl);
+                                    }
+                                } else {
+                                    hasChanges = true;
+                                    layerJSON.put("attributionUrl", attributionUrl);
+                                }
+                            }
+                        }
+                    } else {
+                        layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_LAYER_NOT_EXIST);
+                        errorLayernames.add("Layer not exists (" + id + "): " + layerWmsLayers + " on service url: " + layerWmsUrl);
+                    }
                 }
             }
         }

@@ -98,9 +98,12 @@ goog.require('ga_window_service');
           projection: defaultProjection,
           // extent: gaMapUtils.defaultExtent,
           center: ol.proj.transform(ol.extent.getCenter(gaMapUtils.
-              defaultExtent), 'EPSG:4326', gaGlobalOptions.defaultEpsg)
-        // resolution: gaMapUtils.defaultResolution,
-        // resolutions: gaMapUtils.viewResolutions
+              defaultExtent), 'EPSG:4326', gaGlobalOptions.defaultEpsg),
+          // INGRID: Disabled resolution
+          // resolution: gaMapUtils.defaultResolution,
+          // INGRID: Get resolutions from config 
+          resolutions: gaMapUtils.viewResolutions.length > 0 ?
+            gaMapUtils.viewResolutions : undefined
         }),
         logo: false
       });

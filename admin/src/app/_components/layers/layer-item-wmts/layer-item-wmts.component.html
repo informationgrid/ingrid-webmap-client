@@ -265,6 +265,34 @@
               </div>
             </div>
           </div>
+          <!-- matrixSet3D -->
+          <div class="form-group row">
+            <div class="col-sm-3">
+              <div class=" d-flex justify-content-between align-items-center">
+                <label class="col-form-label" translate>layer_matrixSet3D</label>
+                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_matrixSet3D_' + layer.id"
+                  title="{{ ('help') | translate }}">
+                  <i class="fa fa-info" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="collapse" id="info_layer_matrixSet3D_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+                <div>
+                  <small class="form-text text-muted" translate>layer_matrixSet3D_help</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-9" [ngClass]="{
+              'has-danger': (matrixSet3D.invalid && (matrixSet3D.dirty || matrixSet3D.touched)) ,
+              'has-success': (matrixSet3D.valid && (matrixSet3D.dirty || matrixSet3D.touched))
+              }">
+              <input type="text" #matrixSet3D="ngModel" [(ngModel)]="layer.item.matrixSet3D" name="matrixSet3D" class="form-control" pattern="^[a-zA-Z0-9_-]*">
+              <div class="form-control-feedback" *ngIf="matrixSet3D.errors && (matrixSet3D.dirty || matrixSet3D.touched)">
+                <div *ngIf="matrixSet3D.errors.pattern">
+                  <span translate>field_pattern</span>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- serverLayerName -->
           <div class="form-group row">
             <div class="col-sm-3">
@@ -1060,6 +1088,29 @@
               'has-success': (portalUrl.valid && (portalUrl.dirty || portalUrl.touched))
               }">
               <input type="text" #portalUrl="ngModel" [(ngModel)]="layer.item.portalUrl" name="portalUrl" class="form-control">
+            </div>
+          </div>
+          <!-- tileset3dUrl -->
+          <div class="form-group row">
+            <div class="col-sm-3">
+              <div class=" d-flex justify-content-between align-items-center">
+                <label class="col-form-label" translate>layer_tileset3dUrl</label>
+                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_tileset3dUrl_' + layer.id"
+                  title="{{ ('help') | translate }}">
+                  <i class="fa fa-info" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="collapse" id="info_layer_tileset3dUrl_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+                <div>
+                  <small class="form-text text-muted" translate>layer_tileset3dUrl_help</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-9 input-group" [ngClass]="{
+              'has-danger': (tileset3dUrl.invalid && (tileset3dUrl.dirty || tileset3dUrl.touched)) ,
+              'has-success': (tileset3dUrl.valid && (tileset3dUrl.dirty || tileset3dUrl.touched))
+              }">
+              <input type="text" #tileset3dUrl="ngModel" [(ngModel)]="layer.item.tileset3dUrl" name="tileset3dUrl" class="form-control">
             </div>
           </div>
         </div>
