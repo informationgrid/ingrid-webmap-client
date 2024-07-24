@@ -154,6 +154,7 @@
           </div>
           <div class="col-sm">
             <div *ngIf="!this.newLayersTree.treeModel.isEmptyTree()">
+              <!-- Grouplayers as folder -->
               <div class="form-group form-check d-flex justify-content-between">
                 <input type="checkbox" class="form-check-input" data-toggle='collapse' id="setGroupLayerAsFolder" name="setGroupLayerAsFolder" [(ngModel)]="setGroupLayerAsFolder">
                 <label class="form-check-label" for="setGroupLayerAsFolder" title="{{ ('service_groupLayers_as_folder_help') | translate }}" translate>service_groupLayers_as_folder</label>
@@ -165,6 +166,43 @@
               <div class="alert alert-info collapse" id="info_setGroupLayerAsFolder">
                 <small class="form-text text-muted" ><b translate>service_groupLayers_as_folder</b>:</small>
                 <small class="form-text text-muted" translate>service_groupLayers_as_folder_help</small>
+              </div>
+              <!-- layers as single tile -->
+              <div class="form-group form-check d-flex justify-content-between">
+                <input type="checkbox" class="form-check-input" data-toggle='collapse' id="setLayerAsSingleTile" name="setLayerAsSingleTile" [(ngModel)]="setLayerAsSingleTile">
+                <label class="form-check-label" for="setLayerAsSingleTile" title="{{ ('service_layers_as_singleTile_help') | translate }}" translate>service_layers_as_singleTile</label>
+                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_setLayerAsSingleTile"
+                  title="{{ ('help') | translate }}">
+                  <i class="fa fa-info" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="alert alert-info collapse" id="info_setLayerAsSingleTile">
+                <small class="form-text text-muted" ><b translate>service_layers_as_singleTile</b>:</small>
+                <small class="form-text text-muted" translate>service_layers_as_singleTile_help</small>
+              </div>
+              <!-- layers as gutter -->
+              <div class="form-group d-flex justify-content-between">
+                <input type="number" class="form-input" data-toggle='collapse' id="setLayerGutter" name="setLayerGutter" [(ngModel)]="setLayerGutter" placeholder="{{ ('service_layers_gutter') | translate }}">
+                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_setLayerGutter"
+                  title="{{ ('help') | translate }}">
+                  <i class="fa fa-info" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="alert alert-info collapse" id="info_setLayerGutter">
+                <small class="form-text text-muted" ><b translate>service_layers_gutter</b>:</small>
+                <small class="form-text text-muted" translate>service_layers_gutter_help</small>
+              </div>
+              <!-- layers as tile size -->
+              <div class="form-group d-flex justify-content-between">
+                <input type="number" class="form-input" data-toggle='collapse' id="setLayerTileSize" name="setLayerTileSize" [(ngModel)]="setLayerTileSize" placeholder="{{ ('service_layers_tileSize') | translate }}">
+                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_setLayerTileSize"
+                  title="{{ ('help') | translate }}">
+                  <i class="fa fa-info" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="alert alert-info collapse" id="info_setLayerTileSize">
+                <small class="form-text text-muted" ><b translate>service_layers_tileSize</b>:</small>
+                <small class="form-text text-muted" translate>service_layers_tileSize_help</small>
               </div>
               <div class="input-group form-group">
                 <select #selectCategory class="form-control " name="categoryId" [ngModel]="categoryId">
