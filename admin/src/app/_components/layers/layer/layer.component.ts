@@ -4,6 +4,7 @@ import { LayerItem } from '../../../_models/layer-item';
 import { HttpService } from '../../../_services/http.service';
 import { NgForm } from '@angular/forms/src/directives/ng_form';
 import { TreeComponent, TreeModel, TreeNode, IActionMapping, ITreeOptions } from 'angular-tree-component';
+import { Layer } from '../../../_models/layer';
 import { Wmslayer } from '../../../_models/wmslayer';
 import { Wmtslayer } from '../../../_models/wmtslayer';
 import * as _ from 'lodash';
@@ -51,6 +52,9 @@ export class LayerComponent implements OnInit {
   hasLoadLayers = false;
 
   setGroupLayerAsFolder = false;
+  setLayerAsSingleTile = false;
+  setLayerGutter = null;
+  setLayerTileSize = null;
   hasLogin = false;
   overrideLogin = false;
   serviceLogin = '';
@@ -311,7 +315,8 @@ export class LayerComponent implements OnInit {
       this.getCheckedNode(root, checkedLayers, isCombine);
     });
     checkedLayers.forEach(l => {
-      const layerItem = new LayerItem(l.generateId(this.layers), l);
+      const layer = this.updateOptionsOnLayer(l);
+      const layerItem = new LayerItem(l.generateId(this.layers), layer);
       layerItems.push(layerItem);
     });
     this.saveAddedLayers(layerItems, roots, isCombine);
@@ -353,10 +358,11 @@ export class LayerComponent implements OnInit {
           }
         }
       });
-      const layer = _.cloneDeep(checkedLayers[0]);
+      let layer = _.cloneDeep(checkedLayers[0]);
       layer.wmsLayers = wmsLayers;
       layer.legendUrl = legendUrl;
       layer.label = label;
+      layer = this.updateOptionsOnLayer(layer);
       const layerItem = new LayerItem(layer.generateId(this.layers), layer);
       layerItems.push(layerItem);
     }
@@ -423,6 +429,19 @@ export class LayerComponent implements OnInit {
     if (node.children) {
       node.children.forEach((child) => this.getChildCheckedNode(child, list, isCombine));
     }
+  }
+
+  updateOptionsOnLayer (layer: Layer) {
+    if (this.setLayerAsSingleTile) {
+      layer.singleTile = this.setLayerAsSingleTile;
+    }
+    if (this.setLayerGutter) {
+      layer.gutter = this.setLayerGutter;
+    }
+    if (this.setLayerTileSize) {
+      layer.tileSize = this.setLayerTileSize;
+    }
+    return layer;
   }
 
   saveAddedLayersToCategory(layers: LayerItem[], nodes: Array<TreeNode>, categoryLayers) {

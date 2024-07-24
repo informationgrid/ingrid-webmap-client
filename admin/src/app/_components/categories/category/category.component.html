@@ -24,10 +24,6 @@
                 <i class="fa fa-trash" aria-hidden="true"></i>
                 categories_select_delete
               </button>
-              <button class="btn btn-danger mr-sm-2" type="button" (click)="modalDeleteAll.show()" translate>
-                <i class="fa fa-trash" aria-hidden="true"></i>
-                categories_all_delete
-              </button>
             </div>
           </div>
           <div>
@@ -50,7 +46,7 @@
           </div>
         </div>
         <div class="card" *ngFor="let category of categories | arrayFilter: searchText: 'id'">
-          <div class="card-header d-flex justify-content-between align-items-center collapsed" id="categoriesHeader{{ category.id }}" data-toggle="collapse" [attr.data-target]="'#collapse' + category.id" 
+          <div class="card-header d-flex justify-content-between align-items-center collapsed" id="categoriesHeader{{ category.id }}" data-toggle="collapse" [attr.data-target]="'#collapse' + category.id"
             aria-expanded="true" aria-controls="categories" (click)="loadCategory(category.id, $event)">
             <span translate>
               <input type="checkbox" (click)="selectCategories($event)" value="{{ category.id }}">
@@ -113,9 +109,9 @@
         ">
         <label class="col-sm-4 col-form-label" for="addCatId" translate>category_item_add_id</label>
         <div class="col-sm-8">
-          <input type="text" #addCatId="ngModel" [(ngModel)]="formAdd.value.addCatId" class="form-control" name="addCatId" id="addCatId" 
+          <input type="text" #addCatId="ngModel" [(ngModel)]="formAdd.value.addCatId" class="form-control" name="addCatId" id="addCatId"
             required minlength="4" pattern="^[a-zA-Z0-9_-]*" appCategoryListValidator [checkList]="categories">
-          <div class="form-control-feedback" 
+          <div class="form-control-feedback"
               *ngIf="addCatId.errors && (addCatId.dirty || addCatId.touched)">
             <div *ngIf="addCatId.errors.required"><span translate>field_required</span></div>
             <div *ngIf="addCatId.errors.minlength"><span translate>field_minlength</span> {{ addCatId.errors.minlength.requiredLength }}</div>
@@ -131,7 +127,7 @@
         <label class="col-sm-4 col-form-label" for="addCatLabel" translate>category_item_add_label</label>
         <div class="col-sm-8">
           <input type="text" #addCatLabel="ngModel" [(ngModel)]="formAdd.value.addCatLabel" class="form-control" name="addCatLabel" id="addCatLabel" required>
-          <div class="form-control-feedback" 
+          <div class="form-control-feedback"
               *ngIf="addCatLabel.errors && (addCatLabel.dirty || addCatLabel.touched)">
             <div *ngIf="addCatLabel.errors.required"><span translate>field_required</span></div>
           </div>
@@ -186,22 +182,6 @@
   </div>
 </app-modal>
 
-<!-- Modal delete all-->
-<app-modal #modalDeleteAll>
-  <div class="app-modal-header">
-    <h5 class="modal-title" translate>categories_all_del_title</h5>
-  </div>
-  <div class="app-modal-body">
-    <p translate>categories_all_del_text</p>
-  </div>
-  <div class="app-modal-footer">
-    <button type="submit" data-dismiss="modal" class="btn btn-danger" (click)="deleteAllCategories(modalDeleteAll)" translate>
-      <i class="fa fa-trash" aria-hidden="true"></i>
-      delete
-    </button>
-  </div>
-</app-modal>
-
 <!-- Modal save success-->
 <app-modal #modalSaveSuccess [animateClose]="true">
   <div class="app-modal-header">
@@ -250,7 +230,7 @@
         <label class="col-sm-4 col-form-label" for="editCatLabel" translate>category_label</label>
         <div class="col-sm-8">
           <input type="text" class="form-control" #editCatLabel="ngModel" [(ngModel)]="formEdit.value.editCatLabel" name="editCatLabel" id="editCatLabel" [value]="formEdit.value.editCatLabel" required>
-          <div class="form-control-feedback" 
+          <div class="form-control-feedback"
               *ngIf="editCatLabel.errors && (editCatLabel.dirty || editCatLabel.touched)">
             <div *ngIf="editCatLabel.errors.required"><span translate>field_required</span></div>
           </div>
@@ -418,7 +398,7 @@
         <div class="col-sm-8">
           <input type="text" #copyId="ngModel" ngModel class="form-control" name="copyId" id="category_copy_copyId"
           required minlength="4" pattern="^[a-zA-Z0-9_-]*" appCategoryListValidator [checkList]="categories">
-          <div class="form-control-feedback" 
+          <div class="form-control-feedback"
               *ngIf="copyId.errors && (copyId.dirty || copyId.touched)">
             <div *ngIf="copyId.errors.required"><span translate>field_required</span></div>
             <div *ngIf="copyId.errors.minlength"><span translate>field_minlength</span> {{ copyId.errors.minlength.requiredLength }}</div>
@@ -435,7 +415,7 @@
         <label class="col-sm-4 col-form-label" for="copyCatLabel" translate>category_label</label>
         <div class="col-sm-8">
           <input type="text" class="form-control" #copyCatLabel="ngModel" [(ngModel)]="formCopy.value.copyCatLabel" name="copyCatLabel" id="copyCatLabel" [value]="formCopy.value.copyCatLabel" required>
-          <div class="form-control-feedback" 
+          <div class="form-control-feedback"
               *ngIf="copyCatLabel.errors && (copyCatLabel.dirty || copyCatLabel.touched)">
             <div *ngIf="copyCatLabel.errors.required"><span translate>field_required</span></div>
           </div>

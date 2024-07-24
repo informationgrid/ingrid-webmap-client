@@ -22,10 +22,6 @@
                   <i class="fa fa-trash"></i>
                   layers_select_delete
                 </button>
-                <button class="btn btn-danger mr-sm-2" type="button" (click)="modalDeleteAll.show()" translate>
-                  <i class="fa fa-trash"></i>
-                  layers_all_delete
-                </button>
               </div>
             </div>
             <div class="mr-auto">
@@ -124,12 +120,6 @@
           <div class="col-sm-6">
             <input type="password" name="password" [(ngModel)]="servicePassword" class="form-control" placeholder="{{ ('service_password') | translate }}">
           </div>
-          <!--
-          <div class="col-sm-4">
-            <input type="checkbox" class="form-check-input" id="overrideLogin" name="overrideLogin" [(ngModel)]="overrideLogin">
-            <label class="form-check-label" for="overrideLogin" translate>service_overrideLogin</label>
-          </div>
-          -->
         </div>
         <div class="alert alert-info" translate>
           service_login_info
@@ -227,22 +217,6 @@
   </div>
   <div class="app-modal-footer">
     <button type="submit" class="btn btn-danger" (click)="deleteSelectedLayers(modalDelete)" translate>
-      <i class="fa fa-trash"></i>
-      delete
-    </button>
-  </div>
-</app-modal>
-
-<!-- Modal delete all-->
-<app-modal #modalDeleteAll>
-  <div class="app-modal-header">
-    <h5 class="modal-title" translate>layers_all_del_title</h5>
-  </div>
-  <div class="app-modal-body">
-    <p translate>layers_all_del_text</p>
-  </div>
-  <div class="app-modal-footer">
-    <button type="submit" class="btn btn-danger" (click)="deleteAllLayers(modalDeleteAll)" translate>
       <i class="fa fa-trash"></i>
       delete
     </button>

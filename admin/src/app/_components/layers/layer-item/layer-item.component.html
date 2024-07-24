@@ -1,9 +1,10 @@
-<div class="card-header d-flex justify-content-between align-items-center" id="layerHeader{{ layer.id }}" data-toggle="collapse" 
+<div class="card-header d-flex justify-content-between align-items-center" id="layerHeader{{ layer.id }}" data-toggle="collapse"
   [attr.data-target]="'#collapse' + layer.id" aria-expanded="false" aria-controls="layers" (click)="loadLayersForService($event, layer)">
   <span>
     <input type="checkbox" (click)="checkLayer($event)" value="{{ layer.id }}">
     {{layer.item.label}}
     <span *ngIf="layer.item.background" class="badge badge-pill" [ngClass]="{'badge-info' : layer.item.background}" translate>layer_background</span>
+    <span *ngIf="layer.item.singleTile" class="badge badge-pill" [ngClass]="{'badge-info' : layer.item.singleTile}" translate>layer_singleTile</span>
     <br>
     <small>{{layer.item.wmsUrl || layer.item.serviceUrl}}</small>
   </span>
@@ -13,11 +14,12 @@
       <i *ngIf="layer.item.auth" aria-hidden="true" class="fa fa-lock"></i>
       {{ layer.item.type | uppercase }}
     </span>
+    <span *ngIf="layer.item.version" class="badge badge-pill" [ngClass]="{'badge-primary' : layer.item.type === 'wms', 'badge-danger' : layer.item.type === 'wmts'}">{{ layer.item.version }}</span>
   </div>
 </div>
 <div class="collapse" id="collapse{{ layer.id }}" [attr.aria-labelledby]="'layerHeader' + layer.id" data-parent="#layers">
   <div *ngIf="isWMSLayer(layer.item)">
-    <app-layer-item-wms [layer]="layer" [layerId]="layer.id" [altLayers]="altLayers" 
+    <app-layer-item-wms [layer]="layer" [layerId]="layer.id" [altLayers]="altLayers"
     (updateLayer)="updateLayer($event)" (updateLayersAfterDelete)="updateLayersAfterDelete()"
     [modalSaveSuccess]="modalSaveSuccess" [modalSaveUnsuccess]="modalSaveUnsuccess"></app-layer-item-wms>
   </div>
