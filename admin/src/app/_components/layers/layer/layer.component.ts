@@ -44,6 +44,11 @@ export class LayerComponent implements OnInit {
   searchCategory = '';
   searchType = '';
 
+  layersExtendedSelectedSingleTile = false;
+  layersExtendedSelectedGutter = null;
+  layersExtendedSelectedTileSize = null;
+  layersSelectAll = false;
+
   newLayers: LayerItem[] = [];
   tmpNewLayers: LayerItem[] = [];
   isUrlLoadSuccess = false;
@@ -90,27 +95,32 @@ export class LayerComponent implements OnInit {
   }
   // Paging
   previousPage() {
+    this.resetAllChecked();
     this.layersCurrentPage--;
     this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
   }
 
   nextPage() {
+    this.resetAllChecked();
     this.layersCurrentPage++;
     this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
   }
 
   firstPage() {
+    this.resetAllChecked();
     this.layersCurrentPage = 1;
     this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
   }
 
   lastPage() {
+    this.resetAllChecked();
     this.layersCurrentPage = this.layersTotalPage;
     this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
   }
 
   // Search
   searchLayers() {
+    this.resetAllChecked();
     this.loadLayers(1, this.layersPerPage, this.searchText);
   }
 
@@ -149,20 +159,72 @@ export class LayerComponent implements OnInit {
     this.updateAppLayers.emit(this.layersPage);
   }
 
+  updateSelectedLayers(modal: ModalComponent) {
+    this.selectedLayers.forEach(selectedLayer => {
+      this.layersPage.forEach(layerItem => {
+        const layerId = layerItem.id;
+        let layer = layerItem.item;
+        if (selectedLayer == layerId) {
+          layer.singleTile = this.layersExtendedSelectedSingleTile;
+          layer.gutter = this.layersExtendedSelectedGutter;
+          layer.tileSize = this.layersExtendedSelectedTileSize;
+          return;
+        }
+      })
+    });
+    this.httpService.updateLayers(this.layersPage).subscribe(
+      data => {
+        this.modalSaveSuccess.show();
+      },
+      error => {
+        console.error('Error onUpdateLayers!');
+        this.modalSaveUnsuccess.show();
+      },
+      () => {
+        modal.hide();
+      }
+    );
+  }
+
   selectLayer(event) {
     if (!this.selectedLayers) {
      this.selectedLayers = new Array();
     }
     if (event.target.checked) {
        this.selectedLayers.push(event.target.value);
-     } else {
+    } else {
        const index = this.selectedLayers.indexOf(event.target.value, 0);
        if (index > -1) {
          this.selectedLayers.splice(index, 1);
        }
-     }
-     event.stopPropagation();
-   }
+    }
+    this.isAllChecked();
+    event.stopPropagation();
+  }
+
+  resetAllChecked() {
+    this.selectedLayers = [];
+    this.layersSelectAll = false;
+  }
+
+  isAllChecked() {
+    if (this.layersPage.length == this.selectedLayers.length) {
+      this.layersSelectAll = true;
+    } else {
+      this.layersSelectAll = false;
+    }
+  }
+
+  changeAllLayersSection(select: boolean) {
+    if (!select) {
+      this.selectedLayers = [];
+      this.layersPage.forEach(layer => {
+        this.selectedLayers.push(layer.id);
+      });
+    } else {
+      this.selectedLayers = [];
+    }
+  }
 
   deleteSelectedLayers(modal: ModalComponent) {
     this.httpService.deleteLayers(this.selectedLayers).subscribe(
@@ -380,6 +442,9 @@ export class LayerComponent implements OnInit {
         data => {
           this.searchText = '';
           this.setGroupLayerAsFolder = false;
+          this.setLayerAsSingleTile = false;
+          this.setLayerGutter = null;
+          this.setLayerTileSize = null;
           this.updateAppLayers.emit(data[1]);
           this.loadLayers(1, this.layersPerPage, this.searchText);
           this.modalSaveSuccess.show();

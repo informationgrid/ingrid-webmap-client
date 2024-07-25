@@ -13,6 +13,7 @@ export class LayerItemComponent {
 
   @Input() layer: LayerItem;
   @Input() layers: LayerItem[] = [];
+  @Input() selectedLayers: string[] = [];
   @Input() modalSaveSuccess: ModalComponent;
   @Input() modalSaveUnsuccess: ModalComponent;
   @Output() updateLayers: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
@@ -34,6 +35,10 @@ export class LayerItemComponent {
       return UtilsLayers.isWMTS(layer.type);
     }
     return false;
+  }
+
+  isChecked(id: string) {
+    return this.selectedLayers.indexOf(id) > -1;
   }
 
   updateLayer(layer: LayerItem) {

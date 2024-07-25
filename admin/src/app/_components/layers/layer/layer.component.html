@@ -18,10 +18,15 @@
                   <i class="fa fa-plus"></i>
                   service_new
                 </button>
-                <button class="btn btn-danger mr-sm-2" type="button" (click)="modalDelete.show()" translate [disabled]="selectedLayers.length == 0">
+                <button class="btn btn-danger mr-sm-2" type="button" (click)="modalDelete.show()" [disabled]="selectedLayers.length == 0">
                   <i class="fa fa-trash"></i>
-                  layers_select_delete
+                  {{ ('layers_select_delete') | translate : { count: selectedLayers.length } }}
                 </button>
+                <span>
+                  <input class="" type="checkbox" id="layers_select_all" name="layers_select_all"
+                        [(ngModel)]="layersSelectAll" (click)="changeAllLayersSection(layersSelectAll)">
+                        {{ ('layers_select_all') | translate }}
+                </span>
               </div>
             </div>
             <div class="mr-auto">
@@ -55,26 +60,95 @@
         </nav>
         <div class="collapse" id="layersExtendedSearch" style="background-color: #e9e9e9;">
           <div class="card-body border-top border-light">
-            <h5 translate>layers_extended_search</h5>
-            <div class="form-row">
-              <div class="form-group col-md-2">
-                <select class="form-control" id="searchCategory" name="searchCategory" (change)="searchLayers()" [(ngModel)]="searchCategory">
-                  <option value="" translate>layers_extended_search_category</option>
-                  <option [value]="category.id" *ngFor="let category of categories;" translate>{{ category.id }}</option>
-                </select>
+            <div class="form-group row">
+              <div class="col-md-6">
+                <div class="modal-header">
+                  <h5 translate>layers_extended_search</h5>
+                  <button class="btn btn-primary mr-sm-2" type="button" (click)="searchLayers()" translate>
+                    layers_extended_search_save
+                  </button>
+                </div>
+                <br>
+                <div class="form-group row">
+                  <div class="col-md-4">
+                    <label for="layersPerPage" translate>layers_extended_search_count</label>
+                  </div>
+                  <div class="col-md-8">
+                    <input class="form-control" type="number" id="layersPerPage" name="layersPerPage"
+                      [(ngModel)]="layersPerPage" min="1" step="1" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-4">
+                    <label for="searchCategory" translate>layers_extended_search_category</label>
+                  </div>
+                  <div class="col-md-8">
+                    <select class="form-control" id="searchCategory" name="searchCategory" [(ngModel)]="searchCategory">
+                      <option value="" translate>layers_extended_search_category</option>
+                      <option [value]="category.id" *ngFor="let category of categories;" translate>{{ category.id }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-4">
+                    <label for="searchType" translate>layers_extended_search_type</label>
+                  </div>
+                  <div class="col-md-8">
+                    <select class="form-control" id="searchType" name="searchType" [(ngModel)]="searchType">
+                      <option value="" translate>layers_extended_search_type</option>
+                      <option value="wms" translate>WMS</option>
+                      <option value="wmts" translate>WMTS</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-4">
+                    <label for="searchHasStatus" translate>status_layer_error</label>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="searchHasStatus" name="searchHasStatus"
+                        [(ngModel)]="searchHasStatus">
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="form-group col-md-2">
-                <select class="form-control" id="searchType" name="searchType" (change)="searchLayers()" [(ngModel)]="searchType">
-                  <option value="" translate>layers_extended_search_type</option>
-                  <option value="wms" translate>WMS</option>
-                  <option value="wmts" translate>WMTS</option>
-                </select>
-              </div>
-              <div class="form-group col-md-2">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="searchHasStatus" name="searchHasStatus" 
-                    [(ngModel)]="searchHasStatus" (ngModelChange)="searchLayers()">
-                  <label for="searchHasStatus" translate>status_layer_error</label>
+              <div class="col-md-6">
+                <div class="modal-header">
+                  <h5 translate>layers_extended_selected</h5>
+                  <button class="btn btn-primary mr-sm-2" type="button" (click)="modalUpdateSelectedLayers.show()" [disabled]="selectedLayers.length == 0" translate>
+                    layers_extended_selected_save
+                  </button>
+                </div>
+                <br>
+                <div class="form-group row">
+                  <div class="col-md-4">
+                    <label for="layers_extended_selected_singleTile" translate>layers_extended_selected_singleTile</label>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="layers_extended_selected_singleTile" name="layers_extended_selected_singleTile"
+                        [(ngModel)]="layersExtendedSelectedSingleTile">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-4">
+                    <label for="layers_extended_selected_gutter" translate>layers_extended_selected_gutter</label>
+                  </div>
+                  <div class="col-md-8">
+                    <input class="form-control" type="number" id="layers_extended_selected_gutter" name="layers_extended_selected_gutter"
+                      [(ngModel)]="layersExtendedSelectedGutter">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-4">
+                    <label for="layers_extended_selected_tileSize" translate>layers_extended_selected_tileSize</label>
+                  </div>
+                  <div class="col-md-8">
+                    <input class="form-control" type="number" id="layers_extended_selected_tileSize" name="layers_extended_selected_tileSize"
+                      [(ngModel)]="layersExtendedSelectedTileSize">
+                  </div>
                 </div>
               </div>
             </div>
@@ -82,7 +156,7 @@
         </div>
         <div class="list-group" *ngFor="let layer of layersPage">
           <div class="card">
-            <app-layer-item [layer]="layer" [layers]="layersPage" (updateLayers)="updateLayers($event)" (selectLayer)="selectLayer($event)"
+            <app-layer-item [layer]="layer" [layers]="layersPage" [selectedLayers]="selectedLayers" (updateLayers)="updateLayers($event)" (selectLayer)="selectLayer($event)"
             [modalSaveSuccess]="modalSaveSuccess" [modalSaveUnsuccess]="modalSaveSuccess"></app-layer-item>
           </div>
         </div>
@@ -251,12 +325,27 @@
     <h5 class="modal-title" translate>layers_select_del_title</h5>
   </div>
   <div class="app-modal-body">
-    <p translate>layers_select_del_text</p>
+    <p>{{ ('layers_select_del_text') | translate: { count: selectedLayers.length } }}</p>
   </div>
   <div class="app-modal-footer">
     <button type="submit" class="btn btn-danger" (click)="deleteSelectedLayers(modalDelete)" translate>
       <i class="fa fa-trash"></i>
       delete
+    </button>
+  </div>
+</app-modal>
+
+<!-- Modal update selected layers-->
+<app-modal #modalUpdateSelectedLayers>
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>layers_select_all_update_title</h5>
+  </div>
+  <div class="app-modal-body">
+    <p>{{ ('layers_select_all_update_text') | translate: { count: selectedLayers.length } }}</p>
+  </div>
+  <div class="app-modal-footer">
+    <button type="submit" class="btn btn-primary" (click)="updateSelectedLayers(modalUpdateSelectedLayers)" translate>
+      layers_select_all_save
     </button>
   </div>
 </app-modal>

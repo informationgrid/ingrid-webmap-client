@@ -205,6 +205,21 @@ public class AdministrationResource {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
     }
 
+    @PUT
+    @Path("layersPage")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateLayersPage(@RequestBody String content) {
+        try {
+            ArrayNode layers = updateLayers((ArrayNode) mapper.readTree(content));
+            return Response.ok(layers).build();
+
+        } catch (JsonProcessingException e) {
+            log.error("Error POST '/layers/{id}'!");
+        }
+
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+    }
+
     @DELETE
     @Path("layers/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -1076,6 +1091,31 @@ public class AdministrationResource {
             }
         }
         return layer;
+    }
+
+
+    private ArrayNode updateLayers(ArrayNode layers) {
+        if (layers != null) {
+            Properties p = ConfigurationProvider.INSTANCE.getProperties();
+            String configDir = p.getProperty(ConfigurationProvider.CONFIG_DIR);
+            if (StringUtils.isNotEmpty(configDir)) {
+                String fileContent = Utils.getFileContent(configDir, DataUtils.FILE_NAME_LAYERS, DataUtils.FILEFORMAT_JSON, DataUtils.CONFIG_PATH_DATA);
+                if (StringUtils.isNotEmpty(fileContent)) {
+                    try {
+                        ObjectNode obj = (ObjectNode) mapper.readTree(fileContent);
+                        for (JsonNode layer : layers) {
+                            ObjectNode layerItem = (ObjectNode) layer.get("item");
+                            String newId = layer.get("id").textValue();
+                            obj.put(newId, layerItem);
+                        }
+                        Utils.updateFile(DataUtils.CONFIG_PATH_DATA + DataUtils.FILE_NAME_LAYERS + DataUtils.FILEFORMAT_JSON, obj);
+                    } catch (JsonProcessingException e) {
+                        log.error("Error 'updateLayers'!");
+                    }
+                }
+            }
+        }
+        return layers;
     }
 
     private ArrayNode deleteLayers() {
