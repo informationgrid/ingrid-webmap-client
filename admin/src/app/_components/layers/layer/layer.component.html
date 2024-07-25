@@ -325,7 +325,8 @@
     <h5 class="modal-title" translate>layers_select_del_title</h5>
   </div>
   <div class="app-modal-body">
-    <p>{{ ('layers_select_del_text') | translate: { count: selectedLayers.length } }}</p>
+    <p *ngIf="selectedLayers.length > 1">{{ ('layers_select_del_text') | translate: { count: selectedLayers.length } }}</p>
+    <p *ngIf="selectedLayers.length == 1">{{ ('layers_select_del_text_single') | translate: { count: selectedLayers.length } }}</p>
   </div>
   <div class="app-modal-footer">
     <button type="submit" class="btn btn-danger" (click)="deleteSelectedLayers(modalDelete)" translate>
@@ -341,7 +342,8 @@
     <h5 class="modal-title" translate>layers_select_all_update_title</h5>
   </div>
   <div class="app-modal-body">
-    <p>{{ ('layers_select_all_update_text') | translate: { count: selectedLayers.length } }}</p>
+    <p *ngIf="selectedLayers.length > 1">{{ ('layers_select_all_update_text') | translate: { count: selectedLayers.length } }}</p>
+    <p *ngIf="selectedLayers.length == 1">{{ ('layers_select_all_update_text_single') | translate: { count: selectedLayers.length } }}</p>
   </div>
   <div class="app-modal-footer">
     <button type="submit" class="btn btn-primary" (click)="updateSelectedLayers(modalUpdateSelectedLayers)" translate>
