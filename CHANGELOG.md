@@ -1,4 +1,11 @@
 
+## 7.2.1 (25.07.2024)
+
+### Features
+
+* MAPCLIENT: Admin-GUI: Bearbeitung mehrerer Layer verbessern (#6594)
+
+    
 ## 7.2.0 (08.07.2024)
 
 ### Features
