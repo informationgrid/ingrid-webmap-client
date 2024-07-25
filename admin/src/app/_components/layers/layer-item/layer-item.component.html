@@ -1,7 +1,7 @@
 <div class="card-header d-flex justify-content-between align-items-center" id="layerHeader{{ layer.id }}" data-toggle="collapse"
   [attr.data-target]="'#collapse' + layer.id" aria-expanded="false" aria-controls="layers" (click)="loadLayersForService($event, layer)">
   <span>
-    <input type="checkbox" (click)="checkLayer($event)" value="{{ layer.id }}">
+    <input type="checkbox" (click)="checkLayer($event)" value="{{ layer.id }}" [checked]="isChecked(layer.id)">
     {{layer.item.label}}
     <span *ngIf="layer.item.background" class="badge badge-pill" [ngClass]="{'badge-info' : layer.item.background}" translate>layer_background</span>
     <span *ngIf="layer.item.singleTile" class="badge badge-pill" [ngClass]="{'badge-info' : layer.item.singleTile}" translate>layer_singleTile</span>
