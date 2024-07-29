@@ -22,17 +22,6 @@
  */
 package de.ingrid.mapclient.rest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -40,6 +29,26 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Path("/jsonCallback")
 public class JsonCallbackResource {
@@ -60,17 +69,32 @@ public class JsonCallbackResource {
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response search(@QueryParam("searchterm") String searchTerm, @QueryParam("json_callback") String jsonCallback, @QueryParam("url") String paramURL,
-                           @QueryParam("searchID") String identifier) throws IOException {
+                           @QueryParam("searchID") String identifier, @QueryParam("header") String header) throws IOException {
 
-        searchTerm = searchTerm.trim();
-        try {
-            searchTerm = URLEncoder.encode(searchTerm, "UTF-8").replace("+", "%20");
-        } catch (Exception e) {
-            log.error("Error url encoding seach term: " + searchTerm, e);
+        String urlString = paramURL;
+        if(searchTerm != null) {
+            searchTerm = searchTerm.trim();
+            try {
+                searchTerm = URLEncoder.encode(searchTerm, "UTF-8").replace("+", "%20");
+            } catch (Exception e) {
+                log.error("Error url encoding seach term: " + searchTerm, e);
+            }
+            if(identifier != null) {
+                urlString = urlString.concat("&" + identifier + "=" + searchTerm);
+            }
+        }
+        URL url = new URL(urlString);
+        HttpURLConnection  con = (HttpURLConnection) url.openConnection();
+        if (header != null) {
+            TypeReference<HashMap<String,String>> typeRef = new TypeReference<HashMap<String,String>>() {};
+            HashMap<String, String> headerMap = mapper.readValue(header, typeRef);
+            for (Map.Entry<String, String> entry : headerMap.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                con.setRequestProperty(key, value);
+            }
         }
 
-        URL url = new URL(paramURL.concat("&" + identifier + "=" + searchTerm));
-        URLConnection con = url.openConnection();
         InputStream in = con.getInputStream();
         String encoding = con.getContentEncoding();
         encoding = encoding == null ? "UTF-8" : encoding;
