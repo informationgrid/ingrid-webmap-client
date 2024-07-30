@@ -1185,7 +1185,7 @@ goog.require('ga_urlutils_service');
                 var requestPath = 'point';
                 var requestUrl = gaGlobalOptions.searchEbaLocatorGeoUrl;
 
-                if (inputEbaLocatorFrom != '' && inputEbaLocatorTo != '') {
+                if (inputEbaLocatorFrom !== '' && inputEbaLocatorTo !== '') {
                   requestPath = 'section';
                 }
 
@@ -1235,7 +1235,8 @@ goog.require('ga_urlutils_service');
                       layerId = feature.properties.track_nr;
                       layerLabel = layerId + ":";
                       layerLabel += " " + feature.properties.name;
-                      layerLabel += " - " + $translate.instant('ebalocator_context_type');
+                      layerLabel += " - " +
+                        $translate.instant('ebalocator_context_type');
                       layerLabel += " " + feature.properties.track_type;
                   }
                   var ebaLocatorLayerShort, ebaLocatorLayerFull;
