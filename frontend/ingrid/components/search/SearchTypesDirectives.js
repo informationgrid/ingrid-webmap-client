@@ -1120,7 +1120,7 @@ goog.require('ga_urlutils_service');
               layers = $scope.map.getLayers().getArray();
               for (var i = 0; i < layers.length; i++) {
                 var layer = layers[i];
-                if (layer.get('bwalocator') || layer.get('bwalocatorshort')) {
+                if (layer.get('ebalocator') || layer.get('ebalocatorshort')) {
                   if (layer.id.indexOf(res.id) < 0) {
                     $scope.map.removeLayer(layer);
                     i--;
@@ -1162,18 +1162,19 @@ goog.require('ga_urlutils_service');
             function updateEbaLocatorData(attrs) {
               if (attrs) {
                 $scope.ebalocator_from_id = attrs.id +
-              '_bwalocator_from';
+              '_ebalocator_from';
                 $scope.ebalocator_from_placeholder = attrs.km_von;
                 $scope.ebalocator_to_id = attrs.id +
-              '_bwalocator_to';
+              '_ebalocator_to';
                 $scope.ebalocator_to_placeholder = attrs.km_bis;
                 $scope.ebalocator_rail_type_id = attrs.id +
-              '_bwalocator_rail_type';
+              '_ebalocator_rail_type';
               }
             }
 
             function selectEbaLocatorData(res, full) {
-              if (res) {
+              // TODO: Remove !full on display full 
+              if (res && !full) {
                 var inputEbaLocatorFrom = $('#' + res.id +
                   '_ebalocator_from').val();
                 var inputEbaLocatorTo = $('#' + res.id +
@@ -1181,27 +1182,27 @@ goog.require('ga_urlutils_service');
                 var inputEbaLocatorRailType = $('#' + res.id +
                  '_ebalocator_rail_type').val();
 
-                var requestPath = '/point';
+                var requestPath = 'point';
                 var requestUrl = gaGlobalOptions.searchEbaLocatorGeoUrl;
 
-                if (inputEbaLocatorFrom != null && inputEbaLocatorTo != null) {
-                  requestPath = '/section';
+                if (inputEbaLocatorFrom != '' && inputEbaLocatorTo != '') {
+                  requestPath = 'section';
                 }
 
                 requestUrl += requestPath;
                 requestUrl += '/' + res.id;
                 if (inputEbaLocatorFrom) {
-                  requestUrl += '/' + inputEbaLocatorFrom;
+                  requestUrl += '/' + encodeURIComponent(inputEbaLocatorFrom);
                 }
                 if (inputEbaLocatorTo) {
-                  requestUrl += '/' + inputEbaLocatorTo;
+                  requestUrl += '/' + encodeURIComponent(inputEbaLocatorTo);
                 }
                 requestUrl += '?';
                 if (inputEbaLocatorRailType) {
-                  requestUrl += 'railtype=' + inputEbaLocatorRailType;
+                  requestUrl += '&railtype=' + inputEbaLocatorRailType;
                 }
                 if (gaGlobalOptions.defaultEpsg) {
-                  requestUrl += 'railtype=' +
+                  requestUrl += '&srid=' +
                     gaGlobalOptions.defaultEpsg.split(':')[1];
                 }
                 $http.get('/ingrid-webmap-client/rest/' +
@@ -1221,111 +1222,85 @@ goog.require('ga_urlutils_service');
 
             function drawEbaLocatorData(response, full) {
               if (response.data) {
-                var data = response.data.result[0];
-                if (data) {
-                  var geometry = data.geometry;
-                  if (geometry) {
-                    var geojsonObject = {
-                      'type': 'FeatureCollection',
-                      'crs': {
-                        'type': 'name',
-                        'properties': {
-                          'name': gaGlobalOptions.defaultEpsg
-                        }
-                      },
-                      'features': [{
-                        'type': 'Feature',
-                        'geometry': {
-                          'type': geometry.type,
-                          'coordinates': geometry.coordinates
-                        },
-                        'properties': {
-                          'bwastrid': data.bwastrid,
-                          'bwastr_name': data.bwastr_name,
-                          'strecken_name': data.strecken_name,
-                          'km_von': data.stationierung.km_von,
-                          'km_bis': data.stationierung.km_bis,
-                          'km_wert': data.stationierung.km_wert,
-                          'measures': geometry.measures
-                        }
-                      }]
-                    };
-                    var vectorSource = new ol.source.Vector({
-                      features: (new ol.format.GeoJSON()).
-                          readFeatures(geojsonObject)
+                var geometry = response.data;
+                if (geometry) {
+                  var vectorSource = new ol.source.Vector({
+                    features: (new ol.format.GeoJSON()).
+                        readFeatures(geometry)
+                  });
+                  var layerLabel = '';
+                  var layerId = '';
+                  if(geometry.features && geometry.features.length > 0) {
+                      var feature = geometry.features[0];
+                      layerId = feature.properties.track_nr;
+                      layerLabel = layerId + ":";
+                      layerLabel += " " + feature.properties.name;
+                      layerLabel += " - " + $translate.instant('ebalocator_context_type');
+                      layerLabel += " " + feature.properties.track_type;
+                  }
+                  var ebaLocatorLayerShort, ebaLocatorLayerFull;
+                  if (geometry.type === 'Point') {
+                    ebaLocatorLayerShort = new ol.layer.Vector({
+                      source: vectorSource,
+                      id: 'ebaLocatorLayerShort_' + layerId,
+                      visible: true,
+                      queryable: true,
+                      ebalocator: true,
+                      ebalocatorshort: true,
+                      style: gaStyleFactory.getStyle('marker')
                     });
-                    var layerLabel = data.bwastrid + ' ' +
-                    data.bwastr_name;
-                    if (data.strecken_name) {
-                      layerLabel += ' ' + data.strecken_name;
-                    }
-                    var bwaLocatorLayerShort, bwaLocatorLayerFull;
-                    if (geometry.type === 'Point') {
-                      bwaLocatorLayerShort = new ol.layer.Vector({
+                    gaDefinePropertiesForLayer(ebaLocatorLayerShort);
+                    ebaLocatorLayerShort.label = layerLabel + 
+                      ' (Kilometrierung)';
+                    $scope.map.addLayer(ebaLocatorLayerShort);
+                  } else {
+                    if (full) {
+                      ebaLocatorLayerFull = new ol.layer.Vector({
                         source: vectorSource,
-                        id: 'bwaLocatorLayerShort_' +
-                          data.bwastrid + '_' + data.bwastr_name,
+                        id: 'ebaLocatorLayerFull_' + layerId,
                         visible: true,
                         queryable: true,
-                        bwalocator: true,
-                        bwalocatorshort: true,
-                        style: gaStyleFactory.getStyle('marker')
+                        ebalocator: true,
+                        style: new ol.style.Style({
+                          stroke: new ol.style.Stroke({
+                            color: '#FF0000',
+                            width: 2
+                          })
+                        })
                       });
-                      gaDefinePropertiesForLayer(bwaLocatorLayerShort);
-                      bwaLocatorLayerShort.label = layerLabel +
-                      ' (Abschnitt)';
-                      $scope.map.addLayer(bwaLocatorLayerShort);
+                      gaDefinePropertiesForLayer(ebaLocatorLayerFull);
+                      ebaLocatorLayerFull.label = layerLabel;
+                      $scope.map.addLayer(ebaLocatorLayerFull);
                     } else {
-                      if (full) {
-                        bwaLocatorLayerFull = new ol.layer.Vector({
-                          source: vectorSource,
-                          id: 'bwaLocatorLayerFull_' +
-                          data.bwastrid + '_' + data.bwastr_name,
-                          visible: true,
-                          queryable: true,
-                          bwalocator: true,
-                          style: new ol.style.Style({
-                            stroke: new ol.style.Stroke({
-                              color: '#FF0000',
-                              width: 2
-                            })
+                      ebaLocatorLayerShort = new ol.layer.Vector({
+                        source: vectorSource,
+                        id: 'ebaLocatorLayerShort_' + layerId,
+                        visible: true,
+                        queryable: true,
+                        ebalocator: true,
+                        ebalocatorshort: true,
+                        style: new ol.style.Style({
+                          stroke: new ol.style.Stroke({
+                            color: '#0000FF',
+                            width: 2
                           })
-                        });
-                        gaDefinePropertiesForLayer(bwaLocatorLayerFull);
-                        bwaLocatorLayerFull.label = layerLabel;
-                        $scope.map.addLayer(bwaLocatorLayerFull);
-                      } else {
-                        bwaLocatorLayerShort = new ol.layer.Vector({
-                          source: vectorSource,
-                          id: 'bwaLocatorLayerShort_' +
-                          data.bwastrid + '_' + data.bwastr_name,
-                          visible: true,
-                          queryable: true,
-                          bwalocator: true,
-                          bwalocatorshort: true,
-                          style: new ol.style.Style({
-                            stroke: new ol.style.Stroke({
-                              color: '#0000FF',
-                              width: 2
-                            })
-                          })
-                        });
-                        gaDefinePropertiesForLayer(bwaLocatorLayerShort);
-                        bwaLocatorLayerShort.label = layerLabel +
-                        ' (Abschnitt)';
-                        $scope.map.addLayer(bwaLocatorLayerShort);
-                      }
+                        })
+                      });
+                      gaDefinePropertiesForLayer(ebaLocatorLayerShort);
+                      ebaLocatorLayerShort.label = layerLabel +
+                        ' (Kilometrierungsbereich)';
+                      $scope.map.addLayer(ebaLocatorLayerShort);
                     }
-                    if (geometry.type === 'Point') {
-                      var coords = geometry.coordinates;
-                      if (coords) {
-                        gaMapUtils.moveTo($scope.map, $scope.ol3d,
-                            gaGlobalOptions.searchCoordsZoom, coords);
-                      }
-                    } else {
-                      $scope.map.getView().fit(vectorSource.getExtent(),
-                          $scope.map.getSize());
+                  }
+                  if (geometry.type === 'Point') {
+                    var coords = geometry.coordinates;
+                    if (coords) {
+                      gaMapUtils.moveTo($scope.map, $scope.ol3d,
+                          gaGlobalOptions.searchCoordsZoom, coords);
                     }
+                  } else {
+                    $scope.map.getView().fit(vectorSource.getExtent(),
+                        $scope.map.getSize());
                   }
                 }
               }

@@ -281,28 +281,33 @@ public class SearchResource {
                         con.setRequestProperty(key, value);
                     }
                 }
-                InputStream in = con.getInputStream();
-                String encoding = con.getContentEncoding();
-                encoding = encoding == null ? "UTF-8" : encoding;
-                String tmpJson = IOUtils.toString(in, encoding);
-                JsonNode questJsonResult = mapper.readTree(tmpJson);
-                if(!questJsonResult.isNull()){
-                    for (int j=0; j < questJsonResult.size(); j++) {
-                        JsonNode questJsonEntry = questJsonResult.get(j);
-                        ObjectNode newEntry = mapper.createObjectNode();
-                        newEntry.set( "id", questJsonEntry.get("value"));
-                        ObjectNode newAttrs = mapper.createObjectNode();
-                        newAttrs.set( "id", questJsonEntry.get("value"));
-                        newAttrs.set("label", questJsonEntry.get("label"));
-                        newEntry.set( "attrs", newAttrs );
-                        jsonArray.add(newEntry);
+                try {
+                    InputStream in = con.getInputStream();
+                    String encoding = con.getContentEncoding();
+                    encoding = encoding == null ? "UTF-8" : encoding;
+                    String tmpJson = IOUtils.toString(in, encoding);
+                    JsonNode questJsonResult = mapper.readTree(tmpJson);
+                    if(!questJsonResult.isNull()){
+                        for (int j=0; j < questJsonResult.size(); j++) {
+                            JsonNode questJsonEntry = questJsonResult.get(j);
+                            ObjectNode newEntry = mapper.createObjectNode();
+                            newEntry.set( "id", questJsonEntry.get("value"));
+                            ObjectNode newAttrs = mapper.createObjectNode();
+                            newAttrs.set( "id", questJsonEntry.get("value"));
+                            newAttrs.set("label", questJsonEntry.get("label"));
+                            newEntry.set( "attrs", newAttrs );
+                            jsonArray.add(newEntry);
+                        }
                     }
+                    String responseStr = jsonArray.toString();
+                    if (jsonArray != null) {
+                        responseStr = "{\"results\":" + jsonArray + "}";
+                    }
+                    return Response.ok( responseStr ).build();
+                } catch (Exception e) {
+                    return Response.ok("{\"results\":[]}").build();
                 }
-                String responseStr = jsonArray.toString();
-                if (jsonArray != null) {
-                    responseStr = "{\"results\":" + jsonArray + "}";
-                }
-                return Response.ok( responseStr ).build();
+
             }
         }
         return Response.ok( "{\"results\":[]}" ).build();

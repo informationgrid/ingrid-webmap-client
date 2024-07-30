@@ -94,17 +94,19 @@ public class JsonCallbackResource {
                 con.setRequestProperty(key, value);
             }
         }
+        try {
+            InputStream in = con.getInputStream();
+            String encoding = con.getContentEncoding();
+            encoding = encoding == null ? "UTF-8" : encoding;
 
-        InputStream in = con.getInputStream();
-        String encoding = con.getContentEncoding();
-        encoding = encoding == null ? "UTF-8" : encoding;
-
-        String json = IOUtils.toString(in, encoding);
-        if (jsonCallback != null && json.indexOf(jsonCallback) == -1) {
-            json = jsonCallback + "(" + json + ")";
+            String json = IOUtils.toString(in, encoding);
+            if (jsonCallback != null && json.indexOf(jsonCallback) == -1) {
+                json = jsonCallback + "(" + json + ")";
+            }
+            return Response.ok(json).build();
+        } catch (Exception e) {
+            return Response.ok("{\"error\":true}").build();
         }
-        return Response.ok(json).build();
-
     }
 
     @GET
@@ -122,17 +124,20 @@ public class JsonCallbackResource {
         con.setDoOutput(true);
         con.setRequestProperty("Content-Type", MediaType.APPLICATION_JSON);
         con.setRequestProperty("Content-Length", String.valueOf(content.length()));
+        try {
+            OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
+            writer.write(content);
+            writer.flush();
 
-        OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
-        writer.write(content);
-        writer.flush();
-
-        InputStream in = con.getInputStream();
-        String encoding = con.getContentEncoding();
-        encoding = encoding == null ? "UTF-8" : encoding;
-
-        String json = IOUtils.toString(in, encoding);
-        return Response.ok(json).build();
+            InputStream in = con.getInputStream();
+            String encoding = con.getContentEncoding();
+            encoding = encoding == null ? "UTF-8" : encoding;
+ 
+            String json = IOUtils.toString(in, encoding);
+            return Response.ok(json).build();
+        } catch (Exception e) {
+            return Response.ok("{\"error\":true}").build();
+        }
 
     }
 

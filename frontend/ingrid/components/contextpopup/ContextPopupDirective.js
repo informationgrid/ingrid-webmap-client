@@ -500,12 +500,13 @@ goog.require('ga_window_service');
               scope.ebastr_lat = undefined;
               scope.ebastr_km = undefined;
               scope.ebastr_km_ing = undefined;
-              scope.ebastr_error = undefined;
+              scope.ebastr_crs = undefined;
+              scope.ebastr_error = false;
 
               var p = {
                 // INGRID: Change 'coord21781' to 'coordDefault'
-                X: clickCoord[1].toFixed(2),
-                Y: clickCoord[0].toFixed(2)
+                X: clickCoord[1],
+                Y: clickCoord[0]
               };
 
               var url = gaGlobalOptions.searchEbaLocatorStationUrl;
@@ -524,28 +525,26 @@ goog.require('ga_window_service');
             }
 
             function updateEbaLocatorData(response) {
-              var result = response.data.result[0];
-              if (result) {
-                if (result.error === undefined) {
-                  var features = result.features;
-                  if (features.length === 1) {
-                    var feature = features[0];
-                    scope.ebastr_id = feature.properties.track_nr;
-                    scope.ebastr_name = $sce.trustAsHtml(
-                      feature.properties.name.replaceAll(',', '<br>')
-                    );
-                    scope.ebastr_typ = feature.properties.track_type;
-                    scope.ebastr_lon = result.bbox[0];
-                    scope.ebastr_lat = result.bbox[1];
-                    scope.ebastr_km = feature.properties.kilometryDatabase;
-                    scope.ebastr_km_ing = feature.properties.
-                      kilometryEngineering;
-                    scope.ebastr_crs = result.crs.properties.name.
-                      split('::')[1];
-                  }
-                } else {
-                  scope.bwastr_error = result.error.message;
+              var result = response.data;
+              if (result.features) {
+                var features = result.features;
+                if (features.length === 1) {
+                  var feature = features[0];
+                  scope.ebastr_id = feature.properties.track_nr;
+                  scope.ebastr_name = $sce.trustAsHtml(
+                    feature.properties.name.replaceAll(',', '<br>')
+                  );
+                  scope.ebastr_typ = feature.properties.track_type;
+                  scope.ebastr_lon = result.bbox[0];
+                  scope.ebastr_lat = result.bbox[1];
+                  scope.ebastr_km = feature.properties.kilometryDatabase;
+                  scope.ebastr_km_ing = feature.properties.
+                    kilometryEngineering;
+                  scope.ebastr_crs = result.crs.properties.name.
+                    split('::')[1];
                 }
+              } else {
+                scope.ebastr_error = true;
               }
             }
           }
