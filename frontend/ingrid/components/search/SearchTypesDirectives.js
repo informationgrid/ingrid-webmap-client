@@ -1231,10 +1231,12 @@ goog.require('ga_urlutils_service');
                   var layerLabel = '';
                   var layerId = '';
                   var featureType = geometry.type;
+                  var featureCoords = null;
                   if(geometry.features && geometry.features.length > 0) {
                     var feature = geometry.features[0];
                     layerId = feature.properties.track_nr;
                     featureType = feature.geometry.type;
+                    featureCoords = feature.geometry.coordinates;
                     layerLabel = layerId + ":";
                     layerLabel += " " + feature.properties.name;
                     layerLabel += " - " +
@@ -1301,7 +1303,7 @@ goog.require('ga_urlutils_service');
                     }
                   }
                   if (featureType === 'Point') {
-                    var coords = geometry.coordinates;
+                    var coords = featureCoords;
                     if (coords) {
                       gaMapUtils.moveTo($scope.map, $scope.ol3d,
                           gaGlobalOptions.searchCoordsZoom, coords);
