@@ -7,7 +7,7 @@
             ng-click="hidePopover()"></button>
   </div>
   <div class="popover-content">
-      <table ng-if="showBWaLocator() == false" >
+      <table ng-if="!showBWaLocator() && !showEbaLocator()">
           <tbody>
           <tr ng-repeat="projection in projections" class="{{projection.key}}">
               <!-- INGRID: Change td to ng-bind-html -->
@@ -81,27 +81,27 @@
           <table>
             <tbody>
               <tr ng-if="bwastr_id">
-                <td>BWaStr-IdNr:</td>
+                <td translate>bwalocator_context_id</td>
                 <td>{{bwastr_id}}</td>
               </tr>
               <tr ng-if="bwastr_name">
-                <td>BWaStr-Bezeichnung:</td>
+                <td translate>bwalocator_context_name</td>
                 <td>{{bwastr_name}}</td>
               </tr>
               <tr ng-if="bwastr_typ">
-                <td>Streckenbezeichnung:</td>
+                <td translate>bwalocator_context_typ</td>
                 <td>{{bwastr_typ}}</td>
               </tr>
-              <tr ng-if="bwastr_error == undefined && bwastr_label">
+              <tr ng-if="!bwastr_error && bwastr_label">
                 <td><span ng-bind-html="bwastr_label"></span>:</td>
                 <td>{{bwastr_coords}}</td>
               </tr>
               <tr ng-if="bwastr_km">
-                <td>Station:</td>
+                <td translate>bwalocator_context_km</td>
                 <td>{{bwastr_km}} km</td>
               </tr>
               <tr ng-if="bwastr_distance">
-                <td>Abstand:</td>
+                <td translate>bwalocator_context_distance</td>
                 <td>{{bwastr_distance}} m</td>
               </tr>
               <tr ng-if="bwastr_error" colspan="2">
@@ -114,39 +114,39 @@
           <table>
             <tbody>
               <tr ng-if="ebastr_id">
-                <td>Strecke:</td>
+                <td translate>ebalocator_context_id</td>
                 <td>{{ebastr_id}}</td>
               </tr>
               <tr ng-if="ebastr_name">
-                <td>Name:</td>
+                <td translate>ebalocator_context_name</td>
                 <td ng-bind-html="ebastr_name"></td>
               </tr>
               <tr ng-if="ebastr_typ">
-                <td>Gleis:</td>
+                <td translate>ebalocator_context_typ</td>
                 <td>{{ebastr_typ}}</td>
               </tr>
               <tr ng-if="ebastr_crs">
-                <td>SRID:</td>
+                <td translate>ebalocator_context_crs</td>
                 <td>{{ebastr_crs}}</td>
               </tr>
               <tr ng-if="ebastr_lon">
-                <td>Rechtswert / Länge / X:</td>
+                <td translate>ebalocator_context_lon</td>
                 <td>{{ebastr_lon}}</td>
               </tr>
               <tr ng-if="ebastr_lat">
-                <td>Hochwert / Breite / Y:</td>
+                <td translate>ebalocator_context__lat</td>
                 <td>{{ebastr_lat}}</td>
               </tr>
               <tr ng-if="ebastr_km">
-                <td>Kilometer (Datenbank):</td>
+                <td translate>ebalocator_context_km</td>
                 <td>{{ebastr_km}} km</td>
               </tr>
               <tr ng-if="ebastr_km_ing">
-                <td>Kilometer (Ingenieur):</td>
+                <td translate>ebalocator_context_km_ing</td>
                 <td>{{ebastr_km_ing}} km</td>
               </tr>
               <tr ng-if="ebastr_error" colspan="2">
-                <td>{{bwastr_error}}</td>
+                <td translate>ebalocator_context_error</td>
               </tr>
             </tbody>
           </table>
