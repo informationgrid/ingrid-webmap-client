@@ -510,8 +510,8 @@ goog.require('ga_window_service');
               };
 
               var url = gaGlobalOptions.searchEbaLocatorStationUrl;
-              url += p.X + '/';
-              url += p.Y;
+              url += p.Y + '/';
+              url += p.X;
               url += '?srid=' + gaGlobalOptions.defaultEpsg.split(':')[1];
 
               $http.get(ebaLocatorUrl, {
