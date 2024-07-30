@@ -1230,17 +1230,20 @@ goog.require('ga_urlutils_service');
                   });
                   var layerLabel = '';
                   var layerId = '';
+                  var featureType = geometry.type;
                   if(geometry.features && geometry.features.length > 0) {
                       var feature = geometry.features[0];
                       layerId = feature.properties.track_nr;
+                      featureType = feature.geometry.type;
                       layerLabel = layerId + ":";
                       layerLabel += " " + feature.properties.name;
                       layerLabel += " - " +
                         $translate.instant('ebalocator_context_type');
-                      layerLabel += " " + feature.properties.track_type;
+                      layerLabel += " " + (feature.properties.track_type ?? 
+                        feature.properties.to_track_type);
                   }
                   var ebaLocatorLayerShort, ebaLocatorLayerFull;
-                  if (geometry.type === 'Point') {
+                  if (featureType === 'Point') {
                     ebaLocatorLayerShort = new ol.layer.Vector({
                       source: vectorSource,
                       id: 'ebaLocatorLayerShort_' + layerId,
@@ -1248,6 +1251,7 @@ goog.require('ga_urlutils_service');
                       queryable: true,
                       ebalocator: true,
                       ebalocatorshort: true,
+                      downloadContent: JSON.stringify(response.data),
                       style: gaStyleFactory.getStyle('marker')
                     });
                     gaDefinePropertiesForLayer(ebaLocatorLayerShort);
@@ -1262,6 +1266,7 @@ goog.require('ga_urlutils_service');
                         visible: true,
                         queryable: true,
                         ebalocator: true,
+                        downloadContent: JSON.stringify(response.data),
                         style: new ol.style.Style({
                           stroke: new ol.style.Stroke({
                             color: '#FF0000',
@@ -1280,6 +1285,7 @@ goog.require('ga_urlutils_service');
                         queryable: true,
                         ebalocator: true,
                         ebalocatorshort: true,
+                        downloadContent: JSON.stringify(response.data),
                         style: new ol.style.Style({
                           stroke: new ol.style.Stroke({
                             color: '#0000FF',
@@ -1293,7 +1299,7 @@ goog.require('ga_urlutils_service');
                       $scope.map.addLayer(ebaLocatorLayerShort);
                     }
                   }
-                  if (geometry.type === 'Point') {
+                  if (featureType === 'Point') {
                     var coords = geometry.coordinates;
                     if (coords) {
                       gaMapUtils.moveTo($scope.map, $scope.ol3d,
