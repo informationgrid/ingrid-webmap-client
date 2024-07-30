@@ -1232,15 +1232,16 @@ goog.require('ga_urlutils_service');
                   var layerId = '';
                   var featureType = geometry.type;
                   if(geometry.features && geometry.features.length > 0) {
-                      var feature = geometry.features[0];
-                      layerId = feature.properties.track_nr;
-                      featureType = feature.geometry.type;
-                      layerLabel = layerId + ":";
-                      layerLabel += " " + feature.properties.name;
-                      layerLabel += " - " +
-                        $translate.instant('ebalocator_context_type');
-                      layerLabel += " " + (feature.properties.track_type ?? 
-                        feature.properties.to_track_type);
+                    var feature = geometry.features[0];
+                    layerId = feature.properties.track_nr;
+                    featureType = feature.geometry.type;
+                    layerLabel = layerId + ":";
+                    layerLabel += " " + feature.properties.name;
+                    layerLabel += " - " +
+                      $translate.instant('ebalocator_context_type');
+                    layerLabel += " " + (feature.properties.track_type ?
+                      feature.properties.track_type :
+                      feature.properties.to_track_type);
                   }
                   var ebaLocatorLayerShort, ebaLocatorLayerFull;
                   if (featureType === 'Point') {
