@@ -734,8 +734,8 @@ goog.require('ga_window_service');
 
               // INGRID: Add pop up for 'bwalocator'
               var downloadName = ''
+              var props = feature.getProperties();
               if (feature.get('bwastrid')) {
-                var props = feature.getProperties();
                 downloadName += props.bwastrid;
                 downloadName += '-';
                 downloadName += props.bwastr_name;
@@ -746,7 +746,6 @@ goog.require('ga_window_service');
                 downloadName += '.csv';
                 htmlpopup = getBWaStrHtmlPopup(layer, feature, downloadName);
               } else if (feature.get('track_nr')) {
-                var props = feature.getProperties();
                 downloadName += props.track_nr;
                 downloadName += '-';
                 downloadName += props.name;
@@ -772,10 +771,11 @@ goog.require('ga_window_service');
               if (navigator.msSaveBlob) {
                 $(document).on('click', '.activated', function() {
                   if (this.className) {
+                    var blob = null;
                     if (this.className.
                         indexOf('bwastr_download_csv activated') > -1) {
                       if (this.bwastrContent) {
-                        var blob = new Blob([decodeURI(this.bwastrContent)],
+                        blob = new Blob([decodeURI(this.bwastrContent)],
                             {type: 'text/csv;charset=utf-8;'});
                         navigator.msSaveBlob(blob, downloadName);
                         $(this).removeClass('activated');
@@ -783,7 +783,7 @@ goog.require('ga_window_service');
                     } else if (this.className.
                         indexOf('ebastr_download_json activated') > -1) {
                       if (this.ebastrContent) {
-                        var blob = new Blob([decodeURI(this.ebastrContent)],
+                        blob = new Blob([decodeURI(this.ebastrContent)],
                             {type: 'text/csv;charset=utf-8;'});
                         navigator.msSaveBlob(blob, downloadName);
                         $(this).removeClass('activated');
@@ -891,7 +891,8 @@ goog.require('ga_window_service');
                     'addClass(\'activated\');this.bwastrContent=\'' +
                     encodedUri + '\';">Strecke als CSV</a></p>';
                 } else {
-                  downloadContent = 'data:text/csv;charset=utf-8,' + downloadContent;
+                  downloadContent = 'data:text/csv;charset=utf-8,' +
+                    downloadContent;
                   encodedUri = encodeURI(downloadContent);
                   htmlpopup += '<p><a class="bwastr_download_csv" href="' +
                     encodedUri + '" download="' + downloadName +
@@ -980,7 +981,8 @@ goog.require('ga_window_service');
                     'addClass(\'activated\');this.ebastrContent=\'' +
                     encodedUri + '\';">Strecke als JSON</a></p>';
                 } else {
-                  downloadContent = 'data:application/json;charset=utf-8,' + downloadContent;
+                  downloadContent = 'data:application/json;charset=utf-8,' +
+                    downloadContent;
                   encodedUri = encodeURI(downloadContent);
                   htmlpopup += '<p><a class="ebastr_download_json" href="' +
                     encodedUri + '" download="' + downloadName +
