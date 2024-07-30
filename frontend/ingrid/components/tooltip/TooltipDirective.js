@@ -925,7 +925,7 @@ goog.require('ga_window_service');
                 htmlpopup += '<tr>' +
                   '<td>' + $translate.instant('ebalocator_context_type') +
                   '</td><td>' +
-                  (feature.get('track_type') ??
+                  (feature.get('track_type') ? feature.get('track_type') :
                   feature.get('to_track_type')) + '</td>' +
                   '</tr>';
                 htmlpopup += '<tr>' +
@@ -956,13 +956,15 @@ goog.require('ga_window_service');
                 htmlpopup += '<tr>' +
                   '<td>' + $translate.instant('ebalocator_context_km') +
                   '</td><td>' +
-                  (feature.get('kilometryDatabase') ??
+                  (feature.get('kilometryDatabase') ?
+                  feature.get('kilometryDatabase') :
                   feature.get('to_kilometryDatabase')) + '</td>' +
                   '</tr>';
                 htmlpopup += '<tr>' +
                   '<td>' + $translate.instant('ebalocator_context_km_ing') +
                   '</td><td>' +
-                  (feature.get('kilometryEngineering') ??
+                  (feature.get('kilometryEngineering') ?
+                  feature.get('kilometryEngineering') :
                   feature.get('to_kilometryEngineering')) + '</td>' +
                   '</tr>';
                 htmlpopup += '</tbody></table><br>';
