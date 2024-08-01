@@ -656,6 +656,14 @@ goog.require('ga_urlutils_service');
       if (config.legendUrl) {
         var legends = config.legendUrl.split('|');
         angular.forEach(legends, function(legend) {
+          // INGRID: Update legendURL
+          legend = legend.replaceAll('Ä','%C3%84');
+          legend = legend.replaceAll('ä','%C3%A4');
+          legend = legend.replaceAll('Ö','%C3%96');
+          legend = legend.replaceAll('ö','%C3%B6');
+          legend = legend.replaceAll('Ü','%C3%9C');
+          legend = legend.replaceAll('ü','%C3%BC');
+          legend = legend.replaceAll('ß','%C3%9F');
           enc.classes.push({
             name: '',
             icon: legend
