@@ -1,4 +1,14 @@
 
+## 7.2.2 (11.08.2024)
+
+### Features
+
+* MAPCLIENT: Integration Streckenlocator EBA ins GeoPortal.EBA (#6595)
+
+### Bugfixes
+
+* Druckfunktion Kartenviewer (#5095)
+    
 ## 7.2.1 (25.07.2024)
 
 ### Features
