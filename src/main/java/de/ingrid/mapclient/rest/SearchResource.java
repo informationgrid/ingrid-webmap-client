@@ -291,10 +291,13 @@ public class SearchResource {
                         for (int j=0; j < questJsonResult.size(); j++) {
                             JsonNode questJsonEntry = questJsonResult.get(j);
                             ObjectNode newEntry = mapper.createObjectNode();
-                            newEntry.set( "id", questJsonEntry.get("value"));
+                            newEntry.set( "id", questJsonEntry.get("track_nr"));
                             ObjectNode newAttrs = mapper.createObjectNode();
-                            newAttrs.set( "id", questJsonEntry.get("value"));
-                            newAttrs.set("label", questJsonEntry.get("label"));
+                            newAttrs.set( "id", questJsonEntry.get("track_nr"));
+                            newAttrs.set("label", questJsonEntry.get("name"));
+                            newAttrs.set("start", questJsonEntry.get("start_kilometry"));
+                            newAttrs.set("end", questJsonEntry.get("end_kilometry"));
+                            newAttrs.set("type", questJsonEntry.get("railtype"));
                             newEntry.set( "attrs", newAttrs );
                             jsonArray.add(newEntry);
                         }

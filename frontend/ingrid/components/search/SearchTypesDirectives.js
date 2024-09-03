@@ -1163,18 +1163,17 @@ goog.require('ga_urlutils_service');
               if (attrs) {
                 $scope.ebalocator_from_id = attrs.id +
               '_ebalocator_from';
-                $scope.ebalocator_from_placeholder = attrs.km_von;
+                $scope.ebalocator_from_placeholder = attrs.start;
                 $scope.ebalocator_to_id = attrs.id +
               '_ebalocator_to';
-                $scope.ebalocator_to_placeholder = attrs.km_bis;
-                $scope.ebalocator_rail_type_id = attrs.id +
+                $scope.ebalocator_to_placeholder = attrs.end;
+                $scope.ebalocator_rail_type_id = attrs.type +
               '_ebalocator_rail_type';
               }
             }
 
             function selectEbaLocatorData(res, full) {
-              // TODO: Remove !full on display full 
-              if (res && !full) {
+              if (res) {
                 var inputEbaLocatorFrom = $('#' + res.id +
                   '_ebalocator_from').val();
                 var inputEbaLocatorTo = $('#' + res.id +
