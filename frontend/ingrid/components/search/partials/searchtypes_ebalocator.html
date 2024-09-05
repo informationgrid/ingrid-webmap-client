@@ -23,14 +23,6 @@
                 <div translate>ebalocator_to</div>&nbsp;
                 <input id="{{ebalocator_to_id}}" type="text" placeholder="{{ebalocator_to_placeholder}}" value="" ng-click="stopPreEvent($event)"/>
               </label>
-              <label>
-                <div translate>ebalocator_rail_type</div>&nbsp;
-                <select id="{{ebalocator_rail_type_id}}">
-                    <option value="-999" translate>ebalocator_rail_type_unknown</option>
-                    <option value="1" translate>ebalocator_rail_type_1</option>
-                    <option value="2" translate>ebalocator_rail_type_2</option>
-                </select>
-              </label>
               <button class="ga-icon fa fa-chevron-sign-right"
                 ng-attr-aria-label="{{ 'fa_icon_ebalocator_load' | translate }}" 
                 ng-click="getEbaLocatorParam($event, res)"></button>

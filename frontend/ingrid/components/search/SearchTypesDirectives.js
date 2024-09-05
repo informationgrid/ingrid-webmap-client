@@ -1107,7 +1107,22 @@ goog.require('ga_urlutils_service');
             };
 
             $scope.prepareLabel = function(attrs) {
-              var l = gaSearchLabels.highlight(attrs.label,
+              var label = attrs.id + ' - ' + attrs.label;
+              if (attrs.type) {
+                switch (attrs.type) {
+                    case 1:
+                      label += ' (' +
+                      $translate.instant('ebalocator_rail_type_1') + ')';
+                      break;
+                    case 2:
+                      label += ' (' +
+                      $translate.instant('ebalocator_rail_type_2') + ')';
+                      break;
+                    default:
+                      break;
+                }
+              }
+              var l = gaSearchLabels.highlight(label,
                   $scope.options.query);
               updateEbaLocatorData(attrs);
               return $sce.trustAsHtml(l);
@@ -1161,44 +1176,45 @@ goog.require('ga_urlutils_service');
 
             function updateEbaLocatorData(attrs) {
               if (attrs) {
-                $scope.ebalocator_from_id = attrs.id +
-              '_ebalocator_from';
+                $scope.ebalocator_from_id = attrs.id + '_' + attrs.type +
+                  '_ebalocator_from';
                 $scope.ebalocator_from_placeholder = attrs.start;
-                $scope.ebalocator_to_id = attrs.id +
-              '_ebalocator_to';
+                $scope.ebalocator_to_id = attrs.id + '_' + attrs.type +
+                  '_ebalocator_to';
                 $scope.ebalocator_to_placeholder = attrs.end;
-                $scope.ebalocator_rail_type_id = attrs.type +
-              '_ebalocator_rail_type';
               }
             }
 
             function selectEbaLocatorData(res, full) {
               if (res) {
-                var inputEbaLocatorFrom = $('#' + res.id +
+                var id = res.id + '_' + res.attrs.type;
+                var inputEbaLocatorFrom = $('#' + id +
                   '_ebalocator_from').val();
-                var inputEbaLocatorTo = $('#' + res.id +
+                var inputEbaLocatorTo = $('#' + id +
                   '_ebalocator_to').val();
-                var inputEbaLocatorRailType = $('#' + res.id +
-                 '_ebalocator_rail_type').val();
 
                 var requestPath = 'point';
                 var requestUrl = gaGlobalOptions.searchEbaLocatorGeoUrl;
 
-                if (inputEbaLocatorFrom !== '' && inputEbaLocatorTo !== '') {
+                if (inputEbaLocatorFrom == '' && inputEbaLocatorTo == '') {
+                  requestPath = 'section';
+                  inputEbaLocatorFrom = res.attrs.start;
+                  inputEbaLocatorFrom = res.attrs.end;
+                } else if (inputEbaLocatorFrom !== '' && inputEbaLocatorTo !== '') {
                   requestPath = 'section';
                 }
 
                 requestUrl += requestPath;
                 requestUrl += '/' + res.id;
-                if (inputEbaLocatorFrom) {
+                if (inputEbaLocatorFrom !== '') {
                   requestUrl += '/' + encodeURIComponent(inputEbaLocatorFrom);
                 }
-                if (inputEbaLocatorTo) {
+                if (inputEbaLocatorTo !== '') {
                   requestUrl += '/' + encodeURIComponent(inputEbaLocatorTo);
                 }
                 requestUrl += '?';
-                if (inputEbaLocatorRailType) {
-                  requestUrl += '&railtype=' + inputEbaLocatorRailType;
+                if (res.attrs.type) {
+                  requestUrl += '&railtype=' + res.attrs.type;
                 }
                 if (gaGlobalOptions.defaultEpsg) {
                   requestUrl += '&srid=' +
