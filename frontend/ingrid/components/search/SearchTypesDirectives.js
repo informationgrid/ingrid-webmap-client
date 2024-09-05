@@ -1196,11 +1196,12 @@ goog.require('ga_urlutils_service');
                 var requestPath = 'point';
                 var requestUrl = gaGlobalOptions.searchEbaLocatorGeoUrl;
 
-                if (inputEbaLocatorFrom == '' && inputEbaLocatorTo == '') {
+                if (inputEbaLocatorFrom === '' && inputEbaLocatorTo === '') {
                   requestPath = 'section';
                   inputEbaLocatorFrom = res.attrs.start;
                   inputEbaLocatorFrom = res.attrs.end;
-                } else if (inputEbaLocatorFrom !== '' && inputEbaLocatorTo !== '') {
+                } else if (inputEbaLocatorFrom !== '' &&
+                    inputEbaLocatorTo !== '') {
                   requestPath = 'section';
                 }
 
