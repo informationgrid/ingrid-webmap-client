@@ -1199,7 +1199,7 @@ goog.require('ga_urlutils_service');
                 if (inputEbaLocatorFrom === '' && inputEbaLocatorTo === '') {
                   requestPath = 'section';
                   inputEbaLocatorFrom = res.attrs.start;
-                  inputEbaLocatorFrom = res.attrs.end;
+                  inputEbaLocatorTo = res.attrs.end;
                 } else if (inputEbaLocatorFrom !== '' &&
                     inputEbaLocatorTo !== '') {
                   requestPath = 'section';
