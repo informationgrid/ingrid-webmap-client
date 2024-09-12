@@ -1136,7 +1136,11 @@ goog.require('ga_urlutils_service');
               for (var i = 0; i < layers.length; i++) {
                 var layer = layers[i];
                 if (layer.get('ebalocator') || layer.get('ebalocatorshort')) {
-                  if (layer.id.indexOf(res.id) < 0) {
+                  var resId = res.id;
+                  if (res.attrs.type) {
+                    resId += "_" + res.attrs.type;
+                  }
+                  if (layer.id.indexOf(resId) < 0) {
                     $scope.map.removeLayer(layer);
                     i--;
                   } else {
@@ -1246,20 +1250,25 @@ goog.require('ga_urlutils_service');
                   });
                   var layerLabel = '';
                   var layerId = '';
+                  var trackType = '';
                   var featureType = geometry.type;
                   var featureCoords = null;
-                  if(geometry.features && geometry.features.length > 0) {
+                  if (geometry.features && geometry.features.length > 0) {
                     var feature = geometry.features[0];
                     layerId = feature.properties.track_nr;
+                    trackType = feature.properties.track_type ?
+                      feature.properties.track_type :
+                      feature.properties.to_track_type;
                     featureType = feature.geometry.type;
                     featureCoords = feature.geometry.coordinates;
                     layerLabel = layerId + ":";
                     layerLabel += " " + feature.properties.name;
-                    layerLabel += " - " +
-                      $translate.instant('ebalocator_context_type');
-                    layerLabel += " " + (feature.properties.track_type ?
-                      feature.properties.track_type :
-                      feature.properties.to_track_type);
+                    if (trackType) {
+                      layerId += "_" + trackType;
+                      layerLabel += " (" +
+                        $translate.instant('ebalocator_rail_type_' + trackType)
+                        + ")";
+                    }
                   }
                   var ebaLocatorLayerShort, ebaLocatorLayerFull;
                   if (featureType === 'Point') {
