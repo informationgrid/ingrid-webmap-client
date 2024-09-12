@@ -1266,8 +1266,9 @@ goog.require('ga_urlutils_service');
                     if (trackType) {
                       layerId += "_" + trackType;
                       layerLabel += " (" +
-                        $translate.instant('ebalocator_rail_type_' + trackType)
-                        + ")";
+                        $translate.instant(
+                         'ebalocator_rail_type_' + trackType
+                        ) + ")";
                     }
                   }
                   var ebaLocatorLayerShort, ebaLocatorLayerFull;
