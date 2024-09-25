@@ -1,4 +1,11 @@
 
+## 7.2.3 (25.09.2024)
+
+### Features
+
+* MAPCLIENT: Integration Streckenlocator EBA ins GeoPortal.EBA (#6595)
+
+    
 ## 7.2.2 (11.08.2024)
 
 ### Features
