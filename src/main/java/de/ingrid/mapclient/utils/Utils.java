@@ -34,9 +34,18 @@ import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileTime;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Base64;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -62,16 +71,16 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.web.util.HtmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.model.GetCapabilitiesDocument;
@@ -139,12 +148,25 @@ public class Utils {
             try(FileWriter fw = new FileWriter(file, true);
                 BufferedWriter bw = new BufferedWriter(fw);
                 PrintWriter out = new PrintWriter(bw)){
-                out.println(item.toString());
+                out.print(item.toString());
             } catch (IOException e) {
                 log.error( "Error write new json file!" );
             }
         }
     }
+
+    public static void updateFileModifiedDate(String filename) {
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        Path path = Paths.get(configDir.concat(filename));
+        FileTime now = FileTime.fromMillis(System.currentTimeMillis());
+        try {
+            Files.setLastModifiedTime(path, now);
+        } catch (IOException e) {
+            log.error("Error modified date for file: " + filename);
+        }
+    }
+
     public static void updateFile(String filename, Object item) {
         updateFile(filename, item, true);
     }
@@ -170,7 +192,7 @@ public class Utils {
         try(FileWriter fw = new FileWriter(file, true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter out = new PrintWriter(bw)){
-            out.println(item.toString());
+            out.print(item.toString());
         } catch (IOException e) {
             log.error( "Error write new json file!" );
         }
