@@ -28,7 +28,7 @@ goog.require('ga_window_service');
       function($http, $q, $timeout, $window, $rootScope, gaBrowserSniffer,
           gaNetworkStatus, gaPermalink, gaWhat3Words, gaReframe,
           gaEvent, gaWindow, gaHeight, gaMeasure, gaGlobalOptions,
-          gaUrlUtils ,$translate, $sce) {
+          gaUrlUtils, $translate, $sce) {
         return {
           restrict: 'A',
           replace: true,
@@ -49,6 +49,7 @@ goog.require('ga_window_service');
             var proj = map.getView().getProjection();
             // INGRID: Add BwaStrLocator
             var bwaLocatorUrl = scope.options.bwaLocatorUrl;
+            var ebaLocatorUrl = scope.options.ebaLocatorUrl;
 
             // INGRID: Add tabs
             scope.currentTab = 1;
@@ -72,6 +73,14 @@ goog.require('ga_window_service');
             // INGRID: Add 'showBWaStrLocator'
             scope.showBWaLocator = function() {
               if (gaGlobalOptions.searchBwaLocatorStationUrl) {
+                return true;
+              }
+              return false;
+            };
+
+            // INGRID: Add 'showEbaStrLocator'
+            scope.showEbaLocator = function() {
+              if (gaGlobalOptions.searchEbaLocatorStationUrl) {
                 return true;
               }
               return false;
@@ -314,6 +323,11 @@ goog.require('ga_window_service');
                 getBWaLocatorData();
               }
 
+              // INGRID: Add get 'EbaStrLocator' data
+              if (gaGlobalOptions.searchEbaLocatorStationUrl) {
+                getEbaLocatorData();
+              }
+
               if (gaWindow.isWidth('xs') || gaWindow.isHeight('xs')) {
                 view.animate({
                   center: clickCoord,
@@ -451,7 +465,7 @@ goog.require('ga_window_service');
                 gaGlobalOptions.defaultEpsg.split(':')[1] + '}}}' +
                 ']}';
 
-              $http.get(bwaLocatorUrl + '&data=' + content, {
+              $http.get(bwaLocatorUrl, {
                 params: {
                   'url': gaGlobalOptions.searchBwaLocatorStationUrl,
                   'data': content
@@ -474,6 +488,63 @@ goog.require('ga_window_service');
                 } else {
                   scope.bwastr_error = result.error.message;
                 }
+              }
+            }
+
+            // INGRID: Get 'BWaStrLocator' data
+            function getEbaLocatorData() {
+              scope.ebastr_id = undefined;
+              scope.ebastr_name = undefined;
+              scope.ebastr_typ = undefined;
+              scope.ebastr_lon = undefined;
+              scope.ebastr_lat = undefined;
+              scope.ebastr_km = undefined;
+              scope.ebastr_km_ing = undefined;
+              scope.ebastr_crs = undefined;
+              scope.ebastr_error = false;
+
+              var p = {
+                // INGRID: Change 'coord21781' to 'coordDefault'
+                X: clickCoord[1],
+                Y: clickCoord[0]
+              };
+
+              var url = gaGlobalOptions.searchEbaLocatorStationUrl;
+              url += p.Y + '/';
+              url += p.X;
+              url += '?srid=' + gaGlobalOptions.defaultEpsg.split(':')[1];
+
+              $http.get(ebaLocatorUrl, {
+                params: {
+                  'url': url,
+                  'header': gaGlobalOptions.searchEbaLocatorApiHeader
+                }
+              }).then(function(response) {
+                updateEbaLocatorData(response);
+              });
+            }
+
+            function updateEbaLocatorData(response) {
+              var result = response.data;
+              if (result.features) {
+                var features = result.features;
+                if (features.length === 1) {
+                  var feature = features[0];
+                  scope.ebastr_id = feature.properties.track_nr;
+                  scope.ebastr_name = $sce.trustAsHtml(
+                    feature.properties.name.replaceAll(',', '<br>')
+                  );
+                  scope.ebastr_typ = feature.properties.track_type;
+                  scope.ebastr_lon = result.bbox[0];
+                  scope.ebastr_lat = result.bbox[1];
+                  scope.ebastr_km = feature.properties.kilometryDatabase;
+                  scope.ebastr_km_ing = feature.properties.
+                    kilometryEngineering;
+                  scope.ebastr_crs = result.crs.properties.name.
+                    split('::')[1];
+                }
+              } else {
+                scope.ebastr_error = true;
               }
             }
           }

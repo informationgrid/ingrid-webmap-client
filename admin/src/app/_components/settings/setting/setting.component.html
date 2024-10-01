@@ -103,7 +103,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingHideCatalog="ngModel" name="settingHideCatalog" 
+                                        <input class="form-check-input" type="checkbox" #settingHideCatalog="ngModel" name="settingHideCatalog"
                                             [(ngModel)]="settings.settingHideCatalog">
                                     </div>
                                 </div>
@@ -286,7 +286,7 @@
                                     <div class="input-group form-group" *ngFor="let lang of settings.settingLanguages; let i=index;">
                                         <input type="text" [(ngModel)]="settings.settingLanguages[i]" name="langs{{ i }}" class="form-control" disabled>
                                         <div class="input-group-append">
-                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(lang, settings.settingLanguages)" 
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(lang, settings.settingLanguages)"
                                                 *ngIf="i !== (settings.settingLanguages.length - 1) && settings.settingLanguages.length > 1">
                                                 <i class="fa fa-sort-down" aria-hidden="true"></i>
                                             </button>
@@ -371,7 +371,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingEnableMapScale="ngModel" name="settingEnableMapScale" 
+                                        <input class="form-check-input" type="checkbox" #settingEnableMapScale="ngModel" name="settingEnableMapScale"
                                             [(ngModel)]="settings.settingEnableMapScale">
                                     </div>
                                 </div>
@@ -439,7 +439,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingHideDraw="ngModel" name="settingHideDraw" 
+                                        <input class="form-check-input" type="checkbox" #settingHideDraw="ngModel" name="settingHideDraw"
                                             [(ngModel)]="settings.settingHideDraw">
                                     </div>
                                 </div>
@@ -461,7 +461,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingHideEpsgSelection="ngModel" name="settingHideEpsgSelection" 
+                                        <input class="form-check-input" type="checkbox" #settingHideEpsgSelection="ngModel" name="settingHideEpsgSelection"
                                             [(ngModel)]="settings.settingHideEpsgSelection">
                                     </div>
                                 </div>
@@ -483,12 +483,12 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingHideCompare="ngModel" name="settingHideCompare" 
+                                        <input class="form-check-input" type="checkbox" #settingHideCompare="ngModel" name="settingHideCompare"
                                             [(ngModel)]="settings.settingHideCompare">
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
 <!-- Import -->
                         <div class="tab-pane fade show" id="tabs-settings-import" role="tabpanel" aria-labelledby="pills-settings-import-tab'">
@@ -509,7 +509,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingServiceImportSingleTile="ngModel" name="settingServiceImportSingleTile" 
+                                        <input class="form-check-input" type="checkbox" #settingServiceImportSingleTile="ngModel" name="settingServiceImportSingleTile"
                                             [(ngModel)]="settings.settingServiceImportSingleTile">
                                     </div>
                                 </div>
@@ -531,7 +531,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="input-group form-group">
-                                        <input class="form-control" type="number" #settingServiceImportWMSGutter="ngModel" name="settingServiceImportWMSGutter" 
+                                        <input class="form-control" type="number" #settingServiceImportWMSGutter="ngModel" name="settingServiceImportWMSGutter"
                                             [(ngModel)]="settings.settingServiceImportWMSGutter">
                                     </div>
                                 </div>
@@ -553,7 +553,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingServiceReverseImport="ngModel" name="settingServiceReverseImport" 
+                                        <input class="form-check-input" type="checkbox" #settingServiceReverseImport="ngModel" name="settingServiceReverseImport"
                                             [(ngModel)]="settings.settingServiceReverseImport">
                                     </div>
                                 </div>
@@ -575,7 +575,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingServiceDisplayIdentPopupImport="ngModel" name="settingServiceDisplayIdentPopupImport" 
+                                        <input class="form-check-input" type="checkbox" #settingServiceDisplayIdentPopupImport="ngModel" name="settingServiceDisplayIdentPopupImport"
                                             [(ngModel)]="settings.settingServiceDisplayIdentPopupImport">
                                     </div>
                                 </div>
@@ -597,7 +597,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingServiceMultiIdentImport="ngModel" name="settingServiceMultiIdentImport" 
+                                        <input class="form-check-input" type="checkbox" #settingServiceMultiIdentImport="ngModel" name="settingServiceMultiIdentImport"
                                             [(ngModel)]="settings.settingServiceMultiIdentImport">
                                     </div>
                                 </div>
@@ -619,7 +619,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingServiceAllWithoutIdentImport="ngModel" name="settingServiceAllWithoutIdentImport" 
+                                        <input class="form-check-input" type="checkbox" #settingServiceAllWithoutIdentImport="ngModel" name="settingServiceAllWithoutIdentImport"
                                             [(ngModel)]="settings.settingServiceAllWithoutIdentImport">
                                     </div>
                                 </div>
@@ -641,7 +641,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingServiceImportSingleLayer="ngModel" name="settingServiceImportSingleLayer" 
+                                        <input class="form-check-input" type="checkbox" #settingServiceImportSingleLayer="ngModel" name="settingServiceImportSingleLayer"
                                             [(ngModel)]="settings.settingServiceImportSingleLayer">
                                     </div>
                                 </div>
@@ -707,7 +707,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="input-group form-group">
-                                        <input class="form-control" type="number" #settingWFSFeaturePointZoom="ngModel" name="settingWFSFeaturePointZoom" 
+                                        <input class="form-control" type="number" #settingWFSFeaturePointZoom="ngModel" name="settingWFSFeaturePointZoom"
                                             [(ngModel)]="settings.settingWFSFeaturePointZoom">
                                     </div>
                                 </div>
@@ -753,7 +753,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingShowISOXML="ngModel" name="settingShowISOXML" 
+                                        <input class="form-check-input" type="checkbox" #settingShowISOXML="ngModel" name="settingShowISOXML"
                                             [(ngModel)]="settings.settingShowISOXML">
                                     </div>
                                 </div>
@@ -839,7 +839,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingSearchCoordsXY="ngModel" name="settingSearchCoordsXY" 
+                                        <input class="form-check-input" type="checkbox" #settingSearchCoordsXY="ngModel" name="settingSearchCoordsXY"
                                             [(ngModel)]="settings.settingSearchCoordsXY">
                                     </div>
                                 </div>
@@ -928,6 +928,90 @@
                                         name="settingBwaStrFinderLayers" class="form-control">
                                 </div>
                             </div>
+                            <!-- settingSearchEbaLocatorUrl -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingSearchEbaLocatorUrl</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchEbaLocatorUrl"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingSearchEbaLocatorUrl" data-parent="#setting_accordion">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingSearchEbaLocatorUrl_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingSearchEbaLocatorUrl="ngModel" [(ngModel)]="settings.settingSearchEbaLocatorUrl" name="settingSearchEbaLocatorUrl"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <!-- settingSearchEbaLocatorGeoUrl -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingSearchEbaLocatorGeoUrl</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchEbaLocatorGeoUrl"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingSearchEbaLocatorGeoUrl" data-parent="#setting_accordion">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingSearchEbaLocatorGeoUrl_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingSearchEbaLocatorGeoUrl="ngModel" [(ngModel)]="settings.settingSearchEbaLocatorGeoUrl" name="settingSearchEbaLocatorGeoUrl"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <!-- settingSearchEbaLocatorStationUrl -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingSearchEbaLocatorStationUrl</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchEbaLocatorStationUrl"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingSearchEbaLocatorStationUrl" data-parent="#setting_accordion">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingSearchEbaLocatorStationUrl_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingSearchEbaLocatorStationUrl="ngModel" [(ngModel)]="settings.settingSearchEbaLocatorStationUrl"
+                                        name="settingSearchEbaLocatorStationUrl" class="form-control">
+                                </div>
+                            </div>
+                            <!-- settingSearchEbaLocatorApiHeader -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingSearchEbaLocatorApiHeader</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchEbaLocatorApiHeader"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingSearchEbaLocatorApiHeader" data-parent="#setting_accordion">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingSearchEbaLocatorApiHeader_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <textarea type="text" #settingSearchEbaLocatorApiHeader="ngModel" [(ngModel)]="settings.settingSearchEbaLocatorApiHeader"
+                                        name="settingSearchEbaLocatorApiHeader" class="form-control"></textarea>
+                                </div>
+                            </div>
                             <!-- settingEnableW3W -->
                             <div class="form-group row">
                                 <div class="col-sm-3">
@@ -945,7 +1029,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingEnableW3W="ngModel" name="settingEnableW3W" 
+                                        <input class="form-check-input" type="checkbox" #settingEnableW3W="ngModel" name="settingEnableW3W"
                                             [(ngModel)]="settings.settingEnableW3W">
                                     </div>
                                 </div>
@@ -1030,7 +1114,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingShareFacebook="ngModel" name="settingShareFacebook" 
+                                        <input class="form-check-input" type="checkbox" #settingShareFacebook="ngModel" name="settingShareFacebook"
                                             [(ngModel)]="settings.settingShareFacebook">
                                     </div>
                                 </div>
@@ -1052,7 +1136,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingShareMail="ngModel" name="settingShareMail" 
+                                        <input class="form-check-input" type="checkbox" #settingShareMail="ngModel" name="settingShareMail"
                                             [(ngModel)]="settings.settingShareMail">
                                     </div>
                                 </div>
@@ -1075,7 +1159,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingShareTwitter="ngModel" name="settingShareTwitter" 
+                                        <input class="form-check-input" type="checkbox" #settingShareTwitter="ngModel" name="settingShareTwitter"
                                             [(ngModel)]="settings.settingShareTwitter">
                                     </div>
                                 </div>
@@ -1097,7 +1181,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingShareIFrame="ngModel" name="settingShareIFrame" 
+                                        <input class="form-check-input" type="checkbox" #settingShareIFrame="ngModel" name="settingShareIFrame"
                                             [(ngModel)]="settings.settingShareIFrame">
                                     </div>
                                 </div>
@@ -1119,7 +1203,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingShareLink="ngModel" name="settingShareLink" 
+                                        <input class="form-check-input" type="checkbox" #settingShareLink="ngModel" name="settingShareLink"
                                             [(ngModel)]="settings.settingShareLink">
                                     </div>
                                 </div>
@@ -1141,7 +1225,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingShareQR="ngModel" name="settingShareQR" 
+                                        <input class="form-check-input" type="checkbox" #settingShareQR="ngModel" name="settingShareQR"
                                             [(ngModel)]="settings.settingShareQR">
                                     </div>
                                 </div>
@@ -1164,7 +1248,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingShareWhatsapp="ngModel" name="settingShareWhatsapp" 
+                                        <input class="form-check-input" type="checkbox" #settingShareWhatsapp="ngModel" name="settingShareWhatsapp"
                                             [(ngModel)]="settings.settingShareWhatsapp">
                                     </div>
                                 </div>
@@ -1317,7 +1401,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingPrintDependOnMouseProj="ngModel" name="settingPrintDependOnMouseProj" 
+                                        <input class="form-check-input" type="checkbox" #settingPrintDependOnMouseProj="ngModel" name="settingPrintDependOnMouseProj"
                                             [(ngModel)]="settings.settingPrintDependOnMouseProj">
                                     </div>
                                 </div>
@@ -1363,7 +1447,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingServiceAnnouncement="ngModel" name="settingServiceAnnouncement" 
+                                        <input class="form-check-input" type="checkbox" #settingServiceAnnouncement="ngModel" name="settingServiceAnnouncement"
                                             [(ngModel)]="settings.settingServiceAnnouncement">
                                     </div>
                                 </div>
@@ -1407,7 +1491,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingAnnouncementMailRequired="ngModel" name="settingAnnouncementMailRequired" 
+                                        <input class="form-check-input" type="checkbox" #settingAnnouncementMailRequired="ngModel" name="settingAnnouncementMailRequired"
                                             [(ngModel)]="settings.settingAnnouncementMailRequired">
                                     </div>
                                 </div>
@@ -1470,7 +1554,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingServiceHelpFooter="ngModel" name="settingServiceHelpFooter" 
+                                        <input class="form-check-input" type="checkbox" #settingServiceHelpFooter="ngModel" name="settingServiceHelpFooter"
                                             [(ngModel)]="settings.settingServiceHelpFooter">
                                     </div>
                                 </div>
@@ -1571,7 +1655,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingAccessibilityFooter="ngModel" name="settingAccessibilityFooter" 
+                                        <input class="form-check-input" type="checkbox" #settingAccessibilityFooter="ngModel" name="settingAccessibilityFooter"
                                             [(ngModel)]="settings.settingAccessibilityFooter">
                                     </div>
                                 </div>
@@ -1597,7 +1681,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingCheckLayerInRange="ngModel" name="settingCheckLayerInRange" 
+                                        <input class="form-check-input" type="checkbox" #settingCheckLayerInRange="ngModel" name="settingCheckLayerInRange"
                                             [(ngModel)]="settings.settingCheckLayerInRange">
                                     </div>
                                 </div>
@@ -1620,7 +1704,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingShowLayerServiceTree="ngModel" name="settingShowLayerServiceTree" 
+                                        <input class="form-check-input" type="checkbox" #settingShowLayerServiceTree="ngModel" name="settingShowLayerServiceTree"
                                             [(ngModel)]="settings.settingShowLayerServiceTree">
                                     </div>
                                 </div>
@@ -1643,7 +1727,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingShowLayerServiceName="ngModel" name="settingShowLayerServiceName" 
+                                        <input class="form-check-input" type="checkbox" #settingShowLayerServiceName="ngModel" name="settingShowLayerServiceName"
                                             [(ngModel)]="settings.settingShowLayerServiceName">
                                     </div>
                                 </div>
@@ -1656,7 +1740,7 @@
                                 <div class="col-sm-3">
                                     <div class=" d-flex justify-content-between align-items-center">
                                         <label class="col-form-label" translate>setting_settingUseGeodesic</label>
-                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingUseGeodesic" 
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingUseGeodesic"
                                             title="{{ ('help') | translate }}">
                                             <i class="fa fa-info" aria-hidden="true"></i>
                                         </button>
@@ -1669,7 +1753,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingUseGeodesic="ngModel" name="settingUseGeodesic" 
+                                        <input class="form-check-input" type="checkbox" #settingUseGeodesic="ngModel" name="settingUseGeodesic"
                                             [(ngModel)]="settings.settingUseGeodesic">
                                     </div>
                                 </div>
@@ -1691,7 +1775,7 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <div class="form-check mb-2 mr-sm-2">
-                                        <input class="form-check-input" type="checkbox" #settingEnable3D="ngModel" name="settingEnable3D" 
+                                        <input class="form-check-input" type="checkbox" #settingEnable3D="ngModel" name="settingEnable3D"
                                             [(ngModel)]="settings.settingEnable3D">
                                     </div>
                                 </div>
@@ -1789,7 +1873,7 @@
         </div>
     </div>
 </app-modal>
-    
+
 <!-- Modal save unsuccess-->
 <app-modal #modalSaveUnsuccess [animateClose]="true">
     <div class="app-modal-header">

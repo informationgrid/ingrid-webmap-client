@@ -733,9 +733,90 @@ goog.require('ga_window_service');
                   replace('{{name}}', (name) ? '(' + name + ')' : '');
 
               // INGRID: Add pop up for 'bwalocator'
-              var csvDownloadName = '';
+              var downloadName = ''
+              var props = feature.getProperties();
               if (feature.get('bwastrid')) {
-                htmlpopup =
+                downloadName += props.bwastrid;
+                downloadName += '-';
+                downloadName += props.bwastr_name;
+                if (props.strecken_name) {
+                  downloadName += '-';
+                  downloadName += props.strecken_name;
+                }
+                downloadName += '.csv';
+                htmlpopup = getBWaStrHtmlPopup(layer, feature, downloadName);
+              } else if (feature.get('track_nr')) {
+                downloadName += props.track_nr;
+                downloadName += '-';
+                downloadName += props.name;
+                if (props.from_kilometry) {
+                  downloadName += '-';
+                  downloadName += props.from_kilometry;
+                }
+                if (props.to_kilometry) {
+                  downloadName += '-';
+                  downloadName += props.to_kilometry;
+                }
+                downloadName += '.json';
+                htmlpopup = getEbaStrHtmlPopup(layer, feature, downloadName);
+              }
+              feature.set('htmlpopup', htmlpopup);
+              if (!isFeatureQueryable(feature)) {
+                feature.set('htmlpopup', undefined);
+              }
+              feature.set('layerId', layerId);
+              showFeatures([feature]);
+
+              // INGRID: IE download
+              if (navigator.msSaveBlob) {
+                $(document).on('click', '.activated', function() {
+                  if (this.className) {
+                    var blob = null;
+                    if (this.className.
+                        indexOf('bwastr_download_csv activated') > -1) {
+                      if (this.bwastrContent) {
+                        blob = new Blob([decodeURI(this.bwastrContent)],
+                            {type: 'text/csv;charset=utf-8;'});
+                        navigator.msSaveBlob(blob, downloadName);
+                        $(this).removeClass('activated');
+                      }
+                    } else if (this.className.
+                        indexOf('ebastr_download_json activated') > -1) {
+                      if (this.ebastrContent) {
+                        blob = new Blob([decodeURI(this.ebastrContent)],
+                            {type: 'text/csv;charset=utf-8;'});
+                        navigator.msSaveBlob(blob, downloadName);
+                        $(this).removeClass('activated');
+                      }
+                    }
+                  }
+                });
+              }
+
+              // Iframe communication from inside out
+              if (layer.get('type') === 'KML') {
+                layerId = layer.label;
+                if (name && name.length) {
+                  featureId = name;
+                }
+              }
+              gaIFrameCom.send('gaFeatureSelection', {
+                layerId: layerId,
+                featureId: featureId
+              });
+
+              // We leave the old code to not break existing clients
+              // Once they have adapted to new implementation, we
+              // can remove the code below
+              if (window.top !== window) {
+                if (featureId && layerId) {
+                  window.parent.postMessage(id, '*');
+                }
+              }
+            };
+
+            var getBWaStrHtmlPopup = function(layer, feature, downloadName) {
+                var htmlpopup =
                   '<div class="htmlpopup-container">' +
                     '<div class="htmlpopup-header">' +
                       '<span>' + layer.label + ' &nbsp;</span>' +
@@ -760,21 +841,12 @@ goog.require('ga_window_service');
                 }
                 htmlpopup += '</tbody></table><br>';
 
-                var csvContent = '';
+                var downloadContent = '';
                 var encodedUri = '';
 
                 var coords = feature.getGeometry().getCoordinates();
                 var props = feature.getProperties();
                 var measures = props.measures;
-
-                csvDownloadName += props.bwastrid;
-                csvDownloadName += '-';
-                csvDownloadName += props.bwastr_name;
-                if (props.strecken_name) {
-                  csvDownloadName += '-';
-                  csvDownloadName += props.strecken_name;
-                }
-                csvDownloadName += '.csv';
 
                 var coordMeasures = [];
                 var count = 0;
@@ -807,72 +879,120 @@ goog.require('ga_window_service');
                 }
                 coordMeasures.forEach(function(array, index) {
                   var dataString = array.join(';');
-                  csvContent += index < coordMeasures.length ?
+                  downloadContent += index < coordMeasures.length ?
                     dataString + '\n' : dataString;
                 });
 
                 if (navigator.msSaveBlob) { // IE 10+
-                  csvContent += csvContent;
-                  encodedUri = encodeURI(csvContent);
+                  downloadContent += downloadContent;
+                  encodedUri = encodeURI(downloadContent);
                   htmlpopup += '<p><a class="bwastr_download_csv"' +
                     'href="javascript:void(0);" onclick="$(this).' +
                     'addClass(\'activated\');this.bwastrContent=\'' +
                     encodedUri + '\';">Strecke als CSV</a></p>';
                 } else {
-                  csvContent = 'data:text/csv;charset=utf-8,' + csvContent;
-                  encodedUri = encodeURI(csvContent);
+                  downloadContent = 'data:text/csv;charset=utf-8,' +
+                    downloadContent;
+                  encodedUri = encodeURI(downloadContent);
                   htmlpopup += '<p><a class="bwastr_download_csv" href="' +
-                    encodedUri + '" download="' + csvDownloadName +
+                    encodedUri + '" download="' + downloadName +
                     '">Strecke als CSV</a></p>';
                 }
 
                 htmlpopup += '</div>';
                 htmlpopup += '</div>';
-              }
-              feature.set('htmlpopup', htmlpopup);
-              if (!isFeatureQueryable(feature)) {
-                feature.set('htmlpopup', undefined);
-              }
-              feature.set('layerId', layerId);
-              showFeatures([feature]);
+                return htmlpopup;
+            }
 
-              // INGRID: IE download CSV
-              if (navigator.msSaveBlob) {
-                $(document).on('click', '.activated', function() {
-                  if (this.className) {
-                    if (this.className.
-                        indexOf('bwastr_download_csv activated') > -1) {
-                      if (this.bwastrContent) {
-                        var blob = new Blob([decodeURI(this.bwastrContent)],
-                            {type: 'text/csv;charset=utf-8;'});
-                        navigator.msSaveBlob(blob, csvDownloadName);
-                        $(this).removeClass('activated');
-                      }
-                    }
+            var getEbaStrHtmlPopup = function(layer, feature, downloadName) {
+                var htmlpopup =
+                  '<div class="htmlpopup-container">' +
+                    '<div class="htmlpopup-header">' +
+                      '<span>' + layer.label + ' &nbsp;</span>' +
+                      '(Strecken Locator)' +
+                    '</div>' +
+                    '<div class="htmlpopup-content">';
+                htmlpopup += '<table><tbody>';
+                htmlpopup += '<tr>' +
+                  '<td>' + $translate.instant('ebalocator_context_id') +
+                  '</td><td>' +
+                  feature.get('track_nr') + '</td>'+
+                  '</tr>';
+                htmlpopup += '<tr>' +
+                  '<td>' + $translate.instant('ebalocator_context_name') +
+                  '</td><td>' +
+                  feature.get('name') + '</td>' +
+                  '</tr>';
+                htmlpopup += '<tr>' +
+                  '<td>' + $translate.instant('ebalocator_context_type') +
+                  '</td><td>' +
+                  (feature.get('track_type') ? feature.get('track_type') :
+                  feature.get('to_track_type')) + '</td>' +
+                  '</tr>';
+                htmlpopup += '<tr>' +
+                  '<td>' + $translate.instant('ebalocator_context_crs') +
+                  '</td><td>' +
+                  gaGlobalOptions.defaultEpsg.split(':')[1] + '</td>' +
+                  '</tr>';
+                var coordinate = feature.get('to_coordinate');
+                if (!coordinate) {
+                  if (feature.getGeometry()) {
+                    coordinate = feature.getGeometry().getCoordinates();
                   }
-                });
-              }
-              // Iframe communication from inside out
-              if (layer.get('type') === 'KML') {
-                layerId = layer.label;
-                if (name && name.length) {
-                  featureId = name;
                 }
-              }
-              gaIFrameCom.send('gaFeatureSelection', {
-                layerId: layerId,
-                featureId: featureId
-              });
+                if (coordinate) {
+                  htmlpopup += '<tr>' +
+                    '<td>' + $translate.instant('ebalocator_context_lon') +
+                    '</td><td>' +
+                    coordinate[0] +
+                    '</td>' +
+                    '</tr>';
+                  htmlpopup += '<tr>' +
+                    '<td>' + $translate.instant('ebalocator_context_lat') +
+                    '</td><td>' +
+                    coordinate[1] +
+                    '</td>' +
+                    '</tr>';
+                }
+                htmlpopup += '<tr>' +
+                  '<td>' + $translate.instant('ebalocator_context_km') +
+                  '</td><td>' +
+                  (feature.get('kilometryDatabase') ?
+                  feature.get('kilometryDatabase') :
+                  feature.get('to_kilometryDatabase')) + '</td>' +
+                  '</tr>';
+                htmlpopup += '<tr>' +
+                  '<td>' + $translate.instant('ebalocator_context_km_ing') +
+                  '</td><td>' +
+                  (feature.get('kilometryEngineering') ?
+                  feature.get('kilometryEngineering') :
+                  feature.get('to_kilometryEngineering')) + '</td>' +
+                  '</tr>';
+                htmlpopup += '</tbody></table><br>';
 
-              // We leave the old code to not break existing clients
-              // Once they have adapted to new implementation, we
-              // can remove the code below
-              if (window.top !== window) {
-                if (featureId && layerId) {
-                  window.parent.postMessage(id, '*');
+                var downloadContent = layer.get("downloadContent");
+                var encodedUri = '';
+
+                if (navigator.msSaveBlob) { // IE 10+
+                  downloadContent += downloadContent;
+                  encodedUri = encodeURI(downloadContent);
+                  htmlpopup += '<p><a class="ebastr_download_json"' +
+                    'href="javascript:void(0);" onclick="$(this).' +
+                    'addClass(\'activated\');this.ebastrContent=\'' +
+                    encodedUri + '\';">Strecke als JSON</a></p>';
+                } else {
+                  downloadContent = 'data:application/json;charset=utf-8,' +
+                    downloadContent;
+                  encodedUri = encodeURI(downloadContent);
+                  htmlpopup += '<p><a class="ebastr_download_json" href="' +
+                    encodedUri + '" download="' + downloadName +
+                    '">Strecke als JSON</a></p>';
                 }
-              }
-            };
+
+                htmlpopup += '</div>';
+                htmlpopup += '</div>';
+                return htmlpopup;
+            }
 
             var showNoInfo = function() {
               if (!popup) {

@@ -4,6 +4,7 @@ import { LayerItem } from '../../../_models/layer-item';
 import { HttpService } from '../../../_services/http.service';
 import { NgForm } from '@angular/forms/src/directives/ng_form';
 import { TreeComponent, TreeModel, TreeNode, IActionMapping, ITreeOptions } from 'angular-tree-component';
+import { Layer } from '../../../_models/layer';
 import { Wmslayer } from '../../../_models/wmslayer';
 import { Wmtslayer } from '../../../_models/wmtslayer';
 import * as _ from 'lodash';
@@ -43,6 +44,11 @@ export class LayerComponent implements OnInit {
   searchCategory = '';
   searchType = '';
 
+  layersExtendedSelectedSingleTile = false;
+  layersExtendedSelectedGutter = null;
+  layersExtendedSelectedTileSize = null;
+  layersSelectAll = false;
+
   newLayers: LayerItem[] = [];
   tmpNewLayers: LayerItem[] = [];
   isUrlLoadSuccess = false;
@@ -51,6 +57,9 @@ export class LayerComponent implements OnInit {
   hasLoadLayers = false;
 
   setGroupLayerAsFolder = false;
+  setLayerAsSingleTile = false;
+  setLayerGutter = null;
+  setLayerTileSize = null;
   hasLogin = false;
   overrideLogin = false;
   serviceLogin = '';
@@ -86,27 +95,32 @@ export class LayerComponent implements OnInit {
   }
   // Paging
   previousPage() {
+    this.resetAllChecked();
     this.layersCurrentPage--;
     this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
   }
 
   nextPage() {
+    this.resetAllChecked();
     this.layersCurrentPage++;
     this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
   }
 
   firstPage() {
+    this.resetAllChecked();
     this.layersCurrentPage = 1;
     this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
   }
 
   lastPage() {
+    this.resetAllChecked();
     this.layersCurrentPage = this.layersTotalPage;
     this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
   }
 
   // Search
   searchLayers() {
+    this.resetAllChecked();
     this.loadLayers(1, this.layersPerPage, this.searchText);
   }
 
@@ -145,20 +159,72 @@ export class LayerComponent implements OnInit {
     this.updateAppLayers.emit(this.layersPage);
   }
 
+  updateSelectedLayers(modal: ModalComponent) {
+    this.selectedLayers.forEach(selectedLayer => {
+      this.layersPage.forEach(layerItem => {
+        const layerId = layerItem.id;
+        let layer = layerItem.item;
+        if (selectedLayer == layerId) {
+          layer.singleTile = this.layersExtendedSelectedSingleTile;
+          layer.gutter = this.layersExtendedSelectedGutter;
+          layer.tileSize = this.layersExtendedSelectedTileSize;
+          return;
+        }
+      })
+    });
+    this.httpService.updateLayers(this.layersPage).subscribe(
+      data => {
+        this.modalSaveSuccess.show();
+      },
+      error => {
+        console.error('Error onUpdateLayers!');
+        this.modalSaveUnsuccess.show();
+      },
+      () => {
+        modal.hide();
+      }
+    );
+  }
+
   selectLayer(event) {
     if (!this.selectedLayers) {
      this.selectedLayers = new Array();
     }
     if (event.target.checked) {
        this.selectedLayers.push(event.target.value);
-     } else {
+    } else {
        const index = this.selectedLayers.indexOf(event.target.value, 0);
        if (index > -1) {
          this.selectedLayers.splice(index, 1);
        }
-     }
-     event.stopPropagation();
-   }
+    }
+    this.isAllChecked();
+    event.stopPropagation();
+  }
+
+  resetAllChecked() {
+    this.selectedLayers = [];
+    this.layersSelectAll = false;
+  }
+
+  isAllChecked() {
+    if (this.layersPage.length == this.selectedLayers.length) {
+      this.layersSelectAll = true;
+    } else {
+      this.layersSelectAll = false;
+    }
+  }
+
+  changeAllLayersSection(select: boolean) {
+    if (!select) {
+      this.selectedLayers = [];
+      this.layersPage.forEach(layer => {
+        this.selectedLayers.push(layer.id);
+      });
+    } else {
+      this.selectedLayers = [];
+    }
+  }
 
   deleteSelectedLayers(modal: ModalComponent) {
     this.httpService.deleteLayers(this.selectedLayers).subscribe(
@@ -311,7 +377,8 @@ export class LayerComponent implements OnInit {
       this.getCheckedNode(root, checkedLayers, isCombine);
     });
     checkedLayers.forEach(l => {
-      const layerItem = new LayerItem(l.generateId(this.layers), l);
+      const layer = this.updateOptionsOnLayer(l);
+      const layerItem = new LayerItem(l.generateId(this.layers), layer);
       layerItems.push(layerItem);
     });
     this.saveAddedLayers(layerItems, roots, isCombine);
@@ -353,10 +420,11 @@ export class LayerComponent implements OnInit {
           }
         }
       });
-      const layer = _.cloneDeep(checkedLayers[0]);
+      let layer = _.cloneDeep(checkedLayers[0]);
       layer.wmsLayers = wmsLayers;
       layer.legendUrl = legendUrl;
       layer.label = label;
+      layer = this.updateOptionsOnLayer(layer);
       const layerItem = new LayerItem(layer.generateId(this.layers), layer);
       layerItems.push(layerItem);
     }
@@ -374,6 +442,9 @@ export class LayerComponent implements OnInit {
         data => {
           this.searchText = '';
           this.setGroupLayerAsFolder = false;
+          this.setLayerAsSingleTile = false;
+          this.setLayerGutter = null;
+          this.setLayerTileSize = null;
           this.updateAppLayers.emit(data[1]);
           this.loadLayers(1, this.layersPerPage, this.searchText);
           this.modalSaveSuccess.show();
@@ -423,6 +494,19 @@ export class LayerComponent implements OnInit {
     if (node.children) {
       node.children.forEach((child) => this.getChildCheckedNode(child, list, isCombine));
     }
+  }
+
+  updateOptionsOnLayer (layer: Layer) {
+    if (this.setLayerAsSingleTile) {
+      layer.singleTile = this.setLayerAsSingleTile;
+    }
+    if (this.setLayerGutter) {
+      layer.gutter = this.setLayerGutter;
+    }
+    if (this.setLayerTileSize) {
+      layer.tileSize = this.setLayerTileSize;
+    }
+    return layer;
   }
 
   saveAddedLayersToCategory(layers: LayerItem[], nodes: Array<TreeNode>, categoryLayers) {

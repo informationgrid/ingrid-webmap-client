@@ -789,7 +789,7 @@ public class FileResource {
                             if(shortenFileParent != null && shortenDirParent.getAbsolutePath().equals(shortenFileParent.getAbsolutePath())) {
                                 String fileContent = Utils.getFileContent(path, valueToMd5 , "", "shorten/" + key + "/" + valueToMd5.substring(0, 2) + "/");
                                 if(StringUtils.isNotEmpty(fileContent)) {
-                                    Utils.updateFile("shorten/" + key + "/" + valueToMd5.substring(0, 2) + "/" + valueToMd5, fileContent, false);
+                                    Utils.updateFileModifiedDate("shorten/" + key + "/" + valueToMd5.substring(0, 2) + "/" + valueToMd5);
                                     return Response.ok(fileContent.trim()).build();
                                 }
                             }

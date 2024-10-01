@@ -24,9 +24,11 @@ package de.ingrid.mapclient.rest;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -42,6 +44,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -72,7 +75,7 @@ public class SearchResource {
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response search(@QueryParam("q") String searchTerm, @QueryParam("lang") String lang, @QueryParam("type") String type, @QueryParam("searchUrl") String searchUrl,
-            @QueryParam("searchUrlParams") String searchUrlParams) throws Exception {
+            @QueryParam("searchUrlParams") String searchUrlParams, @QueryParam("header") String header) throws Exception {
         searchTerm = searchTerm.trim();
         
         if(searchTerm == null || searchTerm.indexOf("http://") > -1 || searchTerm.indexOf("https://") > -1) {
@@ -265,6 +268,49 @@ public class SearchResource {
                     responseStr = "{\"results\":" + jsonArray + "}";
                 }
                 return Response.ok( responseStr ).build();
+            }else if(type.equals("ebalocator")){
+                ArrayNode jsonArray = mapper.createArrayNode();
+                URL questUrl = new URL(searchUrl.concat(URLEncoder.encode(searchTerm, "UTF-8")));
+                HttpURLConnection  con = (HttpURLConnection) questUrl.openConnection();
+                if (header != null) {
+                    TypeReference<HashMap<String,String>> typeRef = new TypeReference<HashMap<String,String>>() {};
+                    HashMap<String, String> headerMap = mapper.readValue(header, typeRef);
+                    for (Map.Entry<String, String> entry : headerMap.entrySet()) {
+                        String key = entry.getKey();
+                        String value = entry.getValue();
+                        con.setRequestProperty(key, value);
+                    }
+                }
+                try {
+                    InputStream in = con.getInputStream();
+                    String encoding = con.getContentEncoding();
+                    encoding = encoding == null ? "UTF-8" : encoding;
+                    String tmpJson = IOUtils.toString(in, encoding);
+                    JsonNode questJsonResult = mapper.readTree(tmpJson);
+                    if(!questJsonResult.isNull()){
+                        for (int j=0; j < questJsonResult.size(); j++) {
+                            JsonNode questJsonEntry = questJsonResult.get(j);
+                            ObjectNode newEntry = mapper.createObjectNode();
+                            newEntry.set( "id", questJsonEntry.get("track_nr"));
+                            ObjectNode newAttrs = mapper.createObjectNode();
+                            newAttrs.set( "id", questJsonEntry.get("track_nr"));
+                            newAttrs.set("label", questJsonEntry.get("name"));
+                            newAttrs.set("start", questJsonEntry.get("start_kilometry"));
+                            newAttrs.set("end", questJsonEntry.get("end_kilometry"));
+                            newAttrs.set("type", questJsonEntry.get("railtype"));
+                            newEntry.set( "attrs", newAttrs );
+                            jsonArray.add(newEntry);
+                        }
+                    }
+                    String responseStr = jsonArray.toString();
+                    if (jsonArray != null) {
+                        responseStr = "{\"results\":" + jsonArray + "}";
+                    }
+                    return Response.ok( responseStr ).build();
+                } catch (Exception e) {
+                    return Response.ok("{\"results\":[]}").build();
+                }
+
             }
         }
         return Response.ok( "{\"results\":[]}" ).build();

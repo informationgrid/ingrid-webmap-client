@@ -106,6 +106,11 @@ export class HttpService {
     return this.http.put<LayerItem>(httpApiHost + '/layers/' + layerId, body, httpJsonOptions);
   }
 
+  updateLayers(layers: LayerItem[]) {
+    const body = JSON.stringify(layers);
+    return this.http.put<LayerItem>(httpApiHost + '/layersPage/', body, httpJsonOptions);
+  }
+
   updateLayerAndImage(layerId: string, layer: LayerItem, image: any) {
     return forkJoin([
       this.updateLayer(layerId, layer),
