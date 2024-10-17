@@ -30,6 +30,8 @@ export class Layer implements ILayer, ILayerWms, ILayerWmts {
     gutter: number;
     minScale: number;
     maxScale: number;
+    minResolution: number;
+    maxResolution: number;
     serviceUrl: string;
     template: string;
     serverLayerName: string;
