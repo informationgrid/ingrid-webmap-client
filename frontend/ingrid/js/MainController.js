@@ -101,7 +101,7 @@ goog.require('ga_window_service');
               defaultExtent), 'EPSG:4326', gaGlobalOptions.defaultEpsg),
           // INGRID: Disabled resolution
           // resolution: gaMapUtils.defaultResolution,
-          // INGRID: Get resolutions from config 
+          // INGRID: Get resolutions from config
           resolutions: gaMapUtils.viewResolutions.length > 0 ?
             gaMapUtils.viewResolutions : undefined
         }),
@@ -594,6 +594,23 @@ goog.require('ga_window_service');
         // Close catalog
         hidePanel('catalog');
       }
+    });
+
+    // INGRID: Add print map resolution on console
+    var isMouseClick = false;
+    var timeout;
+    $('#footer').on('mousedown', function() {
+      isMouseClick = true;
+      timeout = setTimeout(function() {
+        if(isMouseClick) {
+          console.log('Resolution: ' +
+            $scope.map.getView().getResolution());
+        }
+      }, 3000);
+    });
+    $('#footer').on('mouseup', function() {
+      clearTimeout(timeout);
+      isMouseClick = false;
     });
 
     // Load new appcache file if available.
