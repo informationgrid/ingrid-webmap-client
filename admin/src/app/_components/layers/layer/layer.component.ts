@@ -44,6 +44,10 @@ export class LayerComponent implements OnInit {
   searchCategory = '';
   searchType = '';
 
+  isActiveSingleTile = false;
+  isActiveGutter = false;
+  isActiveTileSize = false;
+
   layersExtendedSelectedSingleTile = false;
   layersExtendedSelectedGutter = null;
   layersExtendedSelectedTileSize = null;
@@ -165,9 +169,15 @@ export class LayerComponent implements OnInit {
         const layerId = layerItem.id;
         let layer = layerItem.item;
         if (selectedLayer == layerId) {
-          layer.singleTile = this.layersExtendedSelectedSingleTile;
-          layer.gutter = this.layersExtendedSelectedGutter;
-          layer.tileSize = this.layersExtendedSelectedTileSize;
+          if (this.isActiveSingleTile) {
+            layer.singleTile = this.layersExtendedSelectedSingleTile;
+          }
+          if (this.isActiveGutter) {
+            layer.gutter = this.layersExtendedSelectedGutter;
+          }
+          if (this.isActiveTileSize) {
+            layer.tileSize = this.layersExtendedSelectedTileSize;
+          }
           return;
         }
       })
