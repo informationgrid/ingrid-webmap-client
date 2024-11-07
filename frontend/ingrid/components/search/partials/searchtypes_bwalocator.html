@@ -11,27 +11,31 @@
              aria-expanded="false"
              ng-mouseenter="preview(res)"
              ng-mouseleave="out()">
-           <div class="ga-bwa-infos">
-             <label class="ga-checkbox" ng-bind-html="prepareLabel(res.attrs)"></label>
-           </div><!--ga-layer-infos-->
-           <div class="ga-layer-tools">
-              <label>
-                <div translate>bwalocator_from</div>&nbsp;
-                <input id="{{bwalocator_from_id}}" type="text" placeholder="{{bwalocator_from_placeholder}}" value="" ng-click="stopPreEvent($event)"/>
-              </label>
-              <label>
-                <div translate>bwalocator_to</div>&nbsp;
-                <input id="{{bwalocator_to_id}}" type="text" placeholder="{{bwalocator_to_placeholder}}" value="" ng-click="stopPreEvent($event)"/>
-              </label>
-              <label>
-                <div translate>bwalocator_distance</div>&nbsp;
-                <input id="{{bwalocator_distance_id}}" type="text" placeholder="{{bwalocator_distance_placeholder}}" value="" ng-click="stopPreEvent($event)"/>
-              </label>
-              <button class="ga-icon fa fa-chevron-sign-right"
-                ng-attr-aria-label="{{ 'fa_icon_bwalocator_load' | translate }}" 
-                ng-click="getBwaLocatorParam($event, res)"></button>
-           </div><!--ga-layer-tools-->
-         </li>
+            <div class="ga-bwa-infos">
+                <label class="ga-checkbox" ng-bind-html="prepareLabel(res.attrs)"></label>
+            </div><!--ga-layer-infos-->
+            <div class="ga-layer-tools">
+                <label>
+                    <div translate>bwalocator_from</div>&nbsp;
+                    <input id="{{bwalocator_from_id}}" type="text" placeholder="{{bwalocator_from_placeholder}}" value="" ng-click="stopPreEvent($event)"/>
+                </label>
+                <label>
+                    <div translate>bwalocator_to</div>&nbsp;
+                    <input id="{{bwalocator_to_id}}" type="text" placeholder="{{bwalocator_to_placeholder}}" value="" ng-click="stopPreEvent($event)"/>
+                </label>
+                <label>
+                    <div translate>bwalocator_distance</div>&nbsp;
+                    <input id="{{bwalocator_distance_id}}" type="text" placeholder="{{bwalocator_distance_placeholder}}" value="" ng-click="stopPreEvent($event)"/>
+                </label>
+                <button class="ga-icon fa fa-chevron-sign-right"
+                    ng-attr-aria-label="{{ 'fa_icon_bwalocator_load' | translate }}" 
+                    ng-click="getBwaLocatorParam($event, res)"></button>
+                </div><!--ga-layer-tools-->
+                <div ng-if="bwalocator_error">
+                    <span class="warning">{{bwalocator_error}}</span>
+                </div>
+            </div>
+        </li>
     </ul>
   </div>
 </div>

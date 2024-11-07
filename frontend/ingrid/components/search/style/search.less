@@ -314,14 +314,42 @@
       padding-right: 0px;
     }
   }
-  
+
   // INGRID: Add for search bwalocator
-  [ga-search-bwalocator] {
+  [ga-search-bwa-locator] {
 
     .ga-search-item {
       width: ~"calc(100% - 35px)";
       padding-right: 0px;
     }
+
+    .ga-search-results-container .ga-search-results ul li {
+      &:not(.ga-layer-folded) {
+        height: unset;
+        min-height: 7em;
+      }
+      span.warning {
+        color: red;
+      }
+    }
+  }
+
+  // INGRID: Add for search ebalocator
+  [ga-search-eba-locator] {
+
+    .ga-search-item {
+      width: ~"calc(100% - 35px)";
+      padding-right: 0px;
+    }
+
+    .ga-search-results-container .ga-search-results ul li {
+      &:not(.ga-layer-folded) {
+        height: unset;
+        min-height: 7em;
+      }
+      span.warning {
+        color: red;
+      }
+    }
   }
 }
-
