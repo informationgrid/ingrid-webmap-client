@@ -1,4 +1,11 @@
 
+## 7.3.3 (07.11.2024)
+
+### Features
+
+* MAPCLIENT: Einstellung der Maßstabs-Begrenzung (#6909)
+
+    
 ## 7.3.0 (01.10.2024)
 
 ### Features
