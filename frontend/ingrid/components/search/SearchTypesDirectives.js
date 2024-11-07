@@ -776,7 +776,7 @@ goog.require('ga_urlutils_service');
   // INGRID: Add Bwa locator search
   module.directive('gaSearchBwaLocator',
       function($http, $q, $sce, $translate, gaUrlUtils, gaSearchLabels,
-          gaBrowserSniffer, gaPreviewLayers, gaMapUtils, gaLayers,
+          gaBrowserSniffer, gaPreviewLayers, gaMapUtils, gaLayers, gaPopup,
           gaGlobalOptions, gaDefinePropertiesForLayer, gaStyleFactory) {
         return {
           restrict: 'A',
@@ -863,6 +863,7 @@ goog.require('ga_urlutils_service');
             }
 
             function selectBWaLocatorData(res, full) {
+              $scope.bwalocator_error = null;
               if (res) {
                 var inputBwaLocatorFrom = $('#' + res.id +
                   '_bwalocator_from').val().replace(',', '.');
@@ -950,8 +951,8 @@ goog.require('ga_urlutils_service');
 
             function drawBWaLocatorData(response, full) {
               if (response.data) {
-                var data = response.data.result[0];
-                if (data) {
+                if (response.data.result) {
+                  var data = response.data.result[0];
                   var geometry = data.geometry;
                   if (geometry) {
                     var geojsonObject = {
@@ -1055,7 +1056,15 @@ goog.require('ga_urlutils_service');
                       $scope.map.getView().fit(vectorSource.getExtent(),
                           $scope.map.getSize());
                     }
+                    if (!full) {
+                      $scope.options.valueSelected(
+                        gaSearchLabels.cleanLabel(layerLabel));
+                    }
+                  } else if (data.error) {
+                    $scope.bwalocator_error = data.error.message;
                   }
+                } else if (response.data.error) {
+                  $scope.bwalocator_error = response.data.error.message;
                 }
               }
             }
@@ -1103,23 +1112,23 @@ goog.require('ga_urlutils_service');
             // INGRID: Change search URL for bwa locator search
             $scope.searchUrl = $scope.options.searchEbaLocatorUrl;
             $scope.searchParams = {
-                'header': gaGlobalOptions.searchEbaLocatorApiHeader
+              'header': gaGlobalOptions.searchEbaLocatorApiHeader
             };
 
             $scope.prepareLabel = function(attrs) {
               var label = attrs.id + ' - ' + attrs.label;
               if (attrs.type) {
                 switch (attrs.type) {
-                    case 1:
-                      label += ' (' +
+                  case 1:
+                    label += ' (' +
                       $translate.instant('ebalocator_rail_type_1') + ')';
-                      break;
-                    case 2:
-                      label += ' (' +
+                    break;
+                  case 2:
+                    label += ' (' +
                       $translate.instant('ebalocator_rail_type_2') + ')';
-                      break;
-                    default:
-                      break;
+                    break;
+                  default:
+                    break;
                 }
               }
               var l = gaSearchLabels.highlight(label,
@@ -1138,7 +1147,7 @@ goog.require('ga_urlutils_service');
                 if (layer.get('ebalocator') || layer.get('ebalocatorshort')) {
                   var resId = res.id;
                   if (res.attrs.type) {
-                    resId += "_" + res.attrs.type;
+                    resId += '_' + res.attrs.type;
                   }
                   if (layer.id.indexOf(resId) < 0) {
                     $scope.map.removeLayer(layer);
@@ -1190,6 +1199,7 @@ goog.require('ga_urlutils_service');
             }
 
             function selectEbaLocatorData(res, full) {
+              $scope.ebalocator_error = null;
               if (res) {
                 var id = res.id + '_' + res.attrs.type;
                 var inputEbaLocatorFrom = $('#' + id +
@@ -1261,14 +1271,14 @@ goog.require('ga_urlutils_service');
                       feature.properties.to_track_type;
                     featureType = feature.geometry.type;
                     featureCoords = feature.geometry.coordinates;
-                    layerLabel = layerId + ":";
-                    layerLabel += " " + feature.properties.name;
+                    layerLabel = layerId + ':';
+                    layerLabel += ' ' + feature.properties.name;
                     if (trackType) {
-                      layerId += "_" + trackType;
-                      layerLabel += " (" +
+                      layerId += '_' + trackType;
+                      layerLabel += ' (' +
                         $translate.instant(
-                         'ebalocator_rail_type_' + trackType
-                        ) + ")";
+                            'ebalocator_rail_type_' + trackType
+                        ) + ')';
                     }
                   }
                   var ebaLocatorLayerShort, ebaLocatorLayerFull;
@@ -1284,7 +1294,7 @@ goog.require('ga_urlutils_service');
                       style: gaStyleFactory.getStyle('marker')
                     });
                     gaDefinePropertiesForLayer(ebaLocatorLayerShort);
-                    ebaLocatorLayerShort.label = layerLabel + 
+                    ebaLocatorLayerShort.label = layerLabel +
                       ' (Kilometrierung)';
                     $scope.map.addLayer(ebaLocatorLayerShort);
                   } else {
@@ -1339,6 +1349,8 @@ goog.require('ga_urlutils_service');
                         $scope.map.getSize());
                   }
                 }
+              } else if (response.data.error) {
+                  $scope.ebalocator_error = $translate.instant('ebalocator_error_msg');
               }
             }
 
