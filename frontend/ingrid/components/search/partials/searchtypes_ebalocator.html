@@ -26,10 +26,10 @@
                 <button class="ga-icon fa fa-chevron-sign-right"
                     ng-attr-aria-label="{{ 'fa_icon_ebalocator_load' | translate }}" 
                     ng-click="getEbaLocatorParam($event, res)"></button>
+                <div ng-if="ebalocator_error">
+                    <span class="warning">{{ebalocator_error}}</span>
+               </div>
             </div><!--ga-layer-tools-->
-            <div ng-if="ebalocator_error">
-                <span class="warning">{{ebalocator_error}}</span>
-            </div>
         </li>
     </ul>
   </div>
