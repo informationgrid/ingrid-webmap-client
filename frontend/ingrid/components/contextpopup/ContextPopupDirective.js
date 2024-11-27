@@ -499,6 +499,7 @@ goog.require('ga_window_service');
               scope.ebastr_lon = undefined;
               scope.ebastr_lat = undefined;
               scope.ebastr_km = undefined;
+              scope.ebastr_km_dec = undefined;
               scope.ebastr_km_ing = undefined;
               scope.ebastr_crs = undefined;
               scope.ebastr_error = false;
@@ -530,17 +531,18 @@ goog.require('ga_window_service');
                 var features = result.features;
                 if (features.length === 1) {
                   var feature = features[0];
-                  scope.ebastr_id = feature.properties.track_nr;
+                  var props = feature.properties;
+                  scope.ebastr_id = props.track_nr;
                   scope.ebastr_name = $sce.trustAsHtml(
-                    feature.properties.name.replaceAll(',', '<br>')
+                    props.name.replaceAll(',', '<br>')
                   );
-                  scope.ebastr_typ = feature.properties.track_type;
+                  scope.ebastr_typ = props.track_type;
                   scope.ebastr_lon = result.bbox[0];
                   scope.ebastr_lat = result.bbox[1];
-                  scope.ebastr_km = feature.properties.kilometryDatabase;
-                  scope.ebastr_km_ing = feature.properties.
-                    kilometryEngineering;
-                  scope.ebastr_crs = result.crs.properties.name.
+                  scope.ebastr_km = props.kilometryDatabase;
+                  scope.ebastr_km_dec = props.kilometryDecimal;
+                  scope.ebastr_km_ing = props.kilometryEngineering;
+                  scope.ebastr_crs = result.crs.props.name.
                     split('::')[1];
                 }
               } else {
