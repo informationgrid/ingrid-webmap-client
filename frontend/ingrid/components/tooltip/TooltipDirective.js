@@ -913,27 +913,27 @@ goog.require('ga_window_service');
                     '</div>' +
                     '<div class="htmlpopup-content">';
                 htmlpopup += '<table><tbody>';
-                htmlpopup += '<tr>' +
-                  '<td>' + $translate.instant('ebalocator_context_id') +
+                htmlpopup += '<tr><td>' +
+                  $translate.instant('ebalocator_context_id') +
                   '</td><td>' +
-                  feature.get('track_nr') + '</td>'+
-                  '</tr>';
-                htmlpopup += '<tr>' +
-                  '<td>' + $translate.instant('ebalocator_context_name') +
+                  feature.get('track_nr') +
+                  '</td></tr>';
+                htmlpopup += '<tr><td>' +
+                  $translate.instant('ebalocator_context_name') +
                   '</td><td>' +
-                  feature.get('name') + '</td>' +
-                  '</tr>';
-                htmlpopup += '<tr>' +
-                  '<td>' + $translate.instant('ebalocator_context_type') +
+                  feature.get('name') +
+                  '</td></tr>';
+                htmlpopup += '<tr><td>' +
+                  $translate.instant('ebalocator_context_type') +
                   '</td><td>' +
                   (feature.get('track_type') ? feature.get('track_type') :
-                  feature.get('to_track_type')) + '</td>' +
-                  '</tr>';
-                htmlpopup += '<tr>' +
-                  '<td>' + $translate.instant('ebalocator_context_crs') +
+                  feature.get('to_track_type')) +
+                  '</td></tr>';
+                htmlpopup += '<tr><td>' +
+                  $translate.instant('ebalocator_context_crs') +
                   '</td><td>' +
-                  gaGlobalOptions.defaultEpsg.split(':')[1] + '</td>' +
-                  '</tr>';
+                  gaGlobalOptions.defaultEpsg.split(':')[1] +
+                  '</td></tr>';
                 var coordinate = feature.get('to_coordinate');
                 if (!coordinate) {
                   if (feature.getGeometry()) {
@@ -941,33 +941,76 @@ goog.require('ga_window_service');
                   }
                 }
                 if (coordinate) {
-                  htmlpopup += '<tr>' +
-                    '<td>' + $translate.instant('ebalocator_context_lon') +
+                  htmlpopup += '<tr><td>' +
+                    $translate.instant('ebalocator_context_lon') +
                     '</td><td>' +
                     coordinate[0] +
-                    '</td>' +
-                    '</tr>';
-                  htmlpopup += '<tr>' +
-                    '<td>' + $translate.instant('ebalocator_context_lat') +
+                    '</td></tr>';
+                  htmlpopup += '<tr><td>' +
+                    $translate.instant('ebalocator_context_lat') +
                     '</td><td>' +
                     coordinate[1] +
-                    '</td>' +
-                    '</tr>';
+                    '</td></tr>';
                 }
-                htmlpopup += '<tr>' +
-                  '<td>' + $translate.instant('ebalocator_context_km') +
-                  '</td><td>' +
-                  (feature.get('kilometryDatabase') ?
-                  feature.get('kilometryDatabase') :
-                  feature.get('to_kilometryDatabase')) + '</td>' +
-                  '</tr>';
-                htmlpopup += '<tr>' +
-                  '<td>' + $translate.instant('ebalocator_context_km_ing') +
-                  '</td><td>' +
-                  (feature.get('kilometryEngineering') ?
-                  feature.get('kilometryEngineering') :
-                  feature.get('to_kilometryEngineering')) + '</td>' +
-                  '</tr>';
+                if (feature.get('kilometryDecimal')) {
+                    htmlpopup += '<tr><td>' +
+                      $translate.instant('ebalocator_context_km_dec') +
+                      '</td><td>' +
+                      feature.get('kilometryDecimal') +
+                      '</td></tr>';
+                    htmlpopup += '<tr><td>' +
+                      $translate.instant('ebalocator_context_km') +
+                      '</td><td>' +
+                      feature.get('kilometryDatabase') +
+                      '</td></tr>';
+                    htmlpopup += '<tr><td>' +
+                      $translate.instant('ebalocator_context_km_ing') +
+                      '</td><td>' +
+                      feature.get('kilometryEngineering') +
+                      '</td></tr>';
+                } else if (feature.get('to_kilometryDecimal') ||
+                        feature.get('from_kilometryDecimal')) {
+                    if (feature.get('from_kilometryDecimal')) {
+                        htmlpopup += '<tr><td><b>' +
+                          $translate.instant('ebalocator_context_from') +
+                          '</b></td><td></td></tr>';
+                        htmlpopup += '<tr><td>' +
+                          $translate.instant('ebalocator_context_km_dec') +
+                          '</td><td>' +
+                          feature.get('from_kilometryDecimal') +
+                          '</td></tr>';
+                        htmlpopup += '<tr><td>' +
+                          $translate.instant('ebalocator_context_km') +
+                          '</td><td>' +
+                          feature.get('from_kilometryDatabase') +
+                          '</td></tr>';
+                        htmlpopup += '<tr><td>' +
+                          $translate.instant('ebalocator_context_km_ing') +
+                          '</td><td>' +
+                          feature.get('from_kilometryEngineering') +
+                          '</td></tr>';
+                    }
+                    if (feature.get('to_kilometryDecimal')) {
+                        htmlpopup += '<tr><td><b>' +
+                          $translate.instant('ebalocator_context_to') +
+                          '</b></td><td></td></tr>';
+                        htmlpopup += '<tr><td>' +
+                          $translate.instant('ebalocator_context_km_dec') +
+                          '</td><td>' +
+                          feature.get('to_kilometryDecimal') +
+                          '</td></tr>';
+                        htmlpopup += '<tr><td>' +
+                          $translate.instant('ebalocator_context_km') +
+                          '</td><td>' +
+                          feature.get('to_kilometryDatabase') +
+                          '</td></tr>';
+                        htmlpopup += '<tr><td>' +
+                          $translate.instant('ebalocator_context_km_ing') +
+                          '</td><td>' +
+                          feature.get('to_kilometryEngineering') +
+                          '</td></tr>';
+                    }
+                }
                 htmlpopup += '</tbody></table><br>';
 
                 var downloadContent = layer.get("downloadContent");

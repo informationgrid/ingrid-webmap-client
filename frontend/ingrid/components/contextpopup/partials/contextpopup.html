@@ -137,13 +137,17 @@
                 <td translate>ebalocator_context_lat</td>
                 <td>{{ebastr_lat}}</td>
               </tr>
+              <tr ng-if="ebastr_km_dec">
+                <td translate>ebalocator_context_km_dec</td>
+                <td>{{ebastr_km_dec}}</td>
+              </tr>
               <tr ng-if="ebastr_km">
                 <td translate>ebalocator_context_km</td>
-                <td>{{ebastr_km}} km</td>
+                <td>{{ebastr_km}}</td>
               </tr>
               <tr ng-if="ebastr_km_ing">
                 <td translate>ebalocator_context_km_ing</td>
-                <td>{{ebastr_km_ing}} km</td>
+                <td>{{ebastr_km_ing}}</td>
               </tr>
               <tr ng-if="ebastr_error" colspan="2">
                 <td translate>ebalocator_context_error</td>
