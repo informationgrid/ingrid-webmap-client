@@ -168,7 +168,7 @@ export class LayerComponent implements OnInit {
       this.layersPage.forEach(layerItem => {
         const layerId = layerItem.id;
         let layer = layerItem.item;
-        if (selectedLayer == layerId) {
+        if (selectedLayer === layerId) {
           if (this.isActiveSingleTile) {
             layer.singleTile = this.layersExtendedSelectedSingleTile;
           }
@@ -180,7 +180,7 @@ export class LayerComponent implements OnInit {
           }
           return;
         }
-      })
+      });
     });
     this.httpService.updateLayers(this.layersPage).subscribe(
       data => {
@@ -218,7 +218,7 @@ export class LayerComponent implements OnInit {
   }
 
   isAllChecked() {
-    if (this.layersPage.length == this.selectedLayers.length) {
+    if (this.layersPage.length === this.selectedLayers.length) {
       this.layersSelectAll = true;
     } else {
       this.layersSelectAll = false;
