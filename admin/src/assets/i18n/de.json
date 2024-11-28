@@ -290,7 +290,7 @@
     "setting_settingDefaultMouseProjections": "Default Mauszeiger-Projektion",
     "setting_settingDefaultMouseProjections_help": "Legen Sie die Projektionen für die Darstellung der Koordinaten des Mauszeiger an.",
     "setting_settingDefaultMapScales": "Kartenmaßstäbe / Zoomstufen",
-    "setting_settingDefaultMapScales_help": "Legen Sie die Kartenmaßstäbe / Zoomstufen fest. Sind keine definiert, werden die Maßstäbe der Karten-Projektion verwendet.",
+    "setting_settingDefaultMapScales_help": "Legen Sie die Kartenmaßstäbe / Zoomstufen fest. Sind keine definiert, werden die Maßstäbe der Karten-Projektion verwendet.<br><br><b>Berechnung (einfach):</b><br>resolution = scale / (inchesPerMeter * dpi)<br>inchesPerMeter: 1/0.0254<br>dpi: 25.4/0.28<br><br><u>z.B. Resolution für \"1:100\":</u><br>100 / ((1/0.0254) * (25.4/0.28)) = 0.0280<br><br><b>Berechnung (per Openlayers abhängig von Kartenprojektion und -punkt):</b><br>resolution = scale / ol.proj.getPointResolution( projection, 1 / 0.28, center) / 1000<br><br><u>z.B. Resolution für \"1:100\":</u><br>100 / ol.proj.getPointResolution( ol.proj.get('EPSG:25832'), 1 / 0.28, [432216.39, 5685988.95]) / 1000 = 0.028042126398417293",
     "setting_settingDefaultImportList": "Default Dienstauswahlliste beim Import",
     "setting_settingDefaultImportList_help": "Erstellen Sie eine Liste von WMS-Diensten oder WMTS-Diensten für den Import. Diese Liste kann im Import-Dialog über eine Dropdown-Liste aufgerufen werden.",
     "setting_settingShareFacebook": "Teilen per Facebook",
