@@ -792,6 +792,46 @@
               <input type="number" #maxScale="ngModel" [(ngModel)]="layer.item.maxScale" name="maxScale" class="form-control">
             </div>
           </div>
+          <!-- minResolution -->
+          <div class="form-group row">
+            <div class="col-sm-3">
+              <div class=" d-flex justify-content-between align-items-center">
+                <label class="col-form-label" translate>layer_minResolution</label>
+                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_minResolution_' + layer.id"
+                  title="{{ ('help') | translate }}">
+                  <i class="fa fa-info" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="collapse" id="info_layer_minResolution_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+                <div>
+                  <small class="form-text text-muted" translate>layer_minResolution_help</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-9">
+              <input type="number" #minResolution="ngModel" [(ngModel)]="layer.item.minResolution" name="minResolution" class="form-control">
+            </div>
+          </div>
+          <!-- maxResolution -->
+          <div class="form-group row">
+            <div class="col-sm-3">
+              <div class=" d-flex justify-content-between align-items-center">
+                <label class="col-form-label" translate>layer_maxResolution</label>
+                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_maxResolution_' + layer.id"
+                  title="{{ ('help') | translate }}">
+                  <i class="fa fa-info" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="collapse" id="info_layer_maxResolution_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+                <div>
+                  <small class="form-text text-muted" translate>layer_maxResolution_help</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-9">
+              <input type="number" #maxResolution="ngModel" [(ngModel)]="layer.item.maxResolution" name="maxResolution" class="form-control">
+            </div>
+          </div>
           <!-- crossOrigin -->
           <div class="form-group row">
             <div class="col-sm-3">

@@ -14,6 +14,12 @@
       <i *ngIf="layer.item.auth" aria-hidden="true" class="fa fa-lock"></i>
       {{ layer.item.type | uppercase }}
     </span>
+    <span *ngIf="layer.item.minResolution" class="badge badge-pill badge-info">
+      minResolution: {{ layer.item.minResolution }}
+    </span>
+    <span *ngIf="layer.item.maxResolution" class="badge badge-pill badge-info">
+      maxResolution: {{ layer.item.maxResolution }}
+    </span>
     <span *ngIf="layer.item.version" class="badge badge-pill" [ngClass]="{'badge-primary' : layer.item.type === 'wms', 'badge-danger' : layer.item.type === 'wmts'}">{{ layer.item.version }}</span>
   </div>
 </div>

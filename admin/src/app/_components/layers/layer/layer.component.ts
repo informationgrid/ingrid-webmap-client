@@ -44,6 +44,10 @@ export class LayerComponent implements OnInit {
   searchCategory = '';
   searchType = '';
 
+  isActiveSingleTile = false;
+  isActiveGutter = false;
+  isActiveTileSize = false;
+
   layersExtendedSelectedSingleTile = false;
   layersExtendedSelectedGutter = null;
   layersExtendedSelectedTileSize = null;
@@ -164,13 +168,19 @@ export class LayerComponent implements OnInit {
       this.layersPage.forEach(layerItem => {
         const layerId = layerItem.id;
         let layer = layerItem.item;
-        if (selectedLayer == layerId) {
-          layer.singleTile = this.layersExtendedSelectedSingleTile;
-          layer.gutter = this.layersExtendedSelectedGutter;
-          layer.tileSize = this.layersExtendedSelectedTileSize;
+        if (selectedLayer === layerId) {
+          if (this.isActiveSingleTile) {
+            layer.singleTile = this.layersExtendedSelectedSingleTile;
+          }
+          if (this.isActiveGutter) {
+            layer.gutter = this.layersExtendedSelectedGutter;
+          }
+          if (this.isActiveTileSize) {
+            layer.tileSize = this.layersExtendedSelectedTileSize;
+          }
           return;
         }
-      })
+      });
     });
     this.httpService.updateLayers(this.layersPage).subscribe(
       data => {
@@ -208,7 +218,7 @@ export class LayerComponent implements OnInit {
   }
 
   isAllChecked() {
-    if (this.layersPage.length == this.selectedLayers.length) {
+    if (this.layersPage.length === this.selectedLayers.length) {
       this.layersSelectAll = true;
     } else {
       this.layersSelectAll = false;
