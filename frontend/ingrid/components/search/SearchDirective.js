@@ -206,10 +206,10 @@ goog.require('ga_what3words_service');
             if (w3w) {
               w3w.then(function(response) {
                 var res = response.data;
-                if (res && res.geometry && res.geometry.lng &&
-                    res.geometry.lat) {
-                  var newPos = ol.proj.transform([res.geometry.lng,
-                    res.geometry.lat], 'EPSG:4326',
+                if (res && res.coordinates && res.coordinates.lng &&
+                    res.coordinates.lat) {
+                  var newPos = ol.proj.transform([res.coordinates.lng,
+                    res.coordinates.lat], 'EPSG:4326',
                   $scope.map.getView().getProjection());
                   // INGRID: Add zoom from settings
                   gaMapUtils.moveTo($scope.map, $scope.ol3d,
