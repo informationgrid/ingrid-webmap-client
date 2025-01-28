@@ -60,7 +60,7 @@ goog.provide('ga_what3words_service');
             params: {
               key: gaGlobalOptions.w3wApiKey,
               coordinates: lon + ',' + lat,
-              lang: gaLang.get()
+              language: gaLang.get()
             }
           }).then(function(response) {
             var words = response.data.words;
