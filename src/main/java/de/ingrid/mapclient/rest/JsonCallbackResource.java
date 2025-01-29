@@ -128,13 +128,23 @@ public class JsonCallbackResource {
             OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
             writer.write(content);
             writer.flush();
-
-            InputStream in = con.getInputStream();
+            InputStream in = null;
+            switch (con.getResponseCode()) {
+                case 404:
+                    in = con.getErrorStream();
+                    break;
+                default:
+                    in = con.getInputStream();
+                    break;
+            }
             String encoding = con.getContentEncoding();
             encoding = encoding == null ? "UTF-8" : encoding;
- 
-            String json = IOUtils.toString(in, encoding);
-            return Response.ok(json).build();
+            String response = IOUtils.toString(in, encoding);
+            try {
+                return Response.ok(mapper.readTree(response)).build();
+            } catch (Exception e) {
+                return Response.ok("{\"error\":true}").build();
+            }
         } catch (Exception e) {
             return Response.ok("{\"error\":true}").build();
         }
