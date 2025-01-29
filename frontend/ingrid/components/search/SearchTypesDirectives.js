@@ -1254,9 +1254,8 @@ goog.require('ga_urlutils_service');
               if (response.data) {
                 var geometry = response.data;
                 if (geometry) {
-                  if (geometry.error) {
-                    $scope.ebalocator_error = $translate.
-                      instant('ebalocator_error_msg');
+                  if (geometry.errors) {
+                    $scope.ebalocator_error = geometry.errors[0];
                   } else {
                     var vectorSource = new ol.source.Vector({
                       features: (new ol.format.GeoJSON()).
