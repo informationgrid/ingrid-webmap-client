@@ -95,15 +95,27 @@ public class JsonCallbackResource {
             }
         }
         try {
-            InputStream in = con.getInputStream();
+            InputStream in = null;
+            switch (con.getResponseCode()) {
+                case 404:
+                    in = con.getErrorStream();
+                    break;
+                default:
+                    in = con.getInputStream();
+                    break;
+            }
             String encoding = con.getContentEncoding();
             encoding = encoding == null ? "UTF-8" : encoding;
-
-            String json = IOUtils.toString(in, encoding);
-            if (jsonCallback != null && json.indexOf(jsonCallback) == -1) {
-                json = jsonCallback + "(" + json + ")";
+            String response = IOUtils.toString(in, encoding);
+            try {
+                response = mapper.readTree(response).toString();
+                if (jsonCallback != null && response.indexOf(jsonCallback) == -1) {
+                    response = jsonCallback + "(" + response + ")";
+                }
+                return Response.ok(response).build();
+            } catch (Exception e) {
+                return Response.ok("{\"error\":true}").build();
             }
-            return Response.ok(json).build();
         } catch (Exception e) {
             return Response.ok("{\"error\":true}").build();
         }
@@ -141,7 +153,8 @@ public class JsonCallbackResource {
             encoding = encoding == null ? "UTF-8" : encoding;
             String response = IOUtils.toString(in, encoding);
             try {
-                return Response.ok(mapper.readTree(response)).build();
+                response = mapper.readTree(response).toString();
+                return Response.ok(response).build();
             } catch (Exception e) {
                 return Response.ok("{\"error\":true}").build();
             }
