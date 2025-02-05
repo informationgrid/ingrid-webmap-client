@@ -1,4 +1,12 @@
 
+## 7.4.2 (05.02.2025)
+
+### Features
+
+* MAPCLIENT: Streckenlocator - Darstellung von Fehlermeldung aus dem Response (#7273)
+* MAPCLIENT: W3W an neue API anpassen (#7262)
+
+    
 ## 7.4.0 (10.01.2025)
 
 ### Features
