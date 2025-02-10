@@ -11,17 +11,17 @@
     <packaging>war</packaging>
     <name>InGrid Map Client</name>
     <scm>
-        <connection>scm:git:git@github.com:informationgrid/ingrid-webmap-client.git</connection> 
-        <developerConnection>scm:git:git@github.com:informationgrid/ingrid-webmap-client.git</developerConnection> 
+        <connection>scm:git:git@github.com:informationgrid/ingrid-webmap-client.git</connection>
+        <developerConnection>scm:git:git@github.com:informationgrid/ingrid-webmap-client.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
     <properties>
-        <spring.version>5.3.24</spring.version>
+        <spring.version>6.2.2</spring.version>
         <jersey.version>2.37</jersey.version>
-        <utils-geo.version>6.3.0</utils-geo.version>
+        <utils-geo.version>7.5.0-SNAPSHOT</utils-geo.version>
         <maven.compiler.release>17</maven.compiler.release>
     </properties>
-    
+
     <profiles>
       <profile>
         <id>windows</id>
@@ -66,14 +66,14 @@
     </profiles>
     <build>
         <finalName>${project.artifactId}</finalName>
-        
+
         <!-- ==================== PLUGINS ==================== -->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
-                    <!-- add class files to WEB-INF/classes also config files ->CONFIG-FILES 
+                    <!-- add class files to WEB-INF/classes also config files ->CONFIG-FILES
                         needed at runtime in classes-path -->
                     <packagingExcludes>**/frontend/ingrid/</packagingExcludes>
                     <archiveClasses>false</archiveClasses>
@@ -292,9 +292,9 @@
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
-            <version>1.4.19</version>
+            <version>1.4.21</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
