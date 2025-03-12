@@ -46,7 +46,8 @@ goog.require('ga_wmts_service');
     // INGRID: Add parameter '$http'
     this.$get = function($rootScope, gaLayers, gaPermalink,
         gaVector, gaMapUtils, gaWms, gaLayerFilters, gaUrlUtils, gaFileStorage,
-        gaTopic, gaGlobalOptions, $q, gaTime, $log, gaWmts, $http) {
+        gaTopic, gaGlobalOptions, $q, gaTime, $log, gaWmts, $http,
+        gaStyleFactory, gaDefinePropertiesForLayer, $translate) {
 
       // split by commas only not between || (WMS layers) (see #4592)
       const splitLayerPattern = /,(?![^|]* )/g;
@@ -620,6 +621,128 @@ goog.require('ga_wmts_service');
                     // Adding vector layer failed, native alert, log message?
                     $log.error(e.message);
                   }
+                } else if (gaMapUtils.isEbaLocatorLayer(layerSpec)) {
+                  infos = layerSpec.split('||');
+                  var ebaLocId = infos[1];
+                  var ebaLocFrom = infos[2];
+                  var ebaLocTo = infos[3];
+                  var ebaLocRail = infos[4];
+                  var full = /^true$/i.test(infos[5]);
+                  var canceler = $q.defer();
+                  var requestPath = 'point';
+                  var requestUrl = gaGlobalOptions.searchEbaLocatorGeoUrl;
+                  
+                  if (ebaLocFrom !== '' &&
+                    ebaLocTo !== '') {
+                    requestPath = 'section';
+                  }
+                  requestUrl += requestPath;
+                  requestUrl += '/' + ebaLocId;
+                  if (ebaLocFrom !== '') {
+                    requestUrl += '/' + encodeURIComponent(ebaLocFrom);
+                  }
+                  if (ebaLocTo !== '') {
+                    requestUrl += '/' + encodeURIComponent(ebaLocTo);
+                  }
+                  requestUrl += '?';
+                  if (ebaLocRail) {
+                    requestUrl += '&railtype=' + ebaLocRail;
+                  }
+                  if (gaGlobalOptions.defaultEpsg) {
+                    requestUrl += '&srid=' +
+                      gaGlobalOptions.defaultEpsg.split(':')[1];
+                  }
+                  $http.get('/ingrid-webmap-client/rest/' +
+                    'jsonCallback/query?', {
+                    cache: true,
+                    timeout: canceler.promise,
+                    params: {
+                      'url': requestUrl,
+                      'header': gaGlobalOptions.searchEbaLocatorApiHeader
+                    }
+                  }).then(function(response) {
+                    if (response.data) {
+                      var geometry = response.data;
+                      if (geometry) {
+                        if (!geometry.errors && !geometry.error) {
+                          var vectorSource = new ol.source.Vector({
+                            features: (new ol.format.GeoJSON()).
+                              readFeatures(geometry)
+                          });
+                          var layerLabel = '';
+                          var layerId = '';
+                          var trackType = '';
+                          var featureType = geometry.type;
+                          if (geometry.features && 
+                              geometry.features.length > 0) {
+                            var feature = geometry.features[0];
+                            layerId = feature.properties.track_nr;
+                            trackType = feature.properties.track_type ?
+                              feature.properties.track_type :
+                              feature.properties.to_track_type;
+                            featureType = feature.geometry.type;
+                            layerLabel = layerId + ':';
+                            layerLabel += ' ' + feature.properties.name;
+                            if (trackType) {
+                              layerLabel += ' (' +
+                                $translate.instant(
+                                    'ebalocator_rail_type_' + trackType
+                                ) + ')';
+                            }
+                          }
+                          var layerStyle;
+                          if (full) {
+                            layerStyle = new ol.style.Style({
+                              stroke: new ol.style.Stroke({
+                                color: '#FF0000',
+                                width: 2
+                              })
+                            });
+                          } else {
+                            layerStyle = new ol.style.Style({
+                              stroke: new ol.style.Stroke({
+                                color: '#0000FF',
+                                width: 2
+                              })
+                            });
+                          }
+                          var ebaLocatorLayer;
+                          if (featureType === 'Point') {
+                            ebaLocatorLayer = new ol.layer.Vector({
+                              source: vectorSource,
+                              id: layerSpec,
+                              visible: true,
+                              queryable: true,
+                              ebalocator: full,
+                              ebalocatorshort: !full,
+                              downloadContent: JSON.stringify(response.data),
+                              style: gaStyleFactory.getStyle('marker')
+                            });
+                            gaDefinePropertiesForLayer(ebaLocatorLayer);
+                            ebaLocatorLayer.label = layerLabel +
+                              ' (Kilometrierung)';
+                            map.addLayer(ebaLocatorLayer);
+                          } else {
+                            ebaLocatorLayer = new ol.layer.Vector({
+                              source: vectorSource,
+                              id: layerSpec,
+                              visible: true,
+                              queryable: true,
+                              ebalocator: full,
+                              ebalocatorshort: !full,
+                              downloadContent: JSON.stringify(response.data),
+                              style: layerStyle
+                            });
+                            gaDefinePropertiesForLayer(ebaLocatorLayer);
+                            ebaLocatorLayer.label = layerLabel +
+                              ' (Kilometrierungsbereich)';
+                            map.addLayer(ebaLocatorLayer);
+                          }
+                        }
+                      }
+                    }
+                  }, function() {
+                  });
                 }
               });
             }

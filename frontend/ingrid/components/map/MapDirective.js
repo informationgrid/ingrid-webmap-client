@@ -68,8 +68,7 @@ goog.require('ga_styles_service');
   // INGRID: Add parameter 'gaGlobalOptions', '$http'
   module.directive('gaMap', function($window, gaPermalink,
       gaStyleFactory, gaBrowserSniffer, gaLayers, gaDebounce, gaOffline,
-      gaMapUtils, $translate, gaGlobalOptions, $http, $q,
-      gaDefinePropertiesForLayer) {
+      gaMapUtils, $translate, gaGlobalOptions, $http) {
     return {
       restrict: 'A',
       scope: {
@@ -80,7 +79,6 @@ goog.require('ga_styles_service');
         var map = scope.map;
         var view = map.getView();
         var isOpeningIn3d = false;
-        var canceler = $q.defer();
 
         // set view states based on URL query string
         var queryParams = gaPermalink.getParams();
@@ -178,144 +176,6 @@ goog.require('ga_styles_service');
             var size = map.getSize();
             view.fit(extent, size);
           }
-        };
-
-        var addEbaLocatorLayer = function(ebaLocId, ebaLocFrom, ebaLocTo,
-            ebaLocRail, full) {
-          var requestPath = 'point';
-          var requestUrl = gaGlobalOptions.searchEbaLocatorGeoUrl;
-          if (ebaLocFrom !== '' &&
-            ebaLocTo !== '') {
-            requestPath = 'section';
-          }
-          requestUrl += requestPath;
-          requestUrl += '/' + ebaLocId;
-          if (ebaLocFrom !== '') {
-            requestUrl += '/' + encodeURIComponent(ebaLocFrom);
-          }
-          if (ebaLocTo !== '') {
-            requestUrl += '/' + encodeURIComponent(ebaLocTo);
-          }
-          requestUrl += '?';
-          if (ebaLocRail) {
-            requestUrl += '&railtype=' + ebaLocRail;
-          }
-          if (gaGlobalOptions.defaultEpsg) {
-            requestUrl += '&srid=' +
-              gaGlobalOptions.defaultEpsg.split(':')[1];
-          }
-          $http.get('/ingrid-webmap-client/rest/' +
-            'jsonCallback/query?', {
-            cache: true,
-            timeout: canceler.promise,
-            params: {
-              'url': requestUrl,
-              'header': gaGlobalOptions.searchEbaLocatorApiHeader
-            }
-          }).then(function(response) {
-            if (response.data) {
-              var geometry = response.data;
-              if (geometry) {
-                if (geometry.errors || geometry.error) {
-                  updateDefaultExtent();
-                } else {
-                  var vectorSource = new ol.source.Vector({
-                    features: (new ol.format.GeoJSON()).
-                      readFeatures(geometry)
-                  });
-                  var layerLabel = '';
-                  var layerId = '';
-                  var trackType = '';
-                  var featureType = geometry.type;
-                  if (geometry.features && geometry.features.length > 0) {
-                    var feature = geometry.features[0];
-                    layerId = feature.properties.track_nr;
-                    trackType = feature.properties.track_type ?
-                      feature.properties.track_type :
-                      feature.properties.to_track_type;
-                    featureType = feature.geometry.type;
-                    layerLabel = layerId + ':';
-                    layerLabel += ' ' + feature.properties.name;
-                    if (trackType) {
-                      layerId += '_' + trackType;
-                      layerLabel += ' (' +
-                        $translate.instant(
-                            'ebalocator_rail_type_' + trackType
-                        ) + ')';
-                    }
-                  }
-                  var layerStyle;
-                  if (full) {
-                    layerId = 'ebaLocatorLayerFull_' + layerId;
-                    layerStyle = new ol.style.Style({
-                      stroke: new ol.style.Stroke({
-                        color: '#FF0000',
-                        width: 2
-                      })
-                    });
-                  } else {
-                    layerId = 'ebaLocatorLayerShort_' + layerId;
-                    layerStyle = new ol.style.Style({
-                      stroke: new ol.style.Stroke({
-                        color: '#0000FF',
-                        width: 2
-                      })
-                    });
-                  }
-                  var ebaLocatorLayer;
-                  if (featureType === 'Point') {
-                    ebaLocatorLayer = new ol.layer.Vector({
-                      source: vectorSource,
-                      id: layerId,
-                      visible: true,
-                      queryable: true,
-                      ebalocator: full,
-                      ebalocatorshort: !full,
-                      downloadContent: JSON.stringify(response.data),
-                      style: gaStyleFactory.getStyle('marker')
-                    });
-                    gaDefinePropertiesForLayer(ebaLocatorLayer);
-                    ebaLocatorLayer.label = layerLabel +
-                      ' (Kilometrierung)';
-                    map.addLayer(ebaLocatorLayer);
-                  } else {
-                    ebaLocatorLayer = new ol.layer.Vector({
-                      source: vectorSource,
-                      id: layerId,
-                      visible: true,
-                      queryable: true,
-                      ebalocator: full,
-                      ebalocatorshort: !full,
-                      downloadContent: JSON.stringify(response.data),
-                      style: layerStyle
-                    });
-                    gaDefinePropertiesForLayer(ebaLocatorLayer);
-                    ebaLocatorLayer.label = layerLabel +
-                      ' (Kilometrierungsbereich)';
-                    map.addLayer(ebaLocatorLayer);
-                  }
-                  map.getLayers().on('remove', function(evt) {
-                    if (evt.element === ebaLocatorLayer) {
-                      if (ebaLocatorLayer.get('ebalocatorshort')) {
-                        gaPermalink.deleteParam('ebaLocSearchId');
-                        gaPermalink.deleteParam('ebaLocSearchFrom');
-                        gaPermalink.deleteParam('ebaLocSearchTo');
-                        gaPermalink.deleteParam('ebaLocSearchRail');
-                      } else {
-                        gaPermalink.deleteParam('ebaLocId');
-                        gaPermalink.deleteParam('ebaLocFrom');
-                        gaPermalink.deleteParam('ebaLocTo');
-                        gaPermalink.deleteParam('ebaLocRail');
-                      }
-                    }
-                  });
-                }
-              } else {
-                updateDefaultExtent();
-              }
-              }
-            }, function() {
-            });
         };
 
         // INGRID: Add bwaStrId
@@ -419,28 +279,6 @@ goog.require('ga_styles_service');
               }
             });
           });
-        } else if ((queryParams.ebaLocId || queryParams.ebaLocSearchId) &&
-            gaGlobalOptions.searchEbaLocatorGeoUrl) {
-                if (queryParams.ebaLocId && queryParams.ebaLocFrom
-                    && queryParams.ebaLocRail) {
-                    addEbaLocatorLayer(
-                        queryParams.ebaLocId,
-                        queryParams.ebaLocFrom,
-                        queryParams.ebaLocTo,
-                        queryParams.ebaLocRail,
-                        true
-                    );
-                }
-                if (queryParams.ebaLocSearchId && queryParams.ebaLocSearchFrom
-                    && queryParams.ebaLocSearchRail) {
-                    addEbaLocatorLayer(
-                        queryParams.ebaLocSearchId,
-                        queryParams.ebaLocSearchFrom,
-                        queryParams.ebaLocSearchTo,
-                        queryParams.ebaLocSearchRail,
-                        false
-                    );
-                }
         } else {
           updateDefaultExtent();
         }
