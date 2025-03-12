@@ -711,7 +711,7 @@ goog.require('ga_wmts_service');
                             ebaLocatorLayer = new ol.layer.Vector({
                               source: vectorSource,
                               id: layerSpec,
-                              visible: true,
+                              visible: visible,
                               queryable: true,
                               ebalocator: full,
                               ebalocatorshort: !full,
@@ -726,7 +726,7 @@ goog.require('ga_wmts_service');
                             ebaLocatorLayer = new ol.layer.Vector({
                               source: vectorSource,
                               id: layerSpec,
-                              visible: true,
+                              visible: visible,
                               queryable: true,
                               ebalocator: full,
                               ebalocatorshort: !full,
@@ -743,6 +743,7 @@ goog.require('ga_wmts_service');
                     }
                   }, function() {
                   });
+                  mustReorder = true;
                 }
               });
             }
