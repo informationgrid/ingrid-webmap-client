@@ -1145,10 +1145,8 @@ goog.require('ga_urlutils_service');
               for (var i = 0; i < layers.length; i++) {
                 var layer = layers[i];
                 if (layer.get('ebalocator') || layer.get('ebalocatorshort')) {
-                  var resId = res.id;
-                  if (res.attrs.type) {
-                    resId += '_' + res.attrs.type;
-                  }
+                  var resId = 'ebaLocator||' + res.attrs.id + '||' +
+                    res.attrs.start + '||'+ res.attrs.end + '||' + res.attrs.type;
                   if (layer.id.indexOf(resId) < 0) {
                     $scope.map.removeLayer(layer);
                     i--;
