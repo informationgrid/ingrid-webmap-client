@@ -1094,7 +1094,8 @@ goog.require('ga_urlutils_service');
   module.directive('gaSearchEbaLocator',
       function($http, $q, $sce, $translate, gaUrlUtils, gaSearchLabels,
           gaBrowserSniffer, gaPreviewLayers, gaMapUtils, gaLayers,
-          gaGlobalOptions, gaDefinePropertiesForLayer, gaStyleFactory) {
+          gaGlobalOptions, gaDefinePropertiesForLayer, gaStyleFactory,
+          gaPermalink) {
         return {
           restrict: 'A',
           templateUrl: 'components/search/partials/searchtypes_ebalocator.html',
@@ -1234,6 +1235,21 @@ goog.require('ga_urlutils_service');
                 if (gaGlobalOptions.defaultEpsg) {
                   requestUrl += '&srid=' +
                     gaGlobalOptions.defaultEpsg.split(':')[1];
+                }
+                if (full) {
+                    gaPermalink.updateParams({
+                      ebaLocId: res.id,
+                      ebaLocFrom: inputEbaLocatorFrom,
+                      ebaLocTo: inputEbaLocatorTo,
+                      ebaLocRail: res.attrs.type
+                    });
+                } else {
+                    gaPermalink.updateParams({
+                      ebaLocSearchId: res.id,
+                      ebaLocSearchFrom: inputEbaLocatorFrom,
+                      ebaLocSearchTo: inputEbaLocatorTo,
+                      ebaLocSearchRail: res.attrs.type
+                    });
                 }
                 $http.get('/ingrid-webmap-client/rest/' +
                   'jsonCallback/query?', {
