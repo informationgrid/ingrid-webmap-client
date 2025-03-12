@@ -403,6 +403,15 @@ goog.require('ga_urlutils_service');
           return false;
         },
 
+        isEbaLocatorLayer: function(olLayerOrId) {
+          if (!olLayerOrId) {
+            return false;
+          }
+          if (angular.isString(olLayerOrId)) {
+            return /^ebaLocator\|\|/.test(olLayerOrId);
+          }
+          return false;
+        },
         // INGRID: Add hasXYZParams
         hasXYZParams: function() {
           var paramsE = gaPermalink.getParams().E;

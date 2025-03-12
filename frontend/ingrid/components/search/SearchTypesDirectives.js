@@ -1094,8 +1094,7 @@ goog.require('ga_urlutils_service');
   module.directive('gaSearchEbaLocator',
       function($http, $q, $sce, $translate, gaUrlUtils, gaSearchLabels,
           gaBrowserSniffer, gaPreviewLayers, gaMapUtils, gaLayers,
-          gaGlobalOptions, gaDefinePropertiesForLayer, gaStyleFactory,
-          gaPermalink) {
+          gaGlobalOptions, gaDefinePropertiesForLayer, gaStyleFactory) {
         return {
           restrict: 'A',
           templateUrl: 'components/search/partials/searchtypes_ebalocator.html',
@@ -1236,21 +1235,6 @@ goog.require('ga_urlutils_service');
                   requestUrl += '&srid=' +
                     gaGlobalOptions.defaultEpsg.split(':')[1];
                 }
-                if (full) {
-                    gaPermalink.updateParams({
-                      ebaLocId: res.id,
-                      ebaLocFrom: inputEbaLocatorFrom,
-                      ebaLocTo: inputEbaLocatorTo,
-                      ebaLocRail: res.attrs.type
-                    });
-                } else {
-                    gaPermalink.updateParams({
-                      ebaLocSearchId: res.id,
-                      ebaLocSearchFrom: inputEbaLocatorFrom,
-                      ebaLocSearchTo: inputEbaLocatorTo,
-                      ebaLocSearchRail: res.attrs.type
-                    });
-                }
                 $http.get('/ingrid-webmap-client/rest/' +
                   'jsonCallback/query?', {
                   cache: true,
@@ -1285,6 +1269,8 @@ goog.require('ga_urlutils_service');
                     var layerLabel = '';
                     var layerId = '';
                     var trackType = '';
+                    var kilometry = '';
+                    var kilometryTo = '';
                     var featureType = geometry.type;
                     var featureCoords = null;
                     if (geometry.features && geometry.features.length > 0) {
@@ -1293,23 +1279,30 @@ goog.require('ga_urlutils_service');
                       trackType = feature.properties.track_type ?
                         feature.properties.track_type :
                         feature.properties.to_track_type;
+                      kilometry = feature.properties.kilometry ?
+                        feature.properties.kilometry :
+                        feature.properties.from_kilometry;
+                      kilometryTo = feature.properties.to_kilometry ?
+                        feature.properties.to_kilometry :
+                        '';
                       featureType = feature.geometry.type;
                       featureCoords = feature.geometry.coordinates;
                       layerLabel = layerId + ':';
                       layerLabel += ' ' + feature.properties.name;
                       if (trackType) {
-                        layerId += '_' + trackType;
                         layerLabel += ' (' +
                           $translate.instant(
                               'ebalocator_rail_type_' + trackType
                           ) + ')';
                       }
+                      layerId += '||' + kilometry + '||' + kilometryTo + '||' +
+                        trackType;
                     }
                     var ebaLocatorLayerShort, ebaLocatorLayerFull;
                     if (featureType === 'Point') {
                       ebaLocatorLayerShort = new ol.layer.Vector({
                         source: vectorSource,
-                        id: 'ebaLocatorLayerShort_' + layerId,
+                        id: 'ebaLocator||' + layerId + '||false',
                         visible: true,
                         queryable: true,
                         ebalocator: true,
@@ -1325,7 +1318,7 @@ goog.require('ga_urlutils_service');
                       if (full) {
                         ebaLocatorLayerFull = new ol.layer.Vector({
                           source: vectorSource,
-                          id: 'ebaLocatorLayerFull_' + layerId,
+                          id: 'ebaLocator||' + layerId + '||true',
                           visible: true,
                           queryable: true,
                           ebalocator: true,
@@ -1343,7 +1336,7 @@ goog.require('ga_urlutils_service');
                       } else {
                         ebaLocatorLayerShort = new ol.layer.Vector({
                           source: vectorSource,
-                          id: 'ebaLocatorLayerShort_' + layerId,
+                          id: 'ebaLocator||' + layerId + '||false',
                           visible: true,
                           queryable: true,
                           ebalocator: true,
