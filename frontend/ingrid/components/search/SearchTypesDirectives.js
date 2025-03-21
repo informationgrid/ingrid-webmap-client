@@ -984,7 +984,7 @@ goog.require('ga_urlutils_service');
                     };
                     var vectorSource = new ol.source.Vector({
                       features: (new ol.format.GeoJSON()).
-                        readFeatures(geojsonObject)
+                          readFeatures(geojsonObject)
                     });
                     var layerLabel = data.bwastrid + ' ' +
                       data.bwastr_name;
@@ -1052,15 +1052,15 @@ goog.require('ga_urlutils_service');
                       var coords = geometry.coordinates;
                       if (coords) {
                         gaMapUtils.moveTo($scope.map, $scope.ol3d,
-                          gaGlobalOptions.searchCoordsZoom, coords);
+                            gaGlobalOptions.searchCoordsZoom, coords);
                       }
                     } else {
                       $scope.map.getView().fit(vectorSource.getExtent(),
-                        $scope.map.getSize());
+                          $scope.map.getSize());
                     }
                     if (!full) {
                       $scope.options.valueSelected(
-                        gaSearchLabels.cleanLabel(layerLabel));
+                          gaSearchLabels.cleanLabel(layerLabel));
                     }
                   }
                 }
@@ -1145,10 +1145,8 @@ goog.require('ga_urlutils_service');
               for (var i = 0; i < layers.length; i++) {
                 var layer = layers[i];
                 if (layer.get('ebalocator') || layer.get('ebalocatorshort')) {
-                  var resId = res.id;
-                  if (res.attrs.type) {
-                    resId += '_' + res.attrs.type;
-                  }
+                  var resId = 'ebaLocator||' + res.attrs.id + '||' +
+                    res.attrs.start + '||'+ res.attrs.end + '||' + res.attrs.type;
                   if (layer.id.indexOf(resId) < 0) {
                     $scope.map.removeLayer(layer);
                     i--;
@@ -1254,17 +1252,23 @@ goog.require('ga_urlutils_service');
               if (response.data) {
                 var geometry = response.data;
                 if (geometry) {
-                  if (geometry.error) {
-                    $scope.ebalocator_error = $translate.
-                      instant('ebalocator_error_msg');
+                  if (geometry.errors || geometry.error) {
+                    if (geometry.error) {
+                        $scope.ebalocator_error = $translate.
+                            instant('ebalocator_error_msg');
+                    } else {
+                        $scope.ebalocator_error = geometry.errors[0];
+                    }
                   } else {
                     var vectorSource = new ol.source.Vector({
                       features: (new ol.format.GeoJSON()).
-                        readFeatures(geometry)
+                          readFeatures(geometry)
                     });
                     var layerLabel = '';
                     var layerId = '';
                     var trackType = '';
+                    var kilometry = '';
+                    var kilometryTo = '';
                     var featureType = geometry.type;
                     var featureCoords = null;
                     if (geometry.features && geometry.features.length > 0) {
@@ -1273,23 +1277,30 @@ goog.require('ga_urlutils_service');
                       trackType = feature.properties.track_type ?
                         feature.properties.track_type :
                         feature.properties.to_track_type;
+                      kilometry = feature.properties.kilometry ?
+                        feature.properties.kilometry :
+                        feature.properties.from_kilometry;
+                      kilometryTo = feature.properties.to_kilometry ?
+                        feature.properties.to_kilometry :
+                        '';
                       featureType = feature.geometry.type;
                       featureCoords = feature.geometry.coordinates;
                       layerLabel = layerId + ':';
                       layerLabel += ' ' + feature.properties.name;
                       if (trackType) {
-                        layerId += '_' + trackType;
                         layerLabel += ' (' +
                           $translate.instant(
-                            'ebalocator_rail_type_' + trackType
+                              'ebalocator_rail_type_' + trackType
                           ) + ')';
                       }
+                      layerId += '||' + kilometry + '||' + kilometryTo + '||' +
+                        trackType;
                     }
                     var ebaLocatorLayerShort, ebaLocatorLayerFull;
                     if (featureType === 'Point') {
                       ebaLocatorLayerShort = new ol.layer.Vector({
                         source: vectorSource,
-                        id: 'ebaLocatorLayerShort_' + layerId,
+                        id: 'ebaLocator||' + layerId + '||false',
                         visible: true,
                         queryable: true,
                         ebalocator: true,
@@ -1305,7 +1316,7 @@ goog.require('ga_urlutils_service');
                       if (full) {
                         ebaLocatorLayerFull = new ol.layer.Vector({
                           source: vectorSource,
-                          id: 'ebaLocatorLayerFull_' + layerId,
+                          id: 'ebaLocator||' + layerId + '||true',
                           visible: true,
                           queryable: true,
                           ebalocator: true,
@@ -1323,7 +1334,7 @@ goog.require('ga_urlutils_service');
                       } else {
                         ebaLocatorLayerShort = new ol.layer.Vector({
                           source: vectorSource,
-                          id: 'ebaLocatorLayerShort_' + layerId,
+                          id: 'ebaLocator||' + layerId + '||false',
                           visible: true,
                           queryable: true,
                           ebalocator: true,
@@ -1346,21 +1357,21 @@ goog.require('ga_urlutils_service');
                       var coords = featureCoords;
                       if (coords) {
                         gaMapUtils.moveTo($scope.map, $scope.ol3d,
-                          gaGlobalOptions.searchCoordsZoom, coords);
+                            gaGlobalOptions.searchCoordsZoom, coords);
                       }
                     } else {
                       $scope.map.getView().fit(vectorSource.getExtent(),
-                        $scope.map.getSize());
+                          $scope.map.getSize());
                     }
                     if (!full) {
                       $scope.options.valueSelected(
-                        gaSearchLabels.cleanLabel(layerLabel));
+                          gaSearchLabels.cleanLabel(layerLabel));
                     }
                   }
                 }
               } else {
                 $scope.ebalocator_error = $translate.
-                  instant('ebalocator_error_msg');
+                    instant('ebalocator_error_msg');
               }
             }
 

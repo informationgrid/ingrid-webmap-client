@@ -1,4 +1,16 @@
 
+## 7.5.0 (21.03.2025)
+
+### Features
+
+* MAPCLIENT: Parametrisierter Aufruf der Streckensuche  (#7447)
+* MAPCLIENT: Streckenlocator - Darstellung von Fehlermeldung aus dem Response (#7273)
+* MAPCLIENT: W3W an neue API anpassen (#7262)
+
+### Bugfixes
+
+* Sicherheitslücke in GeoTools und Commons Collection Bibliothek (#7326)
+    
 ## 7.4.0 (10.01.2025)
 
 ### Features

@@ -282,6 +282,7 @@ goog.require('ga_styles_service');
         } else {
           updateDefaultExtent();
         }
+
         scope.$watch('::ol3d', function(ol3d) {
           if (ol3d) {
             var camera = ol3d.getCesiumScene().camera;
