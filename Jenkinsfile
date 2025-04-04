@@ -39,11 +39,32 @@ pipeline {
                 }
             }
         }
+        stage ('Build image'){
+            steps {
+                echo 'Starting to build docker image'
+
+                script {
+
+                    if (BRANCH_NAME == 'master') {
+                        env.VERSION = 'latest'
+                    } else {
+                        env.VERSION = BRANCH_NAME.replaceAll('/', '-')
+                    }
+
+                    docker.withRegistry('https://docker-registry.wemove.com', 'docker-registry-wemove') {
+                        def customImage = docker.build("docker-registry.wemove.com/ingrid-webmap-client:${env.VERSION}", "--pull .")
+
+                        /* Push the container to the custom Registry */
+                        customImage.push()
+                    }
+                }
+            }
+        }
     }
     post {
         changed {
             // send Email with Jenkins' default configuration
-            script { 
+            script {
                 emailext (
                     body: '${DEFAULT_CONTENT}',
                     subject: '${DEFAULT_SUBJECT}',
