@@ -5,13 +5,28 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '20', artifactNumToKeepStr: '5'))
     }
 
+    environment {
+        VERSION = readMavenPom().getVersion()
+    }
+
     tools {
         jdk 'jdk17'
         nodejs "nodejs10.15.3"
     }
 
     stages {
-        stage('Build') {
+        // normal build if it's not the master branch and not the support branch, except if it's a SNAPSHOT-version
+        stage('Build-SNAPSHOT') {
+            when {
+                not { branch 'master' }
+                not { buildingTag() }
+                not {
+                    allOf {
+                        branch 'support/*'
+                        expression { return !VERSION.endsWith("-SNAPSHOT") }
+                    }
+                }
+            }
             steps {
                 withMaven(
                     // Maven installation declared in the Jenkins "Global Tool Configuration"
@@ -22,9 +37,30 @@ pipeline {
                 ) {
 
                     // Run the maven build
-                    sh 'mvn clean deploy -Dmaven.test.failure.ignore=true'
+                    sh 'mvn clean deploy -PrequireSnapshotVersion,docker,docker-$GIT_BRANCH -Dmaven.test.failure.ignore=true'
 
                 } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe & FindBugs reports...
+            }
+        }
+        // release build if it's the master or the support branch and is not a SNAPSHOT version
+        stage ('Build-Release') {
+            when {
+                anyOf { branch 'master'; branch 'support/*' }
+                expression { return !VERSION.endsWith("-SNAPSHOT") }
+                not { buildingTag() }
+            }
+            steps {
+                withMaven(
+                    maven: 'Maven3',
+                    mavenSettingsConfig: '2529f595-4ac5-44c6-8b4f-f79b5c3f4bae'
+                ) {
+                    echo "Release: $VERSION"
+                    // check license
+                    // check is release version
+                    // deploy to distribution
+                    // send release email
+                    sh 'mvn clean deploy -Pdocker,release'
+                }
             }
         }
         stage ('SonarQube Analysis'){
@@ -45,7 +81,7 @@ pipeline {
 
                 script {
 
-                    if (BRANCH_NAME == 'master') {
+                    if (BRANCH_NAME == 'develop') {
                         env.VERSION = 'latest'
                     } else {
                         env.VERSION = BRANCH_NAME.replaceAll('/', '-')
