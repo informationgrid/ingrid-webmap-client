@@ -43,7 +43,7 @@ pipeline {
                 }
             }
         }
-        stage ('Build image'){
+        stage ('Build image version'){
             steps {
                 echo 'Starting to build docker image'
 
@@ -54,12 +54,24 @@ pipeline {
 
                         /* Push the container to the custom Registry */
                         customImage.push()
+                    }
+                }
+            }
+        }
+        stage ('Build image latest'){
+            when {
+                anyOf { branch 'develop' }
+            }
+            steps {
+                echo 'Starting to build docker image latest'
 
-                        if (BRANCH_NAME == 'develop') {
-                            env.VERSION = 'latest'
-                            customImage = docker.build("docker-registry.wemove.com/ingrid-webmap-client:${env.VERSION}", "--pull .")
-                            customImage.push()
-                        }
+                script {
+
+                    docker.withRegistry('https://docker-registry.wemove.com', 'docker-registry-wemove') {
+                        def customImage = docker.build("docker-registry.wemove.com/ingrid-webmap-client:latest", "--pull .")
+
+                        /* Push the container to the custom Registry */
+                        customImage.push()
                     }
                 }
             }
