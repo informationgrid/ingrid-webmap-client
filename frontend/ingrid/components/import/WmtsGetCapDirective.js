@@ -21,6 +21,7 @@ goog.provide('ga_wmtsgetcap_directive');
         // layer extent. We compare extents in wgs 84 to avoid
         // transformations errors of large wgs 84 extent like
         // (-180,-90,180,90)
+        /* INGRID: Remove getIntersection
         var projWgs84Extent = ol.proj.transformExtent(proj.getExtent(),
             projCode, wgs84);
         var layerWgs84Extent = ol.extent.getIntersection(projWgs84Extent,
@@ -28,6 +29,8 @@ goog.provide('ga_wmtsgetcap_directive');
         if (layerWgs84Extent) {
           return ol.proj.transformExtent(layerWgs84Extent, wgs84, projCode);
         }
+        */
+        return ol.proj.transformExtent(wgs84Extent, wgs84, projCode);
       }
     };
 

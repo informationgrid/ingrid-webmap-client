@@ -212,7 +212,7 @@ goog.require('ga_urlutils_service');
 
         // INGRID: Check auth
         var sessionAuthService = JSON.parse($window.sessionStorage.
-          getItem(options.capabilitiesUrl));
+            getItem(options.capabilitiesUrl));
 
         var layer = new ol.layer.Tile({
           id: id,
@@ -226,7 +226,7 @@ goog.require('ga_urlutils_service');
           // INGRID: Add isSecure
           isSecure: options.isSecure,
           // INGRID: Add hasLoggedIn
-          hasLoggedIn: sessionAuthService ? true : false,
+          hasLoggedIn: !!sessionAuthService,
           attribution: options.attribution
         });
         gaDefinePropertiesForLayer(layer);
@@ -271,6 +271,7 @@ goog.require('ga_urlutils_service');
           // layer extent. We compare extients in wgs 84 to avoid
           // transformations errors of large wgs 84 extent like
           // (-180,-90,180,90)
+          /* INGRID: Remove getIntersection
           var projWgs84Extent = ol.proj.transformExtent(proj.getExtent(),
               projCode, wgs84);
           var layerWgs84Extent = ol.extent.getIntersection(projWgs84Extent,
@@ -290,6 +291,7 @@ goog.require('ga_urlutils_service');
               return ol.proj.transformExtent(layerWgs84Extent, wgs84, projCode);
             }
           }
+          */
           return ol.proj.transformExtent(wgs84Extent, wgs84, projCode);
         }
       };
