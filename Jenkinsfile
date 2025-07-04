@@ -5,6 +5,10 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '20', artifactNumToKeepStr: '5'))
     }
 
+    environment {
+        VERSION = readMavenPom().getVersion()
+    }
+
     tools {
         jdk 'jdk17'
         nodejs "nodejs10.15.3"
@@ -39,11 +43,44 @@ pipeline {
                 }
             }
         }
+        stage ('Build image version'){
+            steps {
+                echo 'Starting to build docker image'
+
+                script {
+
+                    docker.withRegistry('https://docker-registry.wemove.com', 'docker-registry-wemove') {
+                        def customImage = docker.build("docker-registry.wemove.com/ingrid-webmap-client:${env.VERSION}", "--pull .")
+
+                        /* Push the container to the custom Registry */
+                        customImage.push()
+                    }
+                }
+            }
+        }
+        stage ('Build image latest'){
+            when {
+                anyOf { branch 'develop' }
+            }
+            steps {
+                echo 'Starting to build docker image latest'
+
+                script {
+
+                    docker.withRegistry('https://docker-registry.wemove.com', 'docker-registry-wemove') {
+                        def customImage = docker.build("docker-registry.wemove.com/ingrid-webmap-client:latest", "--pull .")
+
+                        /* Push the container to the custom Registry */
+                        customImage.push()
+                    }
+                }
+            }
+        }
     }
     post {
         changed {
             // send Email with Jenkins' default configuration
-            script { 
+            script {
                 emailext (
                     body: '${DEFAULT_CONTENT}',
                     subject: '${DEFAULT_SUBJECT}',

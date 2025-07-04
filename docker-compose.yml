@@ -1,0 +1,12 @@
+services:
+  mapclient:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8500:8080"
+    networks:
+      - mapclient
+
+networks:
+  mapclient:
