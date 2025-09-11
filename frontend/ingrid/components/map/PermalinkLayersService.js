@@ -53,6 +53,8 @@ goog.require('ga_wmts_service');
       const splitLayerPattern = /,(?![^|]* )/g;
 
       var layersParamValue = gaPermalink.getParams().layers;
+      // INGRID: Add layers_extend
+      var layersExtendParamValue = gaPermalink.getParams().layers_extend;
       var layersOpacityParamValue = gaPermalink.getParams().layers_opacity;
       var layersParamsValue = gaPermalink.getParams().layers_params;
       var layersVisibilityParamValue =
@@ -64,6 +66,9 @@ goog.require('ga_wmts_service');
 
       var layerSpecs = layersParamValue ?
         layersParamValue.split(splitLayerPattern) : [];
+      // INGRID: Add layers_extend
+      var layerExtendSpecs = layersExtendParamValue ?
+        layersExtendParamValue.split(splitLayerPattern) : [];
       var layerOpacities = layersOpacityParamValue ?
         layersOpacityParamValue.split(',') : [];
       var layerParams = layersParamsValue ?
@@ -325,7 +330,7 @@ goog.require('ga_wmts_service');
         };
 
         var addLayers = function(layerSpecs, opacities, visibilities,
-            timestamps, parameters, styleUrls) {
+            timestamps, parameters, styleUrls, layerExtendSpecs) {
           // INGRID: Get values from shorten
           var all = {};
           var value;
@@ -400,6 +405,14 @@ goog.require('ga_wmts_service');
             if (values.layerSpecs) {
               if (values.layerSpecs.data) {
                 layerSpecs = values.layerSpecs.data.split(',');
+              }
+            }
+            // INGRID: Add layers_extend
+            if (layerExtendSpecs && layerExtendSpecs.length > 0) {
+              layerSpecs = layerSpecs ? layerSpecs + ',' : '';
+              layerSpecs = layerSpecs + '' + layerExtendSpecs.join(',');
+              if (layerExtendSpecs.length > 0) {
+                gaPermalink.deleteParam('layers_extend');
               }
             }
             if (values.opacities) {
@@ -806,7 +819,8 @@ goog.require('ga_wmts_service');
           } else {
             // We add layers from 'layers' parameter
             addLayers(layerSpecs, layerOpacities, layerVisibilities,
-                layerTimestamps, layerParams, layersStyleUrl);
+                layerTimestamps, layerParams, layersStyleUrl,
+                layerExtendSpecs);
           }
 
           gaTime.allowStatusUpdate = true;
