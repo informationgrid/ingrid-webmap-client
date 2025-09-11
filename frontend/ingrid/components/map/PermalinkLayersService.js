@@ -326,6 +326,16 @@ goog.require('ga_wmts_service');
             if (activatedLayers.length) {
               addLayers(activatedLayers.slice(0).reverse(), null, false);
             }
+            // INGRID: Add layers_extend
+            if (layerExtendSpecs.length) {
+              addLayers(null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                layerExtendSpecs);
+            }
           }
         };
 
@@ -348,6 +358,9 @@ goog.require('ga_wmts_service');
               // INGRID: Set layerSpecs
               layerSpecs = getLayerSpecs;
             }
+          }
+          if (layerExtendSpecs && layerExtendSpecs.length > 0) {
+            all['layerExtendSpecs'] = layerExtendSpecs;
           }
           if (opacities && opacities.length > 0) {
             value = opacities.join(',');
@@ -407,14 +420,6 @@ goog.require('ga_wmts_service');
                 layerSpecs = values.layerSpecs.data.split(',');
               }
             }
-            // INGRID: Add layers_extend
-            if (layerExtendSpecs && layerExtendSpecs.length > 0) {
-              layerSpecs = layerSpecs ? layerSpecs + ',' : '';
-              layerSpecs = layerSpecs + '' + layerExtendSpecs.join(',');
-              if (layerExtendSpecs.length > 0) {
-                gaPermalink.deleteParam('layers_extend');
-              }
-            }
             if (values.opacities) {
               if (values.opacities.data) {
                 opacities = values.opacities.data.split(',');
@@ -424,6 +429,16 @@ goog.require('ga_wmts_service');
               if (values.visibilities.data) {
                 visibilities = values.visibilities.data.split(',');
               }
+            }
+            // INGRID: Add layers_extend
+            if (values.layerExtendSpecs &&
+              values.layerExtendSpecs.length > 0) {
+              layerSpecs = layerSpecs ?
+                layerSpecs.concat(values.layerExtendSpecs) :
+                values.layerExtendSpecs;
+              visibilities = visibilities ?
+                visibilities.concat(['true']) : 'true'.split(',')
+              gaPermalink.deleteParam('layers_extend');
             }
             if (values.timestamps) {
               if (values.timestamps.data) {
@@ -644,7 +659,7 @@ goog.require('ga_wmts_service');
                   var canceler = $q.defer();
                   var requestPath = 'point';
                   var requestUrl = gaGlobalOptions.searchEbaLocatorGeoUrl;
-                  
+
                   if (ebaLocFrom !== '' &&
                     ebaLocTo !== '') {
                     requestPath = 'section';
