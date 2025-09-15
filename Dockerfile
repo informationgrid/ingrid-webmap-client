@@ -13,7 +13,7 @@ RUN apt-get update; \
 
 RUN chown -R ubuntu:ubuntu /usr/local/tomcat
 
-COPY ./docker/files/tomcat-9/entrypoint.sh /entrypoint.sh
+COPY ./docker/files/entrypoint.sh /entrypoint.sh
 
 USER ubuntu
 
