@@ -13,11 +13,11 @@ RUN apt-get update; \
 
 RUN chown -R ubuntu:ubuntu /usr/local/tomcat
 
-COPY ./docker/entrypoint.sh /entrypoint.sh
+COPY ./docker/entrypoint.sh /usr/local/tomcat/entrypoint.sh
 
 USER ubuntu
 
 EXPOSE 8080
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/usr/local/tomcat/entrypoint.sh"]
 CMD ["catalina.sh", "run"]
