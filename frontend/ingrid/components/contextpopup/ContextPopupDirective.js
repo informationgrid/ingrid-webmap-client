@@ -50,6 +50,7 @@ goog.require('ga_window_service');
             // INGRID: Add BwaStrLocator
             var bwaLocatorUrl = scope.options.bwaLocatorUrl;
             var ebaLocatorUrl = scope.options.ebaLocatorUrl;
+            var ebaOperatingUrl = scope.options.ebaOperatingUrl;
 
             // INGRID: Add tabs
             scope.currentTab = 1;
@@ -81,6 +82,14 @@ goog.require('ga_window_service');
             // INGRID: Add 'showEbaStrLocator'
             scope.showEbaLocator = function() {
               if (gaGlobalOptions.searchEbaLocatorStationUrl) {
+                return true;
+              }
+              return false;
+            };
+
+            // INGRID: Add 'showEbaOperating'
+            scope.showEbaOperating = function() {
+              if (gaGlobalOptions.searchEbaOperatingStationUrl) {
                 return true;
               }
               return false;
@@ -328,6 +337,11 @@ goog.require('ga_window_service');
                 getEbaLocatorData();
               }
 
+              // INGRID: Add get 'EbaOperating' data
+              if (gaGlobalOptions.searchEbaOperatingStationUrl) {
+                getEbaOperatingData();
+              }
+
               if (gaWindow.isWidth('xs') || gaWindow.isHeight('xs')) {
                 view.animate({
                   center: clickCoord,
@@ -547,6 +561,62 @@ goog.require('ga_window_service');
                 }
               } else {
                 scope.ebastr_error = true;
+              }
+            }
+            
+                        // INGRID: Get 'Eba operating' data
+            function getEbaOperatingData() {
+              scope.ebaop_abbreviation = undefined;
+              scope.ebaop_name = undefined;
+              scope.ebaop_type = undefined;
+              scope.ebaop_lon = undefined;
+              scope.ebaop_lat = undefined;
+              scope.ebaop_trackNr = undefined;
+              scope.ebaop_distance = undefined;
+              scope.ebaop_srid = undefined;
+
+              var p = {
+                // INGRID: Change 'coord21781' to 'coordDefault'
+                X: clickCoord[1],
+                Y: clickCoord[0]
+              };
+
+              var url = gaGlobalOptions.searchEbaOpStationUrl;
+              url += p.Y + '/';
+              url += p.X;
+              url += '?srid=' + gaGlobalOptions.defaultEpsg.split(':')[1];
+
+              $http.get(ebaOperatingUrl, {
+                params: {
+                  'url': url,
+                  'header': gaGlobalOptions.searchEbaLocatorApiHeader
+                }
+              }).then(function(response) {
+                updateEbaOperatingData(response);
+              });
+            }
+
+            function updateEbaOperatingData(response) {
+              var result = response.data;
+              if (result.features) {
+                var features = result.features;
+                if (features.length === 1) {
+                  var feature = features[0];
+                  var props = feature.properties;
+                  scope.ebaop_abbreviation = props.abbreviation;
+                  scope.ebaop_name = $sce.trustAsHtml(
+                    props.name.replaceAll(',', '<br>')
+                  );
+                  scope.ebaop_type = props.type;
+                  scope.ebaop_lon = props.bbox[0];
+                  scope.ebaop_lat = props.bbox[1];
+                  scope.ebaop_trackNr = props.trackNr;
+                  scope.ebaop_distance = props.distance;
+                  scope.ebaop_srid = result.crs.properties.name.
+                    split('::')[1];
+                }
+              } else {
+                scope.ebaop_error = true;
               }
             }
           }

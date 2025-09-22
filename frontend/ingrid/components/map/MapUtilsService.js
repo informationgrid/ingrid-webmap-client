@@ -402,13 +402,23 @@ goog.require('ga_urlutils_service');
           }
           return false;
         },
-
+        // INGRID: EBA locator layer
         isEbaLocatorLayer: function(olLayerOrId) {
           if (!olLayerOrId) {
             return false;
           }
           if (angular.isString(olLayerOrId)) {
             return /^ebaLocator\|\|/.test(olLayerOrId);
+          }
+          return false;
+        },
+        // INGRID: EBA operating layer
+        isEbaOperatingLayer: function(olLayerOrId) {
+          if (!olLayerOrId) {
+            return false;
+          }
+          if (angular.isString(olLayerOrId)) {
+            return /^ebaOperating\|\|/.test(olLayerOrId);
           }
           return false;
         },

@@ -1,0 +1,32 @@
+<div class="ga-search-results-container ng-hide" ng-hide="!results.length">
+  <div class="ga-search-results-header" translate="{{type + '_results_header' + fuzzy}}"></div>
+  <div class="ga-search-results">
+    <ul>
+        <li class="ga-search-result ga-layer-folded" tabindex="{{tabstart + i}}"
+             ng-repeat="(i, res) in results"
+             ng-keydown="keydown($event, res)"
+             ng-focus="preview(res)"
+             ng-blur="out()"
+             ng-click="click(res)"
+             aria-expanded="false"
+             ng-mouseenter="preview(res)"
+             ng-mouseleave="out()">
+            <div class="ga-eba-infos">
+                <label class="ga-checkbox" ng-bind-html="prepareLabel(res.attrs)"></label>
+            </div><!--ga-layer-infos-->
+            <div class="ga-layer-tools">
+                <label>
+                    <div translate>ebaoperating_type</div>&nbsp;
+                    <select id="{{ebaoperating_type}}" ng-click="stopPreEvent($event)"/>
+                </label>
+                <button class="ga-icon fa fa-chevron-sign-right"
+                    ng-attr-aria-label="{{ 'fa_icon_ebaoperating_load' | translate }}" 
+                    ng-click="getEbaOperatingParam($event, res)"></button>
+                <div ng-if="ebaoperating_error">
+                    <span class="warning">{{ebaoperating_error}}</span>
+               </div>
+            </div><!--ga-layer-tools-->
+        </li>
+    </ul>
+  </div>
+</div>
