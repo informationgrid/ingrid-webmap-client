@@ -1090,7 +1090,7 @@ goog.require('ga_urlutils_service');
         };
       });
 
-  // INGRID: Add Bwa locator search
+  // INGRID: Add Eba locator search
   module.directive('gaSearchEbaLocator',
       function($http, $q, $sce, $translate, gaUrlUtils, gaSearchLabels,
           gaBrowserSniffer, gaPreviewLayers, gaMapUtils, gaLayers,
@@ -1372,6 +1372,296 @@ goog.require('ga_urlutils_service');
               } else {
                 $scope.ebalocator_error = $translate.
                     instant('ebalocator_error_msg');
+              }
+            }
+
+            // Toggle layer tools for small screen
+            element.on('click', '.ga-eba-infos', function() {
+              var li = $(this).closest('li');
+              li.toggleClass('ga-layer-folded');
+              $(this).closest('ul').find('li').each(function(i, el) {
+                if (el !== li[0]) {
+                  $(el).addClass('ga-layer-folded');
+                  $(el).attr('aria-expanded', false);
+                } else {
+                  if ($(el).hasClass('ga-layer-folded')) {
+                    $(el).attr('aria-expanded', false);
+                  } else {
+                    $(el).attr('aria-expanded', true);
+                  }
+                }
+              });
+            });
+          }
+        };
+      });
+      
+  // INGRID: Add Eba locator search
+  module.directive('gaSearchEbaOperating',
+      function($http, $q, $sce, $translate, gaUrlUtils, gaSearchLabels,
+          gaBrowserSniffer, gaPreviewLayers, gaMapUtils, gaLayers,
+          gaGlobalOptions, gaDefinePropertiesForLayer, gaStyleFactory) {
+        return {
+          restrict: 'A',
+          templateUrl: 'components/search/partials/searchtypes_ebaoperating.html',
+          scope: {
+            options: '=gaSearchEbaOperatingOptions',
+            map: '=gaSearchEbaOperatingMap'
+          },
+          controller: 'GaSearchTypesController',
+          link: function($scope, element, attrs) {
+            var layers;
+            var canceler = $q.defer();
+
+            $scope.type = 'ebaoperating';
+            $scope.tabstart = tabStarts[6];
+            // INGRID: Change search URL for bwa locator search
+            $scope.searchUrl = $scope.options.searchEbaOperatingUrl;
+            $scope.searchParams = {
+              'header': gaGlobalOptions.searchEbaLocatorApiHeader
+            };
+
+            $scope.prepareLabel = function(attrs) {
+              var label = attrs.id + ' - ' + attrs.label;
+              if (attrs.type) {
+                switch (attrs.type) {
+                  case 1:
+                    label += ' (' +
+                      $translate.instant('ebalocator_rail_type_1') + ')';
+                    break;
+                  case 2:
+                    label += ' (' +
+                      $translate.instant('ebalocator_rail_type_2') + ')';
+                    break;
+                  default:
+                    break;
+                }
+              }
+              var l = gaSearchLabels.highlight(label,
+                  $scope.options.query);
+              updateEbaOperatingData(attrs);
+              return $sce.trustAsHtml(l);
+            };
+
+            $scope.select = function(res, evt) {
+              unregisterMove();
+              var isLayerToAdd = true;
+              // INGRID: Remove existing layers
+              layers = $scope.map.getLayers().getArray();
+              for (var i = 0; i < layers.length; i++) {
+                var layer = layers[i];
+                if (layer.get('ebaoperating')) {
+                  var resId = 'ebaLocator||' + res.attrs.id + '||' +
+                    res.attrs.start + '||'+ res.attrs.end + '||' + res.attrs.type;
+                  if (layer.id.indexOf(resId) < 0) {
+                    $scope.map.removeLayer(layer);
+                    i--;
+                  } else {
+                    isLayerToAdd = false;
+                  }
+                }
+              }
+              if (isLayerToAdd) {
+                selectEbaOperatingData(res, true);
+              }
+              if (evt) {
+                if (evt.keyCode === 13 && evt.target.id) {
+                  evt.preventDefault();
+                  $scope.getEbaOperatingParam(evt, res);
+                }
+              }
+            };
+
+            $scope.getEbaOperatingParam = function(evt, res) {
+              unregisterMove();
+
+              // INGRID: Remove existing layers
+              layers = $scope.map.getLayers().getArray();
+              for (var i = 0; i < layers.length; i++) {
+                var layer = layers[i];
+                if (layer.get('ebalocatorshort')) {
+                  $scope.map.removeLayer(layer);
+                  i--;
+                }
+              }
+              selectEbaOperatingData(res);
+            };
+
+            $scope.stopPreEvent = function(evt) {
+              evt.stopPropagation();
+            }
+
+            function updateEbaOperatingData(attrs) {
+              if (attrs) {
+                $scope.ebaoperating_type = attrs.id + '_' + attrs.type +
+                  '_ebaoperating_type';
+              }
+            }
+
+            function selectEbaOperatingData(res, full) {
+              $scope.ebaoperating_error = null;
+              if (res) {
+                var id = res.id + '_' + res.attrs.type;
+                var inputEbaOperatingType = $('#' + id +
+                  '_ebaoperating_type').val();
+                
+                var requestUrl = gaGlobalOptions.settingSearchEbaOpUrl;
+
+                requestUrl += res.attrs.abbreviation;
+                requestUrl += '?';
+                
+                if (res.attrs.name) {
+                  requestUrl += '&name=' + res.attrs.name;
+                }
+                if (inputEbaOperatingType) {
+                  requestUrl += '&type=' + inputEbaOperatingType;
+                }
+                if (res.attrs.trackNr) {
+                  requestUrl += '&track_nr=' + res.attrs.trackNr;
+                }
+                if (gaGlobalOptions.defaultEpsg) {
+                  requestUrl += '&srid=' +
+                    gaGlobalOptions.defaultEpsg.split(':')[1];
+                }
+                $http.get('/ingrid-webmap-client/rest/' +
+                  'jsonCallback/query?', {
+                  cache: true,
+                  timeout: canceler.promise,
+                  params: {
+                    'url': requestUrl,
+                    'header': gaGlobalOptions.searchEbaLocatorApiHeader
+                  }
+                }).then(function(response) {
+                  drawEbaOperatingData(response, full);
+                }, function() {
+                });
+              }
+            }
+
+            function drawEbaOperatingData(response, full) {
+              if (response.data) {
+                var geometry = response.data;
+                if (geometry) {
+                  if (geometry.errors || geometry.error) {
+                    if (geometry.error) {
+                        $scope.ebaoperating_error = $translate.
+                            instant('ebaoperating_error_msg');
+                    } else {
+                        $scope.ebaoperating_error = geometry.errors[0];
+                    }
+                  } else {
+                    var vectorSource = new ol.source.Vector({
+                      features: (new ol.format.GeoJSON()).
+                          readFeatures(geometry)
+                    });
+                    var layerLabel = '';
+                    var layerId = '';
+                    var trackType = '';
+                    var kilometry = '';
+                    var kilometryTo = '';
+                    var featureType = geometry.type;
+                    var featureCoords = null;
+                    if (geometry.features && geometry.features.length > 0) {
+                      var feature = geometry.features[0];
+                      layerId = feature.properties.track_nr;
+                      trackType = feature.properties.track_type ?
+                        feature.properties.track_type :
+                        feature.properties.to_track_type;
+                      kilometry = feature.properties.kilometry ?
+                        feature.properties.kilometry :
+                        feature.properties.from_kilometry;
+                      kilometryTo = feature.properties.to_kilometry ?
+                        feature.properties.to_kilometry :
+                        '';
+                      featureType = feature.geometry.type;
+                      featureCoords = feature.geometry.coordinates;
+                      layerLabel = layerId + ':';
+                      layerLabel += ' ' + feature.properties.name;
+                      if (trackType) {
+                        layerLabel += ' (' +
+                          $translate.instant(
+                              'ebalocator_rail_type_' + trackType
+                          ) + ')';
+                      }
+                      layerId += '||' + kilometry + '||' + kilometryTo + '||' +
+                        trackType;
+                    }
+                    var ebaLocatorLayerShort, ebaLocatorLayerFull;
+                    if (featureType === 'Point') {
+                      ebaLocatorLayerShort = new ol.layer.Vector({
+                        source: vectorSource,
+                        id: 'ebaLocator||' + layerId + '||false',
+                        visible: true,
+                        queryable: true,
+                        ebalocator: true,
+                        ebalocatorshort: true,
+                        downloadContent: JSON.stringify(response.data),
+                        style: gaStyleFactory.getStyle('marker')
+                      });
+                      gaDefinePropertiesForLayer(ebaLocatorLayerShort);
+                      ebaLocatorLayerShort.label = layerLabel +
+                        ' (Kilometrierung)';
+                      $scope.map.addLayer(ebaLocatorLayerShort);
+                    } else {
+                      if (full) {
+                        ebaLocatorLayerFull = new ol.layer.Vector({
+                          source: vectorSource,
+                          id: 'ebaLocator||' + layerId + '||true',
+                          visible: true,
+                          queryable: true,
+                          ebalocator: true,
+                          downloadContent: JSON.stringify(response.data),
+                          style: new ol.style.Style({
+                            stroke: new ol.style.Stroke({
+                              color: '#FF0000',
+                              width: 2
+                            })
+                          })
+                        });
+                        gaDefinePropertiesForLayer(ebaLocatorLayerFull);
+                        ebaLocatorLayerFull.label = layerLabel;
+                        $scope.map.addLayer(ebaLocatorLayerFull);
+                      } else {
+                        ebaLocatorLayerShort = new ol.layer.Vector({
+                          source: vectorSource,
+                          id: 'ebaLocator||' + layerId + '||false',
+                          visible: true,
+                          queryable: true,
+                          ebalocator: true,
+                          ebalocatorshort: true,
+                          downloadContent: JSON.stringify(response.data),
+                          style: new ol.style.Style({
+                            stroke: new ol.style.Stroke({
+                              color: '#0000FF',
+                              width: 2
+                            })
+                          })
+                        });
+                        gaDefinePropertiesForLayer(ebaLocatorLayerShort);
+                        ebaLocatorLayerShort.label = layerLabel +
+                          ' (Kilometrierungsbereich)';
+                        $scope.map.addLayer(ebaLocatorLayerShort);
+                      }
+                    }
+                    if (featureType === 'Point') {
+                      var coords = featureCoords;
+                      if (coords) {
+                        gaMapUtils.moveTo($scope.map, $scope.ol3d,
+                            gaGlobalOptions.searchCoordsZoom, coords);
+                      }
+                    } else {
+                      $scope.map.getView().fit(vectorSource.getExtent(),
+                          $scope.map.getSize());
+                    }
+                    if (!full) {
+                      $scope.options.valueSelected(
+                          gaSearchLabels.cleanLabel(layerLabel));
+                    }
+                  }
+                }
+              } else {
+                $scope.ebaoperating_error = $translate.
+                    instant('ebaoperating_error_msg');
               }
             }
 

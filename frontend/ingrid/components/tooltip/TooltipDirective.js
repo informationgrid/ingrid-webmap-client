@@ -759,6 +759,18 @@ goog.require('ga_window_service');
                 }
                 downloadName += '.json';
                 htmlpopup = getEbaStrHtmlPopup(layer, feature, downloadName);
+              } else if (feature.get('abbreviation')) {
+                downloadName += props.trackNr;
+                downloadName += '-';
+                downloadName += props.name;
+                downloadName += '-';
+                downloadName += props.abbreviation;
+                if (props.distance) {
+                  downloadName += '-';
+                  downloadName += props.distance;
+                }
+                downloadName += '.json';
+                htmlpopup = getEbaOperatingHtmlPopup(layer, feature, downloadName);
               }
               feature.set('htmlpopup', htmlpopup);
               if (!isFeatureQueryable(feature)) {
@@ -784,6 +796,14 @@ goog.require('ga_window_service');
                         indexOf('ebastr_download_json activated') > -1) {
                       if (this.ebastrContent) {
                         blob = new Blob([decodeURI(this.ebastrContent)],
+                            {type: 'text/csv;charset=utf-8;'});
+                        navigator.msSaveBlob(blob, downloadName);
+                        $(this).removeClass('activated');
+                      }
+                    } else if (this.className.
+                        indexOf('ebaoperating_download_json activated') > -1) {
+                      if (this.ebaopertingContent) {
+                        blob = new Blob([decodeURI(this.ebaopertingContent)],
                             {type: 'text/csv;charset=utf-8;'});
                         navigator.msSaveBlob(blob, downloadName);
                         $(this).removeClass('activated');
@@ -897,6 +917,71 @@ goog.require('ga_window_service');
                   htmlpopup += '<p><a class="bwastr_download_csv" href="' +
                     encodedUri + '" download="' + downloadName +
                     '">Strecke als CSV</a></p>';
+                }
+
+                htmlpopup += '</div>';
+                htmlpopup += '</div>';
+                return htmlpopup;
+            }
+
+            var getEbaOperatingHtmlPopup = function(layer, feature, downloadName) {
+                var htmlpopup =
+                  '<div class="htmlpopup-container">' +
+                    '<div class="htmlpopup-header">' +
+                      '<span>' + layer.label + ' &nbsp;</span>' +
+                      '(Betriebsstelle)' +
+                    '</div>' +
+                    '<div class="htmlpopup-content">';
+                htmlpopup += '<table><tbody>';
+                htmlpopup += '<tr><td>' +
+                  $translate.instant('ebaoperating_context_lon') +
+                  '</td><td>' +
+                  feature.get('bbox')[0] +
+                  '</td></tr>';
+                htmlpopup += '<tr><td>' +
+                  $translate.instant('ebaoperating_context_lat') +
+                  '</td><td>' +
+                  feature.get('bbox')[1] +
+                  '</td></tr>';
+                htmlpopup += '<tr><td>' +
+                  $translate.instant('ebaoperating_context_srid') +
+                  '</td><td>' +
+                  gaGlobalOptions.defaultEpsg.split(':')[1] +
+                  '</td></tr>';
+                htmlpopup += '<tr><td>' +
+                  $translate.instant('ebaoperating_context_trackNr') +
+                  '</td><td>' +
+                  feature.get('trackNr') +
+                  '</td></tr>';
+                htmlpopup += '<tr><td>' +
+                  $translate.instant('ebaoperating_context_name') +
+                  '</td><td>' +
+                  feature.get('name') +
+                  '</td></tr>';
+                htmlpopup += '<tr><td>' +
+                  $translate.instant('ebaoperating_context_abbreviation') +
+                  '</td><td>' +
+                  feature.get('abbreviation') +
+                  '</td></tr>';
+                
+                htmlpopup += '</tbody></table><br>';
+                var downloadContent = layer.get("downloadContent");
+                var encodedUri = '';
+
+                if (navigator.msSaveBlob) { // IE 10+
+                  downloadContent += downloadContent;
+                  encodedUri = encodeURI(downloadContent);
+                  htmlpopup += '<p><a class="ebaoperating_download_json"' +
+                    'href="javascript:void(0);" onclick="$(this).' +
+                    'addClass(\'activated\');this.ebaOperatingContent=\'' +
+                    encodedUri + '\';">JSON</a></p>';
+                } else {
+                  downloadContent = 'data:application/json;charset=utf-8,' +
+                    downloadContent;
+                  encodedUri = encodeURI(downloadContent);
+                  htmlpopup += '<p><a class="ebaoperating_download_json" href="' +
+                    encodedUri + '" download="' + downloadName +
+                    '">JSON</a></p>';
                 }
 
                 htmlpopup += '</div>';

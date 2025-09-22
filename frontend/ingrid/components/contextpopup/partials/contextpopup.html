@@ -7,7 +7,7 @@
             ng-click="hidePopover()"></button>
   </div>
   <div class="popover-content">
-      <table ng-if="!showBWaLocator() && !showEbaLocator()">
+      <table ng-if="!showBWaLocator() && !showEbaLocator() && !showEbaOperating()">
           <tbody>
           <tr ng-repeat="projection in projections" class="{{projection.key}}">
               <!-- INGRID: Change td to ng-bind-html -->
@@ -36,7 +36,7 @@
           </tbody>
       </table>
     <!-- INGRID: New layout for context popup -->
-    <div ng-if="showBWaLocator() || showEbaLocator()"  class="tabbable">
+    <div ng-if="showBWaLocator() || showEbaLocator() || showEbaOperating()"  class="tabbable">
       <!-- INGRID: Add 'role="tablist"' -->
       <ul class="nav nav-tabs" role="tablist">
         <li ng-class="getTabClass(1)">
@@ -50,6 +50,10 @@
         <li ng-class="getTabClass(3)" ng-if="showEbaLocator()">
         <!-- INGRID: Add 'ng-keypress="activeTab(3)" tabindex="0" role="tab" ng-attr-aria-selected="{{ 3 === currentTab }}"' -->
           <a ng-click="activeTab(3)" ng-keypress="activeTab(3)" tabindex="0" role="tab" ng-attr-aria-selected="{{ 3 === currentTab }}" translate>context_title_ebalocator</a>
+        </li>
+        <li ng-class="getTabClass(4)" ng-if="showEbaOperating()">
+        <!-- INGRID: Add 'ng-keypress="activeTab(4)" tabindex="0" role="tab" ng-attr-aria-selected="{{ 4 === currentTab }}"' -->
+          <a ng-click="activeTab(4)" ng-keypress="activeTab(4)" tabindex="0" role="tab" ng-attr-aria-selected="{{ 4 === currentTab }}" translate>context_title_ebaoperating</a>
         </li>
       </ul>
       <div class="tab-content">
@@ -151,6 +155,43 @@
               </tr>
               <tr ng-if="ebastr_error" colspan="2">
                 <td translate>ebalocator_context_error</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div ng-if="showEbaOperating()" class="tab-pane" ng-class="getTabClass(4)">
+          <table>
+            <tbody>
+              <tr ng-if="ebaop_lon">
+                <td translate>ebaoperating_context_lon</td>
+                <td>{{ebaop_lon}}</td>
+              </tr>
+              <tr ng-if="ebaop_lat">
+                <td translate>ebaoperating_context_lat</td>
+                <td>{{ebaop_lat}}</td>
+              </tr>
+              <tr ng-if="ebaop_srid">
+                <td translate>ebaoperating_context_srid</td>
+                <td>{{ebaop_srid}}</td>
+              </tr>
+              <tr ng-if="ebaop_name">
+                <td translate>ebaoperating_context_name</td>
+                <td ng-bind-html="ebaop_name"></td>
+              </tr>
+              <tr ng-if="ebaop_typ">
+                <td translate>ebaoperating_context_type</td>
+                <td>{{ebaop_typ}}</td>
+              </tr>
+              <tr ng-if="ebaop_abbreviation">
+                <td translate>ebaoperating_context_abbreviation</td>
+                <td>{{ebaop_abbreviation}}</td>
+              </tr>
+              <tr ng-if="ebaop_distance">
+                <td translate>ebaoperating_context_distance</td>
+                <td>{{ebaop_distance}}</td>
+              </tr>
+              <tr ng-if="ebaop_error" colspan="2">
+                <td translate>ebaoperating_context_error</td>
               </tr>
             </tbody>
           </table>
