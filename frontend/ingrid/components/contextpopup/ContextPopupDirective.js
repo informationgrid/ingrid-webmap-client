@@ -89,7 +89,7 @@ goog.require('ga_window_service');
 
             // INGRID: Add 'showEbaOperating'
             scope.showEbaOperating = function() {
-              if (gaGlobalOptions.searchEbaOperatingStationUrl) {
+              if (gaGlobalOptions.searchEbaOpStationUrl) {
                 return true;
               }
               return false;
@@ -338,7 +338,7 @@ goog.require('ga_window_service');
               }
 
               // INGRID: Add get 'EbaOperating' data
-              if (gaGlobalOptions.searchEbaOperatingStationUrl) {
+              if (gaGlobalOptions.searchEbaOpStationUrl) {
                 getEbaOperatingData();
               }
 
@@ -517,6 +517,7 @@ goog.require('ga_window_service');
               scope.ebastr_km_ing = undefined;
               scope.ebastr_crs = undefined;
               scope.ebastr_error = false;
+              scope.ebastr_response_error = undefined;
 
               var p = {
                 // INGRID: Change 'coord21781' to 'coordDefault'
@@ -556,9 +557,11 @@ goog.require('ga_window_service');
                   scope.ebastr_km = props.kilometryDatabase;
                   scope.ebastr_km_dec = props.kilometryDecimal;
                   scope.ebastr_km_ing = props.kilometryEngineering;
-                  scope.ebastr_crs = result.crs.props.name.
+                  scope.ebastr_crs = result.crs.properties.name.
                     split('::')[1];
                 }
+              } else if (result.errors) {
+                scope.ebastr_response_error = result.errors[0];
               } else {
                 scope.ebastr_error = true;
               }
@@ -574,11 +577,13 @@ goog.require('ga_window_service');
               scope.ebaop_trackNr = undefined;
               scope.ebaop_distance = undefined;
               scope.ebaop_srid = undefined;
+              scope.ebaop_error = false;
+              scope.ebaop_response_error = undefined;
 
               var p = {
                 // INGRID: Change 'coord21781' to 'coordDefault'
-                X: clickCoord[1],
-                Y: clickCoord[0]
+                X: clickCoord[0],
+                Y: clickCoord[1]
               };
 
               var url = gaGlobalOptions.searchEbaOpStationUrl;
@@ -615,6 +620,8 @@ goog.require('ga_window_service');
                   scope.ebaop_srid = result.crs.properties.name.
                     split('::')[1];
                 }
+              } else if (result.errors) {
+                scope.ebaop_response_error = result.errors[0];
               } else {
                 scope.ebaop_error = true;
               }

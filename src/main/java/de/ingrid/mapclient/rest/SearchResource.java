@@ -311,9 +311,82 @@ public class SearchResource {
                     return Response.ok("{\"results\":[]}").build();
                 }
 
+            }else if(type.equals("ebaoperating")){
+                ArrayNode jsonArray = mapper.createArrayNode();
+                URL questUrl = new URL(searchUrl.concat(URLEncoder.encode(searchTerm, "UTF-8")));
+                HttpURLConnection  con = (HttpURLConnection) questUrl.openConnection();
+                if (header != null) {
+                    TypeReference<HashMap<String,String>> typeRef = new TypeReference<HashMap<String,String>>() {};
+                    HashMap<String, String> headerMap = mapper.readValue(header, typeRef);
+                    for (Map.Entry<String, String> entry : headerMap.entrySet()) {
+                        String key = entry.getKey();
+                        String value = entry.getValue();
+                        con.setRequestProperty(key, value);
+                    }
+                }
+                try {
+                    InputStream in = con.getInputStream();
+                    String encoding = con.getContentEncoding();
+                    encoding = encoding == null ? "UTF-8" : encoding;
+                    String tmpJson = IOUtils.toString(in, encoding);
+                    JsonNode questJsonResult = mapper.readTree(tmpJson);
+                    if(!questJsonResult.isNull()){
+                        for (int j=0; j < questJsonResult.size(); j++) {
+                            JsonNode questJsonEntry = questJsonResult.get(j);
+                            ObjectNode newEntry = mapper.createObjectNode();
+                            newEntry.set( "id", questJsonEntry.get("value"));
+                            ObjectNode newAttrs = mapper.createObjectNode();
+                            newAttrs.set( "id", questJsonEntry.get("value"));
+                            newAttrs.set("label", questJsonEntry.get("label"));
+                            newAttrs.set("tracks", getEbaOperatingTrackNumbers(
+                                    newEntry.get("id").asText(),
+                                searchUrl,
+                                header
+                            ));
+                            newEntry.set( "attrs", newAttrs );
+                            jsonArray.add(newEntry);
+                        }
+                    }
+                    String responseStr = jsonArray.toString();
+                    if (jsonArray != null) {
+                        responseStr = "{\"results\":" + jsonArray + "}";
+                    }
+                    return Response.ok( responseStr ).build();
+                } catch (Exception e) {
+                    return Response.ok("{\"results\":[]}").build();
+                }
+
             }
         }
         return Response.ok( "{\"results\":[]}" ).build();
+    }
+
+
+    private JsonNode getEbaOperatingTrackNumbers(String id, String url, String header) throws Exception {
+        ArrayNode jsonArray = mapper.createArrayNode();
+        URL questUrl = new URL(url.replaceAll("autocomplete/operatingSite/", "operating_sites/" + id + "/meta/"));
+        HttpURLConnection  con = (HttpURLConnection) questUrl.openConnection();
+        if (header != null) {
+            TypeReference<HashMap<String,String>> typeRef = new TypeReference<HashMap<String,String>>() {};
+            HashMap<String, String> headerMap = mapper.readValue(header, typeRef);
+            for (Map.Entry<String, String> entry : headerMap.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                con.setRequestProperty(key, value);
+            }
+        }
+        try {
+            InputStream in = con.getInputStream();
+            String encoding = con.getContentEncoding();
+            encoding = encoding == null ? "UTF-8" : encoding;
+            String tmpJson = IOUtils.toString(in, encoding);
+            JsonNode questJsonResult = mapper.readTree(tmpJson);
+            if(!questJsonResult.isNull()){
+                return questJsonResult;
+            }
+        } catch (Exception e) {
+        }
+        return jsonArray;
     }
 
 }

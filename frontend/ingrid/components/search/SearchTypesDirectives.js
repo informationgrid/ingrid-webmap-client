@@ -1416,27 +1416,13 @@ goog.require('ga_urlutils_service');
             $scope.type = 'ebaoperating';
             $scope.tabstart = tabStarts[6];
             // INGRID: Change search URL for bwa locator search
-            $scope.searchUrl = $scope.options.searchEbaOperatingUrl;
+            $scope.searchUrl = $scope.options.searchEbaOpUrl;
             $scope.searchParams = {
               'header': gaGlobalOptions.searchEbaLocatorApiHeader
             };
 
             $scope.prepareLabel = function(attrs) {
-              var label = attrs.id + ' - ' + attrs.label;
-              if (attrs.type) {
-                switch (attrs.type) {
-                  case 1:
-                    label += ' (' +
-                      $translate.instant('ebalocator_rail_type_1') + ')';
-                    break;
-                  case 2:
-                    label += ' (' +
-                      $translate.instant('ebalocator_rail_type_2') + ')';
-                    break;
-                  default:
-                    break;
-                }
-              }
+              var label = attrs.label;
               var l = gaSearchLabels.highlight(label,
                   $scope.options.query);
               updateEbaOperatingData(attrs);
@@ -1451,7 +1437,7 @@ goog.require('ga_urlutils_service');
               for (var i = 0; i < layers.length; i++) {
                 var layer = layers[i];
                 if (layer.get('ebaoperating')) {
-                  var resId = 'ebaLocator||' + res.attrs.id + '||' +
+                  var resId = 'ebaoperating||' + res.attrs.id + '||' +
                     res.attrs.start + '||'+ res.attrs.end + '||' + res.attrs.type;
                   if (layer.id.indexOf(resId) < 0) {
                     $scope.map.removeLayer(layer);
@@ -1556,107 +1542,43 @@ goog.require('ga_urlutils_service');
                     });
                     var layerLabel = '';
                     var layerId = '';
-                    var trackType = '';
-                    var kilometry = '';
-                    var kilometryTo = '';
                     var featureType = geometry.type;
                     var featureCoords = null;
                     if (geometry.features && geometry.features.length > 0) {
                       var feature = geometry.features[0];
-                      layerId = feature.properties.track_nr;
-                      trackType = feature.properties.track_type ?
-                        feature.properties.track_type :
-                        feature.properties.to_track_type;
-                      kilometry = feature.properties.kilometry ?
-                        feature.properties.kilometry :
-                        feature.properties.from_kilometry;
-                      kilometryTo = feature.properties.to_kilometry ?
-                        feature.properties.to_kilometry :
-                        '';
+                      layerId = feature.properties.name;
+                      layerId += '||' + feature.properties.abbreviation;
+                      layerId += '||' + feature.properties.trackNr;
+                      layerId += '||' + feature.properties.type;
+                      layerLabel = feature.properties.name;
+                      layerLabel = '(' + feature.properties.abbreviation;
+                      layerLabel = '-' + feature.properties.type;
+                      layerLabel += '-' + feature.properties.trackNr + ')';
                       featureType = feature.geometry.type;
                       featureCoords = feature.geometry.coordinates;
-                      layerLabel = layerId + ':';
-                      layerLabel += ' ' + feature.properties.name;
-                      if (trackType) {
-                        layerLabel += ' (' +
-                          $translate.instant(
-                              'ebalocator_rail_type_' + trackType
-                          ) + ')';
-                      }
-                      layerId += '||' + kilometry + '||' + kilometryTo + '||' +
-                        trackType;
                     }
-                    var ebaLocatorLayerShort, ebaLocatorLayerFull;
+                    var ebaOperatingLayer;
                     if (featureType === 'Point') {
-                      ebaLocatorLayerShort = new ol.layer.Vector({
+                      ebaOperatingLayer = new ol.layer.Vector({
                         source: vectorSource,
-                        id: 'ebaLocator||' + layerId + '||false',
+                        id: 'ebaOperating||' + layerId,
                         visible: true,
                         queryable: true,
-                        ebalocator: true,
-                        ebalocatorshort: true,
+                        ebaoperating: true,
                         downloadContent: JSON.stringify(response.data),
                         style: gaStyleFactory.getStyle('marker')
                       });
-                      gaDefinePropertiesForLayer(ebaLocatorLayerShort);
-                      ebaLocatorLayerShort.label = layerLabel +
-                        ' (Kilometrierung)';
-                      $scope.map.addLayer(ebaLocatorLayerShort);
-                    } else {
-                      if (full) {
-                        ebaLocatorLayerFull = new ol.layer.Vector({
-                          source: vectorSource,
-                          id: 'ebaLocator||' + layerId + '||true',
-                          visible: true,
-                          queryable: true,
-                          ebalocator: true,
-                          downloadContent: JSON.stringify(response.data),
-                          style: new ol.style.Style({
-                            stroke: new ol.style.Stroke({
-                              color: '#FF0000',
-                              width: 2
-                            })
-                          })
-                        });
-                        gaDefinePropertiesForLayer(ebaLocatorLayerFull);
-                        ebaLocatorLayerFull.label = layerLabel;
-                        $scope.map.addLayer(ebaLocatorLayerFull);
-                      } else {
-                        ebaLocatorLayerShort = new ol.layer.Vector({
-                          source: vectorSource,
-                          id: 'ebaLocator||' + layerId + '||false',
-                          visible: true,
-                          queryable: true,
-                          ebalocator: true,
-                          ebalocatorshort: true,
-                          downloadContent: JSON.stringify(response.data),
-                          style: new ol.style.Style({
-                            stroke: new ol.style.Stroke({
-                              color: '#0000FF',
-                              width: 2
-                            })
-                          })
-                        });
-                        gaDefinePropertiesForLayer(ebaLocatorLayerShort);
-                        ebaLocatorLayerShort.label = layerLabel +
-                          ' (Kilometrierungsbereich)';
-                        $scope.map.addLayer(ebaLocatorLayerShort);
-                      }
-                    }
-                    if (featureType === 'Point') {
+                      gaDefinePropertiesForLayer(ebaOperatingLayer);
+                      ebaOperatingLayer.label = layerLabel;
+                      $scope.map.addLayer(ebaOperatingLayer);
                       var coords = featureCoords;
                       if (coords) {
                         gaMapUtils.moveTo($scope.map, $scope.ol3d,
                             gaGlobalOptions.searchCoordsZoom, coords);
                       }
-                    } else {
-                      $scope.map.getView().fit(vectorSource.getExtent(),
-                          $scope.map.getSize());
                     }
-                    if (!full) {
-                      $scope.options.valueSelected(
-                          gaSearchLabels.cleanLabel(layerLabel));
-                    }
+                    $scope.options.valueSelected(
+                      gaSearchLabels.cleanLabel(layerLabel));
                   }
                 }
               } else {
