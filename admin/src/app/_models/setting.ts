@@ -17,7 +17,6 @@ export class Setting {
         public settingSearchEbaLocatorGeoUrl = '',
         public settingSearchEbaLocatorStationUrl = '',
         public settingSearchEbaOpSearchUrl = '',
-        public settingSearchEbaOpMetaUrl = '',
         public settingSearchEbaOpUrl = '',
         public settingSearchEbaOpStationUrl = '',
         public settingSearchEbaLocatorApiHeader = '',

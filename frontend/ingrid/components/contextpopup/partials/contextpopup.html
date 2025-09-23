@@ -153,6 +153,9 @@
                 <td translate>ebalocator_context_km_ing</td>
                 <td>{{ebastr_km_ing}}</td>
               </tr>
+              <tr ng-if="ebastr_response_error" colspan="2">
+                <td>{{ebastr_response_error}}</td>
+              </tr>
               <tr ng-if="ebastr_error" colspan="2">
                 <td translate>ebalocator_context_error</td>
               </tr>
@@ -189,6 +192,9 @@
               <tr ng-if="ebaop_distance">
                 <td translate>ebaoperating_context_distance</td>
                 <td>{{ebaop_distance}}</td>
+              </tr>
+              <tr ng-if="ebaop_response_error" colspan="2">
+                <td>{{ebaop_response_error}}</td>
               </tr>
               <tr ng-if="ebaop_error" colspan="2">
                 <td translate>ebaoperating_context_error</td>

@@ -104,8 +104,8 @@ goog.require('ga_what3words_service');
             searchEbaLocatorUrl;
 
         // INGRID: Add search Eba operating url
-        $scope.childoptions.searchEbaOperatingUrl = $scope.options.
-            searchEbaOperatingUrl;
+        $scope.childoptions.searchEbaOpUrl = $scope.options.
+            searchEbaOpUrl;
 
         // INGRID: Add search Bwa Locator url
         $scope.childoptions.searchServiceAdd = $scope.options.
