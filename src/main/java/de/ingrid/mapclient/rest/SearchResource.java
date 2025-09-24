@@ -365,7 +365,6 @@ public class SearchResource {
     private JsonNode getEbaOperatingTrackNumbers(String id, String url, String header) throws Exception {
         ArrayNode jsonArray = mapper.createArrayNode();
         URL questUrl = new URL(url.replaceAll("autocomplete/operatingSite/", "operating_sites/" + URLEncoder.encode( id, "UTF-8" ) + "/meta"));
-        log.info("Quest URL: " + questUrl.toString());
         HttpURLConnection  con = (HttpURLConnection) questUrl.openConnection();
         if (header != null) {
             TypeReference<HashMap<String,String>> typeRef = new TypeReference<HashMap<String,String>>() {};
@@ -381,7 +380,6 @@ public class SearchResource {
             String encoding = con.getContentEncoding();
             encoding = encoding == null ? "UTF-8" : encoding;
             String tmpJson = IOUtils.toString(in, encoding);
-            log.info("Quest response: " + tmpJson);
             JsonNode questJsonResult = mapper.readTree(tmpJson);
             if(!questJsonResult.isNull()){
                 return questJsonResult;
