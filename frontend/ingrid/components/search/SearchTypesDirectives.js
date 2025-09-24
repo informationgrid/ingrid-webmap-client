@@ -1416,7 +1416,7 @@ goog.require('ga_urlutils_service');
             $scope.type = 'ebaoperating';
             $scope.tabstart = tabStarts[6];
             // INGRID: Change search URL for bwa locator search
-            $scope.searchUrl = $scope.options.searchEbaOpUrl;
+            $scope.searchUrl = $scope.options.searchEbaOpSearchUrl;
             $scope.searchParams = {
               'header': gaGlobalOptions.searchEbaLocatorApiHeader
             };
@@ -1438,7 +1438,8 @@ goog.require('ga_urlutils_service');
                 var layer = layers[i];
                 if (layer.get('ebaoperating')) {
                   var resId = 'ebaoperating||' + res.attrs.id + '||' +
-                    res.attrs.start + '||'+ res.attrs.end + '||' + res.attrs.type;
+                    res.attrs.start + '||'+ res.attrs.end +
+                    '||' + res.attrs.type;
                   if (layer.id.indexOf(resId) < 0) {
                     $scope.map.removeLayer(layer);
                     i--;
@@ -1446,9 +1447,6 @@ goog.require('ga_urlutils_service');
                     isLayerToAdd = false;
                   }
                 }
-              }
-              if (isLayerToAdd) {
-                selectEbaOperatingData(res, true);
               }
               if (evt) {
                 if (evt.keyCode === 13 && evt.target.id) {
@@ -1479,31 +1477,33 @@ goog.require('ga_urlutils_service');
 
             function updateEbaOperatingData(attrs) {
               if (attrs) {
-                $scope.ebaoperating_type = attrs.id + '_' + attrs.type +
+                $scope.ebaoperating_type = attrs.id +
                   '_ebaoperating_type';
+                $scope.ebaloperating_tracks = attrs.tracks;
               }
             }
 
             function selectEbaOperatingData(res, full) {
               $scope.ebaoperating_error = null;
               if (res) {
-                var id = res.id + '_' + res.attrs.type;
-                var inputEbaOperatingType = $('#' + id +
-                  '_ebaoperating_type').val();
-                
-                var requestUrl = gaGlobalOptions.settingSearchEbaOpUrl;
+                var id = res.id;
+                var selection = $('#' + id + '_ebaoperating_type')
+                    .find(":selected").val().split('/');
+                var requestUrl = gaGlobalOptions.searchEbaOpUrl;
 
-                requestUrl += res.attrs.abbreviation;
+                requestUrl += res.attrs.id;
                 requestUrl += '?';
-                
-                if (res.attrs.name) {
-                  requestUrl += '&name=' + res.attrs.name;
+
+                if (res.attrs.label) {
+                  var label = res.attrs.label.replaceAll(id + ' - ', '');
+                  requestUrl += '&name=' + encodeURIComponent(label);
                 }
-                if (inputEbaOperatingType) {
-                  requestUrl += '&type=' + inputEbaOperatingType;
+                if (selection[1]) {
+                  requestUrl += '&type=' + encodeURIComponent(selection[1]);
                 }
-                if (res.attrs.trackNr) {
-                  requestUrl += '&track_nr=' + res.attrs.trackNr;
+                if (selection[0]) {
+                  requestUrl += '&track_nr=' +
+                    encodeURIComponent(selection[0]);
                 }
                 if (gaGlobalOptions.defaultEpsg) {
                   requestUrl += '&srid=' +
@@ -1550,10 +1550,10 @@ goog.require('ga_urlutils_service');
                       layerId += '||' + feature.properties.abbreviation;
                       layerId += '||' + feature.properties.trackNr;
                       layerId += '||' + feature.properties.type;
-                      layerLabel = feature.properties.name;
-                      layerLabel = '(' + feature.properties.abbreviation;
-                      layerLabel = '-' + feature.properties.type;
-                      layerLabel += '-' + feature.properties.trackNr + ')';
+                      layerLabel = feature.properties.abbreviation;
+                      layerLabel += ' - ' + feature.properties.name;
+                      layerLabel += ' - ' + feature.properties.trackNr;
+                      layerLabel += ' ( ' + feature.properties.type + ')';
                       featureType = feature.geometry.type;
                       featureCoords = feature.geometry.coordinates;
                     }

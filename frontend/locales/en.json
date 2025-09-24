@@ -32,6 +32,7 @@
 "ebalocator_context_from": "Von:",
 "ebalocator_context_to": "Bis:",
 "ebalocator_error_msg": "Es konnte keine Streckengeometrie zu den Parametern gefunden werden",
+"ebaoperating_results_header": "Betriebsstellen",
 "ebaoperating_type": "Typ:",
 "ebaoperating_context_abbreviation": "Kürzel:",
 "ebaoperating_context_name": "Name:",
