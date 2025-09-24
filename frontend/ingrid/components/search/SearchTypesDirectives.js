@@ -1479,7 +1479,7 @@ goog.require('ga_urlutils_service');
               if (attrs) {
                 $scope.ebaoperating_type = attrs.id +
                   '_ebaoperating_type';
-                $scope.ebaloperating_tracks = attrs.tracks;
+                $scope.ebaoperating_tracks = attrs.tracks;
               }
             }
 
