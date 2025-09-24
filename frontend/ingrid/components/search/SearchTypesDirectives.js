@@ -1553,7 +1553,7 @@ goog.require('ga_urlutils_service');
                       layerLabel = feature.properties.abbreviation;
                       layerLabel += ' - ' + feature.properties.name;
                       layerLabel += ' - ' + feature.properties.trackNr;
-                      layerLabel += ' ( ' + feature.properties.type + ')';
+                      layerLabel += ' (' + feature.properties.type + ')';
                       featureType = feature.geometry.type;
                       featureCoords = feature.geometry.coordinates;
                     }

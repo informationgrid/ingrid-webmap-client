@@ -830,7 +830,7 @@ goog.require('ga_wmts_service');
                             layerLabel = feature.properties.abbreviation;
                             layerLabel += ' - ' + feature.properties.name;
                             layerLabel += ' - ' + feature.properties.trackNr;
-                            layerLabel += ' ( ' +
+                            layerLabel += ' (' +
                               feature.properties.type + ')';
                             featureType = feature.geometry.type;
                           }
