@@ -12,6 +12,8 @@ goog.provide('ga_contextpopup_controller');
       bwaLocatorUrl: '/ingrid-webmap-client/rest/jsonCallback/queryPost?',
       // INGRID: Add EbaStrLocator
       ebaLocatorUrl: '/ingrid-webmap-client/rest/jsonCallback/query?',
+      // INGRID: Add EbaOperating
+      ebaOperatingUrl: '/ingrid-webmap-client/rest/jsonCallback/query?',
       // INGRID: Add short URL
       shortenUrl: gaGlobalOptions.shortURLService
     };

@@ -21,8 +21,10 @@ goog.provide('ga_search_controller');
       searchNominatimUrl: gaGlobalOptions.searchNominatimUrl,
       // INGRID: Add search BWaStrLocator URL
       searchBwaLocatorUrl: gaGlobalOptions.searchBwaLocatorUrl,
-      // INGRID: Add search BWaStrLocator URL
+      // INGRID: Add search EbaLocator URL
       searchEbaLocatorUrl: gaGlobalOptions.searchEbaLocatorUrl,
+      // INGRID: Add search EbaOperating URL
+      searchEbaOpSearchUrl: gaGlobalOptions.searchEbaOpSearchUrl,
       // INGRID: Add zoom for coordinate search
       searchCoordsZoom: gaGlobalOptions.searchCoordsZoom,
       // INGRID: Add open import popup on service item

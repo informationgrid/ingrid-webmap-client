@@ -53,6 +53,8 @@ goog.require('ga_wmts_service');
       const splitLayerPattern = /,(?![^|]* )/g;
 
       var layersParamValue = gaPermalink.getParams().layers;
+      // INGRID: Add layers_extend
+      var layersExtendParamValue = gaPermalink.getParams().layers_extend;
       var layersOpacityParamValue = gaPermalink.getParams().layers_opacity;
       var layersParamsValue = gaPermalink.getParams().layers_params;
       var layersVisibilityParamValue =
@@ -64,6 +66,9 @@ goog.require('ga_wmts_service');
 
       var layerSpecs = layersParamValue ?
         layersParamValue.split(splitLayerPattern) : [];
+      // INGRID: Add layers_extend
+      var layerExtendSpecs = layersExtendParamValue ?
+        layersExtendParamValue.split(splitLayerPattern) : [];
       var layerOpacities = layersOpacityParamValue ?
         layersOpacityParamValue.split(',') : [];
       var layerParams = layersParamsValue ?
@@ -321,11 +326,21 @@ goog.require('ga_wmts_service');
             if (activatedLayers.length) {
               addLayers(activatedLayers.slice(0).reverse(), null, false);
             }
+            // INGRID: Add layers_extend
+            if (layerExtendSpecs.length) {
+              addLayers(null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                layerExtendSpecs);
+            }
           }
         };
 
         var addLayers = function(layerSpecs, opacities, visibilities,
-            timestamps, parameters, styleUrls) {
+            timestamps, parameters, styleUrls, layerExtendSpecs) {
           // INGRID: Get values from shorten
           var all = {};
           var value;
@@ -343,6 +358,9 @@ goog.require('ga_wmts_service');
               // INGRID: Set layerSpecs
               layerSpecs = getLayerSpecs;
             }
+          }
+          if (layerExtendSpecs && layerExtendSpecs.length > 0) {
+            all['layerExtendSpecs'] = layerExtendSpecs;
           }
           if (opacities && opacities.length > 0) {
             value = opacities.join(',');
@@ -411,6 +429,16 @@ goog.require('ga_wmts_service');
               if (values.visibilities.data) {
                 visibilities = values.visibilities.data.split(',');
               }
+            }
+            // INGRID: Add layers_extend
+            if (values.layerExtendSpecs &&
+              values.layerExtendSpecs.length > 0) {
+              layerSpecs = layerSpecs ?
+                layerSpecs.concat(values.layerExtendSpecs) :
+                values.layerExtendSpecs;
+              visibilities = visibilities ?
+                visibilities.concat(['true']) : 'true'.split(',')
+              gaPermalink.deleteParam('layers_extend');
             }
             if (values.timestamps) {
               if (values.timestamps.data) {
@@ -631,7 +659,7 @@ goog.require('ga_wmts_service');
                   var canceler = $q.defer();
                   var requestPath = 'point';
                   var requestUrl = gaGlobalOptions.searchEbaLocatorGeoUrl;
-                  
+
                   if (ebaLocFrom !== '' &&
                     ebaLocTo !== '') {
                     requestPath = 'section';
@@ -744,6 +772,89 @@ goog.require('ga_wmts_service');
                   }, function() {
                   });
                   mustReorder = true;
+                } else if (gaMapUtils.isEbaOperatingLayer(layerSpec)) {
+                  infos = layerSpec.split('||');
+                  var ebaOpName = infos[1];
+                  var ebaOpId = infos[2];
+                  var ebaOpTrackNr = infos[3];
+                  var ebaObType = infos[4];
+                  var canceler = $q.defer();
+                  var requestUrl = gaGlobalOptions.searchEbaOpUrl;
+
+                  requestUrl += ebaOpId;
+                  requestUrl += '?';
+
+                  if (ebaOpName) {
+                    var label = ebaOpName.replaceAll(ebaOpId + ' - ', '');
+                    requestUrl += '&name=' + encodeURIComponent(label);
+                  }
+                  if (ebaObType) {
+                    requestUrl += '&type=' +
+                      encodeURIComponent(ebaObType);
+                  }
+                  if (ebaOpTrackNr) {
+                    requestUrl += '&track_nr=' +
+                      encodeURIComponent(ebaOpTrackNr);
+                  }
+                  if (gaGlobalOptions.defaultEpsg) {
+                   requestUrl += '&srid=' +
+                    gaGlobalOptions.defaultEpsg.split(':')[1];
+                  }
+                  $http.get('/ingrid-webmap-client/rest/' +
+                    'jsonCallback/query?', {
+                    cache: true,
+                    timeout: canceler.promise,
+                    params: {
+                      'url': requestUrl,
+                      'header': gaGlobalOptions.searchEbaLocatorApiHeader
+                    }
+                  }).then(function(response) {
+                    if (response.data) {
+                      var geometry = response.data;
+                      if (geometry) {
+                        if (!geometry.errors && !geometry.error) {
+                          var vectorSource = new ol.source.Vector({
+                            features: (new ol.format.GeoJSON()).
+                              readFeatures(geometry)
+                          });
+                          var layerLabel = '';
+                          var layerId = '';
+                          var featureType = geometry.type;
+                          if (geometry.features &&
+                            geometry.features.length > 0) {
+                            var feature = geometry.features[0];
+                            layerId = feature.properties.name;
+                            layerId += '||' + feature.properties.abbreviation;
+                            layerId += '||' + feature.properties.trackNr;
+                            layerId += '||' + feature.properties.type;
+                            layerLabel = feature.properties.abbreviation;
+                            layerLabel += ' - ' + feature.properties.name;
+                            layerLabel += ' - ' + feature.properties.trackNr;
+                            layerLabel += ' (' +
+                              feature.properties.type + ')';
+                            featureType = feature.geometry.type;
+                          }
+                          var ebaOperatingLayer;
+                          if (featureType === 'Point') {
+                            ebaOperatingLayer = new ol.layer.Vector({
+                              source: vectorSource,
+                              id: 'ebaOperating||' + layerId,
+                              visible: true,
+                              queryable: true,
+                              ebaoperating: true,
+                              downloadContent: JSON.stringify(response.data),
+                              style: gaStyleFactory.getStyle('marker')
+                            });
+                            gaDefinePropertiesForLayer(ebaOperatingLayer);
+                            ebaOperatingLayer.label = layerLabel;
+                            map.addLayer(ebaOperatingLayer);
+                          }
+                        }
+                      }
+                    }
+                  }, function() {
+                  });
+                  mustReorder = true;
                 }
               });
             }
@@ -806,7 +917,8 @@ goog.require('ga_wmts_service');
           } else {
             // We add layers from 'layers' parameter
             addLayers(layerSpecs, layerOpacities, layerVisibilities,
-                layerTimestamps, layerParams, layersStyleUrl);
+                layerTimestamps, layerParams, layersStyleUrl,
+                layerExtendSpecs);
           }
 
           gaTime.allowStatusUpdate = true;

@@ -3,6 +3,7 @@ FROM tomcat:9-jdk21-temurin
 COPY --chown=ubuntu:ubuntu ./docker/files/tomcat-9/tomcat-users.xml /usr/local/tomcat/conf/
 COPY --chown=ubuntu:ubuntu ./docker/files/tomcat-9/server.xml /usr/local/tomcat/conf/
 COPY --chown=ubuntu:ubuntu ./docker/files/tomcat-9/ingrid-webmap-client.xml /usr/local/tomcat/conf/Catalina/localhost/
+COPY --chown=ubuntu:ubuntu ./docker/entrypoint.sh /usr/local/tomcat/
 COPY --chown=ubuntu:ubuntu ./target/ingrid-webmap-client.war /usr/local/tomcat/webapps/
 
 RUN apt-get update; \
@@ -17,4 +18,5 @@ USER ubuntu
 
 EXPOSE 8080
 
+ENTRYPOINT ["/usr/local/tomcat/entrypoint.sh"]
 CMD ["catalina.sh", "run"]

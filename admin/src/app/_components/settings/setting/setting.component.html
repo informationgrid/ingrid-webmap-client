@@ -991,6 +991,69 @@
                                         name="settingSearchEbaLocatorStationUrl" class="form-control">
                                 </div>
                             </div>
+                            <!-- settingSearchEbaOpSearchUrl -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingSearchEbaOpSearchUrl</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchEbaOpSearchUrl"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingSearchEbaOpSearchUrl" data-parent="#setting_accordion">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingSearchEbaOpSearchUrl_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingSearchEbaOpSearchUrl="ngModel" [(ngModel)]="settings.settingSearchEbaOpSearchUrl" name="settingSearchEbaOpSearchUrl"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <!-- settingSearchEbaOpUrl -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingSearchEbaOpUrl</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchEbaOpUrl"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingSearchEbaOpUrl" data-parent="#setting_accordion">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingSearchEbaOpUrl_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingSearchEbaOpUrl="ngModel" [(ngModel)]="settings.settingSearchEbaOpUrl" name="settingSearchEbaOpUrl"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <!-- settingSearchEbaOpStationUrl -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingSearchEbaOpStationUrl</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchEbaOpStationUrl"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingSearchEbaOpStationUrl" data-parent="#setting_accordion">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingSearchEbaOpStationUrl_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingSearchEbaOpStationUrl="ngModel" [(ngModel)]="settings.settingSearchEbaOpStationUrl"
+                                        name="settingSearchEbaOpStationUrl" class="form-control">
+                                </div>
+                            </div>
                             <!-- settingSearchEbaLocatorApiHeader -->
                             <div class="form-group row">
                                 <div class="col-sm-3">

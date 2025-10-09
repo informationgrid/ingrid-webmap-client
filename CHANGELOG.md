@@ -1,4 +1,12 @@
 
+## 8.1.0 (09.10.2025)
+
+### Features
+
+* MAPCLIENT: Erweiterung Streckenlocator um Betriebsstellensuche (#8262)
+* Mapclient: Parametrisierter Aufruf der Streckensuche (#8216)
+
+    
 ## 7.5.0 (21.03.2025)
 
 ### Features
