@@ -177,13 +177,17 @@
                 <td translate>ebaoperating_context_srid</td>
                 <td>{{ebaop_srid}}</td>
               </tr>
+              <tr ng-if="ebaop_trackNr">
+                <td translate>ebaoperating_context_trackNr</td>
+                <td>{{ebaop_trackNr}}</td>
+              </tr>
               <tr ng-if="ebaop_name">
                 <td translate>ebaoperating_context_name</td>
                 <td ng-bind-html="ebaop_name"></td>
               </tr>
-              <tr ng-if="ebaop_typ">
+              <tr ng-if="ebaop_type">
                 <td translate>ebaoperating_context_type</td>
-                <td>{{ebaop_typ}}</td>
+                <td>{{ebaop_type}}</td>
               </tr>
               <tr ng-if="ebaop_abbreviation">
                 <td translate>ebaoperating_context_abbreviation</td>

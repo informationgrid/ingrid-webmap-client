@@ -959,6 +959,11 @@ goog.require('ga_window_service');
                   feature.get('name') +
                   '</td></tr>';
                 htmlpopup += '<tr><td>' +
+                  $translate.instant('ebaoperating_context_type') +
+                  '</td><td>' +
+                  feature.get('type') +
+                  '</td></tr>';
+                htmlpopup += '<tr><td>' +
                   $translate.instant('ebaoperating_context_abbreviation') +
                   '</td><td>' +
                   feature.get('abbreviation') +
