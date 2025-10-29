@@ -311,7 +311,9 @@ public class SearchResource {
                     return Response.ok("{\"results\":[]}").build();
                 }
 
-            }else if(type.equals("ebaoperating")){
+            }
+        } else if (searchTerm.length() > 1 && type != null) {
+            if(type.equals("ebaoperating")){
                 ArrayNode jsonArray = mapper.createArrayNode();
                 URL questUrl = new URL(searchUrl.concat(URLEncoder.encode(searchTerm, "UTF-8")));
                 HttpURLConnection  con = (HttpURLConnection) questUrl.openConnection();
