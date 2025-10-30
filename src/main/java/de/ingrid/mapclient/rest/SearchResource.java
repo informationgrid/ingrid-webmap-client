@@ -80,7 +80,8 @@ public class SearchResource {
         
         if(searchTerm == null || searchTerm.indexOf("http://") > -1 || searchTerm.indexOf("https://") > -1) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        } else if (searchTerm.length() > 2 && type != null) {
+        }
+        if (searchTerm.length() > 2 && type != null) {
             if (type.indexOf( "locations" ) > -1) {
                 ArrayNode json = mapper.createArrayNode();
                 URL questUrl = null;
@@ -312,7 +313,8 @@ public class SearchResource {
                 }
 
             }
-        } else if (searchTerm.length() > 1 && type != null) {
+        }
+        if (searchTerm.length() > 1 && type != null) {
             if(type.equals("ebaoperating")){
                 ArrayNode jsonArray = mapper.createArrayNode();
                 URL questUrl = new URL(searchUrl.concat(URLEncoder.encode(searchTerm, "UTF-8")));
