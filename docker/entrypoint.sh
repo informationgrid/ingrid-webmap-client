@@ -4,7 +4,7 @@ THEME=${THEME:-false}
 
 TOMCAT_HOME=/usr/local/tomcat
 MAPCLIENT_HOME="$TOMCAT_HOME/webapps/ingrid-webmap-client"
-MAPCLIENT_THEME_HOME="$MAPCLIENT_HOME/WEB-INF/themes/$THEME"
+MAPCLIENT_THEME_HOME="$MAPCLIENT_HOME/themes/$THEME"
 
 if [ "$SERVER_CONNECTOR_ATTR" ]; then
     echo "Update connector attributes"
