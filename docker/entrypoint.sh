@@ -4,7 +4,7 @@ THEME=${THEME:-false}
 
 TOMCAT_HOME=/usr/local/tomcat
 MAPCLIENT_HOME="$TOMCAT_HOME/webapps/ingrid-webmap-client"
-MAPCLIENT_THEME_HOME="$MAPCLIENT_HOME/WEB-INF/profiles/$THEME"
+MAPCLIENT_THEME_HOME="$MAPCLIENT_HOME/WEB-INF/themes/$THEME"
 
 if [ "$SERVER_CONNECTOR_ATTR" ]; then
     echo "Update connector attributes"
@@ -20,7 +20,8 @@ fi
 if [ "$THEME" = "false" ]; then
     echo "No theme process."
 else
-    echo "Theme process."
+    echo "Theme process: $THEME"
+    echo "Path: $MAPCLIENT_THEME_HOME"
     if [ -d "$MAPCLIENT_THEME_HOME" ]; then
         echo "Theme exists."
         cd "$MAPCLIENT_THEME_HOME"
