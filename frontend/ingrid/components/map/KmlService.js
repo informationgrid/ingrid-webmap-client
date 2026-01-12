@@ -75,6 +75,7 @@ goog.require('ga_urlutils_service');
           // Test regex here: http://regex101.com/r/tF3vM0/9
           // List of google icons: http://www.lass.it/Web/viewer.aspx?id=4
           // INGRID: Change proxy url
+          kml = kml.replaceAll(gaGlobalOptions.imgproxyUrl,'');
           kml = kml.replace(
               /<href>http(?!(s:\/\/maps\.(google|gstatic)\.com[a-zA-Z\d.\-/_]*\.png|s?:\/\/[a-z\d.-]*(bgdi|geo.admin)\.ch))/g,
               '<href>' + gaGlobalOptions.imgproxyUrl + 'http'

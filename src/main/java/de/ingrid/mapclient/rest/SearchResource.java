@@ -2,7 +2,7 @@
  * **************************************************-
  * InGrid Web Map Client
  * ==================================================
- * Copyright (C) 2014 - 2025 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2026 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.2 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -80,7 +80,8 @@ public class SearchResource {
         
         if(searchTerm == null || searchTerm.indexOf("http://") > -1 || searchTerm.indexOf("https://") > -1) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        } else if (searchTerm.length() > 2 && type != null) {
+        }
+        if (searchTerm.length() > 2 && type != null) {
             if (type.indexOf( "locations" ) > -1) {
                 ArrayNode json = mapper.createArrayNode();
                 URL questUrl = null;
@@ -311,7 +312,10 @@ public class SearchResource {
                     return Response.ok("{\"results\":[]}").build();
                 }
 
-            }else if(type.equals("ebaoperating")){
+            }
+        }
+        if (searchTerm.length() > 1 && type != null) {
+            if(type.equals("ebaoperating")){
                 ArrayNode jsonArray = mapper.createArrayNode();
                 URL questUrl = new URL(searchUrl.concat(URLEncoder.encode(searchTerm, "UTF-8")));
                 HttpURLConnection  con = (HttpURLConnection) questUrl.openConnection();
