@@ -1546,8 +1546,7 @@ goog.require('ga_urlutils_service');
                     var featureCoords = null;
                     if (geometry.features && geometry.features.length > 0) {
                       var feature = geometry.features[0];
-                      layerId = feature.properties.name;
-                      layerId += '||' + feature.properties.abbreviation;
+                      layerId = feature.properties.abbreviation;
                       layerId += '||' + feature.properties.trackNr;
                       layerId += '||' + feature.properties.type;
                       layerLabel = feature.properties.abbreviation;
