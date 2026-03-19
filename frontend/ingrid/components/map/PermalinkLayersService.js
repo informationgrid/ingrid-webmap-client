@@ -778,7 +778,7 @@ goog.require('ga_wmts_service');
                   var ebaOpTrackNr = infos[2];
                   var ebaObType = infos[3];
                   var canceler = $q.defer();
-                  var requestUrl = $scope.options.searchEbaOpSearchUrl;
+                  var requestUrl = gaGlobalOptions.searchEbaOpSearchUrl;
 
                   requestUrl += ebaOpId;
 
