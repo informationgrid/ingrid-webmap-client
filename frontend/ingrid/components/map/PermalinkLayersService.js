@@ -774,32 +774,14 @@ goog.require('ga_wmts_service');
                   mustReorder = true;
                 } else if (gaMapUtils.isEbaOperatingLayer(layerSpec)) {
                   infos = layerSpec.split('||');
-                  var ebaOpName = infos[1];
-                  var ebaOpId = infos[2];
-                  var ebaOpTrackNr = infos[3];
-                  var ebaObType = infos[4];
+                  var ebaOpId = infos[1];
+                  var ebaOpTrackNr = infos[2];
+                  var ebaObType = infos[3];
                   var canceler = $q.defer();
-                  var requestUrl = gaGlobalOptions.searchEbaOpUrl;
+                  var requestUrl = $scope.options.searchEbaOpSearchUrl;
 
                   requestUrl += ebaOpId;
-                  requestUrl += '?';
 
-                  if (ebaOpName) {
-                    var label = ebaOpName.replaceAll(ebaOpId + ' - ', '');
-                    requestUrl += '&name=' + encodeURIComponent(label);
-                  }
-                  if (ebaObType) {
-                    requestUrl += '&type=' +
-                      encodeURIComponent(ebaObType);
-                  }
-                  if (ebaOpTrackNr) {
-                    requestUrl += '&track_nr=' +
-                      encodeURIComponent(ebaOpTrackNr);
-                  }
-                  if (gaGlobalOptions.defaultEpsg) {
-                   requestUrl += '&srid=' +
-                    gaGlobalOptions.defaultEpsg.split(':')[1];
-                  }
                   $http.get('/ingrid-webmap-client/rest/' +
                     'jsonCallback/query?', {
                     cache: true,
@@ -810,46 +792,92 @@ goog.require('ga_wmts_service');
                     }
                   }).then(function(response) {
                     if (response.data) {
-                      var geometry = response.data;
-                      if (geometry) {
-                        if (!geometry.errors && !geometry.error) {
-                          var vectorSource = new ol.source.Vector({
-                            features: (new ol.format.GeoJSON()).
-                              readFeatures(geometry)
-                          });
-                          var layerLabel = '';
-                          var layerId = '';
-                          var featureType = geometry.type;
-                          if (geometry.features &&
-                            geometry.features.length > 0) {
-                            var feature = geometry.features[0];
-                            layerId = feature.properties.name;
-                            layerId += '||' + feature.properties.abbreviation;
-                            layerId += '||' + feature.properties.trackNr;
-                            layerId += '||' + feature.properties.type;
-                            layerLabel = feature.properties.abbreviation;
-                            layerLabel += ' - ' + feature.properties.name;
-                            layerLabel += ' - ' + feature.properties.trackNr;
-                            layerLabel += ' (' +
-                              feature.properties.type + ')';
-                            featureType = feature.geometry.type;
-                          }
-                          var ebaOperatingLayer;
-                          if (featureType === 'Point') {
-                            ebaOperatingLayer = new ol.layer.Vector({
-                              source: vectorSource,
-                              id: 'ebaOperating||' + layerId,
-                              visible: true,
-                              queryable: true,
-                              ebaoperating: true,
-                              downloadContent: JSON.stringify(response.data),
-                              style: gaStyleFactory.getStyle('marker')
-                            });
-                            gaDefinePropertiesForLayer(ebaOperatingLayer);
-                            ebaOperatingLayer.label = layerLabel;
-                            map.addLayer(ebaOperatingLayer);
+                      var results = response.data;
+                      var ebaOpName = null;
+                      if (results.length > 0 ) {
+                        for (var i = 0; i < results.length; i++) {
+                          var result = results[i];
+                          if (result.value === ebaOpId) {
+                            if (result.label){
+                              ebaOpName = result.label
+                                .replaceAll(ebaOpId + ' - ', '');
+                              if (ebaOpName) {
+                                break;
+                              }
+                            }
                           }
                         }
+                      }
+                      if (ebaOpName) {
+                        requestUrl = gaGlobalOptions.searchEbaOpUrl;
+                        requestUrl += ebaOpId;
+                        requestUrl += '?';
+                        requestUrl += '&name=' + encodeURIComponent(ebaOpName);
+                        if (ebaObType) {
+                          requestUrl += '&type=' +
+                            encodeURIComponent(ebaObType);
+                        }
+                        if (ebaOpTrackNr) {
+                          requestUrl += '&track_nr=' +
+                            encodeURIComponent(ebaOpTrackNr);
+                        }
+                        if (gaGlobalOptions.defaultEpsg) {
+                          requestUrl += '&srid=' +
+                          gaGlobalOptions.defaultEpsg.split(':')[1];
+                        }
+                        $http.get('/ingrid-webmap-client/rest/' +
+                          'jsonCallback/query?', {
+                          cache: true,
+                          timeout: canceler.promise,
+                          params: {
+                            'url': requestUrl,
+                            'header': gaGlobalOptions.searchEbaLocatorApiHeader
+                          }
+                        }).then(function(response) {
+                          if (response.data) {
+                            var geometry = response.data;
+                            if (geometry) {
+                              if (!geometry.errors && !geometry.error) {
+                                var vectorSource = new ol.source.Vector({
+                                  features: (new ol.format.GeoJSON()).
+                                    readFeatures(geometry)
+                                });
+                                var layerLabel = '';
+                                var layerId = '';
+                                var featureType = geometry.type;
+                                if (geometry.features &&
+                                  geometry.features.length > 0) {
+                                  var feature = geometry.features[0];
+                                  layerId = feature.properties.abbreviation;
+                                  layerId += '||' + feature.properties.trackNr;
+                                  layerId += '||' + feature.properties.type;
+                                  layerLabel = feature.properties.abbreviation;
+                                  layerLabel += ' - ' + feature.properties.name;
+                                  layerLabel += ' - ' + feature.properties.trackNr;
+                                  layerLabel += ' (' +
+                                    feature.properties.type + ')';
+                                  featureType = feature.geometry.type;
+                                }
+                                var ebaOperatingLayer;
+                                if (featureType === 'Point') {
+                                  ebaOperatingLayer = new ol.layer.Vector({
+                                    source: vectorSource,
+                                    id: 'ebaOperating||' + layerId,
+                                    visible: true,
+                                    queryable: true,
+                                    ebaoperating: true,
+                                    downloadContent: JSON.stringify(response.data),
+                                    style: gaStyleFactory.getStyle('marker')
+                                  });
+                                  gaDefinePropertiesForLayer(ebaOperatingLayer);
+                                  ebaOperatingLayer.label = layerLabel;
+                                  map.addLayer(ebaOperatingLayer);
+                                }
+                              }
+                            }
+                          }
+                        }, function() {
+                        });
                       }
                     }
                   }, function() {
