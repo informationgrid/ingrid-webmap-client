@@ -16,7 +16,7 @@
         <tag>HEAD</tag>
     </scm>
     <properties>
-        <spring.version>6.2.2</spring.version>
+        <spring.version>7.0.9</spring.version>
         <jersey.version>2.37</jersey.version>
         <utils-geo.version>7.5.0</utils-geo.version>
         <maven.compiler.release>17</maven.compiler.release>
