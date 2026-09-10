@@ -45,7 +45,7 @@ mkdir -p %{buildroot}%{_bindir}
 
 # Install WAR file
 install -m 0644 ${WORKSPACE}/target/%{name}.war %{buildroot}%{tomcat_webapps}/%{app_name}.war
-cp -R ${WORKSPACE}/target/%{name} %{buildroot}%{tomcat_webapps}/%{app_name}
+cp -R ${WORKSPACE}/target/%{name}/* %{buildroot}%{tomcat_webapps}/%{app_name}
 
 # Install Tomcat Context XML configuration
 install -m 0644 ${WORKSPACE}/docker/files/tomcat-9/ingrid-webmap-client.xml %{buildroot}%{tomcat_conf}/Catalina/localhost/%{app_name}.xml
