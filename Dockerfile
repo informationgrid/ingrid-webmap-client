@@ -1,4 +1,4 @@
-FROM tomcat:9-jdk21-temurin
+FROM tomcat:9-jdk25-temurin
 
 COPY --chown=ubuntu:ubuntu ./docker/files/tomcat-9/tomcat-users.xml /usr/local/tomcat/conf/
 COPY --chown=ubuntu:ubuntu ./docker/files/tomcat-9/server.xml /usr/local/tomcat/conf/
